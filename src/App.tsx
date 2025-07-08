@@ -28,9 +28,7 @@ import SpecialFunctions from "./pages/Services/SpecialFunctions.tsx";
 import NutritionProgramme from "./pages/Services/NutritionProgramme";
 import FullSizeImage from "./pages/Services/FullSizeImage";
 import SeminarRegistration from "./pages/Services/SeminarRegistration";
-import GuruPurnimaInvitation from "./pages/Services/GuruPurnimaInvitation";
-import SpecialProgrammeInvitation from "./pages/Services/SpecialProgrammeInvitation";
-import WelcomeReceptionInvitation from "./pages/Services/WelcomeReceptionInvitation";
+
 
 
 // Import New Ashram Project Section
@@ -44,7 +42,7 @@ import LessonsPage from "./pages/Learn/LessonsPage";
 import LessonPage from "./pages/Learn/LessonPage";
 import CommunityLearningPage from "./pages/Learn/CommunityLearningPage";
 import QuizPage from "./pages/Learn/QuizPage";
-import IndividualQuizPage from "./pages/Learn/IndividualQuizPage";
+
 import SubmitQuestionPage from "./pages/Learn/SubmitQuestionPage";
 import LearnPage from "./pages/Learn/LearnPage";
 import GamesPage from "./pages/Learn/GamesPage";
@@ -105,9 +103,7 @@ const App = () => (
 
             {/* Standalone Service Pages */}
             <Route path="/services/seminar-registration" element={<SeminarRegistration />} />
-            <Route path="/services/guru-purnima-invitation" element={<GuruPurnimaInvitation />} />
-            <Route path="/services/special-programme-invitation" element={<SpecialProgrammeInvitation />} />
-            <Route path="/services/welcome-reception-invitation" element={<WelcomeReceptionInvitation />} />
+
 
             {/* New Ashram Project Section */}
             <Route path="/new-ashram-project" element={<NewAshramProjectPage />} />
@@ -120,7 +116,7 @@ const App = () => (
               <Route path="/learn/lessons/:topicId/:lessonId" element={<LessonPage />} />
               <Route path="/learn/community" element={<CommunityLearningPage />} />
               <Route path="/learn/quizzes" element={<QuizPage />} />
-              <Route path="/learn/quizzes/:quizId" element={<IndividualQuizPage />} />
+
               <Route path="/learn/submit" element={<SubmitQuestionPage />} />
               <Route path="/learn/games" element={<GamesPage />} />
               <Route path="/learn/games/guess-picture" element={<GuessThePicturePage />} />
