@@ -16,98 +16,100 @@ export interface GalleryCategory {
   description?: string;
 }
 
-// Define gallery categories - only using events
+// Define gallery categories - only showing categories that have actual images
 export const galleryCategories: GalleryCategory[] = [
   {
-    id: 'events',
-    name: 'Events',
-    description: 'Special functions and celebrations at the Ramakrishna Centre'
+    id: 'seminars',
+    name: 'Seminars & Lectures',
+    description: 'Educational seminars and spiritual lectures at the Centre'
   }
 ];
 
-// Define gallery images
+// Define gallery images organized by programmes/functions
 export const galleryImages: GalleryImage[] = [
-  // Events Category
+  // Seminars & Lectures Category
   {
-    id: 'event1',
-    title: 'Event Image 1',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar1',
+    title: 'Seminar (18th May 2025) - Opening Session',
+    description: 'Opening session of the spiritual seminar',
     path: '/images/1.jpg',
-    category: 'events',
-    date: '2025-05-19',
+    category: 'seminars',
+    date: '2025-05-18',
     featured: true
   },
   {
-    id: 'event2',
-    title: 'Event Image 2',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar2',
+    title: 'Seminar (18th May 2025) - Lecture Hall',
+    description: 'Participants attending the seminar lecture',
     path: '/images/2.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event3',
-    title: 'Event Image 3',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar3',
+    title: 'Seminar (18th May 2025) - Group Discussion',
+    description: 'Interactive group discussion session',
     path: '/images/3.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event4',
-    title: 'Event Image 4',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar4',
+    title: 'Seminar (18th May 2025) - Prayer Session',
+    description: 'Collective prayer and meditation',
     path: '/images/4.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event5',
-    title: 'Event Image 5',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar5',
+    title: 'Seminar (18th May 2025) - Participants',
+    description: 'Seminar participants and attendees',
     path: '/images/5.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
+
+  // Additional Seminar Images
   {
-    id: 'event6',
-    title: 'Event Image 6',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar6',
+    title: 'Seminar (18th May 2025) - Closing Ceremony',
+    description: 'Closing ceremony of the seminar',
     path: '/images/6.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event7',
-    title: 'Event Image 7',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar7',
+    title: 'Seminar (18th May 2025) - Group Photo',
+    description: 'Group photograph of all participants',
     path: '/images/7.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event8',
-    title: 'Event Image 8',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar8',
+    title: 'Seminar (18th May 2025) - Workshop Session',
+    description: 'Interactive workshop activities',
     path: '/images/8.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event9',
-    title: 'Event Image 9',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar9',
+    title: 'Seminar (18th May 2025) - Refreshments',
+    description: 'Tea break and refreshments',
     path: '/images/9.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
   {
-    id: 'event10',
-    title: 'Event Image 10',
-    description: 'Event at the Ramakrishna Centre',
+    id: 'seminar10',
+    title: 'Seminar (18th May 2025) - Final Session',
+    description: 'Final session and concluding remarks',
     path: '/images/10.jpg',
-    category: 'events',
-    date: '2025-05-19'
+    category: 'seminars',
+    date: '2025-05-18'
   },
 ];
 

@@ -6,8 +6,8 @@ import { getImageById, galleryImages } from '../../data/galleryData';
 import { Button } from '@/components/ui/button';
 import Footer from '../../components/layout/Footer';
 
-// Filter to only show event images
-const eventImages = galleryImages.filter(image => image.category === 'events');
+// Use all gallery images for navigation
+const allImages = galleryImages;
 
 const GalleryImageView = () => {
   const { imageId } = useParams<{ imageId: string }>();
@@ -17,17 +17,17 @@ const GalleryImageView = () => {
   // Find the current image and its index
   const currentImage = imageId ? getImageById(imageId) : undefined;
   const currentIndex = currentImage
-    ? eventImages.findIndex(img => img.id === imageId)
+    ? allImages.findIndex(img => img.id === imageId)
     : -1;
 
   // Get previous and next image IDs
   const prevImageId = currentIndex > 0
-    ? eventImages[currentIndex - 1].id
-    : eventImages[eventImages.length - 1].id;
+    ? allImages[currentIndex - 1].id
+    : allImages[allImages.length - 1].id;
 
-  const nextImageId = currentIndex < eventImages.length - 1
-    ? eventImages[currentIndex + 1].id
-    : eventImages[0].id;
+  const nextImageId = currentIndex < allImages.length - 1
+    ? allImages[currentIndex + 1].id
+    : allImages[0].id;
 
   // Handle keyboard navigation
   useEffect(() => {

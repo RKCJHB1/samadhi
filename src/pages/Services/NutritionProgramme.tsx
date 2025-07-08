@@ -6,6 +6,16 @@ const NutritionProgramme = () => {
   // All nutrition programme images
   const nutritionImages = [
     {
+      id: 'june2025',
+      title: 'June Distribution',
+      path: '/images/nutrition/june2025.jpg'
+    },
+    {
+      id: 'may2025',
+      title: 'May Distribution',
+      path: '/images/nutrition/may2025.jpg'
+    },
+    {
       id: 'april2025',
       title: 'April Distribution',
       path: '/images/nutrition/april2025.jpg'

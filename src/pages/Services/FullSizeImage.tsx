@@ -10,6 +10,16 @@ const FullSizeImage = () => {
   // Map of image IDs to their paths and titles for nutrition programme
   const nutritionImages = [
     {
+      id: 'june2025',
+      path: '/images/nutrition/june2025.jpg',
+      title: 'June Distribution'
+    },
+    {
+      id: 'may2025',
+      path: '/images/nutrition/may2025.jpg',
+      title: 'May Distribution'
+    },
+    {
       id: 'april2025',
       path: '/images/nutrition/april2025.jpg',
       title: 'April Distribution'

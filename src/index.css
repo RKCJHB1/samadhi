@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/pop-shadows.css';
+
 @layer base {
   /* Remove default underlines from all links */
   a {
