@@ -106,16 +106,32 @@ const WelcomeReceptionInvitation = () => {
                         height="800px"
                         className="border-0"
                         title={`Welcome Reception - Page ${currentPage}`}
+                        onError={() => console.error('PDF failed to load')}
                       />
+                    </div>
+
+                    {/* Fallback message */}
+                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-gray-700">
+                        <strong>Note:</strong> If the PDF doesn't display above, please use the buttons below to view the programme details.
+                      </p>
                     </div>
                   </div>
 
-                  {/* Download Link */}
-                  <div className="mt-6">
+                  {/* PDF Action Buttons */}
+                  <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+                    <a
+                      href="/pics/Welcome Reception for Revered Swami Shantatmanandaji Maharaj.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 bg-indian-saffron text-white rounded-lg hover:bg-indian-saffron/90 transition-colors shadow-md hover:shadow-lg"
+                    >
+                      View PDF in New Tab
+                    </a>
                     <a
                       href="/pics/Welcome Reception for Revered Swami Shantatmanandaji Maharaj.pdf"
                       download="Welcome_Reception_Swami_Shantatmanandaji_Maharaj.pdf"
-                      className="inline-flex items-center px-6 py-3 bg-indian-saffron text-white rounded-lg hover:bg-indian-saffron/90 transition-colors shadow-md hover:shadow-lg"
+                      className="inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors shadow-md hover:shadow-lg"
                     >
                       Download PDF
                     </a>
