@@ -28,6 +28,9 @@ import SpecialFunctions from "./pages/Services/SpecialFunctions.tsx";
 import NutritionProgramme from "./pages/Services/NutritionProgramme";
 import FullSizeImage from "./pages/Services/FullSizeImage";
 import SeminarRegistration from "./pages/Services/SeminarRegistration";
+import GuruPurnimaInvitation from "./pages/Services/GuruPurnimaInvitation";
+import SpecialProgrammeInvitation from "./pages/Services/SpecialProgrammeInvitation";
+import WelcomeReceptionInvitation from "./pages/Services/WelcomeReceptionInvitation";
 
 
 
@@ -103,6 +106,9 @@ const App = () => (
 
             {/* Standalone Service Pages */}
             <Route path="/services/seminar-registration" element={<SeminarRegistration />} />
+            <Route path="/services/guru-purnima-invitation" element={<GuruPurnimaInvitation />} />
+            <Route path="/services/special-programme-invitation" element={<SpecialProgrammeInvitation />} />
+            <Route path="/services/welcome-reception-invitation" element={<WelcomeReceptionInvitation />} />
 
 
             {/* New Ashram Project Section */}
