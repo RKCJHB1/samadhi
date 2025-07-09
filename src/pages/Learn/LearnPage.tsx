@@ -92,25 +92,118 @@ const LearnPage = () => {
               </TabsList>
 
               <TabsContent value="lessons">
-                <div className="space-y-8">
-                  {lessonsData.map((lessonGroup) => (
-                    <div key={lessonGroup.topicId} className="mb-10">
-                      <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {lessonGroup.lessons.map((lesson) => (
-                          <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
-                            <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
-                              <CardContent className="p-4">
-                                <div className="text-lg font-medium mb-2">{lesson.title}</div>
-                                <p className="text-gray-600">{lesson.description}</p>
-                              </CardContent>
-                            </Link>
-                          </Card>
+                <Tabs defaultValue="philosophy" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+                    <TabsTrigger value="philosophy" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                      Philosophy
+                    </TabsTrigger>
+                    <TabsTrigger value="deities" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                      Deities/Rishis
+                    </TabsTrigger>
+                    <TabsTrigger value="scriptures" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                      Scriptures
+                    </TabsTrigger>
+                    <TabsTrigger value="practices" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                      Practices
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="philosophy">
+                    <div className="space-y-8">
+                      {lessonsData
+                        .filter(lessonGroup => lessonGroup.topicId === 'hindu-philosophy')
+                        .map((lessonGroup) => (
+                          <div key={lessonGroup.topicId} className="mb-10">
+                            <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {lessonGroup.lessons.map((lesson) => (
+                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                  <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
+                                    <CardContent className="p-4">
+                                      <div className="text-lg font-medium mb-2">{lesson.title}</div>
+                                      <p className="text-gray-600">{lesson.description}</p>
+                                    </CardContent>
+                                  </Link>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
                         ))}
-                      </div>
                     </div>
-                  ))}
-                </div>
+                  </TabsContent>
+
+                  <TabsContent value="deities">
+                    <div className="space-y-8">
+                      {lessonsData
+                        .filter(lessonGroup => lessonGroup.topicId === 'deities')
+                        .map((lessonGroup) => (
+                          <div key={lessonGroup.topicId} className="mb-10">
+                            <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {lessonGroup.lessons.map((lesson) => (
+                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                  <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
+                                    <CardContent className="p-4">
+                                      <div className="text-lg font-medium mb-2">{lesson.title}</div>
+                                      <p className="text-gray-600">{lesson.description}</p>
+                                    </CardContent>
+                                  </Link>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="scriptures">
+                    <div className="space-y-8">
+                      {lessonsData
+                        .filter(lessonGroup => lessonGroup.topicId === 'scriptures')
+                        .map((lessonGroup) => (
+                          <div key={lessonGroup.topicId} className="mb-10">
+                            <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {lessonGroup.lessons.map((lesson) => (
+                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                  <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
+                                    <CardContent className="p-4">
+                                      <div className="text-lg font-medium mb-2">{lesson.title}</div>
+                                      <p className="text-gray-600">{lesson.description}</p>
+                                    </CardContent>
+                                  </Link>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="practices">
+                    <div className="space-y-8">
+                      {lessonsData
+                        .filter(lessonGroup => lessonGroup.topicId === 'practices')
+                        .map((lessonGroup) => (
+                          <div key={lessonGroup.topicId} className="mb-10">
+                            <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {lessonGroup.lessons.map((lesson) => (
+                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                  <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
+                                    <CardContent className="p-4">
+                                      <div className="text-lg font-medium mb-2">{lesson.title}</div>
+                                      <p className="text-gray-600">{lesson.description}</p>
+                                    </CardContent>
+                                  </Link>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </TabsContent>
 
               <TabsContent value="mantras">
@@ -161,36 +254,7 @@ const LearnPage = () => {
             </Tabs>
           </div>
 
-          <div className="mt-24">
-            <SectionHeader
-            title="Explore Subjects"
-            subtitle="Dive into our comprehensive curriculum covering the key aspects of Hinduism"
-          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              /* Core Concepts entry removed */
-              { id: 'scriptures', title: 'Scriptures', desc: 'Vedas, Upanishads, etc.' },
-              { id: 'deities', title: 'Deities', desc: 'Trimurti, Major Deities, etc.' },
-              { id: 'philosophical-schools', title: 'Philosophical Schools', desc: 'Samkhya, Yoga, etc.' },
-              { id: 'practices-rituals', title: 'Practices and Rituals', desc: 'Puja, Samskaras, etc.' },
-              { id: 'sects-traditions', title: 'Sects and Traditions', desc: 'Vaishnavism, Shaivism, etc.' },
-              { id: 'influential-figures', title: 'Influential Figures', desc: 'Divine Incarnations, etc.' },
-              { id: 'history-evolution', title: 'History and Evolution', desc: 'Ancient Origins, etc.' },
-              { id: 'temples-architecture', title: 'Temples and Architecture', desc: 'Temple Styles, etc.' },
-              { id: 'society-culture', title: 'Society and Culture', desc: 'Family, Arts, etc.' },
-              { id: 'cosmology-mythology', title: 'Cosmology and Mythology', desc: 'Creation Myths, Yugas, etc.' },
-              { id: 'modern-issues', title: 'Modern Issues and Debates', desc: 'Science, Secularism, etc.' },
-            ].map(subject => (
-              <Link key={subject.id} to="/learn" className="block group">
-                <div className="h-full p-6 border border-indian-saffron rounded-lg pop-shadow-card transition-all duration-300 bg-gradient-to-br from-indian-cream to-white">
-                  <h3 className="text-lg font-heading font-semibold mb-2 group-hover:text-spiritual-500 transition-colors">{subject.title}</h3>
-                  <p className="text-gray-600 text-sm">{subject.desc}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-          </div>
 
           {/* Restoring the cards that were removed */}
           <div className="mt-16">

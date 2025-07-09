@@ -4,6 +4,8 @@ import PageHeader from '../../components/shared/PageHeader';
 import SectionHeader from '../../components/shared/SectionHeader';
 import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
+import SimpleModelViewer from '../../components/3d/SimpleModelViewer';
+import { featureFlags } from '../../utils/featureFlags';
 
 const NewAshramProjectPage = () => {
   return (
@@ -49,6 +51,22 @@ where devotees can find God in themselves and around them.
                 </div>
               </Link>
             </div>
+
+            {/* 3D Model Viewer - Only show in development */}
+            {(featureFlags.enable3DModelViewer || featureFlags.isDevMode) && (
+              <div className="my-12">
+                <h3 className="text-2xl font-heading font-semibold mb-6 text-center">Interactive 3D Model</h3>
+                <SimpleModelViewer
+                  modelPath="/pics/modelwithtexture.glb"
+                  title="New Ashram 3D Model"
+                  description="Explore the planned ashram layout in 3D. Use your mouse to rotate, zoom, and pan around the model."
+                  className="max-w-4xl mx-auto"
+                />
+                <p className="text-sm text-gray-600 text-center mt-4">
+                  <em>Note: This 3D model is a conceptual representation and may differ from the final construction.</em>
+                </p>
+              </div>
+            )}
 
             <div className="bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-8 rounded-lg my-8 text-center pop-shadow-card">
               <h3 className="text-2xl font-heading font-semibold mb-4">Support Our Vision</h3>
