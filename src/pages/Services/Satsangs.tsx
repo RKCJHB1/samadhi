@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Satsangs = () => {
   return (
-      <div className="w-full bg-white">
+      <div className="w-full bg-gradient-to-br from-indian-cream to-white">
       <div className="w-full bg-gradient-to-br from-indian-cream to-white">
         {/* Removed py-4 from this container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

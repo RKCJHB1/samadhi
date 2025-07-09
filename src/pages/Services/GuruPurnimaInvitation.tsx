@@ -36,9 +36,9 @@ const GuruPurnimaInvitation = () => {
       <div className="w-full bg-gradient-to-br from-indian-cream to-white pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center w-full mb-8">
-              <h1 className="text-3xl font-heading font-bold mb-4 text-black">Guru Purnima Celebration</h1>
-              <p className="text-gray-700">
+            <div className="inline-block p-4 sm:p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center w-full mb-8">
+              <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-black">Guru Purnima Celebration</h1>
+              <p className="text-sm sm:text-base text-gray-700">
                 Join us for the celebration of Guru Purnima - Thursday, 10th July from 7:00 PM to 8:00 PM
               </p>
             </div>
@@ -76,22 +76,24 @@ const GuruPurnimaInvitation = () => {
                       <button
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
-                        className="flex items-center px-4 py-2 bg-indian-saffron text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indian-saffron/90 transition-colors"
+                        className="flex items-center px-2 sm:px-4 py-2 bg-indian-saffron text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indian-saffron/90 transition-colors text-sm sm:text-base"
                       >
                         <ChevronLeft className="w-4 h-4 mr-1" />
-                        Previous
+                        <span className="hidden sm:inline">Previous</span>
+                        <span className="sm:hidden">Prev</span>
                       </button>
-                      
-                      <span className="text-gray-600 font-medium">
+
+                      <span className="text-gray-600 font-medium text-sm sm:text-base">
                         Page {currentPage} of {totalPages}
                       </span>
-                      
+
                       <button
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
-                        className="flex items-center px-4 py-2 bg-indian-saffron text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indian-saffron/90 transition-colors"
+                        className="flex items-center px-2 sm:px-4 py-2 bg-indian-saffron text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indian-saffron/90 transition-colors text-sm sm:text-base"
                       >
-                        Next
+                        <span className="hidden sm:inline">Next</span>
+                        <span className="sm:hidden">Next</span>
                         <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
@@ -103,16 +105,16 @@ const GuruPurnimaInvitation = () => {
                       <iframe
                         src={`/pics/GP.pdf#page=${currentPage}`}
                         width="100%"
-                        height="800px"
-                        className="border-0"
+                        height="600px"
+                        className="border-0 h-[400px] sm:h-[600px] md:h-[700px] lg:h-[800px]"
                         title={`Guru Purnima Programme - Page ${currentPage}`}
                         onError={() => console.error('PDF failed to load')}
                       />
                     </div>
 
                     {/* Fallback message */}
-                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-sm text-gray-700">
+                    <div className="mt-4 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-xs sm:text-sm text-gray-700">
                         <strong>Note:</strong> If the PDF doesn't display above, please use the download button below to view the programme details.
                       </p>
                     </div>

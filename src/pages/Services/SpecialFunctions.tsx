@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SpecialFunctions = () => {
   return (
-      <div className="w-full bg-white">
+      <div className="w-full bg-gradient-to-br from-indian-cream to-white">
         <div className="w-full bg-gradient-to-br from-indian-cream to-white">
           {/* Replaced py-8 with pb-8 */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">

@@ -112,7 +112,7 @@
 
   /* Custom scrollbar styles */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+    width: 16px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -131,7 +131,53 @@
 
   /* Firefox scrollbar */
   .custom-scrollbar {
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: rgba(255, 165, 0, 0.5) rgba(255, 255, 255, 0.4);
+  }
+
+  /* Lesson content styling to ensure no white backgrounds */
+  .prose {
+    background: transparent !important;
+  }
+
+  .prose * {
+    background-color: transparent !important;
+  }
+
+  .prose p, .prose div, .prose ul, .prose ol, .prose li {
+    background: transparent !important;
+  }
+
+  /* Specific styling for lesson content cards with golden borders */
+  .prose .bg-white {
+    background: linear-gradient(to bottom right, #FFF5E1, #FFFFFF) !important;
+    border: 1px solid rgba(255, 153, 51, 0.4) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Ensure grid containers in lessons maintain proper spacing */
+  .prose .grid {
+    background: transparent !important;
+  }
+
+  /* Form elements styling for submit page and other learn pages */
+  input[type="text"], input[type="email"], textarea, select {
+    background: linear-gradient(to bottom right, #FFF5E1, #FFFFFF) !important;
+    border: 1px solid rgba(255, 153, 51, 0.3) !important;
+  }
+
+  /* Select dropdown content */
+  [data-radix-select-content] {
+    background: linear-gradient(to bottom right, #FFF5E1, #FFFFFF) !important;
+    border: 1px solid rgba(255, 153, 51, 0.3) !important;
+  }
+
+  /* Select items */
+  [data-radix-select-item] {
+    background: transparent !important;
+  }
+
+  [data-radix-select-item]:hover {
+    background: rgba(255, 153, 51, 0.1) !important;
   }
 }
