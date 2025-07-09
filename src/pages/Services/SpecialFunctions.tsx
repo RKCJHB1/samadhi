@@ -39,9 +39,9 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Guru Purnima</p>
                           <p className="mt-1">
-                            <a href="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                               View Programme Details
-                            </a>
+                            </Link>
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -61,9 +61,9 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Special Programme</p>
                           <p className="mt-1">
-                            <a href="/services/special-programme-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            <Link to="/services/special-programme-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                               View Programme Details
-                            </a>
+                            </Link>
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -83,9 +83,9 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Welcome Reception</p>
                           <p className="mt-1">
-                            <a href="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                               View Programme Details
-                            </a>
+                            </Link>
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -154,9 +154,9 @@ const SpecialFunctions = () => {
                       <div>
                         <p>Guru Purnima</p>
                         <p className="mt-1">
-                          <a href="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                          <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                             View Programme Details
-                          </a>
+                          </Link>
                         </p>
                       </div>
                     </div>
@@ -182,9 +182,9 @@ const SpecialFunctions = () => {
                       <div>
                         <p>Special Programme</p>
                         <p className="mt-1">
-                          <a href="/services/special-programme-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                          <Link to="/services/special-programme-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                             View Programme Details
-                          </a>
+                          </Link>
                         </p>
                       </div>
                     </div>
@@ -210,9 +210,9 @@ const SpecialFunctions = () => {
                       <div>
                         <p>Welcome Reception</p>
                         <p className="mt-1">
-                          <a href="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                          <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
                             View Programme Details
-                          </a>
+                          </Link>
                         </p>
                       </div>
                     </div>
