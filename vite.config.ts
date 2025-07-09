@@ -23,31 +23,28 @@ export default defineConfig(({ mode }) => ({
 
         // Copy invitation HTML files
         const invitations = [
-          'guru-purnima-invitation',
-          'special-programme-invitation',
-          'welcome-reception-invitation'
+          'guru-purnima-invitation.html',
+          'special-programme-invitation.html',
+          'welcome-reception-invitation.html'
         ];
 
         invitations.forEach(invitation => {
           try {
-            const srcDir = `public/services/${invitation}`;
-            const destDir = `dist/services/${invitation}`;
+            const srcFile = `public/services/${invitation}`;
+            const destFile = `dist/services/${invitation}`;
 
             // Create destination directory if it doesn't exist
+            const destDir = path.dirname(destFile);
             if (!existsSync(destDir)) {
               mkdirSync(destDir, { recursive: true });
             }
 
-            // Copy index.html file
-            const srcFile = path.join(srcDir, 'index.html');
-            const destFile = path.join(destDir, 'index.html');
-
             if (existsSync(srcFile)) {
               copyFileSync(srcFile, destFile);
-              console.log(`✅ ${invitation} HTML file copied to dist folder`);
+              console.log(`✅ ${invitation} copied to dist folder`);
             }
           } catch (error) {
-            console.warn(`⚠️ Could not copy ${invitation} files:`, error.message);
+            console.warn(`⚠️ Could not copy ${invitation}:`, error.message);
           }
         });
       }
