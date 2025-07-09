@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
       name: 'copy-redirects',
       writeBundle() {
         try {
-          copyFileSync('_redirects', 'dist/_redirects');
+          copyFileSync('public/_redirects', 'dist/_redirects');
           console.log('✅ _redirects file copied to dist folder');
         } catch (error) {
           console.warn('⚠️ Could not copy _redirects file:', error.message);

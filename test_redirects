@@ -1,0 +1,13 @@
+# Cloudflare Pages - Handle client-side routing for React Router
+# Only redirect routes that don't exist as static files
+/services/guru-purnima-invitation    /index.html   200
+/services/special-programme-invitation    /index.html   200
+/services/welcome-reception-invitation    /index.html   200
+/learn/*    /index.html   200
+/new-ashram-project/*    /index.html   200
+/gallery/*    /index.html   200
+/donate/*    /index.html   200
+/login    /index.html   200
+/profile    /index.html   200
+/admin    /index.html   200
+/dashboard/*    /index.html   200
