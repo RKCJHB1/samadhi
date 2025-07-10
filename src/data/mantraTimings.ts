@@ -51,6 +51,63 @@ export const gayatriMantraSyllables: TimedSyllable[] = [
   { text: "यात्", startTime: 16.23, endTime: 17.0 }
 ];
 
+// Saha Na Vavatu Mantra
+// Audio structure: 3 seconds blank, mantra content finishes at 13 seconds, 2 seconds blank at end
+// Includes pauses after "vavatu", "bhunaktu", and "karavavahai"
+export const sahaNavatuMantraSyllables: TimedSyllable[] = [
+  { text: "ॐ ", startTime: 3.0, endTime: 4.0 },
+  { text: "स", startTime: 4.0, endTime: 4.3 },
+  { text: "ह ", startTime: 4.3, endTime: 4.6 },
+  { text: "ना", startTime: 4.6, endTime: 4.9 },
+  { text: "व", startTime: 4.9, endTime: 5.2 },
+  { text: "व", startTime: 5.2, endTime: 5.5 },
+  { text: "तु ", startTime: 5.5, endTime: 6.0 },
+  // Pause after "vavatu"
+  { text: "स", startTime: 6.2, endTime: 6.5 },
+  { text: "ह ", startTime: 6.5, endTime: 6.8 },
+  { text: "नौ ", startTime: 6.8, endTime: 7.1 },
+  { text: "भु", startTime: 7.1, endTime: 7.5 },
+  { text: "न", startTime: 7.5, endTime: 8.0 },
+  { text: "क्तु ", startTime: 8.0, endTime: 9.0 },
+  // Pause after "bhunaktu"
+  { text: "स", startTime: 9.2, endTime: 9.4 },
+  { text: "ह ", startTime: 9.4, endTime: 9.6 },
+  { text: "वी", startTime: 9.6, endTime: 9.8 },
+  { text: "र्य", startTime: 9.8, endTime: 10.0 },
+  { text: "ं ", startTime: 10.0, endTime: 10.2 },
+  { text: "क", startTime: 10.2, endTime: 10.8 },
+  { text: "र", startTime: 10.8, endTime: 11.4 },
+  { text: "वा", startTime: 11.4, endTime: 12.0 },
+  { text: "व", startTime: 12.0, endTime: 12.5 },
+  { text: "है ", startTime: 12.5, endTime: 13.0 },
+  // Pause after "karavavahai" - continuing after 13 seconds
+  { text: "ते", startTime: 13.5, endTime: 14.0 },
+  { text: "ज", startTime: 14.0, endTime: 14.3 },
+  { text: "स्वि", startTime: 14.3, endTime: 14.6 },
+  { text: "ना", startTime: 14.6, endTime: 14.9 },
+  { text: "व", startTime: 14.9, endTime: 15.2 },
+  { text: "धी", startTime: 15.2, endTime: 15.5 },
+  { text: "त", startTime: 15.5, endTime: 15.8 },
+  { text: "म", startTime: 15.8, endTime: 16.1 },
+  { text: "स्तु ", startTime: 16.1, endTime: 16.5 },
+  { text: "मा ", startTime: 16.5, endTime: 16.8 },
+  { text: "वि", startTime: 16.8, endTime: 17.2 },
+  { text: "द्वि", startTime: 17.2, endTime: 17.6 },
+  { text: "षा", startTime: 17.6, endTime: 18.0 },
+  { text: "व", startTime: 18.0, endTime: 18.5 },
+  { text: "है ", startTime: 18.5, endTime: 20.0 },
+  { text: "ॐ ", startTime: 20.2, endTime: 21.0 },
+  { text: "शान्", startTime: 21.0, endTime: 21.8 },
+  { text: "ति", startTime: 21.8, endTime: 22.5 },
+  { text: "ः ", startTime: 22.5, endTime: 23.0 },
+  { text: "शान्", startTime: 23.0, endTime: 23.8 },
+  { text: "ति", startTime: 23.8, endTime: 24.5 },
+  { text: "ः ", startTime: 24.5, endTime: 25.0 },
+  { text: "शान्", startTime: 25.0, endTime: 25.5 },
+  { text: "ति", startTime: 25.5, endTime: 25.8 },
+  { text: "ः", startTime: 25.8, endTime: 26.0 }
+];
+
 // Mahamrityunjaya Mantra
 // Note: These are approximate timings and should be adjusted based on the actual audio recording
 export const mahamrityunjayaMantraSyllables: TimedSyllable[] = [

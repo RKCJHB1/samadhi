@@ -23,7 +23,7 @@ const ThankYouPage = () => {
 
         <div className="bg-spiritual-50 p-6 rounded-lg mb-8">
           <p className="italic text-lg text-gray-700">
-            "The highest worship is the worship of those all around us." - Swami Vivekananda
+            "In the world take always the position of the giver. Give everything and look for no return. Give love, give help, give service, give any little thing you can, but keep out barter. Make no conditions and none will be imposed on you. Let us give out of our own bounty, just as God gives to us." - Swami Vivekananda
           </p>
         </div>
 

@@ -11,7 +11,7 @@ import { lessonsData } from '../../data/lessonsData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
-import { gayatriMantraSyllables } from '../../data/mantraTimings';
+import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
 
 const LearnPage = () => {
   // State for managing active tabs
@@ -75,7 +75,7 @@ const LearnPage = () => {
       id: 'saha-na-vavatu',
       title: 'Saha Nā Vavatu',
       description: 'A peace mantra from the Upanishads invoking protection and harmony for teacher and student',
-      audio: '/audio/saha-na-vavatu.mp3',
+      audio: '/audio/sahana.mp3',
       text: 'ॐ सह नाववतु सह नौ भुनक्तु सह वीर्यं करवावहै तेजस्विनावधीतमस्तु मा विद्विषावहै ॐ शान्तिः शान्तिः शान्तिः',
       transliteration: 'Oṃ saha nāvavatu saha nau bhunaktu saha vīryaṃ karavāvahai tejasvināvadhītamastu mā vidviṣāvahai oṃ śāntiḥ śāntiḥ śāntiḥ',
       englishMeaning: 'Om, may we be protected together and nourished together. May we work together with great vigor, and may our study be enlightening and fruitful. May we never quarrel with each other. Om peace, peace, peace.',
@@ -268,25 +268,14 @@ const LearnPage = () => {
                               />
                             )}
                             {mantra.id === 'saha-na-vavatu' && (
-                              <div className="space-y-4">
-                                {/* Sanskrit and Transliteration for Saha Na Vavatu */}
-                                <div className="bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 p-4 rounded mb-4">
-                                  <div className="text-center text-lg font-medium leading-relaxed mb-3" style={{ fontFamily: 'serif' }}>
-                                    {mantra.text}
-                                  </div>
-                                  <div className="mt-3 pt-3 border-t border-indian-saffron/20 w-full">
-                                    <div className="text-center text-sm text-gray-600 italic font-medium leading-relaxed">
-                                      {mantra.transliteration}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-center p-4 bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 rounded-md">
-                                  <p className="text-gray-600 mb-2">Audio pronunciation coming soon</p>
-                                  <div className="text-sm text-gray-500">
-                                    Audio will be added in a future update
-                                  </div>
-                                </div>
-                              </div>
+                              <SyncedAudioPlayer
+                                src={mantra.audio}
+                                title={`${mantra.title} Pronunciation`}
+                                syllables={sahaNavatuMantraSyllables}
+                                originalText={mantra.text}
+                                transliteration={mantra.transliteration}
+                                transliterationSyllables={mantra.transliterationSyllables}
+                              />
                             )}
                           </div>
 
