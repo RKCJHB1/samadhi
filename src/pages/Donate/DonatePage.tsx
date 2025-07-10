@@ -18,7 +18,7 @@ const donationSchema = z.object({
   lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   mobile: z.string().min(10, { message: "Please enter a valid mobile number." }),
-  amount: z.number().min(10, { message: "Minimum donation amount is R10." }),
+  amount: z.number().min(20, { message: "Minimum donation amount is R20." }),
   purpose: z.string().min(1, { message: "Please select a purpose for your donation." })
 });
 
@@ -54,32 +54,26 @@ const DonatePage = () => {
   const handleDonate = (values: DonationFormValues) => {
     setIsProcessing(true);
 
-    // Redirect to PayFast with required parameters
-    // Note: This is a simplified version. In production, a proper hash should be calculated server-side.
-    const merchantId = import.meta.env.VITE_PAYFAST_MERCHANT_ID || '26034585'; // Live PayFast Merchant ID
-    const merchantKey = import.meta.env.VITE_PAYFAST_MERCHANT_KEY || 'your-merchant-key'; // Live PayFast Merchant Key
-    const returnUrl = `${window.location.origin}/donate/thank-you`;
-    const cancelUrl = `${window.location.origin}/donate`;
-    const notifyUrl = `${window.location.origin}/api/payfast-notification`; // This would need a backend handler
-
+    // Create PayFast donation form using the correct structure
     const paymentData = {
-      merchant_id: merchantId,
-      merchant_key: merchantKey,
-      return_url: returnUrl,
-      cancel_url: cancelUrl,
-      notify_url: notifyUrl,
+      cmd: '_paynow',
+      receiver: '26034585', // Your PayFast merchant ID
+      amount: values.amount.toFixed(2),
+      item_name: `Donation to Ramakrishna Centre - ${values.purpose}`,
+      item_description: `Contribution from ${values.firstName} ${values.lastName} towards Ramakrishna Centre of South Africa Phoenix Johannesburg Sub Centre.`,
+      return_url: `${window.location.origin}/donate/thank-you`,
+      cancel_url: `${window.location.origin}/donate`,
+      notify_url: `${window.location.origin}/api/payfast-notification`, // This would need a backend handler
       name_first: values.firstName,
       name_last: values.lastName,
       email_address: values.email,
       cell_number: values.mobile,
-      amount: values.amount.toFixed(2),
-      item_name: `Donation to Ramakrishna Centre - ${values.purpose}`,
     };
 
     // Create a form and submit it to PayFast
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'https://www.payfast.co.za/eng/process'; // Live PayFast endpoint
+    form.action = 'https://payment.payfast.io/eng/process'; // Correct PayFast endpoint
 
     Object.entries(paymentData).forEach(([key, value]) => {
       const input = document.createElement('input');
@@ -277,7 +271,7 @@ const DonatePage = () => {
                           </div>
                           <Input
                             type="number"
-                            min="10"
+                            min="20"
                             value={value}
                             onChange={(e) => onChange(Number(e.target.value))}
                             className="pl-8"
