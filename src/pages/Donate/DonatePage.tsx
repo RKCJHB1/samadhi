@@ -56,8 +56,8 @@ const DonatePage = () => {
 
     // Redirect to PayFast with required parameters
     // Note: This is a simplified version. In production, a proper hash should be calculated server-side.
-    const merchantId = '26034585'; // Live PayFast Merchant ID
-    const merchantKey = '46f0cd694581a'; // Live PayFast Merchant Key
+    const merchantId = import.meta.env.VITE_PAYFAST_MERCHANT_ID || '26034585'; // Live PayFast Merchant ID
+    const merchantKey = import.meta.env.VITE_PAYFAST_MERCHANT_KEY || 'your-merchant-key'; // Live PayFast Merchant Key
     const returnUrl = `${window.location.origin}/donate/thank-you`;
     const cancelUrl = `${window.location.origin}/donate`;
     const notifyUrl = `${window.location.origin}/api/payfast-notification`; // This would need a backend handler
