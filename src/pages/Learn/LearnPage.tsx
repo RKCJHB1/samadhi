@@ -235,7 +235,6 @@ const LearnPage = () => {
                 <div className="space-y-8">
                   <p className="text-lg">
                     Mantras are sacred sound formulas that have spiritual and psychological effects.
-                    Learn these mantras to enhance your meditation practice and connect with divine energies.
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
