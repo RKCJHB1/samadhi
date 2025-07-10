@@ -174,7 +174,7 @@ const DonatePage = () => {
                         <FormItem>
                           <FormLabel>First Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your first name" {...field} disabled />
+                            <Input placeholder="Your first name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -188,7 +188,7 @@ const DonatePage = () => {
                         <FormItem>
                           <FormLabel>Last Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your last name" {...field} disabled />
+                            <Input placeholder="Your last name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -203,7 +203,7 @@ const DonatePage = () => {
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="your.email@example.com" {...field} disabled />
+                          <Input type="email" placeholder="your.email@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -217,7 +217,7 @@ const DonatePage = () => {
                       <FormItem>
                         <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
-                          <Input type="tel" placeholder="Your mobile number" {...field} disabled />
+                          <Input type="tel" placeholder="Your mobile number" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -230,7 +230,7 @@ const DonatePage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Purpose of Donation</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select purpose" />
@@ -264,7 +264,7 @@ const DonatePage = () => {
                                   ? 'bg-spiritual-100 border-spiritual-500 text-spiritual-700'
                                   : 'border-gray-300 hover:bg-gray-50'
                               }`}
-                              disabled
+
                             >
                               R{preset}
                             </button>
