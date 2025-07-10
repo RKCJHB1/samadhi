@@ -13,13 +13,17 @@ interface SyncedAudioPlayerProps {
   title?: string;
   syllables: TimedSyllable[];
   originalText: string;
+  transliteration?: string;
+  transliterationSyllables?: string[];
 }
 
-const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({ 
-  src, 
-  title, 
+const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
+  src,
+  title,
   syllables,
-  originalText
+  originalText,
+  transliteration,
+  transliterationSyllables
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -50,8 +54,9 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     }
   };
 
-  const handleLoadError = () => {
-    setError("Could not load audio file");
+  const handleLoadError = (e: any) => {
+    console.error('Audio load error:', e, 'for file:', src);
+    setError(`Could not load audio file: ${src}`);
     setIsLoaded(false);
   };
 
@@ -184,11 +189,11 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     return (
       <div className="font-mono text-center text-lg leading-relaxed">
         {syllables.map((syllable, index) => (
-          <span 
+          <span
             key={index}
             className={`transition-colors duration-200 ${
-              index === activeIndex 
-                ? 'bg-indian-saffron/30 text-indian-saffron font-bold' 
+              index === activeIndex
+                ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
                 : ''
             }`}
           >
@@ -199,10 +204,47 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     );
   };
 
+  // Render the transliteration with highlighting
+  const renderSyncedTransliteration = () => {
+    if (!transliteration) return null;
+
+    // If we have transliteration syllables that match the Sanskrit syllables, render with highlighting
+    if (transliterationSyllables && transliterationSyllables.length === syllables.length) {
+      return (
+        <div className="text-center text-sm text-gray-600 italic font-medium leading-relaxed">
+          {transliterationSyllables.map((syllable, index) => (
+            <span
+              key={index}
+              className={`transition-colors duration-200 ${
+                index === activeIndex
+                  ? 'bg-indian-saffron/20 text-indian-saffron font-bold'
+                  : ''
+              }`}
+            >
+              {syllable}
+            </span>
+          ))}
+        </div>
+      );
+    }
+
+    // Fallback to simple transliteration display
+    return (
+      <p className="text-center text-sm text-gray-600 italic font-medium">
+        {transliteration}
+      </p>
+    );
+  };
+
   return (
     <div className="space-y-4">
-      <div className="bg-white p-4 rounded border border-gray-200 mb-4 min-h-[60px] flex items-center justify-center">
+      <div className="bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 p-4 rounded mb-4 min-h-[60px] flex flex-col items-center justify-center">
         {renderSyncedText()}
+        {transliteration && (
+          <div className="mt-3 pt-3 border-t border-indian-saffron/20 w-full">
+            {renderSyncedTransliteration()}
+          </div>
+        )}
       </div>
       
       <div className="bg-gradient-to-br from-indian-cream/30 to-white rounded-lg p-4 shadow-sm border border-indian-saffron/20">
@@ -213,9 +255,17 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
         <audio
           ref={audioRef}
           src={src}
+          preload="metadata"
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onError={handleLoadError}
+          onCanPlay={() => {
+            console.log('Audio can play:', src);
+            setIsLoaded(true);
+          }}
+          onLoadStart={() => {
+            console.log('Audio load started:', src);
+          }}
           onEnded={() => {
             setIsPlaying(false);
             if (highlightIntervalRef.current) {

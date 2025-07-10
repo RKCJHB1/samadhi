@@ -79,46 +79,24 @@ const ContactPage = () => {
     setSubmissionCount(prev => prev + 1);
 
     try {
-      // reCAPTCHA execution removed as online form submission is disabled
+      // Backend removed - Contact form now shows success message without actual submission
+      console.log('Contact form data (backend removed):', values);
 
-      // Prepare form data to send to the backend
-      const formData = {
-        ...values,
-      };
-
-      console.log('Form data to be sent:', formData);
-
-      // Use the Laravel API endpoint
-      const apiUrl = process.env.NODE_ENV === 'production'
-        ? '/api/contact'  // In production, use relative URL
-        : 'https://finalapi.test/api/contact'; // In development, use the full URL
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to send message');
-      }
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Reset the form
       form.reset();
 
       toast({
-        title: "Message sent",
-        description: "Thank you for your message. We'll get back to you soon.",
+        title: "Thank you for your message!",
+        description: "We appreciate your interest. Please contact us directly at viprananda@rkmm.org for immediate assistance.",
       });
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
-        title: "Error",
-        description: "There was an error sending your message. Please try again.",
+        title: "Form submission unavailable",
+        description: "Please contact us directly at viprananda@rkmm.org",
         variant: "destructive",
       });
     } finally {

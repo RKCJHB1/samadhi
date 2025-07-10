@@ -69,7 +69,7 @@ const LessonQuiz: React.FC<LessonQuizProps> = ({ quiz }) => {
             const isCorrect = selectedAnswer === q.correctAnswer;
             
             return (
-              <Card key={qIndex} className={`p-4 ${isCorrect ? 'bg-green-50' : 'bg-red-50'}`}>
+              <Card key={qIndex} className={`p-4 border ${isCorrect ? 'bg-gradient-to-br from-green-100/50 to-indian-cream/50 border-green-300/50' : 'bg-gradient-to-br from-red-100/50 to-indian-cream/50 border-red-300/50'}`}>
                 <div className="flex items-start gap-2">
                   {isCorrect ? (
                     <Check className="w-5 h-5 text-green-500 mt-0.5" />

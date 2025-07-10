@@ -14,35 +14,41 @@ export const omMantraSyllables: TimedSyllable[] = [
 ];
 
 // Gayatri Mantra
-// Note: These are approximate timings and should be adjusted based on the actual audio recording
+// Total audio: 18 seconds
+// First 2.0 seconds: blank with sur (musical note)
+// 2.0s to 17.0s: actual mantra (15 seconds for 27 syllables)
+// Last 1.0 second: blank
 export const gayatriMantraSyllables: TimedSyllable[] = [
-  { text: "ॐ ", startTime: 0, endTime: 1.5 },
-  { text: "भूर्", startTime: 1.5, endTime: 2.0 },
-  { text: "भुवः ", startTime: 2.0, endTime: 2.5 },
-  { text: "स्वः ", startTime: 2.5, endTime: 3.0 },
-  { text: "तत्", startTime: 3.0, endTime: 3.5 },
-  { text: "स", startTime: 3.5, endTime: 3.8 },
-  { text: "वि", startTime: 3.8, endTime: 4.1 },
-  { text: "तुर्", startTime: 4.1, endTime: 4.4 },
-  { text: "व", startTime: 4.4, endTime: 4.7 },
-  { text: "रे", startTime: 4.7, endTime: 5.0 },
-  { text: "ण्यं ", startTime: 5.0, endTime: 5.5 },
-  { text: "भर्", startTime: 5.5, endTime: 5.8 },
-  { text: "गो ", startTime: 5.8, endTime: 6.2 },
-  { text: "दे", startTime: 6.2, endTime: 6.5 },
-  { text: "व", startTime: 6.5, endTime: 6.8 },
-  { text: "स्य ", startTime: 6.8, endTime: 7.2 },
-  { text: "धी", startTime: 7.2, endTime: 7.5 },
-  { text: "म", startTime: 7.5, endTime: 7.8 },
-  { text: "हि ", startTime: 7.8, endTime: 8.2 },
-  { text: "धि", startTime: 8.2, endTime: 8.5 },
-  { text: "यो ", startTime: 8.5, endTime: 8.8 },
-  { text: "यो ", startTime: 8.8, endTime: 9.1 },
-  { text: "नः ", startTime: 9.1, endTime: 9.5 },
-  { text: "प्र", startTime: 9.5, endTime: 9.8 },
-  { text: "चो", startTime: 9.8, endTime: 10.1 },
-  { text: "द", startTime: 10.1, endTime: 10.4 },
-  { text: "यात्", startTime: 10.4, endTime: 11.0 }
+  { text: "ॐ ", startTime: 2.0, endTime: 2.8 },
+  { text: "भूर्", startTime: 2.8, endTime: 3.6 },
+  { text: "भुवः ", startTime: 3.6, endTime: 4.3 },
+  { text: "स्वः ", startTime: 4.3, endTime: 5.0 },
+  // Minor break after स्वः (svah) - 0.15s pause
+  { text: "तत्", startTime: 5.15, endTime: 5.64 },
+  { text: "स", startTime: 5.64, endTime: 6.13 },
+  { text: "वि", startTime: 6.13, endTime: 6.62 },
+  { text: "तुर्", startTime: 6.62, endTime: 7.11 },
+  { text: "व", startTime: 7.11, endTime: 7.6 },
+  { text: "रे", startTime: 7.6, endTime: 8.09 },
+  { text: "ण्यं ", startTime: 8.09, endTime: 8.58 },
+  // Minor break after ण्यं (yam) - 0.15s pause
+  { text: "भर्", startTime: 8.73, endTime: 9.22 },
+  { text: "गो ", startTime: 9.22, endTime: 9.71 },
+  { text: "दे", startTime: 9.71, endTime: 10.2 },
+  { text: "व", startTime: 10.2, endTime: 10.69 },
+  { text: "स्य ", startTime: 10.69, endTime: 11.18 },
+  { text: "धी", startTime: 11.18, endTime: 11.67 },
+  { text: "म", startTime: 11.67, endTime: 12.16 },
+  { text: "हि ", startTime: 12.16, endTime: 12.65 },
+  // Minor break after हि (hi) - 0.15s pause
+  { text: "धि", startTime: 12.8, endTime: 13.29 },
+  { text: "यो ", startTime: 13.29, endTime: 13.78 },
+  { text: "यो ", startTime: 13.78, endTime: 14.27 },
+  { text: "नः ", startTime: 14.27, endTime: 14.76 },
+  { text: "प्र", startTime: 14.76, endTime: 15.25 },
+  { text: "चो", startTime: 15.25, endTime: 15.74 },
+  { text: "द", startTime: 15.74, endTime: 16.23 },
+  { text: "यात्", startTime: 16.23, endTime: 17.0 }
 ];
 
 // Mahamrityunjaya Mantra

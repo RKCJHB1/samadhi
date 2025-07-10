@@ -23,14 +23,14 @@ const SubtopicContent: React.FC<SubtopicContentProps> = ({ topic, topicId, subto
           {subtopic.description}
         </p>
         
-        <div className="my-8 p-6 bg-gray-50 rounded-lg border-l-4 border-spiritual-500">
+        <div className="my-8 p-6 bg-gradient-to-br from-indian-cream/50 to-white/50 rounded-lg border-l-4 border-spiritual-500">
           <p>
             This is detailed content about the {subtopic.title} concept. The content is being developed and will be expanded with more information soon.
           </p>
         </div>
         
         <p>
-          Check back soon for more detailed information on this topic including videos, further readings, and interactive elements.
+          Check back soon for more detailed information on this topic including further readings and interactive elements.
         </p>
       </div>
       

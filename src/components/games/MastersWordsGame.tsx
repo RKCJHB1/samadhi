@@ -353,7 +353,7 @@ const MAX_ATTEMPTS = 6;
 // but receives necessary data as arguments.
 const getLetterStyle = (guess: string, targetWord: string, attemptMade: boolean) => {
     if (!attemptMade || !guess) {
-        return 'bg-white border-gray-300'; // Default empty/future guess
+        return 'bg-gradient-to-br from-indian-cream/30 to-white/30 border-gray-300'; // Default empty/future guess
     }
 
     const letterStyles = Array(targetWord.length).fill('bg-gray-300 text-gray-800 border-gray-400'); // Default: Not in word

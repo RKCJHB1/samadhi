@@ -13,9 +13,6 @@ export const featureFlags = {
   
   // Development mode
   isDevMode: import.meta.env.VITE_DEV_MODE === 'true',
-  
-  // API URL
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:8000',
 } as const;
 
 // Helper function to check if we're in development

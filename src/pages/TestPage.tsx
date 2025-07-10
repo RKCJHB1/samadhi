@@ -160,34 +160,14 @@ const TestPage = () => {
     setSubmissionCount(prev => prev + 1);
 
     try {
-      // Prepare form data to send to the backend
-      const formData = {
-        ...values,
-      };
+      // Backend removed - Test form now shows success message without actual submission
+      console.log('Test form data (backend removed):', values);
 
-      console.log('Form data to be sent:', formData);
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Use the Laravel API endpoint
-      const apiUrl = process.env.NODE_ENV === 'production'
-        ? '/api/contact'  // In production, use relative URL
-        : 'http://finalapi.test/api/contact'; // In development, use the full URL
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to send message');
-      }
-
-      // Get the response data
-      const responseData = await response.json().catch(() => ({}));
+      // Simulate response data
+      const responseData = { message: 'Test form submitted successfully (no backend)' };
 
       // Reset the form
       form.reset();

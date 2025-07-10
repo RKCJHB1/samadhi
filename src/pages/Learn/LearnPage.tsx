@@ -1,24 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import PageHeader from '../../components/shared/PageHeader';
 import SectionHeader from '../../components/shared/SectionHeader';
 import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
-import { BookOpen, PenTool, MessageSquare, Lightbulb, Music } from 'lucide-react';
+import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { lessonsData } from '../../data/lessonsData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
-import { omMantraSyllables, gayatriMantraSyllables, mahamrityunjayaMantraSyllables } from '../../data/mantraTimings';
+import { gayatriMantraSyllables } from '../../data/mantraTimings';
 
 const LearnPage = () => {
+  // State for managing active tabs
+  const [activeMainTab, setActiveMainTab] = useState('lessons');
+  const [activeLessonTab, setActiveLessonTab] = useState('philosophy');
+
   // Check if we're in a local development environment
   const isLocalDevelopment = () => {
     // Check if running on localhost or 127.0.0.1
     const hostname = window.location.hostname;
     return hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('.local');
+  };
+
+  // Handle URL hash for direct tab navigation
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      // If hash matches a lesson tab, set both main tab and lesson tab
+      if (['philosophy', 'deities', 'scriptures', 'practices'].includes(hash)) {
+        setActiveMainTab('lessons');
+        setActiveLessonTab(hash);
+      }
+      // If hash matches a main tab, set it
+      else if (['lessons', 'mantras', 'games'].includes(hash)) {
+        setActiveMainTab(hash);
+      }
+    }
+  }, []);
+
+  // Update URL hash when lesson tab changes
+  const handleLessonTabChange = (value: string) => {
+    setActiveLessonTab(value);
+    window.history.replaceState(null, '', `#${value}`);
+  };
+
+  // Update URL hash when main tab changes
+  const handleMainTabChange = (value: string) => {
+    setActiveMainTab(value);
+    if (value === 'lessons') {
+      window.history.replaceState(null, '', `#${activeLessonTab}`);
+    } else {
+      window.history.replaceState(null, '', `#${value}`);
+    }
   };
 
   // Only redirect to games in production, not in local development
@@ -29,25 +65,13 @@ const LearnPage = () => {
   // Sample mantras for display
   const mantras = [
     {
-      id: 'om',
-      title: 'Om (ॐ)',
-      description: 'The most sacred sound in Hinduism, representing the essence of the ultimate reality',
-      audio: '/audio/om.mp3',
-      text: 'ॐ'
-    },
-    {
       id: 'gayatri',
       title: 'Gayatri Mantra',
       description: 'A highly revered mantra from Rigveda dedicated to Savitr, the sun deity',
       audio: '/audio/gayatri.mp3',
-      text: 'ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्'
-    },
-    {
-      id: 'mahamrityunjaya',
-      title: 'Mahamrityunjaya Mantra',
-      description: 'A healing mantra dedicated to Lord Shiva that rejuvenates and bestows immortality',
-      audio: '/audio/mahamrityunjaya.mp3',
-      text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान् मृत्योर्मुक्षीय मामृतात्'
+      text: 'ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्',
+      transliteration: 'Oṃ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṃ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt',
+      transliterationSyllables: ['Oṃ ', 'bhūr', 'bhuvaḥ ', 'svaḥ ', 'tat', 'sa', 'vi', 'tur', 'va', 're', 'ṇyaṃ ', 'bhar', 'go ', 'de', 'va', 'sya ', 'dhī', 'ma', 'hi ', 'dhi', 'yo ', 'yo ', 'naḥ ', 'pra', 'cho', 'da', 'yāt']
     },
   ];
   return (
@@ -79,8 +103,8 @@ const LearnPage = () => {
               title="Explore Lessons"
               subtitle="Discover our collection of lessons on Hindu philosophy and deities"
             />
-            <Tabs defaultValue="lessons" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
@@ -89,10 +113,14 @@ const LearnPage = () => {
                   <Music className="w-5 h-5 mr-2" />
                   Mantras
                 </TabsTrigger>
+                <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                  <Gamepad2 className="w-5 h-5 mr-2" />
+                  Games
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="lessons">
-                <Tabs defaultValue="philosophy" className="w-full">
+                <Tabs value={activeLessonTab} onValueChange={handleLessonTabChange} className="w-full">
                   <TabsList className="grid w-full grid-cols-4 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                     <TabsTrigger value="philosophy" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                       Philosophy
@@ -220,34 +248,88 @@ const LearnPage = () => {
                           <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
                           <p className="text-gray-600 mb-4">{mantra.description}</p>
                           <div className="flex justify-center">
-                            {mantra.id === 'om' && (
-                              <SyncedAudioPlayer
-                                src={mantra.audio}
-                                title={`${mantra.title} Pronunciation`}
-                                syllables={omMantraSyllables}
-                                originalText={mantra.text}
-                              />
-                            )}
-                            {mantra.id === 'gayatri' && (
-                              <SyncedAudioPlayer
-                                src={mantra.audio}
-                                title={`${mantra.title} Pronunciation`}
-                                syllables={gayatriMantraSyllables}
-                                originalText={mantra.text}
-                              />
-                            )}
-                            {mantra.id === 'mahamrityunjaya' && (
-                              <SyncedAudioPlayer
-                                src={mantra.audio}
-                                title={`${mantra.title} Pronunciation`}
-                                syllables={mahamrityunjayaMantraSyllables}
-                                originalText={mantra.text}
-                              />
-                            )}
+                            <SyncedAudioPlayer
+                              src={mantra.audio}
+                              title={`${mantra.title} Pronunciation`}
+                              syllables={gayatriMantraSyllables}
+                              originalText={mantra.text}
+                              transliteration={mantra.transliteration}
+                              transliterationSyllables={mantra.transliterationSyllables}
+                            />
                           </div>
                         </CardContent>
                       </Card>
                     ))}
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="games">
+                <div className="space-y-8">
+                  <p className="text-lg">
+                    Explore our collection of interactive games designed to make learning about Hindu philosophy and culture fun and engaging.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/games/guess-picture">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <Gamepad2 className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">Guess the Picture</h3>
+                          <p className="text-gray-600 text-sm">Test your knowledge by identifying Hindu deities and symbols in pictures.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/games/wordle">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <BookOpen className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">Master's Words</h3>
+                          <p className="text-gray-600 text-sm">A word puzzle game featuring spiritual terms and concepts.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/games/quotes">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <MessageSquare className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">Wisdom Quotes</h3>
+                          <p className="text-gray-600 text-sm">Arrange words to form inspiring quotes from spiritual masters.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/games/word-scramble">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <PenTool className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">Word Scramble</h3>
+                          <p className="text-gray-600 text-sm">Unscramble letters to form words related to Hindu philosophy.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/games">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <Lightbulb className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">All Games</h3>
+                          <p className="text-gray-600 text-sm">Explore our complete collection of educational games.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
                   </div>
                 </div>
               </TabsContent>
