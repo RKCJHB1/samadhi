@@ -68,7 +68,18 @@ const LearnPage = () => {
       audio: '/audio/gayatri.mp3',
       text: 'ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्',
       transliteration: 'Oṃ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṃ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt',
+      englishMeaning: 'Om, we meditate on the divine light of the Sun, the source of all life. May that effulgent light illuminate our minds and guide our understanding.',
       transliterationSyllables: ['Oṃ ', 'bhūr', 'bhuvaḥ ', 'svaḥ ', 'tat', 'sa', 'vi', 'tur', 'va', 're', 'ṇyaṃ ', 'bhar', 'go ', 'de', 'va', 'sya ', 'dhī', 'ma', 'hi ', 'dhi', 'yo ', 'yo ', 'naḥ ', 'pra', 'cho', 'da', 'yāt']
+    },
+    {
+      id: 'saha-na-vavatu',
+      title: 'Saha Nā Vavatu',
+      description: 'A peace mantra from the Upanishads invoking protection and harmony for teacher and student',
+      audio: '/audio/saha-na-vavatu.mp3',
+      text: 'ॐ सह नाववतु सह नौ भुनक्तु सह वीर्यं करवावहै तेजस्विनावधीतमस्तु मा विद्विषावहै ॐ शान्तिः शान्तिः शान्तिः',
+      transliteration: 'Oṃ saha nāvavatu saha nau bhunaktu saha vīryaṃ karavāvahai tejasvināvadhītamastu mā vidviṣāvahai oṃ śāntiḥ śāntiḥ śāntiḥ',
+      englishMeaning: 'Om, may we be protected together and nourished together. May we work together with great vigor, and may our study be enlightening and fruitful. May we never quarrel with each other. Om peace, peace, peace.',
+      transliterationSyllables: ['Oṃ ', 'sa', 'ha ', 'nā', 'va', 'va', 'tu ', 'sa', 'ha ', 'nau ', 'bhu', 'na', 'ktu ', 'sa', 'ha ', 'vī', 'rya', 'ṃ ', 'ka', 'ra', 'vā', 'va', 'hai ', 'te', 'ja', 'svi', 'nā', 'va', 'dhī', 'ta', 'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ']
     },
   ];
   return (
@@ -243,15 +254,48 @@ const LearnPage = () => {
                         <CardContent className="p-6">
                           <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
                           <p className="text-gray-600 mb-4">{mantra.description}</p>
-                          <div className="flex justify-center">
-                            <SyncedAudioPlayer
-                              src={mantra.audio}
-                              title={`${mantra.title} Pronunciation`}
-                              syllables={gayatriMantraSyllables}
-                              originalText={mantra.text}
-                              transliteration={mantra.transliteration}
-                              transliterationSyllables={mantra.transliterationSyllables}
-                            />
+
+                          {/* Audio/Sanskrit/Transliteration Section */}
+                          <div className="flex justify-center mb-4">
+                            {mantra.id === 'gayatri' && (
+                              <SyncedAudioPlayer
+                                src={mantra.audio}
+                                title={`${mantra.title} Pronunciation`}
+                                syllables={gayatriMantraSyllables}
+                                originalText={mantra.text}
+                                transliteration={mantra.transliteration}
+                                transliterationSyllables={mantra.transliterationSyllables}
+                              />
+                            )}
+                            {mantra.id === 'saha-na-vavatu' && (
+                              <div className="space-y-4">
+                                {/* Sanskrit and Transliteration for Saha Na Vavatu */}
+                                <div className="bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 p-4 rounded mb-4">
+                                  <div className="text-center text-lg font-medium leading-relaxed mb-3" style={{ fontFamily: 'serif' }}>
+                                    {mantra.text}
+                                  </div>
+                                  <div className="mt-3 pt-3 border-t border-indian-saffron/20 w-full">
+                                    <div className="text-center text-sm text-gray-600 italic font-medium leading-relaxed">
+                                      {mantra.transliteration}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-center p-4 bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 rounded-md">
+                                  <p className="text-gray-600 mb-2">Audio pronunciation coming soon</p>
+                                  <div className="text-sm text-gray-500">
+                                    Audio will be added in a future update
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* English Meaning Section */}
+                          <div className="mt-4 p-4 bg-gradient-to-br from-indian-cream/30 to-white/30 border border-indian-saffron/20 rounded-md">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
+                            <p className="text-base text-center text-gray-700 leading-relaxed">
+                              {mantra.englishMeaning}
+                            </p>
                           </div>
                         </CardContent>
                       </Card>

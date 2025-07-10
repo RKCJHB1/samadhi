@@ -28,7 +28,7 @@ const ThankYouPage = () => {
         </div>
 
         <p className="text-gray-600 mb-10">
-          A receipt of your donation has been emailed to you. If you have any questions, please contact us at donations@rkc.org.za
+          A receipt of your donation has been emailed to you. If you have any questions, please contact us at johannesburg@ramakrishna-phoenix.org.za
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
