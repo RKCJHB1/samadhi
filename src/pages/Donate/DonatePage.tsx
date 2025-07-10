@@ -57,7 +57,7 @@ const DonatePage = () => {
     // Redirect to PayFast with required parameters
     // Note: This is a simplified version. In production, a proper hash should be calculated server-side.
     const merchantId = '26034585'; // Live PayFast Merchant ID
-    const merchantKey = 'q1cd2rdny4a53'; // Replace with your actual PayFast Merchant Key
+    const merchantKey = '46f0cd694581a'; // Live PayFast Merchant Key
     const returnUrl = `${window.location.origin}/donate/thank-you`;
     const cancelUrl = `${window.location.origin}/donate`;
     const notifyUrl = `${window.location.origin}/api/payfast-notification`; // This would need a backend handler
@@ -155,7 +155,7 @@ const DonatePage = () => {
             </div>
 
             <div className="space-y-6">
-              <Card className="p-6 shadow-lg bg-transparent border border-indian-saffron pop-shadow-card">
+              <Card className="p-6 shadow-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
               <h2 className="text-2xl font-heading font-semibold mb-4 flex items-center">
                 <Heart className="mr-2 text-red-500" />
                 Make a Donation
@@ -165,7 +165,7 @@ const DonatePage = () => {
               </p>
 
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleDonate)} className="space-y-4 opacity-50">
+                <form onSubmit={form.handleSubmit(handleDonate)} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
