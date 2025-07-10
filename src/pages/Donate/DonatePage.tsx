@@ -56,7 +56,7 @@ const DonatePage = () => {
 
     // Redirect to PayFast with required parameters
     // Note: This is a simplified version. In production, a proper hash should be calculated server-side.
-    const merchantId = '10000100'; // Replace with your actual PayFast Merchant ID
+    const merchantId = '26034585'; // Live PayFast Merchant ID
     const merchantKey = 'q1cd2rdny4a53'; // Replace with your actual PayFast Merchant Key
     const returnUrl = `${window.location.origin}/donate/thank-you`;
     const cancelUrl = `${window.location.origin}/donate`;
@@ -79,7 +79,7 @@ const DonatePage = () => {
     // Create a form and submit it to PayFast
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'https://sandbox.payfast.co.za/eng/process'; // Use 'https://www.payfast.co.za/eng/process' for production
+    form.action = 'https://www.payfast.co.za/eng/process'; // Live PayFast endpoint
 
     Object.entries(paymentData).forEach(([key, value]) => {
       const input = document.createElement('input');
@@ -161,7 +161,7 @@ const DonatePage = () => {
                 Make a Donation
               </h2>
               <p className="text-sm text-gray-600 mb-4">
-                This donation system will launch soon.
+                Support our mission with a secure online donation.
               </p>
 
               <Form {...form}>
@@ -281,7 +281,7 @@ const DonatePage = () => {
                             value={value}
                             onChange={(e) => onChange(Number(e.target.value))}
                             className="pl-8"
-                            disabled
+
                           />
                         </div>
                         <FormMessage />
@@ -291,7 +291,7 @@ const DonatePage = () => {
 
                   <Button
                     type="submit"
-                    disabled
+                    disabled={isProcessing}
                     className="w-full bg-spiritual-600 hover:bg-spiritual-700 text-white py-3 flex items-center justify-center space-x-2"
                   >
                     <CreditCard className="h-5 w-5" />

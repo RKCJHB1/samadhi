@@ -57,10 +57,7 @@ const LearnPage = () => {
     }
   };
 
-  // Only redirect to games in production, not in local development
-  if (!isLocalDevelopment()) {
-    return <Navigate to="/learn/games" replace />;
-  }
+
 
   // Sample mantras for display
   const mantras = [

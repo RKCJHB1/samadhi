@@ -85,14 +85,14 @@ const FundraisingPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
                   <div className="space-y-6">
-                    <div className="p-4 border border-indian-saffron/30 rounded-lg shadow-sm bg-gradient-to-r from-indian-cream to-white flex flex-col justify-between pop-shadow-card opacity-50 relative">
+                    <div className="p-4 border border-indian-saffron/30 rounded-lg shadow-sm bg-gradient-to-r from-indian-cream to-white flex flex-col justify-between pop-shadow-card">
                       <div>
                         <h4 className="text-xl font-heading font-semibold mb-2">Online Donation</h4>
                         <p className="mb-3">
                           Make a secure online donation through our payment portal. All major credit cards accepted.
                         </p>
-                        <p className="text-sm text-gray-600 italic mb-3">
-                          This donation system will launch soon.
+                        <p className="text-sm text-gray-600 mb-3">
+                          Support the New Ashram Project with your generous contribution.
                         </p>
                       </div>
                       <Link to="/donate" className="self-start">
