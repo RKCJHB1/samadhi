@@ -1,0 +1,18 @@
+# Cloudflare Pages configuration
+name = "samadhi-website"
+compatibility_date = "2024-07-10"
+
+[build]
+command = "npm run build"
+cwd = "."
+watch_dir = "src"
+
+[build.environment_variables]
+NODE_VERSION = "18.17.1"
+NPM_VERSION = "9.6.7"
+
+[[build.environment_variables]]
+VITE_ENABLE_3D_MODEL_VIEWER = "false"
+VITE_ENABLE_AUTH_FEATURES = "false"
+VITE_ENABLE_FUNDRAISING_FEATURES = "true"
+VITE_DEV_MODE = "false"
