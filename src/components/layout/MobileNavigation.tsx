@@ -30,18 +30,26 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
           <div key={item.name}>
             {item.dropdown ? (
               <>
-                <button
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                {/* Main page link for dropdown items */}
+                <Link
+                  to={item.href}
+                  className={`block px-3 py-2 rounded-md text-base font-medium mobile-nav-item ${
                     isActive(item.href)
-                      ? 'text-spiritual-500 bg-spiritual-50'
+                      ? 'text-spiritual-500 bg-spiritual-50 active'
                       : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                   }`}
-                  onClick={() => toggleDropdown(item.name)}
                 >
                   {item.name}
+                </Link>
+                {/* Dropdown toggle button */}
+                <button
+                  className={`block w-full text-left px-3 py-1 ml-4 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50`}
+                  onClick={() => toggleDropdown(item.name)}
+                >
+                  {activeDropdown === item.name ? '▼' : '▶'} More {item.name} Options
                 </button>
                 {activeDropdown === item.name && (
-                  <div className="pl-4 space-y-1 mt-1">
+                  <div className="pl-8 space-y-1 mt-1">
                     {item.dropdown.map((subItem) => (
                       <Link
                         key={subItem.name}
