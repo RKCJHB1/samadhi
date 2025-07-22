@@ -37,7 +37,7 @@ function loadEnvFile() {
 loadEnvFile();
 
 // Configuration
-const CSV_FILE_PATH = path.join(__dirname, '../public/pics/turso_ready_blocks.csv');
+const CSV_FILE_PATH = path.join(__dirname, '../public/dev-only/turso_ready_blocks.csv');
 
 // Environment variables
 const TURSO_DATABASE_URL = process.env.TURSO_DATABASE_URL || process.env.VITE_TURSO_DATABASE_URL;

@@ -11,6 +11,18 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     historyApiFallback: true, // Ensures React Router handles dynamic routes
   },
+  build: {
+    rollupOptions: {
+      // Optimize chunks for better performance
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-tabs', '@radix-ui/react-dialog', '@radix-ui/react-select'],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     mode === 'development' &&
@@ -48,7 +60,8 @@ export default defineConfig(({ mode }) => ({
           }
         });
       }
-    }
+    },
+
   ].filter(Boolean),
   resolve: {
     alias: {

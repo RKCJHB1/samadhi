@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Block, BlockData } from './useBlockData';
 
-export function useBlockDataFromCSV(csvPath: string = '/pics/turso_ready_blocks.csv'): BlockData {
+export function useBlockDataFromCSV(csvPath: string = '/dev-only/turso_ready_blocks.csv'): BlockData {
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [soldBlocks, setSoldBlocks] = useState<Set<number>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +21,14 @@ export function useBlockDataFromCSV(csvPath: string = '/pics/turso_ready_blocks.
       const response = await fetch(path);
 
       if (!response.ok) {
+        // In production, the CSV file might not exist (excluded for size)
+        if (response.status === 404 && import.meta.env.PROD) {
+          console.warn('CSV file not found in production - using fallback data');
+          setBlocks([]);
+          setSoldBlocks(new Set());
+          setIsLoading(false);
+          return;
+        }
         throw new Error(`Failed to load CSV file: ${response.status} ${response.statusText}`);
       }
 
