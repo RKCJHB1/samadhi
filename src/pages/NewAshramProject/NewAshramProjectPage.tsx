@@ -8,6 +8,7 @@ import SimpleModelViewer from '../../components/3d/SimpleModelViewer';
 import { featureFlags } from '../../utils/featureFlags';
 
 const NewAshramProjectPage = () => {
+
   return (
     <PageLayout title="New Ashram Project">
       <div className="flex items-center justify-center py-12 bg-gradient-to-br from-indian-cream to-white">
@@ -52,18 +53,19 @@ where devotees can find God in themselves and around them.
               </Link>
             </div>
 
-            {/* 3D Model Viewer - Only show in development */}
+            {/* 3D Model Viewer - Only show in development, without blocks */}
             {(featureFlags.enable3DModelViewer || featureFlags.isDevMode) && (
               <div className="my-12">
-                <h3 className="text-2xl font-heading font-semibold mb-6 text-center">Interactive 3D Model</h3>
+                <h3 className="text-2xl font-heading font-semibold mb-6 text-center">New Ashram 3D Model</h3>
                 <SimpleModelViewer
                   modelPath="/pics/modelwithtexture.glb"
                   title="New Ashram 3D Model"
-                  description="Explore the planned ashram layout in 3D. Use your mouse to rotate, zoom, and pan around the model."
+                  description="Interactive 3D visualization of the new ashram building"
                   className="max-w-4xl mx-auto"
+                  showBlocks={false}
                 />
                 <p className="text-sm text-gray-600 text-center mt-4">
-                  <em>Note: This 3D model is a conceptual representation and may differ from the final construction.</em>
+                  <em>Use mouse to rotate, zoom, and explore the 3D model of our new ashram.</em>
                 </p>
               </div>
             )}
@@ -73,7 +75,11 @@ where devotees can find God in themselves and around them.
               <p className="mb-6">
                 We invite you to be part of this sacred journey. Your support (either in cash or goods/services), no matter how big or small, will help us create a space where spiritual seekers can find peace, guidance, and community for generations to come.
               </p>
-              <Button href="/new-ashram-project/fundraising" size="lg">
+              <Button
+                href="/new-ashram-project/fundraising"
+                size="lg"
+                className="bg-indian-saffron !text-black border border-indian-saffron hover:bg-indian-saffron/90 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+              >
                 Donate Now
               </Button>
             </div>

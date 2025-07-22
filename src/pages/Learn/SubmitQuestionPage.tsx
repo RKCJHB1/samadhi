@@ -307,7 +307,7 @@ const SubmitQuestionPage = () => {
                           <SelectItem value="philosophy">Philosophy</SelectItem>
                           <SelectItem value="deities">Deities/Rishis</SelectItem>
                           <SelectItem value="scriptures">Scriptures</SelectItem>
-                          <SelectItem value="practices">Practices</SelectItem>
+                          <SelectItem value="practices">Practices/Moral Lessons</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

@@ -13,10 +13,13 @@ import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
 
+
 const LearnPage = () => {
   // State for managing active tabs
   const [activeMainTab, setActiveMainTab] = useState('lessons');
   const [activeLessonTab, setActiveLessonTab] = useState('philosophy');
+
+
 
   // Check if we're in a local development environment
   const isLocalDevelopment = () => {
@@ -35,7 +38,7 @@ const LearnPage = () => {
         setActiveLessonTab(hash);
       }
       // If hash matches a main tab, set it
-      else if (['lessons', 'mantras', 'games'].includes(hash)) {
+      else if (['lessons', 'games'].includes(hash)) { // 'mantras' removed - hidden
         setActiveMainTab(hash);
       }
     }
@@ -84,14 +87,14 @@ const LearnPage = () => {
   ];
   return (
     <PageLayout title="Hinduism for Children">
-      <div className="flex items-center justify-center py-12 bg-gradient-to-br from-indian-cream to-white">
-        <div className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center">
-          <h1 className="text-3xl font-heading font-bold mb-4 text-black">Hinduism for Children</h1>
-          <p className="text-gray-700">
-            Educational resources for understanding Hindu philosophy and practices
-          </p>
+        <div className="flex items-center justify-center py-12 bg-gradient-to-br from-indian-cream to-white">
+          <div className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center">
+            <h1 className="text-3xl font-heading font-bold mb-4 text-black">Hinduism for Children</h1>
+            <p className="text-gray-700">
+              Educational resources for understanding Hindu philosophy and practices
+            </p>
+          </div>
         </div>
-      </div>
 
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4">
@@ -112,15 +115,16 @@ const LearnPage = () => {
               subtitle="Discover our collection of lessons on Hindu philosophy and deities"
             />
             <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
                 </TabsTrigger>
-                <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                {/* MANTRAS TAB HIDDEN - UNCOMMENT WHEN READY */}
+                {/* <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Music className="w-5 h-5 mr-2" />
                   Mantras
-                </TabsTrigger>
+                </TabsTrigger> */}
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
                   Games
@@ -140,7 +144,7 @@ const LearnPage = () => {
                       Scriptures
                     </TabsTrigger>
                     <TabsTrigger value="practices" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Practices
+                      Practices/Moral Lessons
                     </TabsTrigger>
                   </TabsList>
 
@@ -167,6 +171,8 @@ const LearnPage = () => {
                         ))}
                     </div>
                   </TabsContent>
+
+
 
                   <TabsContent value="deities">
                     <div className="space-y-8">
@@ -242,7 +248,8 @@ const LearnPage = () => {
                 </Tabs>
               </TabsContent>
 
-              <TabsContent value="mantras">
+              {/* MANTRAS CONTENT HIDDEN - UNCOMMENT WHEN READY */}
+              {/* <TabsContent value="mantras">
                 <div className="space-y-8">
                   <p className="text-lg">
                     Mantras are sacred sound formulas that have spiritual and psychological effects.
@@ -255,7 +262,6 @@ const LearnPage = () => {
                           <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
                           <p className="text-gray-600 mb-4">{mantra.description}</p>
 
-                          {/* Audio/Sanskrit/Transliteration Section */}
                           <div className="flex justify-center mb-4">
                             {mantra.id === 'gayatri' && (
                               <SyncedAudioPlayer
@@ -279,7 +285,6 @@ const LearnPage = () => {
                             )}
                           </div>
 
-                          {/* English Meaning Section */}
                           <div className="mt-4 p-4 bg-gradient-to-br from-indian-cream/30 to-white/30 border border-indian-saffron/20 rounded-md">
                             <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
                             <p className="text-base text-center text-gray-700 leading-relaxed">
@@ -291,7 +296,7 @@ const LearnPage = () => {
                     ))}
                   </div>
                 </div>
-              </TabsContent>
+              </TabsContent> */}
 
               <TabsContent value="games">
                 <div className="space-y-8">

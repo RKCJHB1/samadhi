@@ -26,8 +26,9 @@ const QuizPage = () => {
       }))
   );
 
-  // Group quizzes by the four main categories
+  // Group quizzes by the five main categories
   const philosophyQuizzes = availableQuizzes.filter(quiz => quiz.categoryId === 'hindu-philosophy');
+  const holyTrinityQuizzes = availableQuizzes.filter(quiz => quiz.categoryId === 'holy-trinity');
   const deitiesQuizzes = availableQuizzes.filter(quiz => quiz.categoryId === 'deities');
   const scripturesQuizzes = availableQuizzes.filter(quiz => quiz.categoryId === 'scriptures');
   const practicesQuizzes = availableQuizzes.filter(quiz => quiz.categoryId === 'practices');
@@ -55,12 +56,18 @@ const QuizPage = () => {
 
           
           <Tabs defaultValue="philosophy" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8 bg-gradient-to-r from-indian-cream to-white border border-indian-saffron/30">
+            <TabsList className="grid w-full grid-cols-5 mb-8 bg-gradient-to-r from-indian-cream to-white border border-indian-saffron/30">
               <TabsTrigger
                 value="philosophy"
                 className="data-[state=active]:bg-spiritual-600 data-[state=active]:text-white data-[state=inactive]:text-gray-700 data-[state=inactive]:hover:text-indian-saffron transition-colors text-sm"
               >
                 Philosophy
+              </TabsTrigger>
+              <TabsTrigger
+                value="holy-trinity"
+                className="data-[state=active]:bg-spiritual-600 data-[state=active]:text-white data-[state=inactive]:text-gray-700 data-[state=inactive]:hover:text-indian-saffron transition-colors text-sm"
+              >
+                Holy Trinity
               </TabsTrigger>
               <TabsTrigger
                 value="deities"
@@ -78,13 +85,31 @@ const QuizPage = () => {
                 value="practices"
                 className="data-[state=active]:bg-spiritual-600 data-[state=active]:text-white data-[state=inactive]:text-gray-700 data-[state=inactive]:hover:text-indian-saffron transition-colors text-sm"
               >
-                Practices
+                Practices/Moral Lessons
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="philosophy">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {philosophyQuizzes.map(quiz => (
+                  <Card key={quiz.id} className="hover:shadow-lg transition-all duration-300 cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 pop-shadow-card hover:scale-[1.02]">
+                    <Link to={`/learn/quizzes/${quiz.id}`}>
+                      <CardContent className="p-6">
+                        <h3 className="text-lg font-semibold mb-2 text-spiritual-600">{quiz.title}</h3>
+                        <p className="text-gray-700 text-sm mb-3 leading-relaxed">{quiz.description}</p>
+                        <div className="flex justify-between text-xs text-gray-600 font-medium">
+                          <span>{quiz.questionCount} Questions</span>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="holy-trinity">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {holyTrinityQuizzes.map(quiz => (
                   <Card key={quiz.id} className="hover:shadow-lg transition-all duration-300 cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 pop-shadow-card hover:scale-[1.02]">
                     <Link to={`/learn/quizzes/${quiz.id}`}>
                       <CardContent className="p-6">

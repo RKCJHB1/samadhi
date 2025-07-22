@@ -1,8 +1,8 @@
+/* @import './styles/pop-shadows.css'; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/pop-shadows.css';
 
 @layer base {
   /* Remove default underlines from all links */
@@ -179,5 +179,133 @@
 
   [data-radix-select-item]:hover {
     background: rgba(255, 153, 51, 0.1) !important;
+  }
+
+  /* Ribbon Cutting Ceremony Animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes ribbon-wave {
+    0%, 100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.1);
+    }
+  }
+
+  @keyframes firework-shoot {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      box-shadow: 0 0 10px currentColor;
+    }
+    70% {
+      transform: translateY(-400px) scale(1.2);
+      opacity: 1;
+      box-shadow: 0 0 20px currentColor;
+    }
+    80% {
+      transform: translateY(-450px) scale(1.5);
+      opacity: 1;
+      box-shadow: 0 0 30px currentColor;
+    }
+    100% {
+      transform: translateY(-500px) scale(0);
+      opacity: 0;
+      box-shadow: 0 0 50px currentColor;
+    }
+  }
+
+  @keyframes firework-shoot-split {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      box-shadow: 0 0 10px currentColor;
+    }
+    60% {
+      transform: translateY(-300px) scale(1.2);
+      opacity: 1;
+      box-shadow: 0 0 20px currentColor;
+    }
+    70% {
+      transform: translateY(-350px) scale(1.5);
+      opacity: 1;
+      box-shadow: 0 0 30px currentColor;
+    }
+    100% {
+      transform: translateY(-400px) scale(0);
+      opacity: 0;
+      box-shadow: 0 0 50px currentColor;
+    }
+  }
+
+  @keyframes firework-split {
+    0% {
+      transform: translateY(-300px) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      transform: translateY(-320px) translateX(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-400px) translateX(calc(var(--split-direction) * 80px)) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-500px) translateX(calc(var(--split-direction) * 120px)) scale(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes explosion-burst {
+    0% {
+      transform: translate(0, 0) scale(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(calc(cos(var(--angle, 0deg)) * 100px), calc(sin(var(--angle, 0deg)) * 100px)) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(calc(cos(var(--angle, 0deg)) * 150px), calc(sin(var(--angle, 0deg)) * 150px)) scale(0);
+      opacity: 0;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+
+  .animate-confetti {
+    animation: confetti-fall 3s linear infinite;
+  }
+
+  .animate-ribbon-wave {
+    animation: ribbon-wave 2s ease-in-out infinite;
+  }
+
+  .animate-firework-shoot {
+    animation: firework-shoot 2s ease-out infinite;
   }
 }

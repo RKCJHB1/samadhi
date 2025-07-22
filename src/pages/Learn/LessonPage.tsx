@@ -18,6 +18,7 @@ const LessonPage = () => {
   const getTabFromTopicId = (topicId: string) => {
     const topicMap: { [key: string]: string } = {
       'hindu-philosophy': 'philosophy',
+      'holy-trinity': 'holy-trinity',
       'deities': 'deities',
       'scriptures': 'scriptures',
       'practices': 'practices'

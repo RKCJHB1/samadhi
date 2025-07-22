@@ -48,7 +48,15 @@ import QuizPage from "./pages/Learn/QuizPage";
 import IndividualQuizPage from "./pages/Learn/IndividualQuizPage";
 
 import SubmitQuestionPage from "./pages/Learn/SubmitQuestionPage";
+
+// Import 3D Model pages (development only) - gradually adding back
+// import AshramModel3D from "./pages/AshramModel3D";
+// import Test3D from "./pages/Test3D";
+// import Simple3DTest from "./pages/Simple3DTest";
+import BlockVisualization from "./pages/BlockVisualization";
+import ApiTest from "./pages/ApiTest";
 import LearnPage from "./pages/Learn/LearnPage";
+import LearnUnveilPage from "./pages/Learn/LearnUnveilPage";
 import GamesPage from "./pages/Learn/GamesPage";
 import GuessThePicturePage from "./pages/Learn/GuessThePicturePage.tsx";
 import MastersWordsGamePage from "./pages/Learn/MastersWordsGame.tsx";
@@ -73,6 +81,7 @@ import DonatePage from "./pages/Donate/DonatePage";
 
 // Import Test Page
 import TestPage from "./pages/TestPage";
+import BlocksPage from "./pages/BlocksPage";
 
 const queryClient = new QueryClient();
 
@@ -117,8 +126,13 @@ const App = () => (
             <Route path="/new-ashram-project/vision" element={<VisionPage />} />
             <Route path="/new-ashram-project/timeline" element={<TimelinePage />} />
             <Route path="/new-ashram-project/fundraising" element={<FundraisingPage />} />
+            <Route path="/new-ashram-project/3d-model" element={<BlockVisualization />} />
+            {/* <Route path="/test-3d" element={<Test3D />} /> */}
+            <Route path="/simple-3d-test" element={<div style={{padding: '20px', backgroundColor: 'lightblue', minHeight: '100vh'}}><h1>Simple Test Page Works!</h1><p>If you can see this, routing is working.</p></div>} />
+            <Route path="/api-test" element={<ApiTest />} />
 
             {/* Learn Section */}
+            <Route path="/learnunveil" element={<LearnUnveilPage />} />
             <Route path="/learn" element={<LearnPage />} />
               <Route path="/learn/lessons/:topicId/:lessonId" element={<LessonPage />} />
               <Route path="/learn/community" element={<CommunityLearningPage />} />
@@ -163,6 +177,9 @@ const App = () => (
 
             {/* Test Page */}
             <Route path="/test" element={<TestPage />} />
+
+            {/* Blocks Page (Development Only) */}
+            <Route path="/blocks" element={<BlocksPage />} />
 
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />
