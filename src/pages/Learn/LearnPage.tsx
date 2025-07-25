@@ -115,7 +115,7 @@ const LearnPage = () => {
               subtitle="Discover our collection of lessons on Hindu philosophy and deities"
             />
             <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+              <TabsList className={`grid w-full ${process.env.NODE_ENV === 'development' ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons

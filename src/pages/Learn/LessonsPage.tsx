@@ -50,7 +50,7 @@ const LessonsPage = () => {
           </Link>
           
           <Tabs defaultValue="lessons" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsList className={`grid w-full ${process.env.NODE_ENV === 'development' ? 'grid-cols-2' : 'grid-cols-1'} mb-8`}>
               <TabsTrigger value="lessons" className="text-lg">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Lessons
