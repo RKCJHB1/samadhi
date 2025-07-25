@@ -1,0 +1,85 @@
+{
+  "lessonId": "introduction-sri-ramakrishna",
+  "questions": [
+    {
+      "question": "When was Sri Ramakrishna born?",
+      "answers": [
+        "18th February 1836",
+        "18th March 1836",
+        "18th February 1835",
+        "18th January 1836"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "What was Sri Ramakrishna's childhood name?",
+      "answers": [
+        "Narendranath",
+        "Gadādhar",
+        "Kshudirām",
+        "Chandrāmani"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What does the name 'Gadādhar' mean?",
+      "answers": [
+        "Lover of God",
+        "Bearer of the mace",
+        "Divine child",
+        "Holy teacher"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "Who were Sri Ramakrishna's parents?",
+      "answers": [
+        "Vishwanath and Bhuvaneswari",
+        "Chandrāmani Devi and Kshudirām",
+        "Ramchandra and Shyamasundari",
+        "Gadadhar and Sarada"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "Where was Sri Ramakrishna born?",
+      "answers": [
+        "Dakshineswar",
+        "Kolkata",
+        "Kamārpukur",
+        "Jayrambati"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What vision did Kshudirām have before Sri Ramakrishna's birth?",
+      "answers": [
+        "Lord Shiva would be born as his son",
+        "Lord Vishnu would be born as his son",
+        "Goddess Kali would bless his family",
+        "He would become very wealthy"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What early signs showed that Gadādhar was extraordinary?",
+      "answers": [
+        "He could read from birth",
+        "He never cried as a baby",
+        "He went into spiritual trances when hearing about God",
+        "He could walk immediately"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What was special about Sri Ramakrishna's parents?",
+      "answers": [
+        "They were very wealthy",
+        "They were poor in material wealth but rich in devotion",
+        "They were famous scholars",
+        "They were royal family members"
+      ],
+      "correctAnswer": 1
+    }
+  ]
+}

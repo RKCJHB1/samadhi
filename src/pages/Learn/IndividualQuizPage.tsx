@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { ArrowLeft } from 'lucide-react';
-import { lessonsData } from '../../data/lessonsData';
+import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 import LessonQuiz from '../../components/learn/LessonQuiz';
 import NotFoundMessage from '../../components/learn/NotFoundMessage';
 

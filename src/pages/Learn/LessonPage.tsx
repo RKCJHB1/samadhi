@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { lessonsData } from '../../data/lessonsData';
+import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
+import { contentBuilder } from '../../lib/content-builder';
 import NotFoundMessage from '../../components/learn/NotFoundMessage';
 import LessonQuiz from '../../components/learn/LessonQuiz';
+import { Lesson } from '../../types/lesson';
 
 const LessonPage = () => {
   const { topicId, lessonId } = useParams<{ topicId: string; lessonId: string }>();
 
   // Find the current topic and lesson
   const topic = lessonsData.find(t => t.topicId === topicId);
-  const lesson = topic?.lessons.find(l => l.id === lessonId);
+  const lessonData = topic?.lessons.find(l => l.id === lessonId);
+
+  // Proper loading state management
+  const [loading, setLoading] = useState(true);
+  const [lesson, setLesson] = useState<any>(null);
+
+  // Initialize lesson data with proper loading state
+  useEffect(() => {
+    setLoading(true);
+
+    // Small delay to ensure smooth transition
+    const timer = setTimeout(() => {
+      if (lessonData) {
+        setLesson(lessonData);
+      }
+      setLoading(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [lessonData, topicId, lessonId]);
 
   // Map topicId to the corresponding tab name
   const getTabFromTopicId = (topicId: string) => {
@@ -56,7 +77,7 @@ const LessonPage = () => {
 
   const nextLesson = findNextLesson();
 
-  if (!topic || !lesson) {
+  if (!topic || !lessonData) {
     return (
       <NotFoundMessage
         title="Lesson Not Found"
@@ -67,9 +88,11 @@ const LessonPage = () => {
     );
   }
 
+
+
   return (
-    <PageLayout title={`Lesson: ${lesson.title}`}>
-      <div className="min-h-screen w-full bg-gradient-to-br from-indian-cream to-white">
+    <PageLayout title={`Lesson: ${lesson?.title || lessonData.title}`}>
+      <div className={`min-h-screen w-full bg-gradient-to-br from-indian-cream to-white transition-opacity duration-300 ${loading ? 'opacity-90' : 'opacity-100'}`}>
         <div className="w-full">
           <div className="container mx-auto px-4 py-8">
             <Link to="/learn" className="inline-flex items-center text-spiritual-500 hover:text-spiritual-600 mb-4">
@@ -78,8 +101,12 @@ const LessonPage = () => {
             </Link>
 
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-heading font-bold">{lesson.title}</h1>
-              <p className="text-muted-foreground mt-2">Topic: {topic.topicName}</p>
+              <h1 className={`text-3xl md:text-4xl font-heading font-bold transition-opacity duration-300 ${loading ? 'opacity-70' : 'opacity-100'}`}>
+                {loading ? 'Loading...' : (lesson?.title || lessonData?.title)}
+              </h1>
+              <p className={`text-muted-foreground mt-2 transition-opacity duration-300 ${loading ? 'opacity-70' : 'opacity-100'}`}>
+                Topic: {topic?.topicName || 'Loading...'}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -88,7 +115,7 @@ const LessonPage = () => {
 
 
                 {/* Next Lesson Card */}
-                <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30">
+                <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 shadow-md">
                   <CardHeader>
                     <CardTitle className="text-lg">Next Lesson</CardTitle>
                   </CardHeader>
@@ -96,7 +123,7 @@ const LessonPage = () => {
                     {nextLesson ? (
                       <Link
                         to={`/learn/lessons/${nextLesson.topicId}/${nextLesson.lesson.id}`}
-                        className="group block p-4 border border-indian-saffron/30 rounded-md bg-gradient-to-br from-indian-cream/50 to-white/50 hover:from-indian-cream/70 hover:to-white/70 transition-colors"
+                        className="group block p-4 border border-indian-saffron/30 rounded-md bg-white hover:bg-indian-cream/20 transition-colors"
                       >
                         <div className="font-medium group-hover:text-spiritual-600">{nextLesson.lesson.title}</div>
                         <p className="text-sm text-muted-foreground mt-1">{nextLesson.lesson.description}</p>
@@ -111,7 +138,7 @@ const LessonPage = () => {
                 </Card>
 
                 {/* Related Content Card */}
-                <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30">
+                <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 shadow-md">
                   <CardHeader>
                     <CardTitle className="text-lg">Related Resources</CardTitle>
                   </CardHeader>
@@ -126,7 +153,7 @@ const LessonPage = () => {
                       </Link>
                     </div>
 
-                    {lesson.resources && lesson.resources.length > 0 ? (
+                    {lesson?.resources && lesson.resources.length > 0 ? (
                       <div className="space-y-2">
                         <div className="font-medium text-sm">Additional Reading</div>
                         <ul className="space-y-1">
@@ -151,16 +178,23 @@ const LessonPage = () => {
 
               {/* Lesson Content - Expanded to fill rest of page */}
               <div className="lg:col-span-8">
-                <Card className="h-full bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30">
+                <Card className="h-full bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 shadow-lg">
                   <CardHeader>
                     <CardTitle className="text-xl">Lesson Content</CardTitle>
                   </CardHeader>
                   <CardContent className="relative">
-                    <div className="prose max-w-none max-h-[600px] overflow-y-auto pr-4 custom-scrollbar bg-gradient-to-br from-indian-cream/30 to-white/30 p-4 rounded-md">
-                      {lesson.content ? (
-                        <div className="bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 p-4 rounded-md" dangerouslySetInnerHTML={{ __html: lesson.content }} />
+                    <div className="bg-white p-6 rounded-md border border-indian-saffron/20 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                      {loading ? (
+                        <div className="min-h-[500px] flex items-center justify-center border border-dashed border-indian-saffron/30 rounded-md p-8 text-center text-muted-foreground">
+                          <p>Loading lesson content...</p>
+                        </div>
+                      ) : lesson?.content ? (
+                        <div
+                          className="prose prose-lg max-w-none opacity-100 transition-opacity duration-300"
+                          dangerouslySetInnerHTML={{ __html: lesson.content }}
+                        />
                       ) : (
-                        <div className="min-h-[500px] flex items-center justify-center border border-dashed border-indian-saffron/30 rounded-md p-8 text-center text-muted-foreground bg-gradient-to-br from-indian-cream/30 to-white/30">
+                        <div className="min-h-[500px] flex items-center justify-center border border-dashed border-indian-saffron/30 rounded-md p-8 text-center text-muted-foreground">
                           <p>Lesson content will appear here.</p>
                         </div>
                       )}
@@ -172,12 +206,12 @@ const LessonPage = () => {
 
             {/* Quiz Section - Full Width */}
             <div className="mt-8">
-              <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30">
+              <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 shadow-md">
                 <CardHeader>
                   <CardTitle className="text-xl">Knowledge Check</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {lesson.quiz ? (
+                  {lesson?.quiz ? (
                     <LessonQuiz quiz={lesson.quiz} />
                   ) : (
                     <p className="text-muted-foreground">No quiz available for this lesson yet.</p>

@@ -7,7 +7,7 @@ import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
 import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { lessonsData } from '../../data/lessonsData';
+import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
@@ -33,7 +33,7 @@ const LearnPage = () => {
     const hash = window.location.hash.replace('#', '');
     if (hash) {
       // If hash matches a lesson tab, set both main tab and lesson tab
-      if (['philosophy', 'deities', 'scriptures', 'practices'].includes(hash)) {
+      if (['philosophy', 'holy-trinity', 'deities', 'scriptures', 'practices'].includes(hash)) {
         setActiveMainTab('lessons');
         setActiveLessonTab(hash);
       }
@@ -115,16 +115,18 @@ const LearnPage = () => {
               subtitle="Discover our collection of lessons on Hindu philosophy and deities"
             />
             <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
                 </TabsTrigger>
-                {/* MANTRAS TAB HIDDEN - UNCOMMENT WHEN READY */}
-                {/* <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                  <Music className="w-5 h-5 mr-2" />
-                  Mantras
-                </TabsTrigger> */}
+                {/* DEVELOPMENT ONLY - Mantras tab hidden from production */}
+                {process.env.NODE_ENV === 'development' && (
+                  <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                    <Music className="w-5 h-5 mr-2" />
+                    Mantras (Dev)
+                  </TabsTrigger>
+                )}
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
                   Games
@@ -133,9 +135,12 @@ const LearnPage = () => {
 
               <TabsContent value="lessons">
                 <Tabs value={activeLessonTab} onValueChange={handleLessonTabChange} className="w-full">
-                  <TabsList className="grid w-full grid-cols-4 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+                  <TabsList className="grid w-full grid-cols-5 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                     <TabsTrigger value="philosophy" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                       Philosophy
+                    </TabsTrigger>
+                    <TabsTrigger value="holy-trinity" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                      Holy Trinity
                     </TabsTrigger>
                     <TabsTrigger value="deities" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                       Deities/Rishis
@@ -157,7 +162,7 @@ const LearnPage = () => {
                             <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {lessonGroup.lessons.map((lesson) => (
-                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
                                   <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
                                     <CardContent className="p-4">
                                       <div className="text-lg font-medium mb-2">{lesson.title}</div>
@@ -172,7 +177,29 @@ const LearnPage = () => {
                     </div>
                   </TabsContent>
 
-
+                  <TabsContent value="holy-trinity">
+                    <div className="space-y-8">
+                      {lessonsData
+                        .filter(lessonGroup => lessonGroup.topicId === 'holy-trinity')
+                        .map((lessonGroup) => (
+                          <div key={lessonGroup.topicId} className="mb-10">
+                            <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {lessonGroup.lessons.map((lesson) => (
+                                <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
+                                  <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
+                                    <CardContent className="p-4">
+                                      <div className="text-lg font-medium mb-2">{lesson.title}</div>
+                                      <p className="text-gray-600">{lesson.description}</p>
+                                    </CardContent>
+                                  </Link>
+                                </Card>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </TabsContent>
 
                   <TabsContent value="deities">
                     <div className="space-y-8">
@@ -183,7 +210,7 @@ const LearnPage = () => {
                             <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {lessonGroup.lessons.map((lesson) => (
-                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
                                   <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
                                     <CardContent className="p-4">
                                       <div className="text-lg font-medium mb-2">{lesson.title}</div>
@@ -207,7 +234,7 @@ const LearnPage = () => {
                             <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {lessonGroup.lessons.map((lesson) => (
-                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
                                   <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
                                     <CardContent className="p-4">
                                       <div className="text-lg font-medium mb-2">{lesson.title}</div>
@@ -231,7 +258,7 @@ const LearnPage = () => {
                             <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {lessonGroup.lessons.map((lesson) => (
-                                <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
                                   <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
                                     <CardContent className="p-4">
                                       <div className="text-lg font-medium mb-2">{lesson.title}</div>
@@ -248,55 +275,60 @@ const LearnPage = () => {
                 </Tabs>
               </TabsContent>
 
-              {/* MANTRAS CONTENT HIDDEN - UNCOMMENT WHEN READY */}
-              {/* <TabsContent value="mantras">
-                <div className="space-y-8">
-                  <p className="text-lg">
-                    Mantras are sacred sound formulas that have spiritual and psychological effects.
-                  </p>
+              {/* DEVELOPMENT ONLY - Mantras content hidden from production */}
+              {process.env.NODE_ENV === 'development' && (
+                <TabsContent value="mantras">
+                  <div className="space-y-8">
+                    <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                      <strong>Development Mode:</strong> This mantras section is currently in development and not available in production.
+                    </div>
+                    <p className="text-lg">
+                      Mantras are sacred sound formulas that have spiritual and psychological effects.
+                    </p>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {mantras.map((mantra) => (
-                      <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
-                        <CardContent className="p-6">
-                          <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
-                          <p className="text-gray-600 mb-4">{mantra.description}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {mantras.map((mantra) => (
+                        <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                          <CardContent className="p-6">
+                            <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
+                            <p className="text-gray-600 mb-4">{mantra.description}</p>
 
-                          <div className="flex justify-center mb-4">
-                            {mantra.id === 'gayatri' && (
-                              <SyncedAudioPlayer
-                                src={mantra.audio}
-                                title={`${mantra.title} Pronunciation`}
-                                syllables={gayatriMantraSyllables}
-                                originalText={mantra.text}
-                                transliteration={mantra.transliteration}
-                                transliterationSyllables={mantra.transliterationSyllables}
-                              />
-                            )}
-                            {mantra.id === 'saha-na-vavatu' && (
-                              <SyncedAudioPlayer
-                                src={mantra.audio}
-                                title={`${mantra.title} Pronunciation`}
-                                syllables={sahaNavatuMantraSyllables}
-                                originalText={mantra.text}
-                                transliteration={mantra.transliteration}
-                                transliterationSyllables={mantra.transliterationSyllables}
-                              />
-                            )}
-                          </div>
+                            <div className="flex justify-center mb-4">
+                              {mantra.id === 'gayatri' && (
+                                <SyncedAudioPlayer
+                                  src={mantra.audio}
+                                  title={`${mantra.title} Pronunciation`}
+                                  syllables={gayatriMantraSyllables}
+                                  originalText={mantra.text}
+                                  transliteration={mantra.transliteration}
+                                  transliterationSyllables={mantra.transliterationSyllables}
+                                />
+                              )}
+                              {mantra.id === 'saha-na-vavatu' && (
+                                <SyncedAudioPlayer
+                                  src={mantra.audio}
+                                  title={`${mantra.title} Pronunciation`}
+                                  syllables={sahaNavatuMantraSyllables}
+                                  originalText={mantra.text}
+                                  transliteration={mantra.transliteration}
+                                  transliterationSyllables={mantra.transliterationSyllables}
+                                />
+                              )}
+                            </div>
 
-                          <div className="mt-4 p-4 bg-gradient-to-br from-indian-cream/30 to-white/30 border border-indian-saffron/20 rounded-md">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
-                            <p className="text-base text-center text-gray-700 leading-relaxed">
-                              {mantra.englishMeaning}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                            <div className="mt-4 p-4 bg-white border border-indian-saffron/20 rounded-md">
+                              <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
+                              <p className="text-base text-center text-gray-700 leading-relaxed">
+                                {mantra.englishMeaning}
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </TabsContent> */}
+                </TabsContent>
+              )}
 
               <TabsContent value="games">
                 <div className="space-y-8">

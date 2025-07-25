@@ -262,7 +262,7 @@ const TestPage = () => {
                       <h2 className="text-2xl font-heading font-semibold mb-5">{lessonGroup.topicName}</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {lessonGroup.lessons.map((lesson) => (
-                          <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                          <Card key={lesson.id} className="hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-indian-cream/90 to-white border border-indian-saffron/40 pop-shadow-card hover:from-indian-cream hover:to-white/95">
                             <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
                               <CardContent className="p-4">
                                 <div className="text-lg font-medium mb-2">{lesson.title}</div>

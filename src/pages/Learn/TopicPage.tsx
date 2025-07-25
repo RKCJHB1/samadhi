@@ -56,7 +56,7 @@ const TopicPage: React.FC = () => {
   
   return (
     <PageLayout title={`Learn - ${topic.title}`}>
-      <TopicDetail topic={topic} topicId={topicId} />
+      <TopicDetail topicId={topicId} />
     </PageLayout>
   );
 };

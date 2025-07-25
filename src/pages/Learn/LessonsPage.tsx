@@ -55,10 +55,13 @@ const LessonsPage = () => {
                 <BookOpen className="w-5 h-5 mr-2" />
                 Lessons
               </TabsTrigger>
-              <TabsTrigger value="mantras" className="text-lg">
-                <Music className="w-5 h-5 mr-2" />
-                Mantras
-              </TabsTrigger>
+              {/* DEVELOPMENT ONLY - Mantras tab hidden from production */}
+              {process.env.NODE_ENV === 'development' && (
+                <TabsTrigger value="mantras" className="text-lg">
+                  <Music className="w-5 h-5 mr-2" />
+                  Mantras (Dev)
+                </TabsTrigger>
+              )}
             </TabsList>
             
             <TabsContent value="lessons">
@@ -82,34 +85,40 @@ const LessonsPage = () => {
               </div>
             </TabsContent>
             
-            <TabsContent value="mantras">
-              <div className="space-y-8">
-                <p className="text-lg">
-                  Mantras are sacred sound formulas that have spiritual and psychological effects. 
-                  Learn these mantras to enhance your meditation practice and connect with divine energies.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {mantras.map((mantra) => (
-                    <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron">
-                      <CardContent className="p-6">
-                        <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
-                        <p className="text-gray-600 mb-4">{mantra.description}</p>
-                        <div className="bg-white p-4 rounded border border-gray-200 mb-4">
-                          <p className="font-mono text-center text-lg">{mantra.text}</p>
-                        </div>
-                        <div className="flex justify-center">
-                          <audio controls className="w-full">
-                            <source src={mantra.audio} type="audio/mpeg" />
-                            Your browser does not support the audio element.
-                          </audio>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+            {/* DEVELOPMENT ONLY - Mantras content hidden from production */}
+            {process.env.NODE_ENV === 'development' && (
+              <TabsContent value="mantras">
+                <div className="space-y-8">
+                  <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                    <strong>Development Mode:</strong> This mantras section is currently in development and not available in production.
+                  </div>
+                  <p className="text-lg">
+                    Mantras are sacred sound formulas that have spiritual and psychological effects.
+                    Learn these mantras to enhance your meditation practice and connect with divine energies.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {mantras.map((mantra) => (
+                      <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron">
+                        <CardContent className="p-6">
+                          <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
+                          <p className="text-gray-600 mb-4">{mantra.description}</p>
+                          <div className="bg-white p-4 rounded border border-gray-200 mb-4">
+                            <p className="font-mono text-center text-lg">{mantra.text}</p>
+                          </div>
+                          <div className="flex justify-center">
+                            <audio controls className="w-full">
+                              <source src={mantra.audio} type="audio/mpeg" />
+                              Your browser does not support the audio element.
+                            </audio>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </TabsContent>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

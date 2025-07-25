@@ -5,20 +5,12 @@ import Button from '../shared/Button';
 
 // Sample events data
 const events = [
-  {
-    title: 'Guru Purnima Celebration',
-    date: 'Thursday, 10th July',
-    time: '7:00 PM - 8:00 PM',
-    location: 'Benvenuto Conference Centre',
-    description: 'Join us for the celebration of Guru Purnima, honoring the spiritual teachers and their divine wisdom.',
-    image: 'https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    link: '/services/guru-purnima-invitation',
-  },
+
   {
     title: 'Special Programme',
     date: 'Saturday, 26th July',
     time: '4:00 PM - 5:45 PM',
-    location: 'Benvenuto Conference Centre',
+    location: 'Boskruin Community Centre',
     description: 'Commemorating the History of the Ramakrishna Centre of South Africa - a special programme celebrating our heritage.',
     image: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     link: '/services/special-programme-invitation',

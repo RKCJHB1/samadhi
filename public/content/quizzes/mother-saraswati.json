@@ -1,0 +1,105 @@
+{
+  "lessonId": "mother-saraswati",
+  "questions": [
+    {
+      "question": "What is Mother Saraswati the goddess of?",
+      "answers": [
+        "Wealth and prosperity",
+        "Knowledge and wisdom",
+        "War and victory",
+        "Love and beauty"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "How many hands does Mother Saraswati have?",
+      "answers": [
+        "Two",
+        "Four",
+        "Six",
+        "Eight"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What musical instrument does Mother Saraswati hold?",
+      "answers": [
+        "Flute",
+        "Drum",
+        "Veena",
+        "Sitar"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What does Mother Saraswati holding books symbolize?",
+      "answers": [
+        "She is the goddess of libraries",
+        "She is the goddess of knowledge",
+        "She likes to read stories",
+        "She writes poetry"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the japa mālā that Mother Saraswati holds?",
+      "answers": [
+        "A flower garland",
+        "A golden crown",
+        "A rosary for repeating God's name",
+        "A magical wand"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What color sari does Mother Saraswati wear?",
+      "answers": [
+        "Red",
+        "Blue",
+        "Green",
+        "White"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "question": "What does the white color of Mother Saraswati's sari represent?",
+      "answers": [
+        "Snow",
+        "Clouds",
+        "Purity",
+        "Simplicity"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What is the mantra for Mother Saraswati?",
+      "answers": [
+        "Om Namah Shivaya",
+        "Om Sri Saraswatyai Namah",
+        "Om Namo Bhagavate Vasudevaya",
+        "Om Gam Ganapataye Namaha"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "According to the lesson, how should we treat books?",
+      "answers": [
+        "Keep them in a locked cabinet",
+        "Read them only on special occasions",
+        "Respect them and keep them neat",
+        "Share them with everyone"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "When is Mother Saraswati specially worshipped?",
+      "answers": [
+        "Every Monday",
+        "During the full moon",
+        "On Saraswati Puja day",
+        "During solar eclipse"
+      ],
+      "correctAnswer": 2
+    }
+  ]
+}

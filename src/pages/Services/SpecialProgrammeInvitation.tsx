@@ -150,9 +150,12 @@ const SpecialProgrammeInvitation = () => {
                       <div>
                         <p className="font-medium text-gray-700">Venue</p>
                         <p className="text-indian-saffron font-semibold">
-                          <a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                            Benvenuto Conference Centre
+                          <a href="https://g.co/kgs/HyfJkiY" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            Boskruin Community Centre
                           </a>
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Kelly Ave, Bromhof, Randburg, 2154
                         </p>
                       </div>
                     </div>

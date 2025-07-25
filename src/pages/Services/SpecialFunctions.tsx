@@ -31,28 +31,7 @@ const SpecialFunctions = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="bg-indian-saffron/10">
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Thursday, <span className="whitespace-nowrap">10th July</span></p>
-                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Guru Purnima</p>
-                          <p className="mt-1">
-                            <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                              View Programme Details
-                            </Link>
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Celebration of Guru Purnima - the day dedicated to honoring spiritual teachers</p>
-                          <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Benvenuto Conference Centre
-                            </a>)
-                          </p>
-                        </td>
-                      </tr>
+
                       <tr className="bg-indian-saffron/10">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Saturday, <span className="whitespace-nowrap">26th July</span></p>
@@ -69,9 +48,12 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Commemorating the History of the Ramakrishna Centre of South Africa</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Benvenuto Conference Centre
+                            (<a href="https://g.co/kgs/HyfJkiY" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Boskruin Community Centre
                             </a>)
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            (Kelly Ave, Bromhof, Randburg, 2154)
                           </p>
                         </td>
                       </tr>
@@ -90,6 +72,29 @@ const SpecialFunctions = () => {
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Benvenuto Conference Centre
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+                      <tr className="opacity-60">
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Thursday, <span className="whitespace-nowrap">10th July</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
+                          <span className="inline-block mt-1 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Guru Purnima</p>
+                          <p className="mt-1">
+                            <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Celebration of Guru Purnima - the day dedicated to honoring spiritual teachers</p>
                           <p className="mt-1 text-sm text-gray-600">
                             (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                               Benvenuto Conference Centre
@@ -145,33 +150,7 @@ const SpecialFunctions = () => {
 
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
-                  {/* Guru Purnima Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Thursday, 10th July</div>
-                    <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div className="font-medium">Event:</div>
-                      <div>
-                        <p>Guru Purnima</p>
-                        <p className="mt-1">
-                          <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                            View Programme Details
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-2">
-                      <div className="font-medium">Details:</div>
-                      <div className="text-sm">
-                        <p>Celebration of Guru Purnima - the day dedicated to honoring spiritual teachers</p>
-                        <p className="mt-2 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Benvenuto Conference Centre
-                          </a>)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+
 
                   {/* Special Programme Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
@@ -193,9 +172,12 @@ const SpecialFunctions = () => {
                       <div className="text-sm">
                         <p>Commemorating the History of the Ramakrishna Centre of South Africa</p>
                         <p className="mt-2 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Benvenuto Conference Centre
+                          (<a href="https://g.co/kgs/HyfJkiY" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Boskruin Community Centre
                           </a>)
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          (Kelly Ave, Bromhof, Randburg, 2154)
                         </p>
                       </div>
                     </div>
@@ -247,6 +229,35 @@ const SpecialFunctions = () => {
                         <p className="mt-2 text-gray-600">
                           (<a href="https://maps.app.goo.gl/ZK2iWdaKs9o1nrQ27" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                             South African National Museum of Military History
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Guru Purnima Event - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Thursday, 10th July</div>
+                    <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Guru Purnima</p>
+                        <p className="mt-1">
+                          <Link to="/services/guru-purnima-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Celebration of Guru Purnima - the day dedicated to honoring spiritual teachers</p>
+                        <p className="mt-2 text-gray-600">
+                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Benvenuto Conference Centre
                           </a>)
                         </p>
                       </div>

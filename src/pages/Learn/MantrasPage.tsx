@@ -36,10 +36,31 @@ const mantras = [
 
 const MantrasPage = () => {
   const [audioErrors, setAudioErrors] = useState<Record<string, boolean>>({});
+
+  // Hide mantras page in production
+  if (process.env.NODE_ENV !== 'development') {
+    return (
+      <PageLayout title="Page Not Available">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl font-heading font-bold mb-4">Page Not Available</h1>
+            <p className="text-muted-foreground mb-8">This page is currently under development and not available in production.</p>
+            <a href="/learn" className="inline-flex items-center px-4 py-2 bg-spiritual-500 text-white rounded-md hover:bg-spiritual-600 transition-colors">
+              Back to Learning Centre
+            </a>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
+
   return (
-    <PageLayout title="Learning Mantras">
+    <PageLayout title="Learning Mantras - Development Mode">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+            <strong>Development Mode:</strong> This mantras page is currently in development and not available in production.
+          </div>
           <SectionHeader
             title="Learning Mantras"
             subtitle="Sacred sound formulas for meditation and spiritual practice"

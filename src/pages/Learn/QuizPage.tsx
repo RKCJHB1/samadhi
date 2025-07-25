@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { lessonsData } from '../../data/lessonsData';
+import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 
 const QuizPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('philosophy');

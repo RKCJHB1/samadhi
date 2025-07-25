@@ -1,0 +1,31 @@
+categories:
+  hindu-philosophy:
+    name: "Hindu Philosophy"
+    description: "Foundational principles and ideas that form the basis of Hindu thought"
+    icon: "book"
+    order: 1
+  
+  deities:
+    name: "Hindu Deities and Rishis"
+    description: "Learn about divine beings and great sages"
+    icon: "star"
+    order: 2
+  
+  scriptures:
+    name: "Sacred Scriptures"
+    description: "Sacred texts and literature of Hinduism"
+    icon: "scroll"
+    order: 3
+  
+  practices:
+    name: "Spiritual Practices"
+    description: "Methods for spiritual growth and development"
+    icon: "lotus"
+    order: 4
+
+# Global settings
+settings:
+  defaultDifficulty: "beginner"
+  defaultEstimatedTime: 15
+  enableRelatedLessons: true
+  enableSequences: true

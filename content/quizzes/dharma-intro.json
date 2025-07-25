@@ -1,0 +1,125 @@
+{
+  "lessonId": "dharma-intro",
+  "questions": [
+    {
+      "question": "What is the best translation of the word Dharma?",
+      "answers": [
+        "Duty",
+        "Religion",
+        "Righteousness",
+        "There is no exact translation"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "question": "What does the Sanskrit root 'dhṛ' mean?",
+      "answers": [
+        "To run",
+        "To sustain, support, or uphold",
+        "To destroy",
+        "To hide"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "Which of the following is NOT a type of dharma mentioned in the lesson?",
+      "answers": [
+        "Sanatana Dharma",
+        "Sva-dharma (personal duty)",
+        "Maya Dharma",
+        "Raja Dharma (duty of kings)"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Who is considered the guardian of dharma in Hindu tradition?",
+      "answers": [
+        "Brahma",
+        "Vishnu",
+        "Shiva",
+        "Indra"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the ultimate goal of following dharma?",
+      "answers": [
+        "Wealth",
+        "Fame",
+        "Moksha (liberation)",
+        "Power"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What is Sanatana Dharma?",
+      "answers": [
+        "Personal duty",
+        "King's duty",
+        "Eternal cosmic order and universal principles",
+        "Temporary rules"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What is Sva-dharma?",
+      "answers": [
+        "Universal law",
+        "Personal duty based on individual circumstances",
+        "King's responsibility",
+        "Religious ritual"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "Which principle is NOT mentioned as part of Sanatana Dharma?",
+      "answers": [
+        "Ahimsa (non-violence)",
+        "Satya (truthfulness)",
+        "Asteya (non-stealing)",
+        "Artha (wealth accumulation)"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "question": "What does dharma provide for living a meaningful life?",
+      "answers": [
+        "Money",
+        "Fame",
+        "A framework for ethical decision-making",
+        "Physical strength"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "How are dharma and karma related?",
+      "answers": [
+        "They are unrelated concepts",
+        "Following dharma creates positive karma",
+        "Karma prevents dharma",
+        "Dharma destroys karma"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What should one do when different dharmas conflict?",
+      "answers": [
+        "Ignore all dharmas",
+        "Choose the easiest option",
+        "Consider the greater good and act without attachment",
+        "Ask others to decide"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What does dharma encompass according to the lesson?",
+      "answers": [
+        "Only religious practices",
+        "Only personal duties",
+        "Righteousness, duty, cosmic order, and right living",
+        "Only social rules"
+      ],
+      "correctAnswer": 2
+    }
+  ]
+}
