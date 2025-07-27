@@ -32,6 +32,28 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
+                      <tr className="bg-indian-saffron/10">
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Monday, <span className="whitespace-nowrap">28th July</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Welcome Reception</p>
+                          <p className="mt-1">
+                            <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/4w3ncE7cXXHaZHqj9" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Eagle Canyon Golf Estate Conference Centre
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
                       <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Saturday, <span className="whitespace-nowrap">26th July</span></p>
@@ -55,28 +77,6 @@ const SpecialFunctions = () => {
                           </p>
                           <p className="text-xs text-gray-500">
                             (Kelly Ave, Bromhof, Randburg, 2154)
-                          </p>
-                        </td>
-                      </tr>
-                      <tr className="bg-indian-saffron/10">
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Monday, <span className="whitespace-nowrap">28th July</span></p>
-                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Welcome Reception</p>
-                          <p className="mt-1">
-                            <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                              View Programme Details
-                            </Link>
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
-                          <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Eagle Canyon Golf Estate Conference Centre
-                            </a>)
                           </p>
                         </td>
                       </tr>
@@ -152,6 +152,33 @@ const SpecialFunctions = () => {
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
 
+                  {/* Welcome Reception Event */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Monday, 28th July</div>
+                    <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Welcome Reception</p>
+                        <p className="mt-1">
+                          <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
+                        <p className="mt-2 text-gray-600">
+                          (<a href="https://maps.app.goo.gl/4w3ncE7cXXHaZHqj9" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Eagle Canyon Golf Estate Conference Centre
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Special Programme Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
@@ -180,34 +207,6 @@ const SpecialFunctions = () => {
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
                           (Kelly Ave, Bromhof, Randburg, 2154)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Welcome Reception Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Monday, 28th July</div>
-                    <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div className="font-medium">Event:</div>
-                      <div>
-                        <p>Welcome Reception</p>
-                        <p className="mt-1">
-                          <Link to="/services/welcome-reception-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                            View Programme Details
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-2">
-                      <div className="font-medium">Details:</div>
-                      <div className="text-sm">
-                        <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
-                        <p className="mt-2 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Eagle Canyon Golf Estate Conference Centre
-                          </a>)
                         </p>
                       </div>
                     </div>

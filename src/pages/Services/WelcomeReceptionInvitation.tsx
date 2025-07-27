@@ -150,7 +150,7 @@ const WelcomeReceptionInvitation = () => {
                       <div>
                         <p className="font-medium text-gray-700">Venue</p>
                         <p className="text-indian-saffron font-semibold">
-                          <a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                          <a href="https://maps.app.goo.gl/4w3ncE7cXXHaZHqj9" target="_blank" rel="noopener noreferrer" className="hover:underline">
                             Eagle Canyon Golf Estate Conference Centre
                           </a>
                         </p>
