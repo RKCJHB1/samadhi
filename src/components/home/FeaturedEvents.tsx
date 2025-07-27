@@ -5,21 +5,11 @@ import Button from '../shared/Button';
 
 // Sample events data
 const events = [
-
-  {
-    title: 'Special Programme',
-    date: 'Saturday, 26th July',
-    time: '4:00 PM - 5:45 PM',
-    location: 'Boskruin Community Centre',
-    description: 'Commemorating the History of the Ramakrishna Centre of South Africa - a special programme celebrating our heritage.',
-    image: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    link: '/services/special-programme-invitation',
-  },
   {
     title: 'Welcome Reception',
     date: 'Monday, 28th July',
     time: '7:00 PM - 8:00 PM',
-    location: 'Benvenuto Conference Centre',
+    location: 'Eagle Canyon Golf Estate Conference Centre',
     description: 'Welcome Reception for Revered Swami Shantatmanandaji Maharaj - join us in welcoming our esteemed guest.',
     image: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     link: '/services/welcome-reception-invitation',

@@ -32,10 +32,11 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      <tr className="bg-indian-saffron/10">
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Saturday, <span className="whitespace-nowrap">26th July</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">4:00 PM - 5:45 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Special Programme</p>
@@ -74,7 +75,7 @@ const SpecialFunctions = () => {
                           <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
                           <p className="mt-1 text-sm text-gray-600">
                             (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Benvenuto Conference Centre
+                              Eagle Canyon Golf Estate Conference Centre
                             </a>)
                           </p>
                         </td>
@@ -153,9 +154,10 @@ const SpecialFunctions = () => {
 
 
                   {/* Special Programme Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Saturday, 26th July</div>
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Saturday, 26th July</div>
                     <div className="text-sm text-gray-600 mb-3">4:00 PM - 5:45 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
@@ -204,7 +206,7 @@ const SpecialFunctions = () => {
                         <p>Welcome Reception for Revered Swami Shantatmanandaji Maharaj</p>
                         <p className="mt-2 text-gray-600">
                           (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Benvenuto Conference Centre
+                            Eagle Canyon Golf Estate Conference Centre
                           </a>)
                         </p>
                       </div>
