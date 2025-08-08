@@ -32,10 +32,11 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      <tr className="bg-indian-saffron/10">
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Monday, <span className="whitespace-nowrap">28th July</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Welcome Reception</p>
@@ -153,9 +154,10 @@ const SpecialFunctions = () => {
                 <div className="md:hidden space-y-6">
 
                   {/* Welcome Reception Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Monday, 28th July</div>
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Monday, 28th July</div>
                     <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>

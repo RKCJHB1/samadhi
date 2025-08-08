@@ -3,18 +3,8 @@ import SectionHeader from '../shared/SectionHeader';
 import EventCard from '../shared/EventCard';
 import Button from '../shared/Button';
 
-// Sample events data
-const events = [
-  {
-    title: 'Welcome Reception',
-    date: 'Monday, 28th July',
-    time: '7:00 PM - 8:00 PM',
-    location: 'Eagle Canyon Golf Estate Conference Centre',
-    description: 'Welcome Reception for Revered Swami Shantatmanandaji Maharaj - join us in welcoming our esteemed guest.',
-    image: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    link: '/services/welcome-reception-invitation',
-  },
-];
+// Sample events data - currently no upcoming events
+const events = [];
 
 const FeaturedEvents = () => {
   return (
@@ -25,21 +15,28 @@ const FeaturedEvents = () => {
           subtitle="Join us for these upcoming spiritual gatherings and educational programs"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {events.map((event, index) => (
-            <EventCard
-              key={index}
-              title={event.title}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-              description={event.description}
-              // image prop removed to hide images
-              link={event.link}
-              className="border-indian-saffron bg-gradient-to-br from-indian-cream to-white"
-            />
-          ))}
-        </div>
+        {events.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                title={event.title}
+                date={event.date}
+                time={event.time}
+                location={event.location}
+                description={event.description}
+                // image prop removed to hide images
+                link={event.link}
+                className="border-indian-saffron bg-gradient-to-br from-indian-cream to-white"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center mt-8 p-8 bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg">
+            <p className="text-lg text-gray-600 mb-4">No upcoming events at this time.</p>
+            <p className="text-sm text-gray-500">Please check back soon for new announcements or view our past events.</p>
+          </div>
+        )}
 
         <div className="text-center mt-12">
           <Button href="/services/special-functions" variant="outline" className="border-indian-saffron text-indian-saffron hover:bg-indian-saffron/10">
