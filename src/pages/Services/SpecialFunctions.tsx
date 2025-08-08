@@ -32,6 +32,27 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
+                      <tr className="bg-indian-saffron/10">
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Upcoming Event</p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">Date TBA</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Special Programme</p>
+                          <p className="mt-1">
+                            <a href="/pics/Revered Swami Medhanandaji.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details (PDF)
+                            </a>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Programme featuring Revered Swami Medhanandaji</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (Venue TBA)
+                          </p>
+                        </td>
+                      </tr>
+
                       <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Monday, <span className="whitespace-nowrap">28th July</span></p>
@@ -152,6 +173,32 @@ const SpecialFunctions = () => {
 
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
+
+                  {/* Revered Swami Medhanandaji Event */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Upcoming Event</div>
+                    <div className="text-sm text-gray-600 mb-3">Date TBA</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Special Programme</p>
+                        <p className="mt-1">
+                          <a href="/pics/Revered Swami Medhanandaji.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details (PDF)
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Programme featuring Revered Swami Medhanandaji</p>
+                        <p className="mt-2 text-gray-600">
+                          (Venue TBA)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Welcome Reception Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
