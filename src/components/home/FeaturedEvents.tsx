@@ -3,18 +3,8 @@ import SectionHeader from '../shared/SectionHeader';
 import EventCard from '../shared/EventCard';
 import Button from '../shared/Button';
 
-// Sample events data
-const events = [
-  {
-    title: 'Special Programme',
-    date: 'Upcoming Event',
-    time: 'Date TBA',
-    location: 'Venue TBA',
-    description: 'Programme featuring Revered Swami Medhanandaji - details available in the programme PDF.',
-    image: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    link: '/pics/Revered Swami Medhanandaji.pdf',
-  },
-];
+// Sample events data - currently no upcoming events
+const events = [];
 
 const FeaturedEvents = () => {
   return (

@@ -32,13 +32,14 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      <tr className="bg-indian-saffron/10">
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Upcoming Event</p>
-                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">Date TBA</p>
+                          <p>Tuesday, <span className="whitespace-nowrap">5th August</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">7:00 PM - 8:00 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Special Programme</p>
+                          <p>Welcome Reception</p>
                           <p className="mt-1">
                             <a href="/pics/Revered Swami Medhanandaji.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
                               View Programme Details (PDF)
@@ -46,9 +47,11 @@ const SpecialFunctions = () => {
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Programme featuring Revered Swami Medhanandaji</p>
+                          <p>Welcome Reception for Revered Swami Medhanandaji</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (Venue TBA)
+                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Benvenuto Conference Centre
+                            </a>)
                           </p>
                         </td>
                       </tr>
@@ -175,13 +178,14 @@ const SpecialFunctions = () => {
                 <div className="md:hidden space-y-6">
 
                   {/* Revered Swami Medhanandaji Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/20 p-2 rounded">Upcoming Event</div>
-                    <div className="text-sm text-gray-600 mb-3">Date TBA</div>
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Tuesday, 5th August</div>
+                    <div className="text-sm text-gray-600 mb-3">7:00 PM - 8:00 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
-                        <p>Special Programme</p>
+                        <p>Welcome Reception</p>
                         <p className="mt-1">
                           <a href="/pics/Revered Swami Medhanandaji.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
                             View Programme Details (PDF)
@@ -192,9 +196,11 @@ const SpecialFunctions = () => {
                     <div className="grid grid-cols-1 gap-2">
                       <div className="font-medium">Details:</div>
                       <div className="text-sm">
-                        <p>Programme featuring Revered Swami Medhanandaji</p>
+                        <p>Welcome Reception for Revered Swami Medhanandaji</p>
                         <p className="mt-2 text-gray-600">
-                          (Venue TBA)
+                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Benvenuto Conference Centre
+                          </a>)
                         </p>
                       </div>
                     </div>
