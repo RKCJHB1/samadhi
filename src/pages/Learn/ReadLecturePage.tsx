@@ -458,12 +458,19 @@ const ReadLecturePage: React.FC = () => {
 
                           {/* Share this sentence */}
                           <div className="mt-3 flex justify-end">
-                            <SocialShareButtons
-                              path={`/read/${lecture.id}?lang=${targetLang}#sent-${i}`}
-                              title={`${lecture.title} — Sentence ${i + 1}`}
-                              description={`Read a sentence from \"${lecture.title}\" by Swami Vivekananda.`}
-                              className="justify-end"
-                            />
+                            {(() => {
+                              const base = (translitDraft || existingNative || s) as string;
+                              const words = base.trim().split(/\s+/).slice(0, 10).join(' ');
+                              const preview = words.length > 100 ? words.slice(0, 100) + '…' : words;
+                              const shareText = `Join me in translating the Chicago Addresses of Swami Vivekananda. ${preview}`;
+                              return (
+                                <SocialShareButtons
+                                  path={`/read/${lecture.id}?lang=${targetLang}#sent-${i}`}
+                                  title={shareText}
+                                  className="justify-end"
+                                />
+                              );
+                            })()}
                           </div>
 
                           {/* Save/Submit actions */}

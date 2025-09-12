@@ -11,6 +11,7 @@ import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { listMyReadingProgress, getCurrentUser } from '@/services/translationsSupabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { featureFlags } from '@/utils/featureFlags';
+import SocialShareButtons from '@/components/shared/SocialShareButtons';
 
 
 function msToHMS(ms: number) {
@@ -243,6 +244,14 @@ const ReadPublicProfilePage: React.FC = () => {
                       <Badge variant={profile.role === 'admin' ? 'default' : profile.role === 'moderator' ? 'secondary' : 'outline'} className="uppercase text-[10px]">{profile.role}</Badge>
                     </div>
                   )}
+
+                  {/* Share profile */}
+                  <div className="mt-2">
+                    <SocialShareButtons
+                      path={`/user/${profile?.username || userId}`}
+                      title={"See how much I have read/translated Swami Vivekananda's Chicago Addresses! Join me!"}
+                    />
+                  </div>
 
 	                    {/* Resume list intentionally only on /read/profile (private); not shown on public profile */}
 
