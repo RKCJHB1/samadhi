@@ -478,3 +478,67 @@ BEGIN
   WHERE user_id = p_user;
 END; $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 GRANT EXECUTE ON FUNCTION public.get_user_reading_time_totals(uuid) TO anon, authenticated;
+
+
+
+-- ========== MAINTENANCE RPC: Purge data for languages that are NOT currently approved ==========
+-- Effective approval = present in language_approvals minus any in language_hidden
+DROP FUNCTION IF EXISTS public.purge_unapproved_languages();
+CREATE FUNCTION public.purge_unapproved_languages()
+RETURNS TABLE(
+  lang text,
+  translations_deleted bigint,
+  votes_deleted bigint,
+  reading_progress_deleted bigint,
+  reviewers_deleted bigint,
+  reviewer_requests_deleted bigint,
+  language_requests_deleted bigint,
+  reading_time_deleted bigint
+) AS $$
+DECLARE
+  langs_to_purge text[];
+  l text;
+  r_translations bigint; r_votes bigint; r_progress bigint; r_reviewers bigint; r_rr bigint; r_lr bigint; r_time bigint;
+BEGIN
+  -- Admin check: allow service role (auth.uid() is null in SQL Editor); enforce admin for app calls
+  IF auth.uid() IS NOT NULL THEN
+    IF NOT EXISTS (
+      SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.role = 'admin'
+    ) THEN
+      RAISE EXCEPTION 'Not authorized';
+    END IF;
+  END IF;
+
+  WITH approved AS (
+    SELECT lower(lang) AS lang FROM public.language_approvals
+    EXCEPT
+    SELECT lower(lang) FROM public.language_hidden
+  ), all_langs AS (
+    SELECT DISTINCT lower(lang) AS lang FROM public.translations
+    UNION SELECT DISTINCT lower(lang) FROM public.translation_votes
+    UNION SELECT DISTINCT lower(lang) FROM public.reading_progress
+    UNION SELECT DISTINCT lower(lang) FROM public.language_reviewers
+    UNION SELECT DISTINCT lower(lang) FROM public.language_reviewer_requests
+    UNION SELECT DISTINCT lower(lang) FROM public.language_requests
+    UNION SELECT DISTINCT lower(lang) FROM public.reading_time_daily
+  )
+  SELECT array_agg(lang) INTO langs_to_purge
+  FROM all_langs WHERE lang NOT IN (SELECT lang FROM approved);
+
+  IF langs_to_purge IS NULL OR array_length(langs_to_purge, 1) IS NULL THEN
+    RETURN; -- nothing to purge
+  END IF;
+
+  FOREACH l IN ARRAY langs_to_purge LOOP
+    DELETE FROM public.translation_votes WHERE lower(lang) = l;      GET DIAGNOSTICS r_votes = ROW_COUNT;
+    DELETE FROM public.translations WHERE lower(lang) = l;           GET DIAGNOSTICS r_translations = ROW_COUNT;
+    DELETE FROM public.reading_progress WHERE lower(lang) = l;       GET DIAGNOSTICS r_progress = ROW_COUNT;
+    DELETE FROM public.language_reviewers WHERE lower(lang) = l;     GET DIAGNOSTICS r_reviewers = ROW_COUNT;
+    DELETE FROM public.language_reviewer_requests WHERE lower(lang) = l; GET DIAGNOSTICS r_rr = ROW_COUNT;
+    DELETE FROM public.language_requests WHERE lower(lang) = l;      GET DIAGNOSTICS r_lr = ROW_COUNT;
+    DELETE FROM public.reading_time_daily WHERE lower(lang) = l;     GET DIAGNOSTICS r_time = ROW_COUNT;
+
+    RETURN NEXT (l, r_translations, r_votes, r_progress, r_reviewers, r_rr, r_lr, r_time);
+  END LOOP;
+END; $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+GRANT EXECUTE ON FUNCTION public.purge_unapproved_languages() TO authenticated;

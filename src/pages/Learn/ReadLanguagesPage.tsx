@@ -7,7 +7,7 @@ import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { countSentences } from '@/lib/translationUtils';
 import { ChevronLeft, ChevronRight, Plus, Languages as LanguagesIcon, ArrowLeft } from 'lucide-react';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { isSupabaseConfigured, getApprovedLanguageCodes } from '@/services/translationsSupabase';
+import { isSupabaseConfigured, listApprovedLanguages, listHiddenLanguages } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
 import NotFoundMessage from '@/components/learn/NotFoundMessage';
 
@@ -40,8 +40,13 @@ const ReadLanguagesPage: React.FC = () => {
     (async () => {
       if (!isSupabaseConfigured()) { setApprovedLoaded(true); return; }
       try {
-        const set = await getApprovedLanguageCodes();
-        if (!cancelled) setApprovedLangs(set);
+        const [manual, hidden] = await Promise.all([
+          listApprovedLanguages(),
+          listHiddenLanguages(),
+        ]);
+        const effectiveManual = new Set<string>(manual);
+        hidden.forEach((h) => effectiveManual.delete(h));
+        if (!cancelled) setApprovedLangs(effectiveManual);
       } finally {
         if (!cancelled) setApprovedLoaded(true);
       }

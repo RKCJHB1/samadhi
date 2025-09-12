@@ -230,7 +230,7 @@ const HelloMarquee: React.FC<{ side: 'left' | 'right' }> = ({ side }) => {
   }), [pool]);
   const doubled = React.useMemo(() => [...items, ...items], [items]);
   return (
-    <div aria-hidden className={`pointer-events-none absolute inset-y-0 ${side === 'left' ? 'left-2 md:left-4 lg:left-8' : 'right-2 md:right-4 lg:right-8'} w-40 sm:w-48 z-50`}>
+    <div aria-hidden className={`hidden md:block pointer-events-none absolute inset-y-0 ${side === 'left' ? 'left-2 md:left-4 lg:left-8' : 'right-2 md:right-4 lg:right-8'} w-40 sm:w-48 z-10`}>
       <div className={`hello-marquee ${side}`} style={{ ['--marquee-duration' as any]: '36s' }}>
         {doubled.map((text, idx) => (
           <div key={`${side}-marquee-${idx}`} className="hello-item">{text}</div>
@@ -321,7 +321,7 @@ const ReadHomePage: React.FC = () => {
         {/* Floating hellos right */}
         <HelloMarquee side="right" />
 
-        <div className="container mx-auto px-4">
+        <div className="relative z-20 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-left space-y-4">
             <h1 className="text-3xl md:text-4xl font-heading font-bold text-center">Swami Vivekananda's Chicago Addresses</h1>
             <p className="text-gray-800">

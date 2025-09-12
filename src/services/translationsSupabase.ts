@@ -1098,10 +1098,12 @@ export async function purgeLanguageData(lang: string): Promise<{ ok: boolean; er
   const sb = getSupabase();
   if (!sb) return { ok: false, error: 'Supabase not configured' };
   try {
-    // Order: votes -> translations -> user progress -> reviewers -> requests
+    // Order: votes -> translations -> user progress -> time aggregates -> reviewers -> requests
     await sb.from('translation_votes').delete().eq('lang', lang);
     await sb.from(TABLE).delete().eq('lang', lang);
     await sb.from('reading_progress').delete().eq('lang', lang);
+    // Include server-side reading time aggregates
+    await sb.from('reading_time_daily').delete().eq('lang', lang);
     await sb.from('language_reviewers').delete().eq('lang', lang);
     await sb.from('language_reviewer_requests').delete().eq('lang', lang);
     await sb.from('language_requests').delete().eq('lang', lang);
@@ -1124,6 +1126,14 @@ export async function getApprovedLanguageCodes(): Promise<Set<string>> {
   const union = new Set<string>([...manual, ...withApproved]);
   hidden.forEach((h) => union.delete(h));
   return union;
+}
+
+export async function purgeUnapprovedLanguages(): Promise<{ ok: boolean; rows?: any[]; error?: string }> {
+  const sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Supabase not configured' };
+  const { data, error } = await sb.rpc('purge_unapproved_languages');
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, rows: (data as any[]) || [] };
 }
 
 export async function listMyReviewerRequests(): Promise<ReviewerRequest[]> {
