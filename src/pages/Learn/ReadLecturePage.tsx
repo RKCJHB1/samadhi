@@ -20,7 +20,7 @@ import {
   upsertTranslation,
   getTranslationsForLectureLangForm,
 } from '@/store/translations';
-import { fetchTranslationsForLectureLang as fetchTranslationsForLectureLangRemote, insertTranslationRemote, isSupabaseConfigured, getCurrentUser, getProfile, getApprovedLanguageCodes } from '@/services/translationsSupabase';
+import { fetchTranslationsForLectureLang as fetchTranslationsForLectureLangRemote, insertTranslationRemote, isSupabaseConfigured, getCurrentUser, getProfile, listApprovedLanguages } from '@/services/translationsSupabase';
 import {
   splitLectureParagraphs,
   buildSentenceOffsets,
@@ -61,15 +61,15 @@ const ReadLecturePage: React.FC = () => {
   const prev = idx > 0 ? vivekanandaLectures[idx - 1] : undefined;
   const next = idx < vivekanandaLectures.length - 1 ? vivekanandaLectures[idx + 1] : undefined;
 
-  // Approved languages set (manual approvals ∪ reviewers ∪ 3‑request rule ∪ languages with approved translations)
+  // Approved languages set (manual approvals only)
   const [approvedLangs, setApprovedLangs] = useState<Set<string>>(new Set());
   useEffect(() => {
     let cancelled = false;
     (async () => {
       if (!isSupabaseConfigured()) return;
-      const set = await getApprovedLanguageCodes();
+      const list = await listApprovedLanguages();
       if (cancelled) return;
-      setApprovedLangs(set);
+      setApprovedLangs(new Set((list || []).map((l) => (l || '').toLowerCase())));
     })();
     return () => { cancelled = true; };
   }, []);
@@ -77,11 +77,11 @@ const ReadLecturePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const nonEnglishAll = useMemo(() => popularLanguages.filter(l => l.code !== 'en'), []);
   const availableLangs = useMemo(() => {
-    // When Supabase is configured and there are any approved languages, restrict to that set.
-    if (isSupabaseConfigured() && approvedLangs.size > 0) {
+    // When Supabase is configured, restrict to manually approved set.
+    if (isSupabaseConfigured()) {
       return nonEnglishAll.filter(l => approvedLangs.has(l.code.toLowerCase()));
     }
-    // Otherwise (no Supabase or none approved yet), allow all non‑English languages for now.
+    // Otherwise (no Supabase configured), allow all non‑English languages locally.
     return nonEnglishAll;
   }, [approvedLangs, nonEnglishAll]);
   const urlLang = searchParams.get('lang');
