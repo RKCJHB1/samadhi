@@ -394,6 +394,30 @@ CREATE POLICY "Admin manage language approvals" ON public.language_approvals
   );
 
 -- Volunteer reviewer requests
+
+-- Hidden languages (blocklist to override auto-approval by translations)
+create table if not exists public.language_hidden (
+  lang text primary key,
+  created_by uuid null references public.profiles(id) on delete set null,
+  created_at timestamp with time zone default now()
+);
+
+alter table public.language_hidden enable row level security;
+
+-- Public can read hidden list so the app can hide languages consistently
+DROP POLICY IF EXISTS "Public read language_hidden" ON public.language_hidden;
+CREATE POLICY "Public read language_hidden" ON public.language_hidden
+  FOR SELECT USING ( true );
+
+-- Only admins can modify the hidden list
+DROP POLICY IF EXISTS "Admin manage language_hidden" ON public.language_hidden;
+CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
 create table if not exists public.language_reviewer_requests (
   id bigserial primary key,
   lang text not null,

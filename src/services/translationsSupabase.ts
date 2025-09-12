@@ -964,15 +964,48 @@ export async function listLangsWithAnyApprovedTranslations(): Promise<string[]> 
 
 // Union of approval sources used for UI visibility
 // As per requirement: nothing is auto-approved by requests or reviewers.
+
+// Hidden languages (blocklist)
+export async function listHiddenLanguages(): Promise<string[]> {
+  const sb = getSupabase();
+  if (!sb) return [];
+  const { data, error } = await sb
+    .from('language_hidden')
+    .select('lang')
+    .order('lang');
+  if (error || !data) return [];
+  return (data as any[]).map((r) => (r.lang || '').toLowerCase()).filter(Boolean);
+}
+
+export async function addHiddenLanguage(lang: string): Promise<{ ok: boolean; error?: string }> {
+  const sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Supabase not configured' };
+  const user = await getCurrentUser();
+  const payload: any = { lang };
+  if (user) payload.created_by = user.id;
+  const { error } = await sb.from('language_hidden').upsert(payload, { onConflict: 'lang' });
+  return { ok: !error, error: error?.message };
+}
+
+export async function removeHiddenLanguage(lang: string): Promise<{ ok: boolean; error?: string }> {
+  const sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Supabase not configured' };
+  const { error } = await sb.from('language_hidden').delete().eq('lang', lang);
+  return { ok: !error, error: error?.message };
+}
+
 // We only include manually-approved languages plus any that already have approved translations.
 export async function getApprovedLanguageCodes(): Promise<Set<string>> {
   const sb = getSupabase();
   if (!sb) return new Set();
-  const [manual, withApproved] = await Promise.all([
+  const [manual, withApproved, hidden] = await Promise.all([
     listApprovedLanguages(),
     listLangsWithAnyApprovedTranslations(),
+    listHiddenLanguages(),
   ]);
-  return new Set<string>([...manual, ...withApproved]);
+  const union = new Set<string>([...manual, ...withApproved]);
+  hidden.forEach((h) => union.delete(h));
+  return union;
 }
 
 export async function listMyReviewerRequests(): Promise<ReviewerRequest[]> {

@@ -265,6 +265,24 @@ CREATE POLICY "Admin update language requests" ON public.language_requests FOR U
 DROP TRIGGER IF EXISTS set_updated_at_lang_req ON public.language_requests;
 CREATE TRIGGER set_updated_at_lang_req BEFORE UPDATE ON public.language_requests FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
+-- ========== LANGUAGE HIDDEN (blocklist) ==========
+create table if not exists public.language_hidden (
+  lang text primary key,
+  created_by uuid null references public.profiles(id) on delete set null,
+  created_at timestamptz default now()
+);
+alter table public.language_hidden enable row level security;
+DROP POLICY IF EXISTS "Public read language_hidden" ON public.language_hidden;
+CREATE POLICY "Public read language_hidden" ON public.language_hidden FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Admin manage language_hidden" ON public.language_hidden;
+CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
+
 -- ========== READING PROGRESS ==========
 create table if not exists public.reading_progress (
   user_id uuid not null references auth.users(id) on delete cascade,
