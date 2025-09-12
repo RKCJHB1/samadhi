@@ -50,9 +50,11 @@ CREATE POLICY "Self upsert profile" ON public.profiles FOR INSERT WITH CHECK (id
 DROP POLICY IF EXISTS "Self update profile" ON public.profiles;
 CREATE POLICY "Self update profile" ON public.profiles FOR UPDATE USING (id = auth.uid()) WITH CHECK (id = auth.uid());
 DROP POLICY IF EXISTS "Admin read profiles" ON public.profiles;
-CREATE POLICY "Admin read profiles" ON public.profiles FOR SELECT USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+-- NOTE: Avoid recursive policy on profiles; admin reads should be done via RPC or security definer if needed.
+-- CREATE POLICY "Admin read profiles" ON public.profiles FOR SELECT USING (public.is_admin(auth.uid()));
 DROP POLICY IF EXISTS "Admin update profiles" ON public.profiles;
-CREATE POLICY "Admin update profiles" ON public.profiles FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')) WITH CHECK (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+-- NOTE: Avoid recursive policy on profiles; admin updates should be done via RPC or security definer if needed.
+-- CREATE POLICY "Admin update profiles" ON public.profiles FOR UPDATE USING (public.is_admin(auth.uid())) WITH CHECK (public.is_admin(auth.uid()));
 
 -- ========== TRANSLATIONS ==========
 create table if not exists public.translations (
