@@ -9,7 +9,7 @@ import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { getAllTranslations } from '@/store/translations';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { popularLanguages } from '@/data/languages';
-import { fetchTranslationsForLang, getApprovedLanguageCodes } from '@/services/translationsSupabase';
+import { fetchTranslationsForLang, listApprovedLanguages, listHiddenLanguages, isSupabaseConfigured } from '@/services/translationsSupabase';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
 import { featureFlags } from '@/utils/featureFlags';
 import {
@@ -57,13 +57,24 @@ const ReadLanguageStatsPage: React.FC = () => {
     );
   }
 
-  // Check effective approved languages – block access if not approved
+  // Check approved languages – use manual approvals only (fast, avoids heavy queries)
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const approved = await getApprovedLanguageCodes();
-        if (!cancelled) setIsApproved(approved.has(langCode!));
+        // If Supabase isn’t configured, don’t block the page in local dev
+        if (!isSupabaseConfigured()) {
+          if (!cancelled) setIsApproved(true);
+          return;
+        }
+        const [manual, hidden] = await Promise.all([
+          listApprovedLanguages(),
+          listHiddenLanguages(),
+        ]);
+        const manualSet = new Set((manual || []).map((c) => (c || '').toLowerCase()));
+        const hiddenSet = new Set((hidden || []).map((c) => (c || '').toLowerCase()));
+        const allowed = manualSet.has((langCode || '').toLowerCase()) && !hiddenSet.has((langCode || '').toLowerCase());
+        if (!cancelled) setIsApproved(allowed);
       } catch {
         if (!cancelled) setIsApproved(false);
       }
