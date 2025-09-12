@@ -5,9 +5,9 @@ import NotFoundMessage from '@/components/learn/NotFoundMessage';
 import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { flattenSentences } from '@/lib/translationUtils';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { getLectureProgress } from '@/store/reading';
+import { getLectureProgress, recordSentenceRead, addReadingDuration } from '@/store/reading';
 import { isSupabaseConfigured, upsertReadingProgress, getMyReadingProgressFor } from '@/services/translationsSupabase';
 import { useToast } from '@/hooks/use-toast';
 import { featureFlags } from '@/utils/featureFlags';
@@ -41,25 +41,71 @@ const ReadEnglishOnlyPage: React.FC = () => {
     return clamp((prog.lastSentenceIndex || 0) + 1, 0, Math.max(0, sentences.length - 1));
   }, [lecture, sentences.length, userId]);
 
-    const [index, setIndex] = useState<number>(initialIdx);
+  const [index, setIndex] = useState<number>(initialIdx);
+  const [running, setRunning] = useState<boolean>(false);
+  const [speed, setSpeed] = useState<number>(3000); // 3 seconds per sentence
 
   const boxRef = useRef<HTMLDivElement | null>(null);
   const sentRef = useRef<HTMLDivElement | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  const lastIndexRef = useRef<number>(index);
 
-  // Keep track of what we've saved to avoid redundant writes
-  // Manual-only saving: we no longer auto-save per index change
+  // Track reading statistics when index changes
+  useEffect(() => {
+    if (!lecture) return;
 
-  // Keyboard shortcuts for navigation only
+    // Record the sentence as read for statistics
+    recordSentenceRead(userId, lecture.id, index, 0);
+
+    // Track time spent on previous sentence
+    if (lastIndexRef.current !== index) {
+      const now = Date.now();
+      const timeSpent = now - startTimeRef.current;
+      if (timeSpent > 0 && timeSpent < 60000) { // Only count reasonable time (< 1 minute)
+        addReadingDuration(userId, lecture.id, timeSpent);
+      }
+      startTimeRef.current = now;
+      lastIndexRef.current = index;
+    }
+  }, [index, lecture, userId]);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (!running || !lecture) return;
+
+    const timer = setTimeout(() => {
+      setIndex(i => {
+        const next = i + 1;
+        if (next >= sentences.length) {
+          setRunning(false);
+          return i;
+        }
+        return next;
+      });
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [running, index, sentences.length, speed, lecture]);
+
+  // Keyboard shortcuts for navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') { setIndex(i => clamp(i - 1, 0, sentences.length - 1)); }
-      if (e.key === 'ArrowRight') { setIndex(i => clamp(i + 1, 0, sentences.length - 1)); }
+      if (e.key === 'ArrowLeft') {
+        setRunning(false);
+        setIndex(i => clamp(i - 1, 0, sentences.length - 1));
+      }
+      if (e.key === 'ArrowRight') {
+        setRunning(false);
+        setIndex(i => clamp(i + 1, 0, sentences.length - 1));
+      }
+      if (e.key === ' ') {
+        e.preventDefault();
+        setRunning(r => !r);
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [sentences.length]);
-
-  // Manual-only: removed auto-save on index change
 
 
   // If arriving with #sent-N in URL, jump to that sentence index
@@ -106,12 +152,33 @@ const ReadEnglishOnlyPage: React.FC = () => {
                 <span>Sentence {index + 1} / {sentences.length}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => setIndex(i => clamp(i - 1, 0, sentences.length - 1))}>
+                <Button variant="outline" size="sm" onClick={() => { setRunning(false); setIndex(i => clamp(i - 1, 0, sentences.length - 1)); }}>
                   <ChevronLeft className="w-4 h-4 mr-1"/> Previous
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setIndex(i => clamp(i + 1, 0, sentences.length - 1))}>
+                <Button variant="outline" size="sm" onClick={() => { setRunning(false); setIndex(i => clamp(i + 1, 0, sentences.length - 1)); }}>
                   <ChevronRight className="w-4 h-4 mr-1"/> Next
                 </Button>
+
+                {/* Auto-scroll controls */}
+                <Button
+                  variant={running ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setRunning(!running)}
+                >
+                  {running ? <Pause className="w-4 h-4 mr-1"/> : <Play className="w-4 h-4 mr-1"/>}
+                  {running ? 'Pause' : 'Auto-read'}
+                </Button>
+
+                {/* Speed control */}
+                <select
+                  value={speed}
+                  onChange={(e) => setSpeed(Number(e.target.value))}
+                  className="px-2 py-1 border rounded text-sm"
+                >
+                  <option value={1500}>Fast (1.5s)</option>
+                  <option value={3000}>Normal (3s)</option>
+                  <option value={5000}>Slow (5s)</option>
+                </select>
 
                 {/* Resume button: load last saved index from Supabase and jump */}
                 <Button
@@ -122,12 +189,14 @@ const ReadEnglishOnlyPage: React.FC = () => {
                       if (isSupabaseConfigured()) {
                         const row = await getMyReadingProgressFor(lecture.id, 'en');
                         const resumeTo = row ? Math.max(0, Math.min(row.lastSentenceIndex + 1, Math.max(0, sentences.length - 1))) : 0;
+                        setRunning(false);
                         setIndex(resumeTo);
                         toast({ title: 'Resumed', description: `Jumped to sentence ${resumeTo + 1}.` });
                       } else {
                         // Fallback to local stats
                         const prog = getLectureProgress(userId, lecture.id);
                         const resumeTo = Math.max(0, Math.min((prog.lastSentenceIndex || 0) + 1, Math.max(0, sentences.length - 1)));
+                        setRunning(false);
                         setIndex(resumeTo);
                         toast({ title: 'Resumed (local)', description: `Jumped to sentence ${resumeTo + 1}.` });
                       }
@@ -147,6 +216,8 @@ const ReadEnglishOnlyPage: React.FC = () => {
                         await upsertReadingProgress(lecture.id, 'en', index);
                         toast({ title: 'Reading progress saved', description: `Saved at sentence ${index + 1}. You can resume from here later.` });
                       } else {
+                        // Update local reading progress too
+                        recordSentenceRead(userId, lecture.id, index, 0);
                         toast({ title: 'Progress saved locally' });
                       }
                     } catch {}
@@ -173,10 +244,14 @@ const ReadEnglishOnlyPage: React.FC = () => {
             </div>
 
             {/* Footer info */}
-            <div className="mt-6 text-sm text-gray-600">
+            <div className="mt-6 text-sm text-gray-600 space-y-2">
               <div>
                 <strong>Note:</strong> This is an English-only reading view.{' '}
                 <Link to={`/read/${lecture.id}?lang=`} className="text-spiritual-600 underline">Translations</Link> are disabled here.
+              </div>
+              <div>
+                <strong>Controls:</strong> Use arrow keys to navigate, spacebar to start/stop auto-reading.
+                Your reading progress is automatically tracked for statistics.
               </div>
             </div>
           </div>
