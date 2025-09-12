@@ -486,7 +486,7 @@ GRANT EXECUTE ON FUNCTION public.get_user_reading_time_totals(uuid) TO anon, aut
 DROP FUNCTION IF EXISTS public.purge_unapproved_languages();
 CREATE FUNCTION public.purge_unapproved_languages()
 RETURNS TABLE(
-  lang text,
+  purge_lang text,
   translations_deleted bigint,
   votes_deleted bigint,
   reading_progress_deleted bigint,
@@ -522,8 +522,8 @@ BEGIN
     UNION SELECT DISTINCT lower(lang) FROM public.language_requests
     UNION SELECT DISTINCT lower(lang) FROM public.reading_time_daily
   )
-  SELECT array_agg(lang) INTO langs_to_purge
-  FROM all_langs WHERE lang NOT IN (SELECT lang FROM approved);
+  SELECT array_agg(al.lang) INTO langs_to_purge
+  FROM all_langs al WHERE al.lang NOT IN (SELECT ap.lang FROM approved ap);
 
   IF langs_to_purge IS NULL OR array_length(langs_to_purge, 1) IS NULL THEN
     RETURN; -- nothing to purge
@@ -538,7 +538,16 @@ BEGIN
     DELETE FROM public.language_requests WHERE lower(lang) = l;      GET DIAGNOSTICS r_lr = ROW_COUNT;
     DELETE FROM public.reading_time_daily WHERE lower(lang) = l;     GET DIAGNOSTICS r_time = ROW_COUNT;
 
-    RETURN NEXT (l, r_translations, r_votes, r_progress, r_reviewers, r_rr, r_lr, r_time);
+    -- Assign OUT parameters then return next row
+    purge_lang := l;
+    translations_deleted := r_translations;
+    votes_deleted := r_votes;
+    reading_progress_deleted := r_progress;
+    reviewers_deleted := r_reviewers;
+    reviewer_requests_deleted := r_rr;
+    language_requests_deleted := r_lr;
+    reading_time_deleted := r_time;
+    RETURN NEXT;
   END LOOP;
 END; $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 GRANT EXECUTE ON FUNCTION public.purge_unapproved_languages() TO authenticated;
