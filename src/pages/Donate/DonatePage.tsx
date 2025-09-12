@@ -54,26 +54,46 @@ const DonatePage = () => {
   const handleDonate = (values: DonationFormValues) => {
     setIsProcessing(true);
 
-    // Create PayFast donation form using the correct structure
-    const paymentData = {
-      cmd: '_paynow',
-      receiver: '26034585', // Your PayFast merchant ID
+    // Read PayFast credentials from environment
+    const merchantId = import.meta.env.VITE_PAYFAST_MERCHANT_ID as string | undefined;
+    const merchantKey = import.meta.env.VITE_PAYFAST_MERCHANT_KEY as string | undefined;
+
+    if (!merchantId || !merchantKey || merchantKey === 'YOUR_ACTUAL_MERCHANT_KEY_HERE') {
+      toast({
+        title: 'Payment configuration error',
+        description: 'PayFast merchant details are not configured. Please set VITE_PAYFAST_MERCHANT_ID and VITE_PAYFAST_MERCHANT_KEY.',
+        variant: 'destructive',
+      });
+      setIsProcessing(false);
+      return;
+    }
+
+    // Prepare PayFast form fields per Custom Integration spec
+    const safeItemName = `Donation - ${values.purpose}`.slice(0, 100);
+
+    const paymentData: Record<string, string> = {
+      merchant_id: String(merchantId),
+      merchant_key: String(merchantKey),
       amount: values.amount.toFixed(2),
-      item_name: `Donation to Ramakrishna Centre - ${values.purpose}`,
+      item_name: safeItemName,
       item_description: `Contribution from ${values.firstName} ${values.lastName} towards Ramakrishna Centre of South Africa Phoenix Johannesburg Sub Centre.`,
       return_url: `${window.location.origin}/donate/thank-you`,
       cancel_url: `${window.location.origin}/donate`,
-      notify_url: `${window.location.origin}/api/payfast-notification`, // This would need a backend handler
+      notify_url: `${window.location.origin}/api/payfast-notification`, // TODO: Implement IPN endpoint server-side
       name_first: values.firstName,
       name_last: values.lastName,
       email_address: values.email,
       cell_number: values.mobile,
+      // Optional extras you may add:
+      // m_payment_id: crypto.randomUUID?.() ?? Date.now().toString(),
+      // email_confirmation: '1',
+      // confirmation_address: values.email,
     };
 
     // Create a form and submit it to PayFast
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'https://payment.payfast.io/eng/process'; // Correct PayFast endpoint
+    form.action = 'https://payment.payfast.io/eng/process'; // Live PayFast endpoint
 
     Object.entries(paymentData).forEach(([key, value]) => {
       const input = document.createElement('input');

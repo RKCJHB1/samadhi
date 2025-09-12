@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PageLayout from '../../components/layout/PageLayout';
 import SectionHeader from '../../components/shared/SectionHeader';
 import AudioPlayer from '../../components/audio/AudioPlayer';
+import { isDevelopment } from '@/utils/featureFlags';
 
 const mantras = [
   {
@@ -38,7 +39,7 @@ const MantrasPage = () => {
   const [audioErrors, setAudioErrors] = useState<Record<string, boolean>>({});
 
   // Hide mantras page in production
-  if (process.env.NODE_ENV !== 'development') {
+  if (!isDevelopment()) {
     return (
       <PageLayout title="Page Not Available">
         <div className="container mx-auto px-4 py-12">

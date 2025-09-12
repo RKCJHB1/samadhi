@@ -14,7 +14,7 @@ nav a {
 /* Add bevel effect to navbar */
 nav {
   position: relative;
-  box-shadow: 
+  box-shadow:
     inset -2px -2px var(--bevel-size) rgba(0, 0, 0, 0.1),
     inset 2px 2px var(--bevel-size) rgba(255, 255, 255, 0.5),
     0 2px var(--bevel-size) rgba(0, 0, 0, 0.05);
@@ -64,7 +64,7 @@ nav {
 /* Add bevel effect to dropdown menus */
 .dropdown-content {
   border-radius: 0.5rem;
-  box-shadow: 
+  box-shadow:
     inset -1px -1px 3px rgba(0, 0, 0, 0.1),
     inset 1px 1px 3px rgba(255, 255, 255, 0.5),
     0 4px 6px rgba(0, 0, 0, 0.1);
@@ -109,5 +109,41 @@ nav {
   font-weight: 500;
   background-color: rgba(241, 169, 18, 0.05);
 }
+
+
+/* Translation navbar link styling (scoped to avoid conflicts with global .nav-link rules) */
+.t-nav-link {
+  position: relative;
+  transition: color 0.4s ease;
+  letter-spacing: 0.5px;
+  text-decoration: none !important;
+}
+
+.t-nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--active-color);
+  transition: width 0.4s ease;
+}
+
+.t-nav-link:hover::after,
+.t-nav-link.active::after {
+  width: 80%;
+}
+
+.t-nav-link.active {
+  color: var(--active-color);
+  font-weight: 500;
+}
+
+/* Default color for translation navbar links */
+.t-nav-link { color: #1f2937; /* tailwind gray-800 */ }
+.t-nav-link:hover { color: #f59e0b; /* spiritual-600-ish */ }
+
 
 

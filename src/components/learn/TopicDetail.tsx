@@ -6,6 +6,7 @@ import SectionHeader from '../shared/SectionHeader';
 import Button from '../shared/Button';
 import LearningResources from './LearningResources';
 import { enhancedLessonsData } from '../../data/lessonsDataNew';
+import topicsData from '../../data/topicsData';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 interface TopicDetailProps {
@@ -15,6 +16,9 @@ interface TopicDetailProps {
 const TopicDetail: React.FC<TopicDetailProps> = ({ topicId }) => {
   // Find the topic data from enhanced lessons data
   const topicData = enhancedLessonsData.find(t => t.topicId === topicId);
+
+  // Get topic metadata (including image) from topicsData
+  const topicMetadata = topicsData[topicId];
 
   if (!topicData) {
     return (
@@ -41,11 +45,34 @@ const TopicDetail: React.FC<TopicDetailProps> = ({ topicId }) => {
           Back to Learning Centre
         </Link>
 
-        <SectionHeader
-          title={topicData.topicName}
-          subtitle={`Explore ${topicData.lessons.length} comprehensive lessons in ${topicData.topicName.toLowerCase()}`}
-          alignment="left"
-        />
+        {/* Topic Hero Section with Image */}
+        {topicMetadata && topicMetadata.image && (
+          <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
+            <div className="h-64 md:h-80 bg-gradient-to-r from-spiritual-500/20 to-indian-saffron/20">
+              <img
+                src={topicMetadata.image}
+                alt={topicData.topicName}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">{topicData.topicName}</h1>
+                <p className="text-xl opacity-90">
+                  {topicMetadata.description || `Explore ${topicData.lessons.length} comprehensive lessons in ${topicData.topicName.toLowerCase()}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Fallback header if no image */}
+        {(!topicMetadata || !topicMetadata.image) && (
+          <SectionHeader
+            title={topicData.topicName}
+            subtitle={`Explore ${topicData.lessons.length} comprehensive lessons in ${topicData.topicName.toLowerCase()}`}
+            alignment="left"
+          />
+        )}
 
         {/* Lessons Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">

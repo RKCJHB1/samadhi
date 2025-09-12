@@ -6,13 +6,27 @@ interface SocialShareButtonsProps {
   title?: string;
   description?: string;
   className?: string;
-  path?: string; // Optional path to use for production URL
+  path?: string; // Optional path to use for absolute URL composition
 }
+
+const getSiteOrigin = () => {
+  const envOrigin = import.meta.env.VITE_SITE_ORIGIN as string | undefined;
+  if (envOrigin) return envOrigin.replace(/\/$/, ''); // trim trailing slash
+  // Fallbacks: use production domain in dev if localhost, else current origin
+  if (typeof window !== 'undefined') {
+    const { origin, hostname } = window.location;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.endsWith('.local')) {
+      return 'https://ramakrishna-johannesburg.org.za';
+    }
+    return origin;
+  }
+  return 'https://ramakrishna-johannesburg.org.za';
+};
 
 const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   url,
-  title = 'Check out this game on Ramakrishna Centre, Johannesburg',
-  description = 'I found this interesting game on the Ramakrishna Centre, Johannesburg website.',
+  title = 'Check out this content on Ramakrishna Centre, Johannesburg',
+  description = 'I found this interesting page on the Ramakrishna Centre, Johannesburg website.',
   className = '',
   path,
 }) => {
@@ -21,14 +35,19 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
     // If a specific URL is provided, use that
     if (url) return url;
 
-    // If we're in a local/development environment and a path is provided,
-    // construct a production URL to share instead of localhost
-    if (window.location.hostname === 'localhost' && path) {
-      return `https://ramakrishna-johannesburg.org.za${path}`;
+    const origin = getSiteOrigin();
+
+    // If a path is provided, compose an absolute URL using the configured origin
+    if (path) {
+      const cleanPath = path.startsWith('/') ? path : `/${path}`;
+      return `${origin}${cleanPath}`;
     }
 
     // Otherwise use the current URL
-    return window.location.href;
+    if (typeof window !== 'undefined') return window.location.href;
+
+    // SSR safety fallback
+    return `${origin}/`;
   };
 
   const shareUrl = getShareUrl();

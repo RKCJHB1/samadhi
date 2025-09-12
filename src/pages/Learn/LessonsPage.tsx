@@ -7,6 +7,7 @@ import { ArrowLeft, Music, BookOpen } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { lessonsData } from '../../data/lessonsData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { isDevelopment } from '@/utils/featureFlags';
 
 const LessonsPage = () => {
   // Sample mantras for display
@@ -36,40 +37,40 @@ const LessonsPage = () => {
 
   return (
     <PageLayout title="Lessons">
-      <PageHeader 
-        title="Learning Resources" 
+      <PageHeader
+        title="Learning Resources"
         subtitle="Lessons and mantras to deepen your understanding"
         backgroundImage="https://images.unsplash.com/photo-1590012314707-68e797908069?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80"
       />
-      
+
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           <Link to="/learn" className="inline-flex items-center text-spiritual-500 hover:text-spiritual-600 mb-8">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Learning Centre
           </Link>
-          
+
           <Tabs defaultValue="lessons" className="w-full">
-            <TabsList className={`grid w-full ${process.env.NODE_ENV === 'development' ? 'grid-cols-2' : 'grid-cols-1'} mb-8`}>
+            <TabsList className={`grid w-full ${isDevelopment() ? 'grid-cols-2' : 'grid-cols-1'} mb-8`}>
               <TabsTrigger value="lessons" className="text-lg">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Lessons
               </TabsTrigger>
               {/* DEVELOPMENT ONLY - Mantras tab hidden from production */}
-              {process.env.NODE_ENV === 'development' && (
+              {isDevelopment() && (
                 <TabsTrigger value="mantras" className="text-lg">
                   <Music className="w-5 h-5 mr-2" />
                   Mantras (Dev)
                 </TabsTrigger>
               )}
             </TabsList>
-            
+
             <TabsContent value="lessons">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 {lessonsData.map((lessonGroup) => (
                   <div key={lessonGroup.topicId} className="space-y-4">
                     <h2 className="text-2xl font-heading font-semibold">{lessonGroup.topicName}</h2>
-                    
+
                     {lessonGroup.lessons.map((lesson) => (
                       <Card key={lesson.id} className="hover:shadow-md transition-shadow cursor-pointer bg-gradient-to-br from-indian-cream to-white border border-indian-saffron">
                         <Link to={`/learn/lessons/${lessonGroup.topicId}/${lesson.id}`}>
@@ -84,9 +85,9 @@ const LessonsPage = () => {
                 ))}
               </div>
             </TabsContent>
-            
+
             {/* DEVELOPMENT ONLY - Mantras content hidden from production */}
-            {process.env.NODE_ENV === 'development' && (
+            {isDevelopment() && (
               <TabsContent value="mantras">
                 <div className="space-y-8">
                   <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">

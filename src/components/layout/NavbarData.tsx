@@ -6,7 +6,7 @@ export interface NavItem {
 }
 
 export const navigation: NavItem[] = [
-  { name: 'Home', href: '/' },
+
   {
     name: 'About',
     href: '/about',
@@ -31,12 +31,11 @@ export const navigation: NavItem[] = [
 
   { name: 'New Ashram Project', href: '/new-ashram-project' },
   {
-    name: 'Learn',
-    href: '/learn',
-    dropdown: [
-      { name: 'Games', href: '/learn/games' },
-    ]
+    name: 'Hinduism',
+    href: '/learn'
   },
+  { name: 'Read', href: '/read' },
+
   { name: 'Gallery', href: '/gallery' },
   { name: 'Donate', href: '/donate' },
   { name: 'Contact', href: '/contact' },

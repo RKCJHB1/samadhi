@@ -10,10 +10,16 @@ import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { popularLanguages } from '@/data/languages';
+import { Plus, X } from 'lucide-react';
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedLangCode, setSelectedLangCode] = useState<string>('');
+  const [languageProficiency, setLanguageProficiency] = useState<Array<{ code: string; level: 'Beginner'|'Fluent'|'Native/Academic' }>>([]);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +27,7 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  
+
   const from = location.state?.from?.pathname || '/';
 
   React.useEffect(() => {
@@ -67,7 +73,8 @@ const AuthPage = () => {
       setLoading(true);
       await signUp(email, password, {
         firstName,
-        lastName
+        lastName,
+        languageProficiency,
       });
       toast({
         title: "Account created",
@@ -105,9 +112,9 @@ const AuthPage = () => {
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
-                        type="email" 
+                      <Input
+                        id="email"
+                        type="email"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -116,9 +123,9 @@ const AuthPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input 
-                        id="password" 
-                        type="password" 
+                      <Input
+                        id="password"
+                        type="password"
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -135,8 +142,8 @@ const AuthPage = () => {
                     <div className="grid gap-4 grid-cols-2">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input 
-                          id="firstName" 
+                        <Input
+                          id="firstName"
                           placeholder="First name"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
@@ -145,8 +152,8 @@ const AuthPage = () => {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input 
-                          id="lastName" 
+                        <Input
+                          id="lastName"
                           placeholder="Last name"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
@@ -156,9 +163,9 @@ const AuthPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-email">Email</Label>
-                      <Input 
-                        id="signup-email" 
-                        type="email" 
+                      <Input
+                        id="signup-email"
+                        type="email"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -167,15 +174,87 @@ const AuthPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-password">Password</Label>
-                      <Input 
-                        id="signup-password" 
-                        type="password" 
+                      <Input
+                        id="signup-password"
+                        type="password"
                         placeholder="Create a password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                     </div>
+
+                    <div className="space-y-2 pt-2">
+                      <Label>Language proficiency (for translation project)</Label>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <Select value={selectedLangCode} onValueChange={setSelectedLangCode}>
+                          <SelectTrigger className="w-full sm:w-[260px] bg-white">
+                            <SelectValue placeholder="Select a language" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {popularLanguages
+                              .filter(l => !languageProficiency.some(p => p.code === l.code))
+                              .map(l => (
+                                <SelectItem key={l.code} value={l.code}>{l.nativeName || l.name}</SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            if (!selectedLangCode) return;
+                            if (languageProficiency.some(p => p.code === selectedLangCode)) return;
+                            setLanguageProficiency([...languageProficiency, { code: selectedLangCode, level: 'Fluent' }]);
+                            setSelectedLangCode('');
+                          }}
+                        >
+                          <Plus className="h-4 w-4 mr-1" /> Add language
+                        </Button>
+                      </div>
+
+                      {languageProficiency.length > 0 && (
+                        <div className="mt-2 space-y-2">
+                          {languageProficiency.map((lp, idx) => {
+                            const lang = popularLanguages.find(l => l.code === lp.code);
+                            return (
+                              <div key={lp.code} className="flex flex-col sm:flex-row items-start sm:items-center gap-2 border rounded-md p-2 bg-gradient-to-br from-white to-indian-cream/30">
+                                <div className="flex-1 text-sm font-medium">
+                                  {lang ? (lang.nativeName || lang.name) : lp.code}
+                                </div>
+                                <Select
+                                  value={lp.level}
+                                  onValueChange={(val) => {
+                                    const next = [...languageProficiency];
+                                    next[idx] = { ...next[idx], level: val as 'Beginner'|'Fluent'|'Native/Academic' };
+                                    setLanguageProficiency(next);
+                                  }}
+                                >
+                                  <SelectTrigger className="w-[220px] bg-white">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Beginner">Beginner</SelectItem>
+                                    <SelectItem value="Fluent">Fluent</SelectItem>
+                                    <SelectItem value="Native/Academic">Native/Academic</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setLanguageProficiency(languageProficiency.filter((p) => p.code !== lp.code));
+                                  }}
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
                     <Button type="submit" className="w-full bg-indian-saffron hover:bg-indian-saffron/90" disabled={loading}>
                       {loading ? "Creating account..." : "Create Account"}
                     </Button>

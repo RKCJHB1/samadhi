@@ -17,6 +17,13 @@ export const featureFlags = {
 
 // Helper function to check if we're in development
 export const isDevelopment = () => {
+  // Treat localhost and 127.0.0.1 as development even for production builds
+  try {
+    if (typeof window !== 'undefined') {
+      const h = window.location.hostname;
+      if (h === 'localhost' || h === '127.0.0.1') return true;
+    }
+  } catch {}
   return import.meta.env.DEV || featureFlags.isDevMode;
 };
 

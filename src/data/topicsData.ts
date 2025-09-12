@@ -1,6 +1,43 @@
 
 // Mock data for topic structure
 const topicsData = {
+  'hindu-philosophy': {
+    title: 'Hindu Philosophy',
+    description: 'Foundational principles and ideas that form the basis of Hindu thought',
+    image: 'https://images.unsplash.com/photo-1507692812231-52e2cca3e4c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    subtopics: [
+      {
+        id: 'dharma',
+        title: 'Dharma',
+        description: 'The concept of cosmic order, righteousness, and duty'
+      },
+      {
+        id: 'karma',
+        title: 'Karma',
+        description: 'The law of cause and effect governing all actions'
+      },
+      {
+        id: 'samsara',
+        title: 'Samsara',
+        description: 'The continuous cycle of birth, death, and rebirth'
+      },
+      {
+        id: 'moksha',
+        title: 'Moksha',
+        description: 'Liberation from the cycle of rebirth and suffering'
+      },
+      {
+        id: 'brahman',
+        title: 'Brahman',
+        description: 'The ultimate reality and supreme cosmic power'
+      },
+      {
+        id: 'atman',
+        title: 'Atman',
+        description: 'The individual soul or self'
+      }
+    ]
+  },
   'core-concepts': {
     title: 'Core Concepts',
     description: 'Foundational principles and ideas that form the basis of Hindu thought',
@@ -111,6 +148,18 @@ const topicsData = {
         description: 'The remover of obstacles and god of beginnings'
       }
     ]
+  },
+  'holy-trinity': {
+    title: 'The Holy Trinity',
+    description: 'Learn about Sri Ramakrishna, Sri Sarada Devi, and Swami Vivekananda',
+    image: 'https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    subtopics: []
+  },
+  'practices': {
+    title: 'Spiritual Practices',
+    description: 'Methods for spiritual growth and development including festivals, meditation, and daily practices',
+    image: 'https://images.unsplash.com/photo-1544396821-4dd40b938ad3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    subtopics: []
   },
   'philosophical-schools': {
     title: 'Philosophical Schools',

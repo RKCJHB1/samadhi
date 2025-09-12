@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    strictPort: true, // fail if 8080 is taken, don't auto-switch
     historyApiFallback: true, // Ensures React Router handles dynamic routes
   },
   build: {

@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
@@ -38,6 +38,12 @@ import WelcomeReceptionInvitation from "./pages/Services/WelcomeReceptionInvitat
 import NewAshramProjectPage from "./pages/NewAshramProject/NewAshramProjectPage";
 import VisionPage from "./pages/NewAshramProject/VisionPage";
 import TimelinePage from "./pages/NewAshramProject/TimelinePage";
+
+// Dev helper to log env flags
+const DevFlag: React.FC = () => {
+  return null;
+};
+
 import FundraisingPage from "./pages/NewAshramProject/FundraisingPage";
 
 // Import Learn pages
@@ -64,8 +70,28 @@ import QuotesPage from "./pages/Learn/QuotesPage";
 import WordScramblePage from "./pages/Learn/WordScramblePage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 
+import ReadIndexPage from "./pages/Learn/ReadIndexPage";
+import ReadLecturePage from "./pages/Learn/ReadLecturePage";
+import ReadEnglishOnlyPage from "./pages/Learn/ReadEnglishOnlyPage";
+
+import ReadLanguageHomePage from "./pages/Learn/ReadLanguageHomePage";
+import ReadStatsPage from "./pages/Learn/ReadStatsPage";
 import LoginPage from "@/pages/Auth/LoginPage";
+import ReadLanguagesPage from "./pages/Learn/ReadLanguagesPage";
+import ReadLanguageStatsPage from "./pages/Learn/ReadLanguageStatsPage";
+import RequestLanguagePage from "./pages/Learn/RequestLanguagePage";
 import ProfilePage from "./pages/User/ProfilePage";
+import SupabaseLoginPage from "./pages/Auth/SupabaseLoginPage";
+import SupabaseSignupPage from "./pages/Auth/SupabaseSignupPage";
+import TranslationsModerationPage from "./pages/Moderation/TranslationsModerationPage";
+
+
+import ReadHomePage from "./pages/Learn/ReadHomePage";
+import ReadAdminDashboardPage from "./pages/Learn/ReadAdminDashboardPage";
+import ReadProfilePage from "./pages/Learn/ReadProfilePage";
+import ReadFaqPage from "./pages/Learn/ReadFaqPage";
+import ReadPublicProfilePageWrapper from "./pages/Learn/ReadPublicProfilePageWrapper";
+
 
 // Import Dashboard pages
 import StudentDashboard from "./pages/Dashboard/StudentDashboard";
@@ -85,6 +111,12 @@ import BlocksPage from "./pages/BlocksPage";
 
 const queryClient = new QueryClient();
 
+const ConditionalNavbar: React.FC = () => {
+  const location = useLocation();
+  if (location.pathname.startsWith('/read')) return null;
+  return <Navbar />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -92,7 +124,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Navbar />
+          <ConditionalNavbar />
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<Index />} />
@@ -146,6 +178,29 @@ const App = () => (
               <Route path="/learn/games/quotes" element={<QuotesPage />} />
               <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
 
+
+	              {/* Read/Translate (Dev-only) */}
+	              <Route path="/read" element={<ReadHomePage />} />
+              <Route path="/read/lectures" element={<ReadIndexPage />} />
+              <Route path="/read/languages" element={<ReadLanguagesPage />} />
+              <Route path="/read/languages/:langCode/stats" element={<ReadLanguageStatsPage />} />
+              <Route path="/read/request/:languageCode" element={<RequestLanguagePage />} />
+	              <Route path="/read/fr" element={<ReadLanguageHomePage />} />
+              <Route path="/read/faq" element={<ReadFaqPage />} />
+
+
+	              <Route path="/read/stats" element={<ReadStatsPage />} />
+              <Route path="/read/admin" element={<ReadAdminDashboardPage />} />
+
+	              <Route path="/read/profile" element={<ReadProfilePage />} />
+	              {/* Support readable profile URLs; :userId may be a UUID, username, or a name slug */}
+              <Route path="/user/:userId" element={<ReadPublicProfilePageWrapper />} />
+              {/* Back-compat redirect from old path */}
+	              <Route path="/read/user/:userId" element={<Navigate to="/user/:userId" replace />} />
+
+	              <Route path="/read/:lectureId" element={<ReadLecturePage />} />
+	              <Route path="/read/:lectureId/english" element={<ReadEnglishOnlyPage />} />
+
             {/* Authentication and User Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={
@@ -153,6 +208,12 @@ const App = () => (
                 <ProfilePage />
               </ProtectedRoute>
             } />
+
+            {/* Supabase Auth and Moderation */}
+            <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
+            <Route path="/auth/login" element={<SupabaseLoginPage />} />
+            <Route path="/auth/signup" element={<SupabaseSignupPage />} />
+            <Route path="/moderation/translations" element={<TranslationsModerationPage />} />
             {/* Removed ProtectedRoute for testing */}
             <Route path="/admin" element={<AdminDashboard />} />
 

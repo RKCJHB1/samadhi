@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
-import gsap from 'gsap';
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -8,37 +7,21 @@ const ScrollToTop = () => {
   // Show button when page is scrolled down
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 500) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      if (window.scrollY > 500) setIsVisible(true);
+      else setIsVisible(false);
     };
-
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Scroll to top with animation
+  // Scroll to top with native smooth scroll (avoid GSAP plugin requirements)
   const scrollToTop = () => {
-    // Use GSAP to animate scrolling to top
-    gsap.to(window, {
-      scrollTo: { y: 0 },
-      duration: 0.8,
-      ease: 'power3.inOut'
-    });
-  };
-
-  // Animate button appearance
-  useEffect(() => {
-    if (isVisible) {
-      gsap.fromTo(
-        '#scroll-to-top-btn',
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.7)' }
-      );
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      window.scrollTo(0, 0);
     }
-  }, [isVisible]);
+  };
 
   return (
     <>

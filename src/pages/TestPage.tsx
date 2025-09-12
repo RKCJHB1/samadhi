@@ -7,7 +7,7 @@ import Button from '../components/shared/Button';
 import { Link } from 'react-router-dom';
 import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Mail, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { lessonsData } from '../data/lessonsData';
+import { enhancedLessonsData as lessonsData } from '../data/lessonsDataNew';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../components/audio/SyncedAudioPlayer';

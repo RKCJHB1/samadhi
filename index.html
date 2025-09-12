@@ -18,6 +18,32 @@
     <meta name="twitter:site" content="@RamakrishnaSA" />
     <meta name="twitter:image" content="/lovable-uploads/icon.png" />
 
+
+    <!-- Set absolute OG/Twitter URLs at runtime using configured origin -->
+    <script type="module">
+      const origin = (import.meta.env.VITE_SITE_ORIGIN ?? window.location.origin).replace(/\/$/, '');
+      const absoluteImage = `${origin}/lovable-uploads/icon.png`;
+      const ogImage = document.querySelector('meta[property="og:image"]');
+      if (ogImage) ogImage.setAttribute('content', absoluteImage);
+      const twImage = document.querySelector('meta[name="twitter:image"]');
+      if (twImage) twImage.setAttribute('content', absoluteImage);
+      // Ensure og:url is absolute and current
+      let ogUrl = document.querySelector('meta[property="og:url"]');
+      if (!ogUrl) {
+        ogUrl = document.createElement('meta');
+        ogUrl.setAttribute('property', 'og:url');
+        document.head.appendChild(ogUrl);
+      }
+      ogUrl.setAttribute('content', window.location.href.split('#')[0]);
+      // Optional: site_name for better previews
+      let ogSite = document.querySelector('meta[property="og:site_name"]');
+      if (!ogSite) {
+        ogSite = document.createElement('meta');
+        ogSite.setAttribute('property', 'og:site_name');
+        ogSite.setAttribute('content', 'Ramakrishna Centre of South Africa');
+        document.head.appendChild(ogSite);
+      }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16959993170"></script>
     <script>

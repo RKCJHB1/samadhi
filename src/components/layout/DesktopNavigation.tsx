@@ -29,15 +29,29 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
     <div className="hidden md:block">
       <div className="flex items-center">
         {navigation.map((item) => {
-          return item.dropdown ? (
-            <NavbarDropdown
+          if (item.dropdown) {
+            return (
+              <NavbarDropdown
+                key={item.name}
+                item={item}
+                isActive={isActive}
+                isOpen={activeDropdown === item.name}
+                onMouseEnter={() => setActiveDropdown(item.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
+              />
+            );
+          }
+
+          const isExternal = item.href.startsWith('http');
+
+          return isExternal ? (
+            <a
               key={item.name}
-              item={item}
-              isActive={isActive}
-              isOpen={activeDropdown === item.name}
-              onMouseEnter={() => setActiveDropdown(item.name)}
-              onMouseLeave={() => setActiveDropdown(null)}
-            />
+              href={item.href}
+              className={`nav-link px-4 py-2 text-sm font-medium tracking-wide ${item.name === 'New Ashram Project' ? 'long-item' : ''}`}
+            >
+              {item.name}
+            </a>
           ) : (
             <Link
               key={item.name}

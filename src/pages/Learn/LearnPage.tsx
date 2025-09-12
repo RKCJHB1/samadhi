@@ -14,6 +14,8 @@ import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
 
 
+
+
 const LearnPage = () => {
   // State for managing active tabs
   const [activeMainTab, setActiveMainTab] = useState('lessons');
@@ -38,7 +40,7 @@ const LearnPage = () => {
         setActiveLessonTab(hash);
       }
       // If hash matches a main tab, set it
-      else if (['lessons', 'games'].includes(hash)) { // 'mantras' removed - hidden
+      else if (['lessons', 'games'].includes(hash)) {
         setActiveMainTab(hash);
       }
     }
@@ -87,14 +89,7 @@ const LearnPage = () => {
   ];
   return (
     <PageLayout title="Hinduism for Children">
-        <div className="flex items-center justify-center py-12 bg-gradient-to-br from-indian-cream to-white">
-          <div className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center">
-            <h1 className="text-3xl font-heading font-bold mb-4 text-black">Hinduism for Children</h1>
-            <p className="text-gray-700">
-              Educational resources for understanding Hindu philosophy and practices
-            </p>
-          </div>
-        </div>
+
 
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4">
@@ -115,18 +110,19 @@ const LearnPage = () => {
               subtitle="Discover our collection of lessons on Hindu philosophy and deities"
             />
             <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-              <TabsList className={`grid w-full ${process.env.NODE_ENV === 'development' ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
+              <TabsList className={`grid w-full ${import.meta.env.DEV ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
                 </TabsTrigger>
                 {/* DEVELOPMENT ONLY - Mantras tab hidden from production */}
-                {process.env.NODE_ENV === 'development' && (
+                {import.meta.env.DEV && (
                   <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                     <Music className="w-5 h-5 mr-2" />
                     Mantras (Dev)
                   </TabsTrigger>
                 )}
+
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
                   Games
@@ -276,7 +272,7 @@ const LearnPage = () => {
               </TabsContent>
 
               {/* DEVELOPMENT ONLY - Mantras content hidden from production */}
-              {process.env.NODE_ENV === 'development' && (
+              {import.meta.env.DEV && (
                 <TabsContent value="mantras">
                   <div className="space-y-8">
                     <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
@@ -329,6 +325,9 @@ const LearnPage = () => {
                   </div>
                 </TabsContent>
               )}
+
+
+
 
               <TabsContent value="games">
                 <div className="space-y-8">

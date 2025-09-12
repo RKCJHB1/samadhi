@@ -66,18 +66,26 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
                   </div>
                 )}
               </>
-            ) : (
-              <Link
-                to={item.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium mobile-nav-item ${
-                  isActive(item.href)
-                    ? 'text-spiritual-500 bg-spiritual-50 active'
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                {item.name}
-              </Link>
-            )}
+            ) : item.href.startsWith('http') ? (
+                <a
+                  href={item.href}
+                  className={`block px-3 py-2 rounded-md text-base font-medium mobile-nav-item text-gray-700 hover:text-gray-900 hover:bg-gray-50`}
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  to={item.href}
+                  className={`block px-3 py-2 rounded-md text-base font-medium mobile-nav-item ${
+                    isActive(item.href)
+                      ? 'text-spiritual-500 bg-spiritual-50 active'
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )}
+
           </div>
         ))}
       </div>

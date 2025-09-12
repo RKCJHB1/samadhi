@@ -10,9 +10,9 @@ interface ProtectedRouteProps {
   requireTeacher?: boolean; // Added requireTeacher prop
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
-  requireAdmin = false, 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requireAdmin = false,
   requireModerator = false,
   requireTeacher = false // Added requireTeacher prop
 }) => {
@@ -24,7 +24,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!user) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
+    return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
   if (requireAdmin && !isAdmin) {
@@ -39,7 +39,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (requireTeacher && !isTeacher) {
     // Redirect non-teachers trying to access teacher routes
     // Consider redirecting to a specific 'unauthorized' page or back to home
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

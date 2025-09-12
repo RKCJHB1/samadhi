@@ -69,6 +69,7 @@ export class ContentBuilder {
     try {
       // Check if we have markdown versions of lessons
       const markdownLessons = {
+        'dharma-intro': () => this.loadDharmaIntroFromMarkdown(),
         'mother-saraswati': () => this.loadMotherSaraswatiFromMarkdown(),
         'introduction-sri-ramakrishna': () => this.loadIntroductionSriRamakrishnaFromMarkdown(),
         'childhood-days-sri-ramakrishna': () => this.loadChildhoodDaysSriRamakrishnaFromMarkdown(),
@@ -124,6 +125,19 @@ export class ContentBuilder {
     } catch (error) {
       console.error(`Error loading markdown lesson ${lessonId}:`, error);
       return null;
+    }
+  }
+
+  // Load Dharma Introduction lesson from markdown
+  private async loadDharmaIntroFromMarkdown(): Promise<Lesson> {
+    try {
+      const response = await fetch('/content/lessons/hindu-philosophy/dharma-intro.md');
+      if (!response.ok) throw new Error('Failed to load dharma-intro content');
+      const markdown = await response.text();
+      return this.convertMarkdownToHtml(markdown);
+    } catch (error) {
+      console.error('Error loading dharma-intro content:', error);
+      return this.createErrorLesson('dharma-intro', 'Introduction to Dharma');
     }
   }
 
