@@ -181,19 +181,38 @@ const ReadAdminDashboardPage: React.FC = () => {
     return () => { cancelled = true; };
   }, []);
 
-  const totals = remote
-    ? {
+  const totals = useMemo(() => {
+    if (remote) {
+      const approvedSet = new Set(effectiveApprovedLangs || []);
+      if (approvedSet.size > 0) {
+        const list = (remote.languageStats || []).filter(ls => approvedSet.has(ls.lang));
+        const sum = list.reduce((acc, ls) => {
+          acc.total += ls.total || 0;
+          acc.approved += ls.approved || 0;
+          acc.pending += ls.pending || 0;
+          return acc;
+        }, { total: 0, approved: 0, pending: 0 });
+        return {
+          totalTranslations: sum.total,
+          totalApproved: sum.approved,
+          totalPending: sum.pending,
+          languages: list.length,
+        };
+      }
+      return {
         totalTranslations: remote.totalTranslations,
         totalApproved: remote.totalApproved,
         totalPending: remote.totalPending,
         languages: remote.languageStats.length,
-      }
-    : {
-        totalTranslations: localTotal,
-        totalApproved: localTotal,
-        totalPending: 0,
-        languages: 1, // local store only guarantees EN as baseline
       };
+    }
+    return {
+      totalTranslations: localTotal,
+      totalApproved: localTotal,
+      totalPending: 0,
+      languages: 1, // local store only guarantees EN as baseline
+    };
+  }, [remote, effectiveApprovedLangs, localTotal]);
 
   return (
     <TranslationLayout title="Translation Admin Dashboard">
