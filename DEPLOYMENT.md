@@ -50,7 +50,7 @@ The following features are controlled by environment variables:
 - **3D Model Viewer**: Disabled in production (`VITE_ENABLE_3D_MODEL_VIEWER=false`)
 - **Authentication**: Disabled in production (`VITE_ENABLE_AUTH_FEATURES=false`)
 - **Fundraising**: Enabled in production (`VITE_ENABLE_FUNDRAISING_FEATURES=true`)
-- **Reading Section**: Enabled in production (`VITE_ENABLE_READING_SECTION=true`)
+- **Reading Section**: Enabled in production (`VITE_ENABLE_READING_SECTION=true`) ✅
 - **Mantras**: Hidden in production (controlled by `NODE_ENV`)
 
 ### Development vs Production
