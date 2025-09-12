@@ -12,7 +12,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { fetchReadingOverviewCounts } from '@/services/translationsSupabase';
+import { fetchReadingOverviewCounts, getApprovedLanguageCodes } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
 import {
   Globe,
@@ -43,13 +43,20 @@ const ReadStatsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const highlightLang = searchParams.get('lang');
   const [readingOverview, setReadingOverview] = useState<{ totalRegistered: number; totalReaders: number; activeReaders24h: number; activeReaders3d: number; activeReaders7d: number; totalSessions: number } | null>(null);
+  const [approvedLangs, setApprovedLangs] = useState<Set<string> | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const overview = await fetchReadingOverviewCounts();
-        if (!cancelled) setReadingOverview(overview);
+        const [overview, approved] = await Promise.all([
+          fetchReadingOverviewCounts(),
+          getApprovedLanguageCodes(),
+        ]);
+        if (!cancelled) {
+          setReadingOverview(overview);
+          setApprovedLangs(approved);
+        }
       } catch {}
     })();
     return () => { cancelled = true; };
@@ -136,6 +143,19 @@ const ReadStatsPage: React.FC = () => {
     recentActivity: [],
     topContributors: []
   };
+
+  // Filter per-language stats to show only approved/effective languages
+  const filteredLanguageStats = useMemo(() => {
+    const list = displayStats.languageStats || [];
+    if (!approvedLangs) return list;
+    return list.filter(ls => approvedLangs.has(ls.lang));
+  }, [displayStats, approvedLangs]);
+
+  const filteredRecentActivity = useMemo(() => {
+    if (!remoteStats) return [] as typeof remoteStats.recentActivity;
+    if (!approvedLangs) return remoteStats.recentActivity;
+    return remoteStats.recentActivity.filter(a => approvedLangs.has(a.lang));
+  }, [remoteStats, approvedLangs]);
 
   if (loading) {
     return (
@@ -243,7 +263,7 @@ const ReadStatsPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-purple-600">Languages</p>
-                      <p className="text-2xl font-bold text-purple-900">{displayStats.languageStats.length}</p>
+                      <p className="text-2xl font-bold text-purple-900">{filteredLanguageStats.length}</p>
                     </div>
                     <LanguagesIcon className="h-8 w-8 text-purple-500" />
                   </div>
@@ -347,11 +367,11 @@ const ReadStatsPage: React.FC = () => {
                   <p>
                     Completion percentages are per-language: a translation in one language does not count toward another.
                   </p>
-                  {displayStats.languageStats.length === 0 ? (
+                  {filteredLanguageStats.length === 0 ? (
                     <div className="text-sm text-gray-600">No translations yet.</div>
                   ) : (
                     <div className="space-y-3">
-                      {displayStats.languageStats.map((langStat) => {
+                      {filteredLanguageStats.map((langStat) => {
                         const langTotal = perLanguageCompleted.get(langStat.lang) || 0;
                         const pct = totalSentences ? Math.min(100, Math.round((langTotal / totalSentences) * 100)) : 0;
                         return (
@@ -399,17 +419,17 @@ const ReadStatsPage: React.FC = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <LanguagesIcon className="h-5 w-5" />
-                    Languages ({displayStats.languageStats.length})
+                    Languages ({filteredLanguageStats.length})
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {displayStats.languageStats.length === 0 ? (
+                  {filteredLanguageStats.length === 0 ? (
                     <div className="text-sm text-gray-600">No translations yet.</div>
                   ) : (
                     <div className="space-y-3">
                       {(() => {
                         // Sort languages to show highlighted language first
-                        const sortedStats = [...displayStats.languageStats];
+                        const sortedStats = [...filteredLanguageStats];
                         if (highlightLang) {
                           sortedStats.sort((a, b) => {
                             if (a.lang === highlightLang) return -1;
@@ -459,9 +479,9 @@ const ReadStatsPage: React.FC = () => {
                           );
                         });
                       })()}
-                      {displayStats.languageStats.length > 10 && (
+                      {filteredLanguageStats.length > 10 && (
                         <div className="text-sm text-gray-500 text-center pt-2">
-                          ... and {displayStats.languageStats.length - 10} more languages
+                          ... and {filteredLanguageStats.length - 10} more languages
                         </div>
                       )}
                     </div>
@@ -559,7 +579,7 @@ const ReadStatsPage: React.FC = () => {
             {remoteStats && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Activity */}
-                {remoteStats.recentActivity.length > 0 && (
+                {filteredRecentActivity.length > 0 && (
                   <Card className="border border-indian-saffron/30">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -569,7 +589,7 @@ const ReadStatsPage: React.FC = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        {remoteStats.recentActivity.map((activity, index) => (
+                        {filteredRecentActivity.map((activity, index) => (
                           <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <div>
                               <div className="font-medium">{getLanguageName(activity.lang)}</div>
