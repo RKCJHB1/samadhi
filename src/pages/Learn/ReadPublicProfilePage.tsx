@@ -249,7 +249,7 @@ const ReadPublicProfilePage: React.FC = () => {
                   <div className="mt-2">
                     <SocialShareButtons
                       path={`/user/${profile?.username || userId}`}
-                      title={"See how much I have read/translated Swami Vivekananda's Chicago Addresses! Join me!"}
+                      title={"See how much I have read/translated of\nSwami Vivekananda's Chicago Addresses!"}
                     />
                   </div>
 

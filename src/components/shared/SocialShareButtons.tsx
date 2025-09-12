@@ -7,6 +7,10 @@ interface SocialShareButtonsProps {
   description?: string;
   className?: string;
   path?: string; // Optional path to use for absolute URL composition
+  // Per-platform overrides
+  twitterText?: string;
+  whatsappText?: string;
+  facebookQuote?: string;
 }
 
 const getSiteOrigin = () => {
@@ -29,6 +33,9 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   description = 'I found this interesting page on the Ramakrishna Centre, Johannesburg website.',
   className = '',
   path,
+  twitterText,
+  whatsappText,
+  facebookQuote,
 }) => {
   // Determine the URL to share
   const getShareUrl = () => {
@@ -54,13 +61,27 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
 
   // Encode parameters for sharing
   const encodedUrl = encodeURIComponent(shareUrl);
-  const encodedTitle = encodeURIComponent(title);
-  const encodedDescription = encodeURIComponent(description);
+
+  // Platform-specific trimming: try to use the maximum allowed length
+  const trimToLength = (s: string, n: number) => (s && s.length > n ? `${s.slice(0, n - 1)}…` : s);
+
+  // Twitter/X: 280 characters for the text field
+  const twitterRaw = (twitterText ?? title ?? '').toString();
+  const twitterFinal = trimToLength(twitterRaw, 280);
+  const encodedTwitterText = encodeURIComponent(twitterFinal);
+
+  // WhatsApp: keep as long as possible (no trim by default)
+  const whatsappRaw = (whatsappText ?? title ?? '').toString();
+  const encodedWhatsAppText = encodeURIComponent(whatsappRaw);
+
+  // Facebook: add optional quote param (FB ignores message text in sharer)
+  const facebookQuoteRaw = (facebookQuote ?? title ?? '').toString();
+  const encodedFacebookQuote = encodeURIComponent(facebookQuoteRaw);
 
   // Share URLs for different platforms
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-  const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
-  const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedFacebookQuote}`;
+  const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTwitterText}`;
+  const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodedWhatsAppText}%20${encodedUrl}`;
 
   // Function to handle share button clicks
   const handleShareClick = (shareUrl: string) => {

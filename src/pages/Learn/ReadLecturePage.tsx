@@ -460,9 +460,9 @@ const ReadLecturePage: React.FC = () => {
                           <div className="mt-3 flex justify-end">
                             {(() => {
                               const base = (translitDraft || existingNative || s) as string;
-                              const words = base.trim().split(/\s+/).slice(0, 10).join(' ');
-                              const preview = words.length > 100 ? words.slice(0, 100) + '…' : words;
-                              const shareText = `Join me in translating the Chicago Addresses of Swami Vivekananda. ${preview}`;
+                              const full = base.trim();
+                              const italicQuoted = `“_${full}…_”`;
+                              const shareText = `Join me in translating the Chicago Addresses of Swami Vivekananda. ${italicQuoted}`;
                               return (
                                 <SocialShareButtons
                                   path={`/read/${lecture.id}?lang=${targetLang}#sent-${i}`}
