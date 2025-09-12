@@ -151,6 +151,28 @@ const ReadStatsPage: React.FC = () => {
     return list.filter(ls => approvedLangs.has(ls.lang));
   }, [displayStats, approvedLangs]);
 
+  // Totals aligned with approved/effective languages
+  const filteredTotals = useMemo(() => {
+    // If not filtering by approved languages, use the remote/global totals
+    if (!approvedLangs || approvedLangs.size === 0) {
+      return {
+        total: displayStats.totalTranslations || 0,
+        approved: displayStats.totalApproved || 0,
+        pending: displayStats.totalPending || 0,
+        rejected: displayStats.totalRejected || 0,
+      };
+    }
+    // Sum from per-language rows restricted to approved languages
+    const list = filteredLanguageStats || [];
+    return list.reduce((acc, ls) => {
+      acc.total += ls.total || 0;
+      acc.approved += ls.approved || 0;
+      acc.pending += ls.pending || 0;
+      acc.rejected += ls.rejected || 0;
+      return acc;
+    }, { total: 0, approved: 0, pending: 0, rejected: 0 });
+  }, [approvedLangs, displayStats, filteredLanguageStats]);
+
   const filteredRecentActivity = useMemo(() => {
     if (!remoteStats) return [] as typeof remoteStats.recentActivity;
     if (!approvedLangs) return remoteStats.recentActivity;
@@ -252,7 +274,7 @@ const ReadStatsPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-blue-600">Total Translations</p>
-                      <p className="text-2xl font-bold text-blue-900">{displayStats.totalTranslations.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-blue-900">{filteredTotals.total.toLocaleString()}</p>
                     </div>
                     <Globe className="h-8 w-8 text-blue-500" />
                   </div>
@@ -264,7 +286,7 @@ const ReadStatsPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-green-600">Approved</p>
-                      <p className="text-2xl font-bold text-green-900">{displayStats.totalApproved.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-green-900">{filteredTotals.approved.toLocaleString()}</p>
                     </div>
                     <CheckCircle className="h-8 w-8 text-green-500" />
                   </div>
@@ -276,7 +298,7 @@ const ReadStatsPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-yellow-600">Pending Review</p>
-                      <p className="text-2xl font-bold text-yellow-900">{displayStats.totalPending.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-yellow-900">{filteredTotals.pending.toLocaleString()}</p>
                     </div>
                     <Clock className="h-8 w-8 text-yellow-500" />
                   </div>
