@@ -416,3 +416,65 @@ returns table (
 $$ language sql stable security definer;
 GRANT EXECUTE ON FUNCTION public.get_reading_overview_counts() TO anon, authenticated;
 
+
+
+-- ========== READING TIME (DAILY AGGREGATE) ==========
+create table if not exists public.reading_time_daily (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  lecture_id text not null,
+  lang text not null,
+  day date not null default (now() at time zone 'utc')::date,
+  ms bigint not null default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  constraint reading_time_daily_pkey primary key (user_id, lecture_id, lang, day)
+);
+create index if not exists idx_reading_time_daily_user on public.reading_time_daily (user_id);
+create index if not exists idx_reading_time_daily_lecture on public.reading_time_daily (lecture_id);
+alter table public.reading_time_daily enable row level security;
+
+-- RLS: users can manage their own rows
+DROP POLICY IF EXISTS "User upsert own reading time" ON public.reading_time_daily;
+CREATE POLICY "User upsert own reading time" ON public.reading_time_daily FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+DROP POLICY IF EXISTS "User update own reading time" ON public.reading_time_daily;
+CREATE POLICY "User update own reading time" ON public.reading_time_daily FOR UPDATE USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "User read own reading time" ON public.reading_time_daily;
+CREATE POLICY "User read own reading time" ON public.reading_time_daily FOR SELECT USING (user_id = auth.uid());
+DROP POLICY IF EXISTS "User delete own reading time" ON public.reading_time_daily;
+CREATE POLICY "User delete own reading time" ON public.reading_time_daily FOR DELETE USING (user_id = auth.uid());
+
+-- Trigger to maintain updated_at
+DROP TRIGGER IF EXISTS set_updated_at_reading_time_daily ON public.reading_time_daily;
+CREATE TRIGGER set_updated_at_reading_time_daily BEFORE UPDATE ON public.reading_time_daily FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+
+-- RPC to record time (security definer not needed; relies on RLS and auth.uid())
+DROP FUNCTION IF EXISTS public.record_reading_time(text, text, bigint);
+CREATE FUNCTION public.record_reading_time(p_lecture_id text, p_lang text, p_delta_ms bigint)
+RETURNS boolean AS $$
+DECLARE
+  v_user uuid := auth.uid();
+  v_day date := (now() at time zone 'utc')::date;
+  v_delta bigint := GREATEST(0, LEAST(p_delta_ms, 600000)); -- clamp to 10 minutes max per call
+BEGIN
+  IF v_user IS NULL THEN
+    RETURN false;
+  END IF;
+  INSERT INTO public.reading_time_daily (user_id, lecture_id, lang, day, ms)
+  VALUES (v_user, p_lecture_id, p_lang, v_day, v_delta)
+  ON CONFLICT (user_id, lecture_id, lang, day)
+  DO UPDATE SET ms = public.reading_time_daily.ms + EXCLUDED.ms, updated_at = now();
+  RETURN true;
+END; $$ LANGUAGE plpgsql SECURITY INVOKER;
+GRANT EXECUTE ON FUNCTION public.record_reading_time(text, text, bigint) TO authenticated;
+
+-- Public aggregates for profiles (security definer to bypass RLS and expose only totals)
+DROP FUNCTION IF EXISTS public.get_user_reading_time_totals(uuid);
+CREATE FUNCTION public.get_user_reading_time_totals(p_user uuid)
+RETURNS TABLE(total_ms bigint) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT COALESCE(sum(ms), 0)::bigint AS total_ms
+  FROM public.reading_time_daily
+  WHERE user_id = p_user;
+END; $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+GRANT EXECUTE ON FUNCTION public.get_user_reading_time_totals(uuid) TO anon, authenticated;

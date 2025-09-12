@@ -1292,3 +1292,28 @@ export async function listMyReadingProgress(lang: string = 'en', limit = 5): Pro
     updatedAt: (row as any).updated_at as string,
   }));
 }
+
+// ---- Reading Time (daily aggregate) ----
+export async function recordReadingTime(lectureId: string, lang: string, deltaMs: number): Promise<boolean> {
+  const sb = getSupabase();
+  if (!sb) return false;
+  const user = await getCurrentUser();
+  if (!user) return false; // require login for server logging
+  const safe = Math.max(0, Math.min(Number(deltaMs || 0), 600000));
+  if (!safe) return true;
+  const { error } = await sb.rpc('record_reading_time', {
+    p_lecture_id: lectureId,
+    p_lang: lang,
+    p_delta_ms: safe,
+  } as any);
+  return !error;
+}
+
+export async function fetchUserReadingTimeTotal(userId: string): Promise<number> {
+  const sb = getSupabase();
+  if (!sb) return 0;
+  const { data, error } = await sb.rpc('get_user_reading_time_totals', { p_user: userId } as any);
+  if (error || !data || !Array.isArray(data) || data.length === 0) return 0;
+  const row = data[0] as any;
+  return Number(row.total_ms || 0);
+}

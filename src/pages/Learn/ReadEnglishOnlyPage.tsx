@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getLectureProgress, recordSentenceRead, addReadingDuration } from '@/store/reading';
-import { isSupabaseConfigured, upsertReadingProgress, getMyReadingProgressFor } from '@/services/translationsSupabase';
+import { isSupabaseConfigured, upsertReadingProgress, getMyReadingProgressFor, recordReadingTime } from '@/services/translationsSupabase';
 import { useToast } from '@/hooks/use-toast';
 import { featureFlags } from '@/utils/featureFlags';
 
@@ -63,6 +63,7 @@ const ReadEnglishOnlyPage: React.FC = () => {
       const timeSpent = now - startTimeRef.current;
       if (timeSpent > 0 && timeSpent < 60000) { // Only count reasonable time (< 1 minute)
         addReadingDuration(userId, lecture.id, timeSpent);
+        if (isSupabaseConfigured()) { void recordReadingTime(lecture.id, 'en', timeSpent); }
       }
       startTimeRef.current = now;
       lastIndexRef.current = index;

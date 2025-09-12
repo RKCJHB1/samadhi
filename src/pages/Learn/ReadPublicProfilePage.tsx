@@ -64,7 +64,7 @@ const ReadingStats: React.FC<{ userId: string }> = ({ userId }) => {
   );
 };
 
-import { getProfile, fetchComprehensiveStats, listProfiles, fetchUserApprovedContributions, fetchUserApprovedCounts, fetchUserApprovedRankPercentile, getApprovedLanguageCodes, type Profile, type TranslationStats } from '@/services/translationsSupabase';
+import { getProfile, fetchComprehensiveStats, listProfiles, fetchUserApprovedContributions, fetchUserApprovedCounts, fetchUserApprovedRankPercentile, getApprovedLanguageCodes, fetchUserReadingTimeTotal, type Profile, type TranslationStats } from '@/services/translationsSupabase';
 
 function extractUserId(param?: string): string | null {
   if (!param) return null;
@@ -105,6 +105,8 @@ const ReadPublicProfilePage: React.FC = () => {
   const [contributionList, setContributionList] = useState<Array<{ lectureId: string; sentenceIndex: number; lang: string; text: string; createdAt: string; updatedAt: string; }>>([]);
   const [approvedCounts, setApprovedCounts] = useState<{ totalApproved: number; todayApproved: number }>({ totalApproved: 0, todayApproved: 0 });
   const [percentile, setPercentile] = useState<{ rank: number; totalContributors: number; topPercent: number } | null>(null);
+
+  const [serverTotalMs, setServerTotalMs] = useState<number | null>(null);
 
   const page = Math.max(parseInt(searchParams.get('page') || '1', 10) || 1, 1);
   const pageSize = 10;
@@ -202,6 +204,11 @@ const ReadPublicProfilePage: React.FC = () => {
           setContributionList(filtered);
           setApprovedCounts(counts);
           setPercentile(percentile);
+      try {
+        const totalMs = await fetchUserReadingTimeTotal(resolvedUserId);
+        if (!cancelled) setServerTotalMs(totalMs);
+      } catch {}
+
         }
       } catch {}
     })();
@@ -274,6 +281,10 @@ const ReadPublicProfilePage: React.FC = () => {
                     {percentile && (
                       <div className="text-xs text-gray-600">Top ~{percentile.topPercent}% contributor (rank {percentile.rank} of {percentile.totalContributors})</div>
                     )}
+                    {serverTotalMs !== null && (
+                      <div className="text-xs text-gray-600">Reading time (server): {msToHMS(serverTotalMs)}</div>
+                    )}
+
                     {profile?.language_proficiency && profile.language_proficiency.length > 0 && (
                       <div className="pt-2">
                         <div className="font-medium text-gray-800 mb-1">Language proficiency</div>

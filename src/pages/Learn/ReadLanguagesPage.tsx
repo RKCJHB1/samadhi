@@ -104,7 +104,13 @@ const ReadLanguagesPage: React.FC = () => {
       if (a.percent !== b.percent) return b.percent - a.percent;
       return a.name.localeCompare(b.name);
     });
-  }, [byLang, startedLangs, totalSentences]);
+  }, [byLang, startedLangs, totalSentences, approvedLangs]);
+
+  // Requestable languages: those not in the effective approved set (hide until approved set is known)
+  const requestableLangs = useMemo(() => {
+    if (approvedLangs.size === 0) return [] as typeof popularLanguages;
+    return popularLanguages.filter((l) => l.code !== 'en' && !approvedLangs.has(l.code));
+  }, [approvedLangs]);
 
   // Pagination calculations
   const totalPages = Math.ceil(langProgress.length / languagesPerPage);
@@ -309,6 +315,29 @@ const ReadLanguagesPage: React.FC = () => {
                 </button>
               </div>
             )}
+
+            {/* Requestable languages (not yet approved) */}
+            {requestableLangs.length > 0 && (
+              <div className="mt-12">
+                <h2 className="text-xl font-heading font-semibold text-gray-900 mb-4">Other languages you can request</h2>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {requestableLangs.map((l) => (
+                    <Link
+                      to={`/read/request/${l.code}`}
+                      key={l.code}
+                      className="flex flex-col gap-4 rounded-lg border border-dashed border-gray-400 bg-gray-100 p-5 text-center transition-colors hover:bg-gray-200 hover:border-gray-500"
+                    >
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Plus className="h-8 w-8 text-gray-500" />
+                        <h3 className="text-lg font-bold text-gray-800">{l.name}</h3>
+                        <p className="text-sm text-gray-600">Request this language</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
