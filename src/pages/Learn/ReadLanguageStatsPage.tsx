@@ -82,6 +82,13 @@ const ReadLanguageStatsPage: React.FC = () => {
     return () => { cancelled = true; };
   }, [langCode]);
 
+  // Watchdog: if approval check gets stuck (e.g., network issues), render the page after 3s
+  useEffect(() => {
+    if (isApproved !== null) return;
+    const t = setTimeout(() => setIsApproved(true), 3000);
+    return () => clearTimeout(t);
+  }, [isApproved]);
+
   if (isApproved === null) {
     return (
       <TranslationLayout title="Loading">
