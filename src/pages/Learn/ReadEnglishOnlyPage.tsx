@@ -145,7 +145,7 @@ const ReadEnglishOnlyPage: React.FC = () => {
                     try {
                       if (isSupabaseConfigured()) {
                         await upsertReadingProgress(lecture.id, 'en', index);
-                        toast({ title: 'Progress saved', description: 'Your position will appear on your profile.' });
+                        toast({ title: 'Reading progress saved', description: `Saved at sentence ${index + 1}. You can resume from here later.` });
                       } else {
                         toast({ title: 'Progress saved locally' });
                       }
