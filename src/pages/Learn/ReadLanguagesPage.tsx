@@ -34,12 +34,17 @@ const ReadLanguagesPage: React.FC = () => {
   const { stats: remoteStats, loading, totalSentences, getLangCount } = useTranslationStats();
   // Approved languages set (manual, reviewers, request rule, or any with approved translations)
   const [approvedLangs, setApprovedLangs] = useState<Set<string>>(new Set());
+  const [approvedLoaded, setApprovedLoaded] = useState(false);
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!isSupabaseConfigured()) return;
-      const set = await getApprovedLanguageCodes();
-      if (!cancelled) setApprovedLangs(set);
+      if (!isSupabaseConfigured()) { setApprovedLoaded(true); return; }
+      try {
+        const set = await getApprovedLanguageCodes();
+        if (!cancelled) setApprovedLangs(set);
+      } finally {
+        if (!cancelled) setApprovedLoaded(true);
+      }
     })();
     return () => { cancelled = true; };
   }, []);
@@ -157,6 +162,33 @@ const ReadLanguagesPage: React.FC = () => {
 
     return pages;
   };
+
+  // While approved languages are loading (to avoid showing unapproved languages), show a light loader
+  if (supConfigured && !approvedLoaded) {
+    return (
+      <TranslationLayout title="Select a Language">
+        <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto max-w-5xl">
+              <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <Link
+                    to="/read"
+                    className="flex items-center gap-2 px-3 py-2 bg-spiritual-100 text-spiritual-700 rounded-lg border border-spiritual-200 hover:bg-spiritual-200 transition-colors text-sm"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Read Home
+                  </Link>
+                  <h1 className="text-3xl md:text-4xl font-heading font-bold tracking-tight text-gray-900">Select a Language</h1>
+                </div>
+              </div>
+              <div className="flex items-center justify-center py-20 text-gray-700">Loading languages…</div>
+            </div>
+          </div>
+        </div>
+      </TranslationLayout>
+    );
+  }
 
   // While Supabase stats load, avoid showing an alphabetical grid that hides started languages on later pages
   if (supConfigured && loading) {
