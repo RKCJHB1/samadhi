@@ -9,7 +9,7 @@ import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { getAllTranslations } from '@/store/translations';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { popularLanguages } from '@/data/languages';
-import { fetchTranslationsForLang } from '@/services/translationsSupabase';
+import { fetchTranslationsForLang, getApprovedLanguageCodes } from '@/services/translationsSupabase';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
 import { featureFlags } from '@/utils/featureFlags';
 import {
@@ -39,6 +39,7 @@ const ReadLanguageStatsPage: React.FC = () => {
 
   const { langCode } = useParams<{ langCode: string }>();
   const [remoteTranslations, setRemoteTranslations] = useState<any[]>([]);
+  const [isApproved, setIsApproved] = useState<boolean | null>(null);
 
   // Centralized stats
   const { stats: remoteStats, loading, totalSentences, getLangCount } = useTranslationStats();
@@ -50,6 +51,31 @@ const ReadLanguageStatsPage: React.FC = () => {
       <NotFoundMessage
         title="Language Not Found"
         message={`Language code "${langCode}" is not supported.`}
+        backTo="/read/languages"
+        backLabel="Back to Languages"
+      />
+    );
+  }
+
+  // Check effective approved languages – block access if not approved
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const approved = await getApprovedLanguageCodes();
+        if (!cancelled) setIsApproved(approved.has(langCode!));
+      } catch {
+        if (!cancelled) setIsApproved(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [langCode]);
+
+  if (isApproved === false) {
+    return (
+      <NotFoundMessage
+        title="Language Not Approved"
+        message={`The language "${language.name}" is not currently approved for public statistics.`}
         backTo="/read/languages"
         backLabel="Back to Languages"
       />
