@@ -44,8 +44,12 @@ const ReadLanguagesPage: React.FC = () => {
           listApprovedLanguages(),
           listHiddenLanguages(),
         ]);
-        const effectiveManual = new Set<string>(manual);
-        hidden.forEach((h) => effectiveManual.delete(h));
+        // Normalize to lowercase for matching against our language catalog
+        const manualLc = new Set<string>(manual.map((m) => (m || '').toLowerCase()));
+        const hiddenLc = new Set<string>(hidden.map((h) => (h || '').toLowerCase()));
+        const effectiveManual = new Set<string>(
+          Array.from(manualLc).filter((m) => m && !hiddenLc.has(m))
+        );
         if (!cancelled) setApprovedLangs(effectiveManual);
       } finally {
         if (!cancelled) setApprovedLoaded(true);
@@ -103,7 +107,7 @@ const ReadLanguagesPage: React.FC = () => {
       .filter((l) => l.code !== 'en')
       // When Supabase is configured, show ONLY manually approved languages.
       // If Supabase is not configured (local/offline), fall back to showing all.
-      .filter((l) => !supConfigured ? true : approvedLangs.has(l.code))
+      .filter((l) => !supConfigured ? true : approvedLangs.has(l.code.toLowerCase()))
       .map((l) => {
         const countApproved = byLang.get(l.code) || 0;
         const percent = totalSentences ? Math.round((countApproved / totalSentences) * 100) : 0;
@@ -120,9 +124,10 @@ const ReadLanguagesPage: React.FC = () => {
 
   // Requestable languages: those not in the effective approved set (hide until approved set is known)
   const requestableLangs = useMemo(() => {
-    if (approvedLangs.size === 0) return [] as typeof popularLanguages;
-    return popularLanguages.filter((l) => l.code !== 'en' && !approvedLangs.has(l.code));
-  }, [approvedLangs]);
+    // Hide until approvals are loaded; then show any languages not approved
+    if (supConfigured && !approvedLoaded) return [] as typeof popularLanguages;
+    return popularLanguages.filter((l) => l.code !== 'en' && !approvedLangs.has(l.code.toLowerCase()));
+  }, [approvedLangs, approvedLoaded, supConfigured]);
 
   // Pagination calculations
   const totalPages = Math.ceil(langProgress.length / languagesPerPage);
