@@ -456,6 +456,16 @@ const ReadLecturePage: React.FC = () => {
                             <ExistingTranslations lectureId={lecture.id} sentenceIndex={i} targetLang={targetLang} form="transliteration" />
                           </div>
 
+                          {/* Share this sentence */}
+                          <div className="mt-3 flex justify-end">
+                            <SocialShareButtons
+                              path={`/read/${lecture.id}?lang=${targetLang}#sent-${i}`}
+                              title={`${lecture.title} — Sentence ${i + 1}`}
+                              description={`Read a sentence from \"${lecture.title}\" by Swami Vivekananda.`}
+                              className="justify-end"
+                            />
+                          </div>
+
                           {/* Save/Submit actions */}
                           <div className="flex flex-wrap items-center gap-2 mt-3">
                             <Button variant="outline" size="sm" onClick={() => { toast({ title: 'Drafts saved locally' }); }}>
