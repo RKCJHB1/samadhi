@@ -12,7 +12,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { fetchReadingOverviewCounts, getApprovedLanguageCodes } from '@/services/translationsSupabase';
+import { fetchReadingOverviewCounts, getApprovedLanguageCodes, fetchTopContributorsForLanguages } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
 import {
   Globe,
@@ -157,14 +157,30 @@ const ReadStatsPage: React.FC = () => {
     return remoteStats.recentActivity.filter(a => approvedLangs.has(a.lang));
   }, [remoteStats, approvedLangs]);
 
-  // Hide Top Contributors when filtering by effective languages to avoid cross-language confusion
-  const showTopContributors = useMemo(() => {
-    if (!remoteStats || !remoteStats.topContributors) return false;
-    // If we don't have an approved set, or it's empty (no filtering), it's safe to show
-    if (!approvedLangs || approvedLangs.size === 0) return true;
-    // Otherwise, hide to prevent conflicting totals from non-approved languages
-    return false;
-  }, [remoteStats, approvedLangs]);
+  // Top contributors data, filtered to approved languages when available
+  const [approvedTopContributors, setApprovedTopContributors] = useState<Array<NonNullable<typeof remoteStats>['topContributors'][number]>>([]);
+  const [loadingTopContribs, setLoadingTopContribs] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!approvedLangs || approvedLangs.size === 0) { setApprovedTopContributors([]); return; }
+      setLoadingTopContribs(true);
+      try {
+        const list = await fetchTopContributorsForLanguages(Array.from(approvedLangs), 10);
+        if (!cancelled) setApprovedTopContributors(list);
+      } catch {
+        if (!cancelled) setApprovedTopContributors([]);
+      } finally {
+        if (!cancelled) setLoadingTopContribs(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [approvedLangs]);
+
+  const displayTopContributors = useMemo(() => {
+    if (!approvedLangs || approvedLangs.size === 0) return remoteStats?.topContributors || [];
+    return approvedTopContributors;
+  }, [approvedLangs, remoteStats, approvedTopContributors]);
 
   if (loading) {
     return (
@@ -619,18 +635,20 @@ const ReadStatsPage: React.FC = () => {
                   </Card>
                 )}
 
-                {/* Top Contributors (shown only when not filtering by language) */}
-                {showTopContributors && (
-                  <Card className="border border-indian-saffron/30">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        Top Contributors
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                {/* Top Contributors (empty if no data under current filters) */}
+                <Card className="border border-indian-saffron/30">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      Top Contributors
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {displayTopContributors.length === 0 ? (
+                      <div className="text-sm text-gray-600">No contributor data yet.</div>
+                    ) : (
                       <div className="space-y-3">
-                        {remoteStats.topContributors.map((contributor, index) => (
+                        {displayTopContributors.map((contributor, index) => (
                           <div key={contributor.userId} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 bg-spiritual-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
@@ -677,9 +695,9 @@ const ReadStatsPage: React.FC = () => {
                           </div>
                         ))}
                       </div>
-                    </CardContent>
-                  </Card>
-                )}
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             )}
 

@@ -63,7 +63,7 @@ const ReadingStats: React.FC<{ userId: string }> = ({ userId }) => {
   );
 };
 
-import { getProfile, fetchComprehensiveStats, listProfiles, fetchUserApprovedContributions, fetchUserApprovedCounts, fetchUserApprovedRankPercentile, type Profile, type TranslationStats } from '@/services/translationsSupabase';
+import { getProfile, fetchComprehensiveStats, listProfiles, fetchUserApprovedContributions, fetchUserApprovedCounts, fetchUserApprovedRankPercentile, getApprovedLanguageCodes, type Profile, type TranslationStats } from '@/services/translationsSupabase';
 
 function extractUserId(param?: string): string | null {
   if (!param) return null;
@@ -190,13 +190,15 @@ const ReadPublicProfilePage: React.FC = () => {
         if (!cancelled) setStats(s);
       } catch {}
       try {
-        const [list, counts, percentile] = await Promise.all([
+        const [list, counts, percentile, approvedSet] = await Promise.all([
           fetchUserApprovedContributions(resolvedUserId, 200),
           fetchUserApprovedCounts(resolvedUserId),
-          fetchUserApprovedRankPercentile(resolvedUserId)
+          fetchUserApprovedRankPercentile(resolvedUserId),
+          getApprovedLanguageCodes()
         ]);
         if (!cancelled) {
-          setContributionList(list);
+          const filtered = list.filter((c) => approvedSet.has(c.lang));
+          setContributionList(filtered);
           setApprovedCounts(counts);
           setPercentile(percentile);
         }
@@ -210,14 +212,8 @@ const ReadPublicProfilePage: React.FC = () => {
   const fullName = profile ? [profile.first_name, profile.last_name].filter(Boolean).join(' ') : '';
   const initials = (profile?.first_name?.[0] || '') + (profile?.last_name?.[0] || '');
 
-  // Count user contributions from stats if available (fallback if API not available)
-  const totals = (() => {
-    if (approvedCounts.totalApproved > 0) return { total: approvedCounts.totalApproved, approved: approvedCounts.totalApproved };
-    if (!stats) return { total: 0, approved: 0 };
-    const user = stats.topContributors.find(c => c.userId === resolvedUserId);
-    if (!user) return { total: 0, approved: 0 };
-    return { total: user.totalTranslations, approved: user.approvedTranslations };
-  })();
+  // Count user contributions strictly from approved counts to avoid including purged or non-approved languages
+  const totals = { total: approvedCounts.totalApproved, approved: approvedCounts.totalApproved };
 
 
 

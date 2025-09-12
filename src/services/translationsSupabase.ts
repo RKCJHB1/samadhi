@@ -691,6 +691,71 @@ export async function fetchComprehensiveStats(): Promise<TranslationStats | null
 }
 
 
+// Top contributors limited to a set of languages (used by /read/stats when filtering by approved langs)
+export async function fetchTopContributorsForLanguages(langs: string[], limit = 10): Promise<TranslationStats['topContributors']> {
+  const sb = getSupabase();
+  if (!sb) return [];
+  if (!langs || langs.length === 0) return [];
+  try {
+    const { data, error } = await sb
+      .from(TABLE)
+      .select(`
+        created_by,
+        lang,
+        status,
+        profiles:public_profiles!translations_created_by_fkey(first_name, last_name, role, language_proficiency, username)
+      `)
+      .in('lang', langs)
+      .not('created_by', 'is', null);
+    if (error || !data) return [];
+
+    const byUser = new Map<string, {
+      email: string | null;
+      firstName: string | null;
+      lastName: string | null;
+      username?: string | null;
+      role?: 'user'|'moderator'|'admin';
+      languageProficiency?: LanguageProficiency[] | null;
+      total: number;
+      approved: number;
+    }>();
+
+    (data as any[]).forEach((row) => {
+      const uid = row.created_by as string;
+      if (!byUser.has(uid)) {
+        byUser.set(uid, {
+          email: row.profiles?.email || null,
+          firstName: row.profiles?.first_name || null,
+          lastName: row.profiles?.last_name || null,
+          username: row.profiles?.username || null,
+          role: row.profiles?.role || 'user',
+          languageProficiency: row.profiles?.language_proficiency || null,
+          total: 0,
+          approved: 0,
+        });
+      }
+      const stats = byUser.get(uid)!;
+      stats.total++;
+      if (row.status === 'approved') stats.approved++;
+    });
+
+    return Array.from(byUser.entries()).map(([userId, s]) => ({
+      userId,
+      email: s.email,
+      firstName: s.firstName,
+      lastName: s.lastName,
+      username: s.username,
+      role: s.role,
+      languageProficiency: s.languageProficiency,
+      totalTranslations: s.total,
+      approvedTranslations: s.approved,
+    })).sort((a, b) => b.totalTranslations - a.totalTranslations).slice(0, Math.max(1, limit));
+  } catch {
+    return [];
+  }
+}
+
+
 
 // Admin-only: list profiles and update roles
 export async function listProfiles(limit = 200): Promise<Profile[]> {
