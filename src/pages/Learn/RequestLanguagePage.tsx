@@ -8,8 +8,21 @@ import { popularLanguages } from '@/data/languages';
 import { Languages, ArrowLeft, Send, Users, Clock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hasRequestedLanguage, submitLanguageRequest, getUserLanguageLevel } from '@/services/translationsSupabase';
+import { featureFlags } from '@/utils/featureFlags';
+import NotFoundMessage from '@/components/learn/NotFoundMessage';
 
 const RequestLanguagePage: React.FC = () => {
+  if (!featureFlags.enableReadingSection) {
+    return (
+      <NotFoundMessage
+        title="Reading Section Unavailable"
+        message="This reading section is currently disabled."
+        backTo="/read"
+        backLabel="Back to Learning Centre"
+      />
+    );
+  }
+
   const { languageCode } = useParams<{ languageCode: string }>();
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();

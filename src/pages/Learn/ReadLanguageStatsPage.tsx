@@ -11,11 +11,12 @@ import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { popularLanguages } from '@/data/languages';
 import { fetchTranslationsForLang } from '@/services/translationsSupabase';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { 
-  Globe, 
-  BookOpen, 
-  TrendingUp, 
-  CheckCircle, 
+import { featureFlags } from '@/utils/featureFlags';
+import {
+  Globe,
+  BookOpen,
+  TrendingUp,
+  CheckCircle,
   Clock,
   BarChart3,
   ArrowLeft,
@@ -25,11 +26,11 @@ import {
 } from 'lucide-react';
 
 const ReadLanguageStatsPage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Learning Centre"
       />

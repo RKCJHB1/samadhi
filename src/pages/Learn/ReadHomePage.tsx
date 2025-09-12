@@ -249,8 +249,21 @@ import { countSentences } from '@/lib/translationUtils';
 import { Link } from 'react-router-dom';
 import { ReadingProgress, getMyReadingProgressFor } from '@/services/translationsSupabase';
 import TranslationLayout from '@/components/layout/TranslationLayout';
+import { featureFlags } from '@/utils/featureFlags';
+import NotFoundMessage from '@/components/learn/NotFoundMessage';
 
 const ReadHomePage: React.FC = () => {
+  if (!featureFlags.enableReadingSection) {
+    return (
+      <NotFoundMessage
+        title="Reading Section Unavailable"
+        message="This reading section is currently disabled."
+        backTo="/learn"
+        backLabel="Back to Learning Centre"
+      />
+    );
+  }
+
   const { user } = useAuth();
   const [recent, setRecent] = React.useState<Array<{ lectureId: string; lastSentenceIndex: number }>>([]);
 

@@ -11,6 +11,7 @@ import { Globe2, Languages, Target, Users } from 'lucide-react';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { countTranslatedForLectureLang, getAllTranslations, mostTranslatedSentence } from '@/store/translations';
 import { fetchTranslationsForLang, isSupabaseConfigured } from '@/services/translationsSupabase';
+import { featureFlags } from '@/utils/featureFlags';
 
 // Development-only French landing page for the Read/Translate project
 // URL: /learn/read/fr
@@ -42,11 +43,11 @@ const fr = {
 };
 
 const ReadLanguageHomePage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Read Index"
       />

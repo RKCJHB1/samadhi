@@ -8,8 +8,21 @@ import { countSentences } from '@/lib/translationUtils';
 import { ChevronLeft, ChevronRight, Plus, Languages as LanguagesIcon, ArrowLeft } from 'lucide-react';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
 import { isSupabaseConfigured, getApprovedLanguageCodes } from '@/services/translationsSupabase';
+import { featureFlags } from '@/utils/featureFlags';
+import NotFoundMessage from '@/components/learn/NotFoundMessage';
 
 const ReadLanguagesPage: React.FC = () => {
+  if (!featureFlags.enableReadingSection) {
+    return (
+      <NotFoundMessage
+        title="Reading Section Unavailable"
+        message="This reading section is currently disabled."
+        backTo="/read"
+        backLabel="Back to Learning Centre"
+      />
+    );
+  }
+
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   // Pagination state

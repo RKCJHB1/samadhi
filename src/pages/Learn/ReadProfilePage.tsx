@@ -7,16 +7,17 @@ import { popularLanguages } from '@/data/languages';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, getProfile, updateProfileLanguageProficiency, type LanguageProficiency, getReviewerCountForLang, submitReviewerVolunteer, listMyReviewerRequests } from '@/services/translationsSupabase';
 import { useToast } from '@/hooks/use-toast';
+import { featureFlags } from '@/utils/featureFlags';
 
 
 const levels: LanguageProficiency['level'][] = ['Beginner','Fluent','Native/Academic'];
 
 const ReadProfilePage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Learning Centre"
       />

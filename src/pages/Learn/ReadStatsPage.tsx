@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
 import { fetchReadingOverviewCounts } from '@/services/translationsSupabase';
+import { featureFlags } from '@/utils/featureFlags';
 import {
   Globe,
   BookOpen,
@@ -25,11 +26,11 @@ import {
 } from 'lucide-react';
 
 const ReadStatsPage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Learning Centre"
       />

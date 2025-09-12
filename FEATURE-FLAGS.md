@@ -31,6 +31,11 @@ This project uses environment-based feature flags to control which features are 
 - **Production**: `true` - Fundraising features visible
 - **Purpose**: Control fundraising system visibility
 
+### `VITE_ENABLE_READING_SECTION`
+- **Development**: `true` - Reading/Translation section visible
+- **Production**: `true` - Reading/Translation section visible
+- **Purpose**: Control reading and translation features visibility
+
 ## Usage in Code
 
 ```typescript
@@ -53,11 +58,13 @@ if (featureFlags.enableAuthFeatures) {
 - 3D Model Viewer: ✅ Visible
 - Authentication: ❌ Hidden
 - Fundraising: ✅ Visible
+- Reading Section: ✅ Visible
 
 ### Production Deployment (GitHub Pages/Live Site)
 - 3D Model Viewer: ❌ Hidden
-- Authentication: ❌ Hidden  
+- Authentication: ❌ Hidden
 - Fundraising: ✅ Visible
+- Reading Section: ✅ Visible
 
 ## How It Works
 

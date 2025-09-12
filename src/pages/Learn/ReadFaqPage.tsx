@@ -5,13 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { featureFlags } from '@/utils/featureFlags';
 
 const ReadFaqPage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Read Index"
       />

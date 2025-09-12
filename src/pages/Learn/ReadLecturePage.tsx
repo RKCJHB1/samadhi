@@ -25,6 +25,7 @@ import {
   splitLectureParagraphs,
   buildSentenceOffsets,
 } from '@/lib/translationUtils';
+import { featureFlags } from '@/utils/featureFlags';
 
 
 
@@ -32,11 +33,11 @@ const ReadLecturePage: React.FC = () => {
   const { toast } = useToast();
   const { lectureId } = useParams();
 
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Learning Centre"
       />

@@ -4,13 +4,16 @@
 export const featureFlags = {
   // 3D Model Viewer - only enabled in development
   enable3DModelViewer: import.meta.env.VITE_ENABLE_3D_MODEL_VIEWER === 'true',
-  
+
   // Authentication features - disabled for July 10th launch
   enableAuthFeatures: import.meta.env.VITE_ENABLE_AUTH_FEATURES === 'true',
-  
+
   // Fundraising features - enabled
   enableFundraisingFeatures: import.meta.env.VITE_ENABLE_FUNDRAISING_FEATURES === 'true',
-  
+
+  // Reading/Translation section - can be enabled in production
+  enableReadingSection: import.meta.env.VITE_ENABLE_READING_SECTION === 'true',
+
   // Development mode
   isDevMode: import.meta.env.VITE_DEV_MODE === 'true',
 } as const;

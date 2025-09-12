@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getLectureProgress } from '@/store/reading';
 import { isSupabaseConfigured, upsertReadingProgress, getMyReadingProgressFor } from '@/services/translationsSupabase';
 import { useToast } from '@/hooks/use-toast';
+import { featureFlags } from '@/utils/featureFlags';
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
@@ -18,11 +19,11 @@ const ReadEnglishOnlyPage: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/read"
         backLabel="Back to Read Index"
       />

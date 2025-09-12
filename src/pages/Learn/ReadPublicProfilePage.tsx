@@ -10,6 +10,7 @@ import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { listMyReadingProgress, getCurrentUser } from '@/services/translationsSupabase';
 import { useAuth } from '@/contexts/AuthContext';
+import { featureFlags } from '@/utils/featureFlags';
 
 
 function msToHMS(ms: number) {
@@ -79,6 +80,17 @@ function slugifyName(first?: string | null, last?: string | null) {
 }
 
 const ReadPublicProfilePage: React.FC = () => {
+  if (!featureFlags.enableReadingSection) {
+    return (
+      <NotFoundMessage
+        title="Reading Section Unavailable"
+        message="This reading section is currently disabled."
+        backTo="/read"
+        backLabel="Back to Learning Centre"
+      />
+    );
+  }
+
   const navigate = useNavigate();
   const { profile: authProfile, user: authUser } = useAuth();
 

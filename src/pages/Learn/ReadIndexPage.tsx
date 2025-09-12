@@ -9,13 +9,14 @@ import { Target, Users, BookOpen } from 'lucide-react';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { getAllTranslations, mostTranslatedSentence } from '@/store/translations';
 import { isSupabaseConfigured } from '@/services/translationsSupabase';
+import { featureFlags } from '@/utils/featureFlags';
 
 const ReadIndexPage: React.FC = () => {
-  if (!import.meta.env.DEV) {
+  if (!featureFlags.enableReadingSection) {
     return (
       <NotFoundMessage
         title="Reading Section Unavailable"
-        message="This development reading section is currently hidden in production."
+        message="This reading section is currently disabled."
         backTo="/learn"
         backLabel="Back to Learning Centre"
       />
