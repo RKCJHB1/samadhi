@@ -8,7 +8,7 @@ import { getAllTranslations } from '@/store/translations';
 import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { countSentences } from '@/lib/translationUtils';
 import NotFoundMessage from '@/components/learn/NotFoundMessage';
-import { fetchComprehensiveStats, isSupabaseConfigured, listProfiles, updateUserRole, listLanguageReviewers, addLanguageReviewer, removeLanguageReviewer, listReviewerRequests, approveReviewerRequest, rejectReviewerRequest, listLanguageRequestsAll, listApprovedLanguages, addApprovedLanguage, removeApprovedLanguage, getApprovedLanguageCodes, addHiddenLanguage, type TranslationStats, type Profile, type ReviewerRequest, type LanguageRequest } from '@/services/translationsSupabase';
+import { fetchComprehensiveStats, isSupabaseConfigured, listProfiles, updateUserRole, listLanguageReviewers, addLanguageReviewer, removeLanguageReviewer, listReviewerRequests, approveReviewerRequest, rejectReviewerRequest, listLanguageRequestsAll, listApprovedLanguages, addApprovedLanguage, removeApprovedLanguage, getApprovedLanguageCodes, addHiddenLanguage, purgeLanguageData, type TranslationStats, type Profile, type ReviewerRequest, type LanguageRequest } from '@/services/translationsSupabase';
 import { popularLanguages } from '@/data/languages';
 import { featureFlags } from '@/utils/featureFlags';
 import { useToast } from '@/hooks/use-toast';
@@ -484,10 +484,15 @@ const ReadAdminDashboardPage: React.FC = () => {
                                       // Hide language so it won't appear even if auto-approved by translations
                                       const hideRes = await addHiddenLanguage(code);
                                       if (!hideRes.ok) { alert(hideRes.error || 'Failed to hide language'); return; }
+                                      // Purge all underlying language data and stats
+                                      const purgeRes = await purgeLanguageData(code);
+                                      if (!purgeRes.ok) {
+                                        alert(purgeRes.error || 'Failed to purge language data');
+                                      }
                                       const eff = await getApprovedLanguageCodes();
                                       const effArr = Array.from(eff).sort();
                                       setEffectiveApprovedLangs(effArr);
-                                      toast({ title: 'Removed', description: `${popularLanguages.find(l=>l.code===code)?.name || code.toUpperCase()} removed from Approved Languages.` });
+                                      toast({ title: 'Removed', description: `${popularLanguages.find(l=>l.code===code)?.name || code.toUpperCase()} removed and all related data purged.` });
                                     } finally {
                                       setRemoving((m)=>{ const c = { ...m }; delete c[code]; return c; });
                                     }

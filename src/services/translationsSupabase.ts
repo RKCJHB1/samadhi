@@ -994,6 +994,24 @@ export async function removeHiddenLanguage(lang: string): Promise<{ ok: boolean;
   return { ok: !error, error: error?.message };
 }
 
+export async function purgeLanguageData(lang: string): Promise<{ ok: boolean; error?: string }> {
+  const sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Supabase not configured' };
+  try {
+    // Order: votes -> translations -> user progress -> reviewers -> requests
+    await sb.from('translation_votes').delete().eq('lang', lang);
+    await sb.from(TABLE).delete().eq('lang', lang);
+    await sb.from('reading_progress').delete().eq('lang', lang);
+    await sb.from('language_reviewers').delete().eq('lang', lang);
+    await sb.from('language_reviewer_requests').delete().eq('lang', lang);
+    await sb.from('language_requests').delete().eq('lang', lang);
+    return { ok: true };
+  } catch (e: any) {
+    return { ok: false, error: e?.message || 'Failed to purge language data' };
+  }
+}
+
+
 // We only include manually-approved languages plus any that already have approved translations.
 export async function getApprovedLanguageCodes(): Promise<Set<string>> {
   const sb = getSupabase();

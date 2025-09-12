@@ -128,6 +128,16 @@ FOR UPDATE USING (
   exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
 );
 
+-- Allow admins to fully manage translations (including DELETE)
+DROP POLICY IF EXISTS "Admin manage translations" ON public.translations;
+CREATE POLICY "Admin manage translations" ON public.translations
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  );
+
+
 -- Triggers: set_created_by, set_updated_at, auto-approve for Fluent/Native
 create or replace function public.set_created_by()
 returns trigger as $$
@@ -182,6 +192,16 @@ create table if not exists public.translation_votes (
   created_at timestamptz default now(),
   constraint translation_votes_unique unique (lecture_id, sentence_index, lang, form, text, user_id)
 );
+
+-- Allow admins to fully manage votes (clean up when removing a language)
+DROP POLICY IF EXISTS "Admin manage translation votes" ON public.translation_votes;
+CREATE POLICY "Admin manage translation votes" ON public.translation_votes
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  );
+
 create index if not exists translation_votes_lslfit on public.translation_votes (lecture_id, sentence_index, lang, form, text);
 alter table public.translation_votes enable row level security;
 DROP POLICY IF EXISTS "Public read votes" ON public.translation_votes;
@@ -237,6 +257,16 @@ CREATE POLICY "Admin read reviewer requests" ON public.language_reviewer_request
 DROP POLICY IF EXISTS "Admin update reviewer requests" ON public.language_reviewer_requests;
 CREATE POLICY "Admin update reviewer requests" ON public.language_reviewer_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
 
+-- Allow admins to fully manage reviewer requests (cleanup operations)
+DROP POLICY IF EXISTS "Admin manage reviewer requests" ON public.language_reviewer_requests;
+CREATE POLICY "Admin manage reviewer requests" ON public.language_reviewer_requests
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
+
 create or replace function public.set_updated_at()
 returns trigger as $$ begin new.updated_at := now(); return new; end; $$ language plpgsql;
 DROP TRIGGER IF EXISTS set_updated_at_lrr ON public.language_reviewer_requests;
@@ -262,6 +292,16 @@ DROP POLICY IF EXISTS "Admin read language requests" ON public.language_requests
 CREATE POLICY "Admin read language requests" ON public.language_requests FOR SELECT USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
 DROP POLICY IF EXISTS "Admin update language requests" ON public.language_requests;
 CREATE POLICY "Admin update language requests" ON public.language_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+
+-- Allow admins to fully manage language requests (cleanup operations)
+DROP POLICY IF EXISTS "Admin manage language requests" ON public.language_requests;
+CREATE POLICY "Admin manage language requests" ON public.language_requests
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
 DROP TRIGGER IF EXISTS set_updated_at_lang_req ON public.language_requests;
 CREATE TRIGGER set_updated_at_lang_req BEFORE UPDATE ON public.language_requests FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
@@ -284,6 +324,16 @@ CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
 
 
 -- ========== READING PROGRESS ==========
+
+-- Allow admins to fully manage reading_progress (cleanup for removed languages)
+DROP POLICY IF EXISTS "Admin manage reading progress" ON public.reading_progress;
+CREATE POLICY "Admin manage reading progress" ON public.reading_progress
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  );
+
 create table if not exists public.reading_progress (
   user_id uuid not null references auth.users(id) on delete cascade,
   lecture_id text not null,

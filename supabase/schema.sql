@@ -156,6 +156,20 @@ CREATE POLICY "Moderators read all" ON public.translations
     )
   );
 
+-- Admins can fully manage translations (including DELETE)
+DROP POLICY IF EXISTS "Admin manage translations" ON public.translations;
+CREATE POLICY "Admin manage translations" ON public.translations
+  FOR ALL USING (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  ) WITH CHECK (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  );
+
+
 -- Set created_by on insert automatically to auth.uid()
 create or replace function public.set_created_by()
 returns trigger as $$
@@ -247,6 +261,20 @@ CREATE POLICY "User update own vote" ON public.translation_votes
 DROP POLICY IF EXISTS "User delete own vote" ON public.translation_votes;
 CREATE POLICY "User delete own vote" ON public.translation_votes
   FOR DELETE USING ( user_id = auth.uid() );
+
+
+-- Admins can fully manage translation votes (cleanup on language removal)
+DROP POLICY IF EXISTS "Admin manage translation votes" ON public.translation_votes;
+CREATE POLICY "Admin manage translation votes" ON public.translation_votes
+  FOR ALL USING (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  ) WITH CHECK (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  );
 
 
 -- Language proficiency stored on profiles
@@ -460,6 +488,16 @@ CREATE POLICY "Admin update reviewer requests" ON public.language_reviewer_reque
     exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
   );
 
+-- Admins can fully manage reviewer requests (cleanup on language removal)
+DROP POLICY IF EXISTS "Admin manage reviewer requests" ON public.language_reviewer_requests;
+CREATE POLICY "Admin manage reviewer requests" ON public.language_reviewer_requests
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
+
 -- updated_at trigger for requests
 DROP TRIGGER IF EXISTS set_updated_at_lrr ON public.language_reviewer_requests;
 CREATE TRIGGER set_updated_at_lrr
@@ -520,6 +558,16 @@ CREATE POLICY "Admin update language requests" ON public.language_requests
   ) WITH CHECK (
     exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
   );
+
+-- Admins can fully manage language requests (cleanup on language removal)
+DROP POLICY IF EXISTS "Admin manage language requests" ON public.language_requests;
+CREATE POLICY "Admin manage language requests" ON public.language_requests
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  );
+
 
 -- updated_at trigger for language_requests
 DROP TRIGGER IF EXISTS set_updated_at_lang_req ON public.language_requests;
@@ -602,6 +650,20 @@ CREATE POLICY "User update own progress" ON public.reading_progress
 DROP POLICY IF EXISTS "User delete own progress" ON public.reading_progress;
 CREATE POLICY "User delete own progress" ON public.reading_progress
   FOR DELETE USING ( user_id = auth.uid() );
+
+-- Admins can fully manage reading_progress (cleanup for removed languages)
+DROP POLICY IF EXISTS "Admin manage reading progress" ON public.reading_progress;
+CREATE POLICY "Admin manage reading progress" ON public.reading_progress
+  FOR ALL USING (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  ) WITH CHECK (
+    exists (
+      select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin')
+    )
+  );
+
 
 -- Trigger to maintain updated_at
 DROP TRIGGER IF EXISTS set_updated_at_reading_progress ON public.reading_progress;
