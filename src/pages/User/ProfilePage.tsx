@@ -72,8 +72,10 @@ const ProfilePage = () => {
 
   return (
     <TranslationLayout title="Your Profile">
-      <div className="container max-w-4xl py-12">
-        <Card className="border-2 border-indian-saffron/20">
+      <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+        <Card className="border border-indian-saffron/30">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold tracking-tight text-indian-blue">Your Profile</CardTitle>
             <CardDescription>
@@ -178,6 +180,8 @@ const ProfilePage = () => {
             </form>
           </CardContent>
         </Card>
+          </div>
+        </div>
       </div>
     </TranslationLayout>
   );

@@ -62,12 +62,13 @@ const TranslationsModerationPage: React.FC = () => {
     <Layout title="Moderate Translations">
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-heading font-semibold mb-6">Pending Translations</h1>
+          <h1 className="text-3xl font-heading font-bold mb-6">Pending Translations</h1>
+          <div className="max-w-6xl mx-auto space-y-6">
           {!isSupabaseConfigured() && (
             <div className="text-sm text-red-600">Supabase is not configured.</div>
           )}
           {isSupabaseConfigured() && filterMode==='mine' && selectedLangs.length > 0 && (
-            <div className="mb-4 flex items-center gap-2 flex-wrap">
+            <div className="mb-4 p-3 border rounded-md bg-white shadow-sm flex items-center gap-2 flex-wrap">
               {myLangs.map((l) => {
                 const sel = selectedLangs.includes(l);
                 return (
@@ -84,7 +85,7 @@ const TranslationsModerationPage: React.FC = () => {
           )}
 
           {isSupabaseConfigured() && myLangs.length > 0 && (
-            <div className="mb-4 flex items-center gap-3">
+            <div className="mb-4 p-3 border rounded-md bg-white shadow-sm flex items-center gap-3">
               <div className="text-sm text-gray-700">Filter:</div>
               <Button size="sm" variant={filterMode==='mine' ? 'default' : 'outline'} onClick={()=>setFilterMode('mine')}>My assigned</Button>
               <Button size="sm" variant={filterMode==='all' ? 'default' : 'outline'} onClick={()=>setFilterMode('all')}>All languages</Button>
@@ -95,14 +96,14 @@ const TranslationsModerationPage: React.FC = () => {
           )}
 
           {isSupabaseConfigured() && (
-            <div className="mb-6 text-xs text-gray-600 border rounded-md p-3 bg-gray-50">
+            <Card className="border"><CardContent className="text-xs text-gray-700">
               <div className="font-medium text-gray-700 mb-1">How filtering and permissions work</div>
               <ul className="list-disc ml-5 space-y-1">
                 <li>“My assigned” shows only languages you are assigned to review. Use the chips above to include/exclude specific languages.</li>
                 <li>Approve requires you to be Fluent or Native/Academic in that language. Admins can approve all.</li>
                 <li>Reject requires you to be assigned as a reviewer for that language. Admins can reject all.</li>
               </ul>
-            </div>
+            </CardContent></Card>
           )}
 
 
@@ -145,6 +146,7 @@ const TranslationsModerationPage: React.FC = () => {
             </div>
           )}
         </div>
+          </div>
       </div>
     </Layout>
   );
