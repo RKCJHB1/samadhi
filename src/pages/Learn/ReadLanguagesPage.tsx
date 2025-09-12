@@ -101,7 +101,9 @@ const ReadLanguagesPage: React.FC = () => {
     // Only list EFFECTIVE approved languages to avoid non-approved items linking to blocked pages
     const languages = popularLanguages
       .filter((l) => l.code !== 'en')
-      .filter((l) => approvedLangs.size === 0 ? true : approvedLangs.has(l.code))
+      // When Supabase is configured, show ONLY manually approved languages.
+      // If Supabase is not configured (local/offline), fall back to showing all.
+      .filter((l) => !supConfigured ? true : approvedLangs.has(l.code))
       .map((l) => {
         const countApproved = byLang.get(l.code) || 0;
         const percent = totalSentences ? Math.round((countApproved / totalSentences) * 100) : 0;
