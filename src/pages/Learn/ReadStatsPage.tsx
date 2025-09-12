@@ -157,6 +157,15 @@ const ReadStatsPage: React.FC = () => {
     return remoteStats.recentActivity.filter(a => approvedLangs.has(a.lang));
   }, [remoteStats, approvedLangs]);
 
+  // Hide Top Contributors when filtering by effective languages to avoid cross-language confusion
+  const showTopContributors = useMemo(() => {
+    if (!remoteStats || !remoteStats.topContributors) return false;
+    // If we don't have an approved set, or it's empty (no filtering), it's safe to show
+    if (!approvedLangs || approvedLangs.size === 0) return true;
+    // Otherwise, hide to prevent conflicting totals from non-approved languages
+    return false;
+  }, [remoteStats, approvedLangs]);
+
   if (loading) {
     return (
       <TranslationLayout title="Translation Statistics">
@@ -610,8 +619,8 @@ const ReadStatsPage: React.FC = () => {
                   </Card>
                 )}
 
-                {/* Top Contributors */}
-                {remoteStats.topContributors.length > 0 && (
+                {/* Top Contributors (shown only when not filtering by language) */}
+                {showTopContributors && (
                   <Card className="border border-indian-saffron/30">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">

@@ -71,6 +71,14 @@ const ReadLanguageStatsPage: React.FC = () => {
     return () => { cancelled = true; };
   }, [langCode]);
 
+  if (isApproved === null) {
+    return (
+      <TranslationLayout title="Loading">
+        <div className="py-16 text-center text-gray-500">Loading language statistics…</div>
+      </TranslationLayout>
+    );
+  }
+
   if (isApproved === false) {
     return (
       <NotFoundMessage

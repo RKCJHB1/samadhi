@@ -88,21 +88,20 @@ const ReadLanguagesPage: React.FC = () => {
 
   // Progress view model (English hidden) - percent uses APPROVED counts; "started" uses any activity
   const langProgress = useMemo(() => {
+    // Only list EFFECTIVE approved languages to avoid non-approved items linking to blocked pages
     const languages = popularLanguages
-      .filter((l) => l.code !== 'en') // Do not list English; it is the source language
+      .filter((l) => l.code !== 'en')
+      .filter((l) => approvedLangs.size === 0 ? true : approvedLangs.has(l.code))
       .map((l) => {
         const countApproved = byLang.get(l.code) || 0;
         const percent = totalSentences ? Math.round((countApproved / totalSentences) * 100) : 0;
-        // Mark started if there is any activity OR if it’s manually/admin approved with 0 progress
         const started = startedLangs.has(l.code) || approvedLangs.has(l.code);
         return { ...l, count: countApproved, percent, isEn: false, started };
       });
 
-    // Sort: started languages first (by progress desc), then alphabetically
+    // Sort: higher progress first, then alphabetically
     return languages.sort((a, b) => {
-      if (a.started && !b.started) return -1;
-      if (!a.started && b.started) return 1;
-      if (a.started && b.started) return b.percent - a.percent; // Higher progress first
+      if (a.percent !== b.percent) return b.percent - a.percent;
       return a.name.localeCompare(b.name);
     });
   }, [byLang, startedLangs, totalSentences]);
