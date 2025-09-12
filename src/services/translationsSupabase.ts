@@ -7,8 +7,16 @@ export function getSupabase(): SupabaseClient | null {
   if (supabase) return supabase;
   const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
   const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-  if (!url || !anonKey) return null;
-  supabase = createClient(url, anonKey, { auth: { persistSession: true } });
+  if (!url || !anonKey) {
+    console.warn('[Supabase] Not configured. URL present?', Boolean(url), 'Anon key present?', Boolean(anonKey));
+    return null;
+  }
+  try {
+    supabase = createClient(url, anonKey, { auth: { persistSession: true } });
+  } catch (e) {
+    console.warn('[Supabase] createClient failed', e);
+    return null;
+  }
   return supabase;
 }
 
@@ -1007,8 +1015,13 @@ export async function listApprovedLanguages(): Promise<string[]> {
     .from('language_approvals')
     .select('lang')
     .order('lang');
-  if (error || !data) return [];
-  return (data as any[]).map((r) => (r.lang || '').toLowerCase()).filter(Boolean);
+  if (error) {
+    console.warn('[Supabase] listApprovedLanguages error:', error.message);
+    return [];
+  }
+  const list = ((data as any[]) || []).map((r) => (r.lang || '').toLowerCase()).filter(Boolean);
+  console.log('[Supabase] Approved languages loaded:', list.length, list.slice(0, 5));
+  return list;
 }
 
 export async function addApprovedLanguage(lang: string): Promise<{ ok: boolean; error?: string }>{
@@ -1073,8 +1086,13 @@ export async function listHiddenLanguages(): Promise<string[]> {
     .from('language_hidden')
     .select('lang')
     .order('lang');
-  if (error || !data) return [];
-  return (data as any[]).map((r) => (r.lang || '').toLowerCase()).filter(Boolean);
+  if (error) {
+    console.warn('[Supabase] listHiddenLanguages error:', error.message);
+    return [];
+  }
+  const hidden = ((data as any[]) || []).map((r) => (r.lang || '').toLowerCase()).filter(Boolean);
+  console.log('[Supabase] Hidden languages loaded:', hidden.length, hidden.slice(0, 5));
+  return hidden;
 }
 
 export async function addHiddenLanguage(lang: string): Promise<{ ok: boolean; error?: string }> {
