@@ -37,8 +37,59 @@ const ReadAdminDashboardPage: React.FC = () => {
   const [approvedLangs, setApprovedLangs] = useState<string[]>([]);
   const [newApprovedLang, setNewApprovedLang] = useState<string>('');
   const [effectiveApprovedLangs, setEffectiveApprovedLangs] = useState<string[]>([]);
+  const [debugInfo, setDebugInfo] = useState<any>(null);
 
   const [saving, setSaving] = useState<Record<string, boolean>>({});
+
+  // Debug function to check auth state
+  const checkAuthState = async () => {
+    try {
+      const { getCurrentUser, getProfile } = await import('@/services/translationsSupabase');
+      const user = await getCurrentUser();
+      const profile = user ? await getProfile(user.id) : null;
+      setDebugInfo({
+        user: user ? { id: user.id, email: user.email } : null,
+        profile: profile ? { id: profile.id, email: profile.email, role: profile.role } : null,
+        isAdminEmail: (user?.email || '').toLowerCase() === 'viprananda@rkmm.org'
+      });
+    } catch (error) {
+      setDebugInfo({ error: error.message });
+    }
+  };
+
+  // Fix admin role function
+  const fixAdminRole = async () => {
+    try {
+      const { getCurrentUser, getProfile, upsertProfile } = await import('@/services/translationsSupabase');
+      const user = await getCurrentUser();
+      if (!user) {
+        alert('No user logged in');
+        return;
+      }
+
+      if ((user.email || '').toLowerCase() !== 'viprananda@rkmm.org') {
+        alert('This function is only for the admin email');
+        return;
+      }
+
+      // Force update the profile with admin role
+      const success = await upsertProfile({
+        id: user.id,
+        email: user.email,
+        role: 'admin'
+      });
+
+      if (success) {
+        alert('Admin role updated successfully! Please refresh the page.');
+        // Refresh debug info
+        await checkAuthState();
+      } else {
+        alert('Failed to update admin role');
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  };
 
 
   // Local fallback stats
@@ -154,6 +205,24 @@ const ReadAdminDashboardPage: React.FC = () => {
                 <Button asChild variant="ghost"><Link to="/read/languages">Manage Languages</Link></Button>
               </div>
             </div>
+
+            {/* Debug Section */}
+            <Card className="bg-yellow-50 border-yellow-200">
+              <CardHeader>
+                <CardTitle className="text-yellow-800">Debug: Authentication State</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2 mb-3">
+                  <Button onClick={checkAuthState} size="sm">Check Auth State</Button>
+                  <Button onClick={fixAdminRole} size="sm" variant="outline">Fix Admin Role</Button>
+                </div>
+                {debugInfo && (
+                  <pre className="text-xs bg-white p-3 rounded border overflow-auto max-h-40">
+                    {JSON.stringify(debugInfo, null, 2)}
+                  </pre>
+                )}
+              </CardContent>
+            </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
@@ -342,12 +411,13 @@ const ReadAdminDashboardPage: React.FC = () => {
             {isSupabaseConfigured() && (
               <Card className="border">
                 <CardHeader>
-                  <CardTitle>Approved Languages (Manual)</CardTitle>
+                  <CardTitle>Approved Languages</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-col md:flex-row gap-3 items-start md:items-end mb-4">
+                  {/* Add new language section */}
+                  <div className="flex flex-col md:flex-row gap-3 items-start md:items-end mb-6">
                     <div>
-                      <div className="text-xs text-gray-600 mb-1">Language</div>
+                      <div className="text-xs text-gray-600 mb-1">Add Language</div>
                       <select className="border rounded px-2 py-1 bg-white min-w-[200px]" value={newApprovedLang} onChange={(e)=>setNewApprovedLang(e.target.value)}>
                         <option value="">Select language</option>
                         {popularLanguages.filter(l=>l.code!=='en').map(l => (
@@ -362,71 +432,70 @@ const ReadAdminDashboardPage: React.FC = () => {
                         if (!res.ok) { alert(res.error || 'Failed to approve language'); return; }
                         const list = await listApprovedLanguages();
                         setApprovedLangs(list);
+                        const eff = await getApprovedLanguageCodes();
+                        setEffectiveApprovedLangs(Array.from(eff).sort());
                         setNewApprovedLang('');
                       }}
                       disabled={!newApprovedLang}
                     >Add Approval</Button>
                   </div>
 
+                  <div className="text-sm text-gray-600 mb-3">
+                    This includes manually-approved languages plus any languages that already have approved translations or reviewers.
+                  </div>
+
                   <div className="overflow-x-auto">
                     <table className="min-w-full text-sm">
                       <thead>
                         <tr className="text-left border-b">
                           <th className="py-2 pr-4">Language</th>
+                          <th className="py-2 pr-4">Source</th>
                           <th className="py-2 pr-4">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {approvedLangs.length === 0 ? (
-                          <tr><td className="py-3 text-gray-600" colSpan={2}>No manually approved languages yet.</td></tr>
-                        ) : (
-                          approvedLangs.sort().map((code) => (
-                            <tr key={code} className="border-b last:border-0">
-                              <td className="py-2 pr-4">{popularLanguages.find(l=>l.code===code)?.name || code.toUpperCase()}</td>
-                              <td className="py-2">
-                                <Button size="sm" variant="destructive" onClick={async ()=>{
-                                  const res = await removeApprovedLanguage(code);
-                                  if (!res.ok) { alert(res.error || 'Failed to remove'); return; }
-                                  setApprovedLangs(prev => prev.filter(x => x !== code));
-                                }}>Remove</Button>
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-
-            {isSupabaseConfigured() && (
-              <Card className="border">
-                <CardHeader>
-                  <CardTitle>Effective Approved Languages</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-gray-600 mb-3">This includes manually-approved languages plus any languages that already have approved translations.</div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full text-sm">
-                      <thead>
-                        <tr className="text-left border-b">
-                          <th className="py-2 pr-4">Language</th>
-                        </tr>
-                      </thead>
-                      <tbody>
                         {effectiveApprovedLangs.length === 0 ? (
-                          <tr><td className="py-3 text-gray-600">No effective approved languages yet.</td></tr>
+                          <tr><td className="py-3 text-gray-600" colSpan={3}>No approved languages yet.</td></tr>
                         ) : (
-                          effectiveApprovedLangs.map((code)=> (
-                            <tr key={code} className="border-b last:border-0">
-                              <td className="py-2 pr-4">{popularLanguages.find(l=>l.code===code)?.name || code.toUpperCase()}</td>
-                            </tr>
-                          ))
+                          effectiveApprovedLangs.map((code) => {
+                            const isManual = approvedLangs.includes(code);
+                            const hasReviewer = reviewers.some(r => r.lang === code);
+                            const sources = [];
+                            if (isManual) sources.push('Manual');
+                            if (hasReviewer) sources.push('Reviewer');
+                            if (!isManual && !hasReviewer) sources.push('Approved translations');
+
+                            return (
+                              <tr key={code} className="border-b last:border-0">
+                                <td className="py-2 pr-4">{popularLanguages.find(l=>l.code===code)?.name || code.toUpperCase()}</td>
+                                <td className="py-2 pr-4 text-gray-600">{sources.join(', ')}</td>
+                                <td className="py-2">
+                                  <Button size="sm" variant="destructive" onClick={async ()=>{
+                                    if (isManual) {
+                                      // Remove from manual approvals
+                                      const res = await removeApprovedLanguage(code);
+                                      if (!res.ok) { alert(res.error || 'Failed to remove'); return; }
+                                      setApprovedLangs(prev => prev.filter(x => x !== code));
+                                    } else {
+                                      // For auto-approved languages, add them to manual list first, then remove
+                                      // This effectively "blocks" the language from being auto-approved
+                                      const addRes = await addApprovedLanguage(code);
+                                      if (!addRes.ok) { alert(addRes.error || 'Failed to process removal'); return; }
+                                      const removeRes = await removeApprovedLanguage(code);
+                                      if (!removeRes.ok) { alert(removeRes.error || 'Failed to remove'); return; }
+                                      const list = await listApprovedLanguages();
+                                      setApprovedLangs(list);
+                                    }
+                                    const eff = await getApprovedLanguageCodes();
+                                    setEffectiveApprovedLangs(Array.from(eff).sort());
+                                  }}>Remove</Button>
+                                </td>
+                              </tr>
+                            );
+                          })
                         )}
                       </tbody>
                     </table>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
                   </div>
                 </CardContent>
               </Card>

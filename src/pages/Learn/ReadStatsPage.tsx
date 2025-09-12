@@ -6,6 +6,8 @@ import { vivekanandaLectures } from '@/data/readings/vivekanandaParliament';
 import { getAllTranslations, mostTranslatedSentence } from '@/store/translations';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { popularLanguages } from '@/data/languages';
+import { getAggregatedReadingStats } from '@/store/reading';
+import { useAuth } from '@/contexts/AuthContext';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +39,7 @@ const ReadStatsPage: React.FC = () => {
     );
   }
 
+  const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const highlightLang = searchParams.get('lang');
   const [readingOverview, setReadingOverview] = useState<{ totalRegistered: number; totalReaders: number; activeReaders24h: number; activeReaders3d: number; activeReaders7d: number; totalSessions: number } | null>(null);
@@ -55,6 +58,16 @@ const ReadStatsPage: React.FC = () => {
 
   // Centralized stats
   const { stats: remoteStats, loading, totalSentences, getLangCount } = useTranslationStats();
+
+  // Get aggregated personal reading statistics
+  const aggregatedReadingStats = useMemo(() => getAggregatedReadingStats(vivekanandaLectures), []);
+
+  // Helper function to format duration
+  const formatDuration = (ms: number): string => {
+    if (ms < 60000) return `${Math.round(ms / 1000)}s`;
+    if (ms < 3600000) return `${Math.round(ms / 60000)}m`;
+    return `${Math.round(ms / 3600000)}h ${Math.round((ms % 3600000) / 60000)}m`;
+  };
 
   // Local data (fallback)
   const all = useMemo(() => getAllTranslations(), []);
@@ -238,34 +251,80 @@ const ReadStatsPage: React.FC = () => {
               </Card>
             </div>
 
-            {/* Reading Stats Card (registrations and reading progress) */}
-            <Card className="bg-gradient-to-br from-white to-green-50 border border-green-200">
+            {/* User Engagement Statistics */}
+            <Card className="bg-gradient-to-br from-white to-blue-50 border border-blue-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" /> Reading Participation
+                  <Activity className="h-5 w-5" /> Reading & Engagement Overview
                 </CardTitle>
-                <div className="text-sm text-gray-600 mt-1">Aggregated reader engagement (auto‑updates)</div>
+
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                  <div className="p-4 rounded-lg bg-white/80 border border-green-100">
-                    <div className="text-xs uppercase tracking-wide text-green-700">Registered readers</div>
-                    <div className="mt-1 text-2xl font-bold text-green-900">{readingOverview ? readingOverview.totalRegistered.toLocaleString() : '—'}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 divide-y divide-blue-100 sm:divide-y-0 sm:divide-x">
+                  {/* Supabase engagement */}
+                  <div className="sm:px-4">
+                    <h4 className="text-sm font-medium text-blue-700 border-b border-blue-200 pb-1">User Engagement</h4>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Total users</span>
+                        <span className="font-semibold text-blue-800">{readingOverview ? readingOverview.totalRegistered.toLocaleString() : '—'}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Active (24h)</span>
+                        <span className="font-semibold text-blue-800">{readingOverview ? readingOverview.activeReaders24h.toLocaleString() : '—'}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Active (3d)</span>
+                        <span className="font-semibold text-blue-800">{readingOverview ? readingOverview.activeReaders3d.toLocaleString() : '—'}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Active (7d)</span>
+                        <span className="font-semibold text-blue-800">{readingOverview ? readingOverview.activeReaders7d.toLocaleString() : '—'}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-white/80 border border-green-100">
-                    <div className="text-xs uppercase tracking-wide text-green-700">Active (24h)</div>
-                    <div className="mt-1 text-2xl font-bold text-green-900">{readingOverview ? readingOverview.activeReaders24h.toLocaleString() : '—'}</div>
+
+                  {/* Reading progress (local) */}
+                  <div className="sm:px-4">
+                    <h4 className="text-sm font-medium text-indigo-700 border-b border-indigo-200 pb-1">Reading Progress</h4>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Total readers</span>
+                        <span className="font-semibold text-indigo-800">{aggregatedReadingStats.totalUsers.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Sentences read</span>
+                        <span className="font-semibold text-indigo-800">{aggregatedReadingStats.totalSentencesRead.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Reading time</span>
+                        <span className="font-semibold text-indigo-800">{formatDuration(aggregatedReadingStats.totalDurationMs)}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-white/80 border border-green-100">
-                    <div className="text-xs uppercase tracking-wide text-green-700">Active (3 days)</div>
-                    <div className="mt-1 text-2xl font-bold text-green-900">{readingOverview ? readingOverview.activeReaders3d.toLocaleString() : '—'}</div>
-                  </div>
-                  <div className="p-4 rounded-lg bg-white/80 border border-green-100">
-                    <div className="text-xs uppercase tracking-wide text-green-700">Active (7 days)</div>
-                    <div className="mt-1 text-2xl font-bold text-green-900">{readingOverview ? readingOverview.activeReaders7d.toLocaleString() : '—'}</div>
+
+                  {/* Lecture stats (local) */}
+                  <div className="sm:px-4">
+                    <h4 className="text-sm font-medium text-purple-700 border-b border-purple-200 pb-1">Lectures</h4>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Started</span>
+                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesStarted.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Completed</span>
+                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesCompleted.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">In progress</span>
+                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesInProgress.toLocaleString()}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="text-[11px] text-gray-600 mt-3">Counts aggregate across all six lectures.</div>
+                <div className="text-[11px] text-gray-600 mt-4">
+                  Supabase metrics show platform-wide activity. Local metrics aggregate anonymized progress saved in browsers.
+                </div>
               </CardContent>
             </Card>
 

@@ -166,7 +166,7 @@ const ReadEnglishOnlyPage: React.FC = () => {
                   onClick={() => setRunning(!running)}
                 >
                   {running ? <Pause className="w-4 h-4 mr-1"/> : <Play className="w-4 h-4 mr-1"/>}
-                  {running ? 'Pause' : 'Auto-read'}
+                  {running ? 'Pause' : 'Auto-scroll'}
                 </Button>
 
                 {/* Speed control */}
@@ -250,7 +250,7 @@ const ReadEnglishOnlyPage: React.FC = () => {
                 <Link to={`/read/${lecture.id}?lang=`} className="text-spiritual-600 underline">Translations</Link> are disabled here.
               </div>
               <div>
-                <strong>Controls:</strong> Use arrow keys to navigate, spacebar to start/stop auto-reading.
+                <strong>Controls:</strong> Use arrow keys to navigate, spacebar to start/stop auto-scrolling.
                 Your reading progress is automatically tracked for statistics.
               </div>
             </div>

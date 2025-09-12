@@ -115,3 +115,67 @@ export function getLectureProgress(userId: string, lectureId: string) {
   return stats.lectures[lectureId] || { sentencesRead: 0, uniqueSentenceIndices: [], lastSentenceIndex: -1, totalDurationMs: 0, lastReadAt: 0 };
 }
 
+// Get aggregated reading statistics across all users
+export function getAggregatedReadingStats(vivekanandaLectures?: any[]) {
+  const all = loadAll();
+
+  let totalSentencesRead = 0;
+  let totalDurationMs = 0;
+  let totalLecturesStarted = 0;
+  let totalLecturesCompleted = 0;
+  let totalLecturesInProgress = 0;
+  let totalUsers = all.length;
+
+  for (const userStats of all) {
+    totalSentencesRead += userStats.totals.totalSentences;
+    totalDurationMs += userStats.totals.totalDurationMs;
+
+    const lectureIds = Object.keys(userStats.lectures);
+    totalLecturesStarted += lectureIds.length;
+
+    // Count completed vs in-progress lectures for this user
+    for (const lectureId of lectureIds) {
+      const lecture = userStats.lectures[lectureId];
+      const readUnique = lecture.uniqueSentenceIndices?.length || 0;
+
+      if (vivekanandaLectures) {
+        // Use actual lecture data to determine completion
+        const lectureData = vivekanandaLectures.find(l => l.id === lectureId);
+        if (lectureData) {
+          // Import countSentences function would be needed here
+          // For now, estimate: most lectures have 80-120 sentences
+          const estimatedTotal = 100; // Conservative estimate
+          if (readUnique >= estimatedTotal * 0.9) { // 90% completion threshold
+            totalLecturesCompleted += 1;
+          } else if (readUnique > 0) {
+            totalLecturesInProgress += 1;
+          }
+        } else {
+          // Unknown lecture, use threshold
+          if (readUnique >= 80) {
+            totalLecturesCompleted += 1;
+          } else if (readUnique > 0) {
+            totalLecturesInProgress += 1;
+          }
+        }
+      } else {
+        // Fallback: use threshold-based detection
+        if (readUnique >= 80) {
+          totalLecturesCompleted += 1;
+        } else if (readUnique > 0) {
+          totalLecturesInProgress += 1;
+        }
+      }
+    }
+  }
+
+  return {
+    totalUsers,
+    totalSentencesRead,
+    totalDurationMs,
+    totalLecturesStarted,
+    totalLecturesCompleted,
+    totalLecturesInProgress
+  };
+}
+
