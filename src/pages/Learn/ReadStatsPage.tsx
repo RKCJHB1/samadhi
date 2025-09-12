@@ -331,7 +331,7 @@ const ReadStatsPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-purple-600">Languages</p>
-                      <p className="text-2xl font-bold text-purple-900">{filteredLanguageStats.length}</p>
+                      <p className="text-2xl font-bold text-purple-900">{approvedLangs && approvedLangs.size > 0 ? Array.from(approvedLangs).filter(c => c !== 'en').length : displayStats.languageStats.length}</p>
                     </div>
                     <LanguagesIcon className="h-8 w-8 text-purple-500" />
                   </div>

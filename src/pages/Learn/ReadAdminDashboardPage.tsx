@@ -196,7 +196,7 @@ const ReadAdminDashboardPage: React.FC = () => {
           totalTranslations: sum.total,
           totalApproved: sum.approved,
           totalPending: sum.pending,
-          languages: list.length,
+          languages: Array.from(approvedSet).filter(c => c !== 'en').length,
         };
       }
       return {
