@@ -4,7 +4,7 @@ import TranslationLayout from '@/components/layout/TranslationLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser, listPendingTranslations, listPendingTranslationsByLanguages, listReviewerLanguagesForUser, setTranslationStatus, isSupabaseConfigured, getProfile } from '@/services/translationsSupabase';
+import { getCurrentUser, listPendingTranslations, listPendingTranslationsByLanguages, listReviewerLanguagesForUser, setTranslationStatus, isSupabaseConfigured, getProfile, getApprovedLanguageCodes } from '@/services/translationsSupabase';
 
 const TranslationsModerationPage: React.FC = () => {
   const [pending, setPending] = useState<any[]>([]);
@@ -14,11 +14,13 @@ const TranslationsModerationPage: React.FC = () => {
   const [myLangs, setMyLangs] = useState<string[]>([]);
   const [selectedLangs, setSelectedLangs] = useState<string[]>([]);
   const [allowedApproveLangs, setAllowedApproveLangs] = useState<Set<string>>(new Set());
+  const [approvedSet, setApprovedSet] = useState<Set<string>>(new Set());
   const [myRole, setMyRole] = useState<'user'|'moderator'|'admin'|'unknown'>('unknown');
   const [filterMode, setFilterMode] = useState<'mine'|'all'>('mine');
   const navigate = useNavigate();
 
-  const activeLangs = useMemo(() => (filterMode === 'mine' ? selectedLangs : []), [filterMode, selectedLangs]);
+  const myApprovedLangs = useMemo(() => myLangs.filter(l => approvedSet.has((l||'').toLowerCase()) && (l||'').toLowerCase() !== 'en'), [myLangs, approvedSet]);
+  const activeLangs = useMemo(() => (filterMode === 'mine' ? selectedLangs.filter(l => approvedSet.has((l||'').toLowerCase())) : Array.from(approvedSet)), [filterMode, selectedLangs, approvedSet]);
 
   useEffect(() => {
     (async () => {
@@ -27,13 +29,21 @@ const TranslationsModerationPage: React.FC = () => {
       if (!user) { navigate('/login?next=/moderation/translations'); return; }
       const langs = await listReviewerLanguagesForUser(user.id);
       setMyLangs(langs);
-      setSelectedLangs(langs);
       const prof = await getProfile(user.id);
       setMyRole((prof?.role as any) || 'user');
       const profArr = (prof?.language_proficiency as any[] | undefined) || [];
       const allowed = new Set<string>(profArr.filter(p => ['Fluent','Native/Academic'].includes(p.level)).map(p => (p.code || '').toLowerCase()).filter(Boolean));
       setAllowedApproveLangs(allowed);
-      const items = langs.length > 0 ? await listPendingTranslationsByLanguages(langs, 200) : await listPendingTranslations(200);
+      // Load approved language set
+      const approved = await getApprovedLanguageCodes();
+      const arr = Array.from(approved).filter(c => c && c.toLowerCase() !== 'en');
+      const set = new Set(arr.map(c => c.toLowerCase()));
+      setApprovedSet(set);
+      // Initialize selected langs to intersection of reviewer langs and approved
+      const initialSel = langs.filter(l => set.has((l||'').toLowerCase()));
+      setSelectedLangs(initialSel);
+      // Fetch pending for approved languages (all approved by default)
+      const items = set.size > 0 ? await listPendingTranslationsByLanguages(Array.from(set), 200) : await listPendingTranslations(200);
       setPending(items);
       setLoading(false);
     })();
@@ -43,12 +53,15 @@ const TranslationsModerationPage: React.FC = () => {
     (async () => {
       if (!isSupabaseConfigured()) return;
       setLoading(true);
-      const items = activeLangs.length > 0 ? await listPendingTranslationsByLanguages(activeLangs, 200) : await listPendingTranslations(200);
+      // Always restrict to approved set; if mine mode results in empty, show none
+      const langs = (filterMode === 'mine') ? activeLangs : Array.from(approvedSet);
+      const items = (langs && langs.length > 0)
+        ? await listPendingTranslationsByLanguages(langs, 200)
+        : [];
       setPending(items);
       setLoading(false);
     })();
-
-  }, [activeLangs]);
+  }, [activeLangs, approvedSet, filterMode]);
 
   const handleAction = async (idx: number, status: 'approved'|'rejected') => {
     const item = pending[idx];
@@ -69,7 +82,7 @@ const TranslationsModerationPage: React.FC = () => {
           )}
           {isSupabaseConfigured() && filterMode==='mine' && selectedLangs.length > 0 && (
             <div className="mb-4 p-3 border rounded-md bg-white shadow-sm flex items-center gap-2 flex-wrap">
-              {myLangs.map((l) => {
+              {myApprovedLangs.map((l) => {
                 const sel = selectedLangs.includes(l);
                 return (
                   <Button key={l} size="sm" variant={sel ? 'default' : 'outline'} onClick={()=>{
