@@ -755,6 +755,41 @@ export async function fetchTopContributorsForLanguages(langs: string[], limit = 
   }
 }
 
+// Lecture stats limited to a set of languages (used by /read/stats when filtering by approved langs)
+export async function fetchLectureStatsForLanguages(langs: string[]): Promise<TranslationStats['lectureStats']> {
+  const sb = getSupabase();
+  if (!sb) return [];
+  if (!langs || langs.length === 0) return [];
+  try {
+    const { data, error } = await sb
+      .from(TABLE)
+      .select('lecture_id, status, lang')
+      .in('lang', langs)
+      .not('status', 'is', null);
+    if (error || !data) return [];
+
+    const byLecture = new Map<string, { total: number; approved: number; languages: Set<string> }>();
+    (data as any[]).forEach((row) => {
+      const id = row.lecture_id as string;
+      if (!byLecture.has(id)) byLecture.set(id, { total: 0, approved: 0, languages: new Set() });
+      const stats = byLecture.get(id)!;
+      stats.total++;
+      if (row.status === 'approved') stats.approved++;
+      stats.languages.add(row.lang);
+    });
+
+    return Array.from(byLecture.entries()).map(([lectureId, s]) => ({
+      lectureId,
+      total: s.total,
+      approved: s.approved,
+      languagesCovered: s.languages.size,
+    })).sort((a, b) => b.total - a.total);
+  } catch {
+    return [];
+  }
+}
+
+
 
 
 // Admin-only: list profiles and update roles

@@ -12,7 +12,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { fetchReadingOverviewCounts, getApprovedLanguageCodes, fetchTopContributorsForLanguages } from '@/services/translationsSupabase';
+import { fetchReadingOverviewCounts, getApprovedLanguageCodes, fetchTopContributorsForLanguages, fetchLectureStatsForLanguages } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
 import {
   Globe,
@@ -203,6 +203,27 @@ const ReadStatsPage: React.FC = () => {
     if (!approvedLangs || approvedLangs.size === 0) return remoteStats?.topContributors || [];
     return approvedTopContributors;
   }, [approvedLangs, remoteStats, approvedTopContributors]);
+
+  // Lecture stats filtered to approved languages when available
+  const [approvedLectureStats, setApprovedLectureStats] = useState<Array<NonNullable<typeof remoteStats>['lectureStats'][number]>>([]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!approvedLangs || approvedLangs.size === 0) { setApprovedLectureStats([]); return; }
+      try {
+        const stats = await fetchLectureStatsForLanguages(Array.from(approvedLangs));
+        if (!cancelled) setApprovedLectureStats(stats);
+      } catch {
+        if (!cancelled) setApprovedLectureStats([]);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [approvedLangs]);
+
+  const displayLectureStats = useMemo(() => {
+    if (!approvedLangs || approvedLangs.size === 0) return displayStats.lectureStats;
+    return approvedLectureStats;
+  }, [approvedLangs, displayStats.lectureStats, approvedLectureStats]);
 
   if (loading) {
     return (
@@ -543,14 +564,14 @@ const ReadStatsPage: React.FC = () => {
                     <BookOpen className="h-5 w-5" />
                     {highlightLang
                       ? `Lectures with ${getLanguageName(highlightLang)} translations`
-                      : `Lectures (${displayStats.lectureStats.length} with translations)`
+                      : `Lectures (${displayLectureStats.length} with translations)`
                     }
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {(() => {
                     // Filter lectures by highlighted language if specified
-                    let filteredLectureStats = displayStats.lectureStats;
+                    let filteredLectureStats = displayLectureStats;
                     if (highlightLang) {
                       // For local data, filter by checking if the language has translations for this lecture
                       filteredLectureStats = displayStats.lectureStats.filter(lectureStat => {
