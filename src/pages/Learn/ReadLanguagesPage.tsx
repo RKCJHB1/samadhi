@@ -54,7 +54,7 @@ const ReadLanguagesPage: React.FC = () => {
     return () => { cancelled = true; };
   }, []);
 
-  const supConfigured = Boolean(remoteStats);
+  const supConfigured = isSupabaseConfigured();
 
 
 
