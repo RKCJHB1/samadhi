@@ -16,9 +16,7 @@ const TranslationNavbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo / Title */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm md:text-base font-semibold text-gray-800">Read</span>
-          </div>
+          <div className="flex items-center gap-3" aria-hidden="true"></div>
 
           {/* Links */}
           <div className="flex items-center gap-3 text-sm font-medium flex-wrap md:flex-nowrap">
