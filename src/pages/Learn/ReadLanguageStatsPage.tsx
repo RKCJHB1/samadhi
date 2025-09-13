@@ -26,16 +26,7 @@ import {
 } from 'lucide-react';
 
 const ReadLanguageStatsPage: React.FC = () => {
-  if (!featureFlags.enableReadingSection) {
-    return (
-      <NotFoundMessage
-        title="Reading Section Unavailable"
-        message="This reading section is currently disabled."
-        backTo="/read"
-        backLabel="Back to Learning Centre"
-      />
-    );
-  }
+  const sectionEnabled = featureFlags.enableReadingSection;
 
   const { langCode } = useParams<{ langCode: string }>();
   const [searchParams] = useSearchParams();
@@ -51,16 +42,7 @@ const ReadLanguageStatsPage: React.FC = () => {
 
   // Get language info
   const language = popularLanguages.find(l => l.code === langCode);
-  if (!language) {
-    return (
-      <NotFoundMessage
-        title="Language Not Found"
-        message={`Language code "${langCode}" is not supported.`}
-        backTo="/read/languages"
-        backLabel="Back to Languages"
-      />
-    );
-  }
+
 
   // Check approved languages – use manual approvals only (fast, avoids heavy queries)
   useEffect(() => {
@@ -96,24 +78,7 @@ const ReadLanguageStatsPage: React.FC = () => {
     return () => clearTimeout(t);
   }, [isApproved]);
 
-  if (isApproved === null) {
-    return (
-      <TranslationLayout title="Loading">
-        <div className="py-16 text-center text-gray-500">Loading language statistics…</div>
-      </TranslationLayout>
-    );
-  }
 
-  if (isApproved === false) {
-    return (
-      <NotFoundMessage
-        title="Language Not Approved"
-        message={`The language "${language.name}" is not currently approved for public statistics.`}
-        backTo="/read/languages"
-        backLabel="Back to Languages"
-      />
-    );
-  }
 
   // Local translations for this language
   const localTranslations = useMemo(() =>
@@ -252,6 +217,48 @@ const ReadLanguageStatsPage: React.FC = () => {
 
 
 
+  // Guards moved after all hooks to keep hook order stable
+  if (!sectionEnabled) {
+    return (
+      <NotFoundMessage
+        title="Reading Section Unavailable"
+        message="This reading section is currently disabled."
+        backTo="/read"
+        backLabel="Back to Learning Centre"
+      />
+    );
+  }
+
+  if (!language) {
+    return (
+      <NotFoundMessage
+        title="Language Not Found"
+        message={`Language code "${langCode}" is not supported.`}
+        backTo="/read/languages"
+        backLabel="Back to Languages"
+      />
+    );
+  }
+
+  if (isApproved === null) {
+    return (
+      <TranslationLayout title="Loading">
+        <div className="py-16 text-center text-gray-500">Loading language statistics…</div>
+      </TranslationLayout>
+    );
+  }
+
+  if (isApproved === false) {
+    return (
+      <NotFoundMessage
+        title="Language Not Approved"
+        message={`The language "${language?.name || langCode}" is not currently approved for public statistics.`}
+        backTo="/read/languages"
+        backLabel="Back to Languages"
+      />
+    );
+  }
+
   return (
     <TranslationLayout title={`${getLanguageName(langCode!)} Statistics`}>
       {debugLangs && (
@@ -264,7 +271,7 @@ const ReadLanguageStatsPage: React.FC = () => {
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-6">
-            
+
             {/* Header */}
             <Card className="bg-gradient-to-r from-spiritual-50 to-spiritual-100 border-spiritual-200">
               <CardContent className="p-6">
