@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import TranslationLayout from '../../components/layout/TranslationLayout';
 import NotFoundMessage from '../../components/learn/NotFoundMessage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,8 +38,13 @@ const ReadLanguageStatsPage: React.FC = () => {
   }
 
   const { langCode } = useParams<{ langCode: string }>();
+  const [searchParams] = useSearchParams();
+  const debugLangs = searchParams.get('debugLangs') === '1';
+  const force = searchParams.get('force') === '1';
+
   const [remoteTranslations, setRemoteTranslations] = useState<any[]>([]);
   const [isApproved, setIsApproved] = useState<boolean | null>(null);
+  const [debugInfo, setDebugInfo] = useState<{ sup: boolean; approved: number; hidden: number } | null>(null);
 
   // Centralized stats
   const { stats: remoteStats, loading, totalSentences, getLangCount } = useTranslationStats();
@@ -62,6 +67,7 @@ const ReadLanguageStatsPage: React.FC = () => {
     let cancelled = false;
     (async () => {
       try {
+        if (force) { if (!cancelled) setIsApproved(true); return; }
         // If Supabase isn’t configured, don’t block the page in local dev
         if (!isSupabaseConfigured()) {
           if (!cancelled) setIsApproved(true);
@@ -75,12 +81,13 @@ const ReadLanguageStatsPage: React.FC = () => {
         const hiddenSet = new Set((hidden || []).map((c) => (c || '').toLowerCase()));
         const allowed = manualSet.has((langCode || '').toLowerCase()) && !hiddenSet.has((langCode || '').toLowerCase());
         if (!cancelled) setIsApproved(allowed);
+        if (debugLangs && !cancelled) setDebugInfo({ sup: isSupabaseConfigured(), approved: manualSet.size, hidden: hiddenSet.size });
       } catch {
         if (!cancelled) setIsApproved(false);
       }
     })();
     return () => { cancelled = true; };
-  }, [langCode]);
+  }, [langCode, force, debugLangs]);
 
   // Watchdog: if approval check gets stuck (e.g., network issues), render the page after 3s
   useEffect(() => {
@@ -247,6 +254,13 @@ const ReadLanguageStatsPage: React.FC = () => {
 
   return (
     <TranslationLayout title={`${getLanguageName(langCode!)} Statistics`}>
+      {debugLangs && (
+        <div className="fixed top-16 right-4 z-50 bg-yellow-100 border border-yellow-300 text-yellow-900 px-3 py-2 rounded shadow">
+          <div className="text-xs font-mono">supConfigured: {String(debugInfo?.sup ?? isSupabaseConfigured())}</div>
+          <div className="text-xs font-mono">approved count: {debugInfo?.approved ?? 'n/a'}</div>
+          <div className="text-xs font-mono">hidden count: {debugInfo?.hidden ?? 'n/a'}</div>
+        </div>
+      )}
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-6">
