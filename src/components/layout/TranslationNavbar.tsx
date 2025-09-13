@@ -28,7 +28,10 @@ const TranslationNavbar: React.FC = () => {
           </div>
 
           {/* Links */}
-          <div className="flex items-center gap-4 text-sm font-medium">
+          <div className="flex items-center gap-3 text-sm font-medium flex-wrap md:flex-nowrap">
+            {/* Easy exit back to main homepage on all devices */}
+            <Link to="/" className="t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600">Home</Link>
+            <div className="h-4 w-px bg-gray-300"></div>
             {/* Always show Read Home; only highlight when exactly on /read */}
             <>
               <Link to="/read" className={`t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600 ${isReadHomeExact ? 'active' : ''}`}>← Read Home</Link>

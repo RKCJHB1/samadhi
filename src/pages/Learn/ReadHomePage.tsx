@@ -230,7 +230,7 @@ const HelloMarquee: React.FC<{ side: 'left' | 'right' }> = ({ side }) => {
   }), [pool]);
   const doubled = React.useMemo(() => [...items, ...items], [items]);
   return (
-    <div aria-hidden className={`hidden md:block pointer-events-none absolute inset-y-0 ${side === 'left' ? 'left-2 md:left-4 lg:left-8' : 'right-2 md:right-4 lg:right-8'} w-40 sm:w-48 z-10`}>
+    <div aria-hidden className={`hidden lg:block pointer-events-none absolute inset-y-0 ${side === 'left' ? 'left-2 md:left-4 lg:left-8' : 'right-2 md:right-4 lg:right-8'} w-36 lg:w-48 z-10`}>
       <div className={`hello-marquee ${side}`} style={{ ['--marquee-duration' as any]: '36s' }}>
         {doubled.map((text, idx) => (
           <div key={`${side}-marquee-${idx}`} className="hello-item">{text}</div>
