@@ -17,14 +17,7 @@ const TranslationNavbar: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo / Title */}
           <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center">
-              <img
-                src="/lovable-uploads/2e549f27-8429-4042-95be-36194a9d309c.png"
-                alt="Ramakrishna Centre Logo"
-                className="h-10 md:h-12"
-              />
-            </Link>
-
+            <span className="text-sm md:text-base font-semibold text-gray-800">Read</span>
           </div>
 
           {/* Links */}
