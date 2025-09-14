@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import UserAccountNav from '@/components/auth/UserAccountNav';
 import { useAuth } from '@/contexts/AuthContext';
 import './navbar.css';
+import { Menu, X } from 'lucide-react';
 
 const TranslationNavbar: React.FC = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isActive = (href: string) =>
     location.pathname === href || location.pathname.startsWith(`${href}/`);
   const isReadHomeExact = location.pathname === '/read';
@@ -19,7 +21,7 @@ const TranslationNavbar: React.FC = () => {
           <div className="flex items-center gap-3" aria-hidden="true"></div>
 
           {/* Links */}
-          <div className="flex items-center gap-3 text-sm font-medium flex-wrap md:flex-nowrap">
+          <div className="hidden md:flex items-center gap-4 text-sm font-medium">
             {/* Easy exit back to main homepage on all devices */}
             <Link to="/" className="t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600">Home</Link>
             <div className="h-4 w-px bg-gray-300"></div>
@@ -40,7 +42,36 @@ const TranslationNavbar: React.FC = () => {
               <Link to="/auth/login" className="text-gray-700 hover:text-gray-900">Login</Link>
             )}
           </div>
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100"
+            aria-label="Open menu"
+            aria-controls="t-mobile-menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen(v => !v)}
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+      {/* Mobile panel */}
+      {mobileOpen && (
+        <div id="t-mobile-menu" className="md:hidden border-t border-gray-200 py-3">
+          <div className="flex flex-col gap-2 text-sm">
+            <Link to="/" className="t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600" onClick={() => setMobileOpen(false)}>Home</Link>
+            <Link to="/read" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isReadHomeExact ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Read Home</Link>
+            <Link to="/read/lectures" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/lectures') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Read/Translate</Link>
+            <Link to="/read/languages" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/languages') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Request a New Language</Link>
+            <Link to="/read/stats" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/stats') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Stats</Link>
+            <Link to="/read/faq" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/faq') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>FAQ's</Link>
+            {user ? (
+              <div className="px-2 py-2"><UserAccountNav /></div>
+            ) : (
+              <Link to="/auth/login" className="px-2 py-2 text-gray-700 hover:text-gray-900" onClick={() => setMobileOpen(false)}>Login</Link>
+            )}
+          </div>
+        </div>
+      )}
       </div>
     </nav>
   );
