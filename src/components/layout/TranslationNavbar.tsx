@@ -17,8 +17,16 @@ const TranslationNavbar: React.FC = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo / Title */}
-          <div className="flex items-center gap-3" aria-hidden="true"></div>
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center">
+              <img
+                src="/lovable-uploads/2e549f27-8429-4042-95be-36194a9d309c.png"
+                alt="Ramakrishna Centre Logo"
+                className="h-10 md:h-12 transition-transform duration-300 hover:scale-105"
+              />
+            </Link>
+          </div>
 
           {/* Links */}
           <div className="hidden md:flex items-center gap-4 text-sm font-medium">
