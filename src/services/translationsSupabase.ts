@@ -1030,8 +1030,12 @@ export async function addApprovedLanguage(lang: string): Promise<{ ok: boolean; 
   const user = await getCurrentUser();
   const payload: any = { lang };
   if (user) payload.created_by = user.id;
-  const { error } = await sb.from('language_approvals').insert(payload);
-  return { ok: !error, error: error?.message };
+  // Use upsert to avoid duplicate-key errors if the row already exists
+  const { error } = await sb.from('language_approvals').upsert(payload, { onConflict: 'lang' });
+  if (error) return { ok: false, error: error.message };
+  // Ensure the language is not hidden anymore (idempotent)
+  await sb.from('language_hidden').delete().eq('lang', lang);
+  return { ok: true };
 }
 
 export async function removeApprovedLanguage(lang: string): Promise<{ ok: boolean; error?: string }>{
