@@ -84,7 +84,7 @@ create unique index if not exists profiles_username_unique_idx
   where username is not null;
 
 -- Safe public view for attribution (no emails)
-create or replace view public.public_profiles as
+create or replace view public.public_profiles with (security_barrier=true) as
 select id, first_name, last_name, username, role, language_proficiency
 from public.profiles;
 -- Allow anon read of the view
@@ -179,7 +179,7 @@ begin
   end if;
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_created_by on public.translations;
 create trigger set_created_by
@@ -212,7 +212,7 @@ begin
   new.updated_at = now();
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_updated_at on public.translations;
 create trigger set_updated_at
@@ -377,7 +377,7 @@ begin
   end if;
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_status_by_proficiency on public.translations;
 create trigger set_status_by_proficiency
@@ -639,7 +639,7 @@ returns table (
   )
   select * from agg
   order by total desc;
-$$ language sql stable security definer;
+$$ language sql stable security definer set search_path = pg_catalog, public;
 
 grant execute on function public.get_language_unique_stats() to anon, authenticated;
 
@@ -689,6 +689,6 @@ returns table (
     (select count(distinct user_id) from public.reading_progress where updated_at >= now() - interval '3 days')::int as active_readers_3d,
     (select count(distinct user_id) from public.reading_progress where updated_at >= now() - interval '7 days')::int as active_readers_7d,
     (select count(*) from public.reading_progress)::int as total_sessions;
-$$ language sql stable security definer;
+$$ language sql stable security definer set search_path = pg_catalog, public;
 
 grant execute on function public.get_reading_overview_counts() to anon, authenticated;

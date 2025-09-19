@@ -146,7 +146,7 @@ returns trigger as $$
 begin
   if new.created_by is null then new.created_by := auth.uid(); end if;
   return new;
-end; $$ language plpgsql;
+end; $$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_created_by on public.translations;
 create trigger set_created_by before insert on public.translations
@@ -157,7 +157,7 @@ returns trigger as $$
 begin
   new.updated_at := now();
   return new;
-end; $$ language plpgsql;
+end; $$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_updated_at on public.translations;
 create trigger set_updated_at before update on public.translations
@@ -176,7 +176,7 @@ begin
     end if;
   end if;
   return new;
-end; $$ language plpgsql;
+end; $$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists set_status_by_proficiency on public.translations;
 create trigger set_status_by_proficiency before insert on public.translations
@@ -270,7 +270,7 @@ CREATE POLICY "Admin manage reviewer requests" ON public.language_reviewer_reque
 
 
 create or replace function public.set_updated_at()
-returns trigger as $$ begin new.updated_at := now(); return new; end; $$ language plpgsql;
+returns trigger as $$ begin new.updated_at := now(); return new; end; $$ language plpgsql set search_path = pg_catalog, public;
 DROP TRIGGER IF EXISTS set_updated_at_lrr ON public.language_reviewer_requests;
 CREATE TRIGGER set_updated_at_lrr BEFORE UPDATE ON public.language_reviewer_requests FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
@@ -413,7 +413,7 @@ returns table (
   from unique_keys
   group by lang
   order by total desc;
-$$ language sql stable security definer;
+$$ language sql stable security definer set search_path = pg_catalog, public;
 GRANT EXECUTE ON FUNCTION public.get_language_unique_stats() TO anon, authenticated;
 
 -- Reading overview counts (security definer to bypass RLS for aggregates)
@@ -434,7 +434,7 @@ returns table (
     (select count(distinct user_id) from public.reading_progress where updated_at >= now() - interval '3 days')::int as active_readers_3d,
     (select count(distinct user_id) from public.reading_progress where updated_at >= now() - interval '7 days')::int as active_readers_7d,
     (select count(*) from public.reading_progress)::int as total_sessions;
-$$ language sql stable security definer;
+$$ language sql stable security definer set search_path = pg_catalog, public;
 GRANT EXECUTE ON FUNCTION public.get_reading_overview_counts() TO anon, authenticated;
 
 
@@ -485,7 +485,7 @@ BEGIN
   ON CONFLICT (user_id, lecture_id, lang, day)
   DO UPDATE SET ms = public.reading_time_daily.ms + EXCLUDED.ms, updated_at = now();
   RETURN true;
-END; $$ LANGUAGE plpgsql SECURITY INVOKER;
+END; $$ LANGUAGE plpgsql SECURITY INVOKER SET search_path = pg_catalog, public;
 GRANT EXECUTE ON FUNCTION public.record_reading_time(text, text, bigint) TO authenticated;
 
 -- Public aggregates for profiles (security definer to bypass RLS and expose only totals)
@@ -497,7 +497,7 @@ BEGIN
   SELECT COALESCE(sum(ms), 0)::bigint AS total_ms
   FROM public.reading_time_daily
   WHERE user_id = p_user;
-END; $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+END; $$ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = pg_catalog, public;
 GRANT EXECUTE ON FUNCTION public.get_user_reading_time_totals(uuid) TO anon, authenticated;
 
 

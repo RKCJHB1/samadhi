@@ -22,7 +22,7 @@ begin
   new.username := trim(both '-' from new.username);
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = pg_catalog, public;
 
 drop trigger if exists normalize_username on public.profiles;
 create trigger normalize_username
