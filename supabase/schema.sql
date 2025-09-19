@@ -39,6 +39,8 @@ create index if not exists idx_translations_lecture_lang on public.translations 
 create index if not exists idx_translations_creator_status on public.translations (created_by, status);
 create index if not exists idx_translations_updated_at on public.translations (updated_at desc);
 
+create index if not exists idx_translations_lecture_lang_status_form_sent on public.translations (lecture_id, lang, status, form, sentence_index);
+
 -- Ensure additional profile fields exist (idempotent safety)
 alter table if exists public.profiles add column if not exists email text;
 alter table if exists public.profiles add column if not exists role text not null default 'user';
@@ -235,6 +237,8 @@ create table if not exists public.translation_votes (
 
 -- Helpful index for aggregations (includes form)
 create index if not exists translation_votes_lslfit on public.translation_votes (lecture_id, sentence_index, lang, form, text);
+
+create index if not exists idx_votes_lslf on public.translation_votes (lecture_id, sentence_index, lang, form);
 
 -- Enable RLS
 alter table public.translation_votes enable row level security;
@@ -590,6 +594,8 @@ create table if not exists public.reading_progress (
 -- Indexes for quick lookups
 create index if not exists idx_reading_progress_user on public.reading_progress (user_id);
 create index if not exists idx_reading_progress_lecture on public.reading_progress (lecture_id);
+create index if not exists idx_reading_progress_user_lecture on public.reading_progress (user_id, lecture_id);
+
 
 -- Enable RLS
 alter table public.reading_progress enable row level security;

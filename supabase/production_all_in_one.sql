@@ -205,6 +205,8 @@ CREATE POLICY "Admin manage translation votes" ON public.translation_votes
   );
 
 create index if not exists translation_votes_lslfit on public.translation_votes (lecture_id, sentence_index, lang, form, text);
+create index if not exists idx_votes_lslf on public.translation_votes (lecture_id, sentence_index, lang, form);
+
 alter table public.translation_votes enable row level security;
 DROP POLICY IF EXISTS "Public read votes" ON public.translation_votes;
 CREATE POLICY "Public read votes" ON public.translation_votes FOR SELECT USING (true);
@@ -366,6 +368,8 @@ create table if not exists public.reading_progress (
 );
 create index if not exists idx_reading_progress_user on public.reading_progress (user_id);
 create index if not exists idx_reading_progress_lecture on public.reading_progress (lecture_id);
+create index if not exists idx_reading_progress_user_lecture on public.reading_progress (user_id, lecture_id);
+
 alter table public.reading_progress enable row level security;
 DROP POLICY IF EXISTS "User read own progress" ON public.reading_progress;
 CREATE POLICY "User read own progress" ON public.reading_progress FOR SELECT USING (user_id = auth.uid());
@@ -452,6 +456,8 @@ create table if not exists public.reading_time_daily (
 );
 create index if not exists idx_reading_time_daily_user on public.reading_time_daily (user_id);
 create index if not exists idx_reading_time_daily_lecture on public.reading_time_daily (lecture_id);
+create index if not exists idx_rtd_user_day on public.reading_time_daily (user_id, day);
+
 alter table public.reading_time_daily enable row level security;
 
 -- RLS: users can manage their own rows
