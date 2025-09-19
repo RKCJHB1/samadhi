@@ -46,9 +46,9 @@ alter table public.profiles enable row level security;
 DROP POLICY IF EXISTS "Public read basic profile info" ON public.profiles;
 CREATE POLICY "Public read basic profile info" ON public.profiles FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Self upsert profile" ON public.profiles;
-CREATE POLICY "Self upsert profile" ON public.profiles FOR INSERT WITH CHECK (id = auth.uid());
+CREATE POLICY "Self upsert profile" ON public.profiles FOR INSERT WITH CHECK (id = (select auth.uid()));
 DROP POLICY IF EXISTS "Self update profile" ON public.profiles;
-CREATE POLICY "Self update profile" ON public.profiles FOR UPDATE USING (id = auth.uid()) WITH CHECK (id = auth.uid());
+CREATE POLICY "Self update profile" ON public.profiles FOR UPDATE USING (id = (select auth.uid())) WITH CHECK (id = (select auth.uid()));
 DROP POLICY IF EXISTS "Admin read profiles" ON public.profiles;
 -- NOTE: Avoid recursive policy on profiles; admin reads should be done via RPC or security definer if needed.
 -- CREATE POLICY "Admin read profiles" ON public.profiles FOR SELECT USING (public.is_admin(auth.uid()));
@@ -89,17 +89,17 @@ CREATE POLICY "Public read approved translations" ON public.translations FOR SEL
 
 DROP POLICY IF EXISTS "Moderators read all" ON public.translations;
 CREATE POLICY "Moderators read all" ON public.translations FOR SELECT USING (
-  exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
 );
 
 -- Insert policy requiring login and some proficiency in the target language (username required)
 DROP POLICY IF EXISTS "Authenticated insert translations with proficiency" ON public.translations;
 CREATE POLICY "Authenticated insert translations with proficiency" ON public.translations
 FOR INSERT WITH CHECK (
-  auth.uid() IS NOT NULL
+  (select auth.uid()) IS NOT NULL
   AND exists (
     select 1 from public.profiles prof
-    where prof.id = auth.uid()
+    where prof.id = (select auth.uid())
       and prof.username is not null
       and exists (
         select 1 from jsonb_to_recordset(coalesce(prof.language_proficiency, '[]'::jsonb)) as lp(code text, level text)
@@ -111,7 +111,7 @@ FOR INSERT WITH CHECK (
     OR (
       status = 'approved' AND exists (
         select 1 from public.profiles prof2
-        where prof2.id = auth.uid()
+        where prof2.id = (select auth.uid())
           and exists (
             select 1 from jsonb_to_recordset(coalesce(prof2.language_proficiency, '[]'::jsonb)) as lp2(code text, level text)
             where lp2.code = lang and lp2.level in ('Fluent','Native/Academic')
@@ -125,18 +125,18 @@ FOR INSERT WITH CHECK (
 DROP POLICY IF EXISTS "Moderators update translations" ON public.translations;
 CREATE POLICY "Moderators update translations" ON public.translations
 FOR UPDATE USING (
-  exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
 ) WITH CHECK (
-  exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
 );
 
 -- Allow admins to fully manage translations (including DELETE)
 DROP POLICY IF EXISTS "Admin manage translations" ON public.translations;
 CREATE POLICY "Admin manage translations" ON public.translations
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   );
 
 
@@ -199,9 +199,9 @@ create table if not exists public.translation_votes (
 DROP POLICY IF EXISTS "Admin manage translation votes" ON public.translation_votes;
 CREATE POLICY "Admin manage translation votes" ON public.translation_votes
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   );
 
 create index if not exists translation_votes_lslfit on public.translation_votes (lecture_id, sentence_index, lang, form, text);
@@ -211,11 +211,11 @@ alter table public.translation_votes enable row level security;
 DROP POLICY IF EXISTS "Public read votes" ON public.translation_votes;
 CREATE POLICY "Public read votes" ON public.translation_votes FOR SELECT USING (true);
 DROP POLICY IF EXISTS "User upsert own vote" ON public.translation_votes;
-CREATE POLICY "User upsert own vote" ON public.translation_votes FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+CREATE POLICY "User upsert own vote" ON public.translation_votes FOR INSERT WITH CHECK ((select auth.uid()) IS NOT NULL AND user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User update own vote" ON public.translation_votes;
-CREATE POLICY "User update own vote" ON public.translation_votes FOR UPDATE USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+CREATE POLICY "User update own vote" ON public.translation_votes FOR UPDATE USING (user_id = (select auth.uid())) WITH CHECK (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User delete own vote" ON public.translation_votes;
-CREATE POLICY "User delete own vote" ON public.translation_votes FOR DELETE USING (user_id = auth.uid());
+CREATE POLICY "User delete own vote" ON public.translation_votes FOR DELETE USING (user_id = (select auth.uid()));
 
 -- ========== LANGUAGE REVIEWERS & REQUESTS ==========
 create table if not exists public.language_reviewers (
@@ -233,9 +233,9 @@ DROP POLICY IF EXISTS "Public read language reviewers" ON public.language_review
 CREATE POLICY "Public read language reviewers" ON public.language_reviewers FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Admin manage language reviewers" ON public.language_reviewers;
 CREATE POLICY "Admin manage language reviewers" ON public.language_reviewers FOR ALL USING (
-  exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
 ) WITH CHECK (
-  exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+  exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
 );
 
 create table if not exists public.language_reviewer_requests (
@@ -253,21 +253,21 @@ alter table public.language_reviewer_requests enable row level security;
 create index if not exists idx_lrr_lang_status on public.language_reviewer_requests (lang, status);
 create index if not exists idx_lrr_user on public.language_reviewer_requests (user_id);
 DROP POLICY IF EXISTS "User insert own reviewer request" ON public.language_reviewer_requests;
-CREATE POLICY "User insert own reviewer request" ON public.language_reviewer_requests FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+CREATE POLICY "User insert own reviewer request" ON public.language_reviewer_requests FOR INSERT WITH CHECK ((select auth.uid()) IS NOT NULL AND user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User read own reviewer requests" ON public.language_reviewer_requests;
-CREATE POLICY "User read own reviewer requests" ON public.language_reviewer_requests FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY "User read own reviewer requests" ON public.language_reviewer_requests FOR SELECT USING (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "Admin read reviewer requests" ON public.language_reviewer_requests;
-CREATE POLICY "Admin read reviewer requests" ON public.language_reviewer_requests FOR SELECT USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+CREATE POLICY "Admin read reviewer requests" ON public.language_reviewer_requests FOR SELECT USING (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin'));
 DROP POLICY IF EXISTS "Admin update reviewer requests" ON public.language_reviewer_requests;
-CREATE POLICY "Admin update reviewer requests" ON public.language_reviewer_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+CREATE POLICY "Admin update reviewer requests" ON public.language_reviewer_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin'));
 
 -- Allow admins to fully manage reviewer requests (cleanup operations)
 DROP POLICY IF EXISTS "Admin manage reviewer requests" ON public.language_reviewer_requests;
 CREATE POLICY "Admin manage reviewer requests" ON public.language_reviewer_requests
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   );
 
 
@@ -289,21 +289,21 @@ alter table public.language_requests enable row level security;
 create index if not exists idx_language_requests_lang on public.language_requests (lang);
 create index if not exists idx_language_requests_user on public.language_requests (user_id);
 DROP POLICY IF EXISTS "User insert language request" ON public.language_requests;
-CREATE POLICY "User insert language request" ON public.language_requests FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+CREATE POLICY "User insert language request" ON public.language_requests FOR INSERT WITH CHECK ((select auth.uid()) IS NOT NULL AND user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User read own language requests" ON public.language_requests;
-CREATE POLICY "User read own language requests" ON public.language_requests FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY "User read own language requests" ON public.language_requests FOR SELECT USING (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "Admin read language requests" ON public.language_requests;
-CREATE POLICY "Admin read language requests" ON public.language_requests FOR SELECT USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+CREATE POLICY "Admin read language requests" ON public.language_requests FOR SELECT USING (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin'));
 DROP POLICY IF EXISTS "Admin update language requests" ON public.language_requests;
-CREATE POLICY "Admin update language requests" ON public.language_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+CREATE POLICY "Admin update language requests" ON public.language_requests FOR UPDATE USING (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin'));
 
 -- Allow admins to fully manage language requests (cleanup operations)
 DROP POLICY IF EXISTS "Admin manage language requests" ON public.language_requests;
 CREATE POLICY "Admin manage language requests" ON public.language_requests
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   );
 
 -- ========== LANGUAGE APPROVALS (manual approvals) ==========
@@ -314,15 +314,15 @@ create table if not exists public.language_approvals (
 );
 alter table public.language_approvals enable row level security;
 -- Allow public read so the site can list approved languages
-DROP POLICY IF EXISTS "Public read language_approvals" ON public.language_approvals;
-CREATE POLICY "Public read language_approvals" ON public.language_approvals FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Public read language approvals" ON public.language_approvals;
+CREATE POLICY "Public read language approvals" ON public.language_approvals FOR SELECT USING (true);
 -- Admins can manage approvals
-DROP POLICY IF EXISTS "Admin manage language_approvals" ON public.language_approvals;
-CREATE POLICY "Admin manage language_approvals" ON public.language_approvals
+DROP POLICY IF EXISTS "Admin manage language approvals" ON public.language_approvals;
+CREATE POLICY "Admin manage language approvals" ON public.language_approvals
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   );
 
 DROP TRIGGER IF EXISTS set_updated_at_lang_req ON public.language_requests;
@@ -340,9 +340,9 @@ CREATE POLICY "Public read language_hidden" ON public.language_hidden FOR SELECT
 DROP POLICY IF EXISTS "Admin manage language_hidden" ON public.language_hidden;
 CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
   );
 
 
@@ -352,9 +352,9 @@ CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
 DROP POLICY IF EXISTS "Admin manage reading progress" ON public.reading_progress;
 CREATE POLICY "Admin manage reading progress" ON public.reading_progress
   FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role in ('moderator','admin'))
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
   );
 
 create table if not exists public.reading_progress (
@@ -372,13 +372,13 @@ create index if not exists idx_reading_progress_user_lecture on public.reading_p
 
 alter table public.reading_progress enable row level security;
 DROP POLICY IF EXISTS "User read own progress" ON public.reading_progress;
-CREATE POLICY "User read own progress" ON public.reading_progress FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY "User read own progress" ON public.reading_progress FOR SELECT USING (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User upsert own progress" ON public.reading_progress;
-CREATE POLICY "User upsert own progress" ON public.reading_progress FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+CREATE POLICY "User upsert own progress" ON public.reading_progress FOR INSERT WITH CHECK ((select auth.uid()) IS NOT NULL AND user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User update own progress" ON public.reading_progress;
-CREATE POLICY "User update own progress" ON public.reading_progress FOR UPDATE USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+CREATE POLICY "User update own progress" ON public.reading_progress FOR UPDATE USING (user_id = (select auth.uid())) WITH CHECK (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User delete own progress" ON public.reading_progress;
-CREATE POLICY "User delete own progress" ON public.reading_progress FOR DELETE USING (user_id = auth.uid());
+CREATE POLICY "User delete own progress" ON public.reading_progress FOR DELETE USING (user_id = (select auth.uid()));
 DROP TRIGGER IF EXISTS set_updated_at_reading_progress ON public.reading_progress;
 CREATE TRIGGER set_updated_at_reading_progress BEFORE UPDATE ON public.reading_progress FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
@@ -462,13 +462,13 @@ alter table public.reading_time_daily enable row level security;
 
 -- RLS: users can manage their own rows
 DROP POLICY IF EXISTS "User upsert own reading time" ON public.reading_time_daily;
-CREATE POLICY "User upsert own reading time" ON public.reading_time_daily FOR INSERT WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
+CREATE POLICY "User upsert own reading time" ON public.reading_time_daily FOR INSERT WITH CHECK ((select auth.uid()) IS NOT NULL AND user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User update own reading time" ON public.reading_time_daily;
-CREATE POLICY "User update own reading time" ON public.reading_time_daily FOR UPDATE USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+CREATE POLICY "User update own reading time" ON public.reading_time_daily FOR UPDATE USING (user_id = (select auth.uid())) WITH CHECK (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User read own reading time" ON public.reading_time_daily;
-CREATE POLICY "User read own reading time" ON public.reading_time_daily FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY "User read own reading time" ON public.reading_time_daily FOR SELECT USING (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User delete own reading time" ON public.reading_time_daily;
-CREATE POLICY "User delete own reading time" ON public.reading_time_daily FOR DELETE USING (user_id = auth.uid());
+CREATE POLICY "User delete own reading time" ON public.reading_time_daily FOR DELETE USING (user_id = (select auth.uid()));
 
 -- Trigger to maintain updated_at
 DROP TRIGGER IF EXISTS set_updated_at_reading_time_daily ON public.reading_time_daily;
