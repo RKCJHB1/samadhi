@@ -317,6 +317,39 @@ const ReadLecturePage: React.FC = () => {
                     </div>
                   </header>
 
+	                  {/* Prev/Next lecture navigation */}
+{/*
+
+	                  <nav className="mb-6 flex items-center justify-between">
+	                    <div>
+	                      {prev ? (
+	                        <Link to={`/read/${prev.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700"> 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 ← {prev.title}</Link>
+	                      ) : <span />}
+	                    </div>
+	                    <div>
+	                      {next ? (
+	                        <Link to={`/read/${next.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700">{next.title} →</Link>
+	                      ) : <span />}
+	                    </div>
+	                  </nav>
+*/}
+
+			          {/* Prev/Next lecture navigation */}
+			          <nav className="mb-6 flex flex-wrap items-center justify-between gap-y-2">
+			            <div>
+			              {prev ? (
+			                <Link to={`/read/${prev.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700">Previous lecture</Link>
+			              ) : <span />}
+			            </div>
+			            <div>
+			              {next ? (
+			                <Link to={`/read/${next.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700">Next lecture</Link>
+			              ) : <span />}
+			            </div>
+			          </nav>
+
+
+
                   <div className="prose prose-lg md:prose-xl max-w-prose mx-auto px-1 space-y-4">
                     {perParagraphSentences.map((sentArr, pIdx) => (
                       <p key={pIdx} className={pIdx === 0 ? 'first-letter:text-5xl first-letter:font-heading first-letter:mr-2 first-letter:float-left first-letter:leading-none' : ''}>
@@ -500,22 +533,7 @@ const ReadLecturePage: React.FC = () => {
                     })}
                   </div>
 
-                  <nav className="mt-8 flex items-center justify-between">
-                    <div>
-                      {prev ? (
-                        <Link to={`/read/${prev.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700">← {prev.title}</Link>
-                      ) : <span />}
-                    </div>
 
-
-                    <div>
-                      {next ? (
-                        <Link to={`/read/${next.id}?lang=${targetLang}`} className="text-spiritual-600 hover:text-spiritual-700">{next.title} →</Link>
-                      ) : <span />}
-
-
-                    </div>
-                  </nav>
                 </article>
             </div>
             </div>

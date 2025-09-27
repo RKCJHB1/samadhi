@@ -13,6 +13,8 @@ const TranslationNavbar: React.FC = () => {
     location.pathname === href || location.pathname.startsWith(`${href}/`);
   const isReadHomeExact = location.pathname === '/read';
 
+  const isInReadSection = location.pathname === '/read' || location.pathname.startsWith('/read/');
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,8 +33,12 @@ const TranslationNavbar: React.FC = () => {
           {/* Links */}
           <div className="hidden md:flex items-center gap-4 text-sm font-medium">
             {/* Easy exit back to main homepage on all devices */}
-            <Link to="/" className="t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600">Home</Link>
-            <div className="h-4 w-px bg-gray-300"></div>
+            {!isInReadSection && (
+              <>
+                <Link to="/" className="t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600">Home</Link>
+                <div className="h-4 w-px bg-gray-300"></div>
+              </>
+            )}
             {/* Always show Read Home; only highlight when exactly on /read */}
             <>
               <Link to="/read" className={`t-nav-link px-2 text-sm font-medium tracking-wide text-gray-800 hover:text-spiritual-600 ${isReadHomeExact ? 'active' : ''}`}>← Read Home</Link>
@@ -66,7 +72,9 @@ const TranslationNavbar: React.FC = () => {
       {mobileOpen && (
         <div id="t-mobile-menu" className="md:hidden border-t border-gray-200 py-3">
           <div className="flex flex-col gap-2 text-sm">
-            <Link to="/" className="t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600" onClick={() => setMobileOpen(false)}>Home</Link>
+            {!isInReadSection && (
+              <Link to="/" className="t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600" onClick={() => setMobileOpen(false)}>Home</Link>
+            )}
             <Link to="/read" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isReadHomeExact ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Read Home</Link>
             <Link to="/read/lectures" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/lectures') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Read/Translate</Link>
             <Link to="/read/languages" className={`t-nav-link px-2 py-2 text-gray-800 hover:text-spiritual-600 ${isActive('/read/languages') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Request a New Language</Link>

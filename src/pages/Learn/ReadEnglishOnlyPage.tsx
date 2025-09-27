@@ -133,6 +133,11 @@ const ReadEnglishOnlyPage: React.FC = () => {
     );
   }
 
+  // Compute previous/next lectures for navigation
+  const idx = vivekanandaLectures.findIndex(l => l.id === lecture.id);
+  const prevLecture = idx > 0 ? vivekanandaLectures[idx - 1] : undefined;
+  const nextLecture = idx < vivekanandaLectures.length - 1 ? vivekanandaLectures[idx + 1] : undefined;
+
   return (
     <TranslationLayout title={`Read: ${lecture.title}`}>
       <div className="w-full bg-gradient-to-br from-white to-yellow-50 py-10 min-h-[80vh]">
@@ -145,14 +150,24 @@ const ReadEnglishOnlyPage: React.FC = () => {
               {lecture.date && (<div className="text-gray-600 text-sm">{lecture.date}</div>)}
             </div>
 
+
+
             {/* Controls */}
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
+              <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
                 <Link to="/read" className="px-3 py-1 border rounded-md hover:bg-gray-50">← Back</Link>
                 <span className="px-2">•</span>
                 <span>Sentence {index + 1} / {sentences.length}</span>
+                {prevLecture && (<>
+                  <span className="px-2">•</span>
+                  <Link to={`/read/${prevLecture.id}/english#sent-0`} title={prevLecture.title} className="text-spiritual-600 hover:text-spiritual-700 underline">Previous lecture</Link>
+                </>)}
+                {nextLecture && (<>
+                  <span className="px-2">•</span>
+                  <Link to={`/read/${nextLecture.id}/english#sent-0`} title={nextLecture.title} className="text-spiritual-600 hover:text-spiritual-700 underline">Next lecture</Link>
+                </>)}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm" onClick={() => { setRunning(false); setIndex(i => clamp(i - 1, 0, sentences.length - 1)); }}>
                   <ChevronLeft className="w-4 h-4 mr-1"/> Previous
                 </Button>
@@ -255,6 +270,8 @@ const ReadEnglishOnlyPage: React.FC = () => {
                 Your reading progress is automatically tracked for statistics.
               </div>
             </div>
+
+
           </div>
         </div>
       </div>
