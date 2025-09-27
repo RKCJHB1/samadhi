@@ -1349,3 +1349,43 @@ export async function fetchUserReadingTimeTotal(userId: string): Promise<number>
   const row = data[0] as any;
   return Number(row.total_ms || 0);
 }
+
+// Platform-wide total reading time (requires SQL RPC: get_platform_reading_time_totals)
+export async function fetchPlatformReadingTimeTotal(): Promise<number | null> {
+  const sb = getSupabase();
+  if (!sb) return null;
+  try {
+    const { data, error } = await sb.rpc('get_platform_reading_time_totals');
+    if (error || !data || !Array.isArray(data) || data.length === 0) return null;
+    const row = data[0] as any;
+    return Number(row.total_ms || 0);
+  } catch {
+    return null;
+  }
+}
+
+// Platform-wide reading progress aggregates (requires SQL RPC: get_reading_progress_aggregates)
+export type ReadingProgressAggregates = {
+  totalLecturesStarted: number;
+  totalLecturesCompleted: number;
+  totalLecturesInProgress: number;
+  totalSentencesRead: number;
+};
+
+export async function fetchReadingProgressAggregates(lang: string = 'en'): Promise<ReadingProgressAggregates | null> {
+  const sb = getSupabase();
+  if (!sb) return null;
+  try {
+    const { data, error } = await sb.rpc('get_reading_progress_aggregates', { p_lang: lang } as any);
+    if (error || !data || !Array.isArray(data) || data.length === 0) return null;
+    const row = data[0] as any;
+    return {
+      totalLecturesStarted: Number(row.total_lectures_started || 0),
+      totalLecturesCompleted: Number(row.total_lectures_completed || 0),
+      totalLecturesInProgress: Number(row.total_lectures_in_progress || 0),
+      totalSentencesRead: Number(row.total_sentences_read || 0),
+    };
+  } catch {
+    return null;
+  }
+}

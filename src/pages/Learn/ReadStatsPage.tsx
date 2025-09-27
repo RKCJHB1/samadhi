@@ -12,7 +12,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useTranslationStats } from '@/hooks/useTranslationStats';
-import { fetchReadingOverviewCounts, getApprovedLanguageCodes, fetchTopContributorsForLanguages, fetchLectureStatsForLanguages } from '@/services/translationsSupabase';
+import { fetchReadingOverviewCounts, getApprovedLanguageCodes, fetchTopContributorsForLanguages, fetchLectureStatsForLanguages, fetchPlatformReadingTimeTotal, fetchReadingProgressAggregates, type ReadingProgressAggregates } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
 import {
   Globe,
@@ -44,18 +44,24 @@ const ReadStatsPage: React.FC = () => {
   const highlightLang = searchParams.get('lang');
   const [readingOverview, setReadingOverview] = useState<{ totalRegistered: number; totalReaders: number; activeReaders24h: number; activeReaders3d: number; activeReaders7d: number; totalSessions: number } | null>(null);
   const [approvedLangs, setApprovedLangs] = useState<Set<string> | null>(null);
+  const [platformTotalMs, setPlatformTotalMs] = useState<number | null>(null);
+  const [platformReadingAgg, setPlatformReadingAgg] = useState<ReadingProgressAggregates | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [overview, approved] = await Promise.all([
+        const [overview, approved, totalMs, agg] = await Promise.all([
           fetchReadingOverviewCounts(),
           getApprovedLanguageCodes(),
+          fetchPlatformReadingTimeTotal(),
+          fetchReadingProgressAggregates('en'),
         ]);
         if (!cancelled) {
           setReadingOverview(overview);
           setApprovedLangs(approved);
+          setPlatformTotalMs(totalMs);
+          setPlatformReadingAgg(agg);
         }
       } catch {}
     })();
@@ -378,15 +384,15 @@ const ReadStatsPage: React.FC = () => {
                     <div className="mt-2 space-y-1">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Total readers</span>
-                        <span className="font-semibold text-indigo-800">{aggregatedReadingStats.totalUsers.toLocaleString()}</span>
+                        <span className="font-semibold text-indigo-800">{readingOverview ? readingOverview.totalReaders.toLocaleString() : '—'}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Sentences read</span>
-                        <span className="font-semibold text-indigo-800">{aggregatedReadingStats.totalSentencesRead.toLocaleString()}</span>
+                        <span className="font-semibold text-indigo-800">{platformReadingAgg ? platformReadingAgg.totalSentencesRead.toLocaleString() : aggregatedReadingStats.totalSentencesRead.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Reading time</span>
-                        <span className="font-semibold text-indigo-800">{formatDuration(aggregatedReadingStats.totalDurationMs)}</span>
+                        <span className="font-semibold text-indigo-800">{platformTotalMs !== null ? formatDuration(platformTotalMs) : formatDuration(aggregatedReadingStats.totalDurationMs)}</span>
                       </div>
                     </div>
                   </div>
@@ -397,21 +403,21 @@ const ReadStatsPage: React.FC = () => {
                     <div className="mt-2 space-y-1">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Started</span>
-                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesStarted.toLocaleString()}</span>
+                        <span className="font-semibold text-purple-800">{platformReadingAgg ? platformReadingAgg.totalLecturesStarted.toLocaleString() : aggregatedReadingStats.totalLecturesStarted.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Completed</span>
-                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesCompleted.toLocaleString()}</span>
+                        <span className="font-semibold text-purple-800">{platformReadingAgg ? platformReadingAgg.totalLecturesCompleted.toLocaleString() : aggregatedReadingStats.totalLecturesCompleted.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">In progress</span>
-                        <span className="font-semibold text-purple-800">{aggregatedReadingStats.totalLecturesInProgress.toLocaleString()}</span>
+                        <span className="font-semibold text-purple-800">{platformReadingAgg ? platformReadingAgg.totalLecturesInProgress.toLocaleString() : aggregatedReadingStats.totalLecturesInProgress.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="text-[11px] text-gray-600 mt-4">
-                  Supabase metrics show platform-wide activity. Local metrics aggregate anonymized progress saved in browsers.
+                  Platform-wide metrics are sourced from Supabase. If Supabase is not configured in this environment, local fallback values may appear.
                 </div>
               </CardContent>
             </Card>
