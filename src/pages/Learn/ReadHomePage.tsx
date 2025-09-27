@@ -331,7 +331,7 @@ const ReadHomePage: React.FC = () => {
               Exactly 108 years later, to the day, terrorist attacks struck New York City. The tragic precision of this timing underscores how desperately the world needed—and still needs—Vivekananda's vision of unity.
             </p>
             <p className="text-gray-800">
-              We are launching this reading and translation effort on September 11, 2025, to ensure his message of universal truth reaches every corner of our divided world, transforming a date of sorrow back into one of hope.
+              We launched this reading and translation effort on September 11, 2025, to ensure his message of universal truth reaches every corner of our divided world, transforming a date of sorrow back into one of hope.
             </p>
             <p className="text-gray-800">
               Register to track your reading progress through these six lectures, which can be completed within an hour. Our app saves your progress so you can continue where you left off, and offers translation opportunities for multilingual users.
