@@ -32,6 +32,23 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
+                      <tr>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>November</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Satsangs for November</p>
+                          <p className="mt-1">
+                            <a href="/images/nutrition/November Programme.jpg" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </a>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Schedule of Satsangs for November 2026</p>
+                        </td>
+                      </tr>
+
                       <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Tuesday, <span className="whitespace-nowrap">5th August</span></p>
@@ -176,6 +193,28 @@ const SpecialFunctions = () => {
 
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
+
+                  {/* November Satsangs Event */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">November</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Satsangs for November</p>
+                        <p className="mt-1">
+                          <a href="/images/nutrition/November Programme.jpg" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Schedule of Satsangs for November 2026</p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Revered Swami Medhanandaji Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
