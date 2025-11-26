@@ -5,13 +5,15 @@ import PageHeader from '../../components/shared/PageHeader';
 import SectionHeader from '../../components/shared/SectionHeader';
 import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
-import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2 } from 'lucide-react';
+import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
+import { bhagavadGitaChaptersComplete, chapterVerseCounts as bgVerseCounts } from '../../data/bhagavadGitaVerses';
+import { deviMahatmyamChaptersComplete, chapterVerseCounts as dmVerseCounts } from '../../data/deviMahatmyamVerses';
 
 
 
@@ -131,21 +133,26 @@ const LearnPage = () => {
 
               <TabsContent value="lessons">
                 <Tabs value={activeLessonTab} onValueChange={handleLessonTabChange} className="w-full">
-                  <TabsList className="grid w-full grid-cols-5 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
-                    <TabsTrigger value="philosophy" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Philosophy
+                  <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+                    <TabsTrigger value="philosophy" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
+                      <span className="hidden md:inline">Philosophy</span>
+                      <span className="md:hidden">Phil.</span>
                     </TabsTrigger>
-                    <TabsTrigger value="holy-trinity" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Holy Trinity
+                    <TabsTrigger value="holy-trinity" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
+                      <span className="hidden md:inline">Holy Trinity</span>
+                      <span className="md:hidden">Trinity</span>
                     </TabsTrigger>
-                    <TabsTrigger value="deities" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Deities/Rishis
+                    <TabsTrigger value="deities" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
+                      <span className="hidden md:inline">Deities/Rishis</span>
+                      <span className="md:hidden">Deities</span>
                     </TabsTrigger>
-                    <TabsTrigger value="scriptures" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Scriptures
+                    <TabsTrigger value="scriptures" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
+                      <span className="hidden md:inline">Scriptures</span>
+                      <span className="md:hidden">Script.</span>
                     </TabsTrigger>
-                    <TabsTrigger value="practices" className="text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                      Practices/Moral Lessons
+                    <TabsTrigger value="practices" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
+                      <span className="hidden md:inline">Practices/Moral Lessons</span>
+                      <span className="md:hidden">Practice</span>
                     </TabsTrigger>
                   </TabsList>
 
@@ -282,46 +289,214 @@ const LearnPage = () => {
                       Mantras are sacred sound formulas that have spiritual and psychological effects.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {mantras.map((mantra) => (
-                        <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
-                          <CardContent className="p-6">
-                            <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
-                            <p className="text-gray-600 mb-4">{mantra.description}</p>
+                    {/* Nested Tabs for Mantra Categories */}
+                    <Tabs defaultValue="vedic-shanti" className="w-full">
+                      <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+                        <TabsTrigger value="vedic-shanti" className="text-sm md:text-base data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                          Vedic Shanti Mantras
+                        </TabsTrigger>
+                        <TabsTrigger value="bhagavad-gita" className="text-sm md:text-base data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                          Bhagavad Gita
+                        </TabsTrigger>
+                        <TabsTrigger value="devi-mahatmyam" className="text-sm md:text-base data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                          Devi Mahatmyam
+                        </TabsTrigger>
+                      </TabsList>
 
-                            <div className="flex justify-center mb-4">
-                              {mantra.id === 'gayatri' && (
-                                <SyncedAudioPlayer
-                                  src={mantra.audio}
-                                  title={`${mantra.title} Pronunciation`}
-                                  syllables={gayatriMantraSyllables}
-                                  originalText={mantra.text}
-                                  transliteration={mantra.transliteration}
-                                  transliterationSyllables={mantra.transliterationSyllables}
-                                />
-                              )}
-                              {mantra.id === 'saha-na-vavatu' && (
-                                <SyncedAudioPlayer
-                                  src={mantra.audio}
-                                  title={`${mantra.title} Pronunciation`}
-                                  syllables={sahaNavatuMantraSyllables}
-                                  originalText={mantra.text}
-                                  transliteration={mantra.transliteration}
-                                  transliterationSyllables={mantra.transliterationSyllables}
-                                />
-                              )}
-                            </div>
+                      <TabsContent value="vedic-shanti">
+                        <div className="space-y-6">
+                          <h3 className="text-2xl font-heading font-semibold mb-4">Vedic Shanti Mantras</h3>
+                          <p className="text-gray-600 mb-6">
+                            Peace mantras from the Vedas and Upanishads that invoke harmony and protection.
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {mantras.map((mantra) => (
+                              <Card key={mantra.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card">
+                                <CardContent className="p-6">
+                                  <h3 className="text-xl font-heading font-semibold mb-2">{mantra.title}</h3>
+                                  <p className="text-gray-600 mb-4">{mantra.description}</p>
 
-                            <div className="mt-4 p-4 bg-white border border-indian-saffron/20 rounded-md">
-                              <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
-                              <p className="text-base text-center text-gray-700 leading-relaxed">
-                                {mantra.englishMeaning}
-                              </p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
+                                  <div className="flex justify-center mb-4">
+                                    {mantra.id === 'gayatri' && (
+                                      <SyncedAudioPlayer
+                                        src={mantra.audio}
+                                        title={`${mantra.title} Pronunciation`}
+                                        syllables={gayatriMantraSyllables}
+                                        originalText={mantra.text}
+                                        transliteration={mantra.transliteration}
+                                        transliterationSyllables={mantra.transliterationSyllables}
+                                      />
+                                    )}
+                                    {mantra.id === 'saha-na-vavatu' && (
+                                      <SyncedAudioPlayer
+                                        src={mantra.audio}
+                                        title={`${mantra.title} Pronunciation`}
+                                        syllables={sahaNavatuMantraSyllables}
+                                        originalText={mantra.text}
+                                        transliteration={mantra.transliteration}
+                                        transliterationSyllables={mantra.transliterationSyllables}
+                                      />
+                                    )}
+                                  </div>
+
+                                  <div className="mt-4 p-4 bg-white border border-indian-saffron/20 rounded-md">
+                                    <h4 className="text-sm font-semibold text-gray-700 mb-2">English Meaning:</h4>
+                                    <p className="text-base text-center text-gray-700 leading-relaxed">
+                                      {mantra.englishMeaning}
+                                    </p>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
+                          </div>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="bhagavad-gita">
+                        <div className="space-y-6">
+                          <h3 className="text-2xl font-heading font-semibold mb-4">Bhagavad Gita</h3>
+                          <p className="text-gray-600 mb-6">
+                            Sacred verses and mantras from the Bhagavad Gita, the divine dialogue between Lord Krishna and Arjuna.
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {/* Gita Dhyanam - Invocation */}
+                            <Link to="/learn/bhagavad-gita/gita-dhyanam">
+                              <Card className="bg-gradient-to-br from-spiritual-100 to-indian-cream border-2 border-spiritual-400 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
+                                <CardContent className="p-4">
+                                  <div className="flex justify-between items-start mb-2">
+                                    <h4 className="text-lg font-heading font-semibold text-spiritual-700">
+                                      Gita Dhyanam
+                                    </h4>
+                                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                                  </div>
+                                  <p className="text-sm text-gray-600 mb-3">Invocation to the Gita</p>
+                                  <p className="text-xs text-gray-500 mb-3">
+                                    9 verses
+                                  </p>
+                                  <div className="text-xs text-gray-500 italic">
+                                    Meditative verses recited before studying the Gita
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </Link>
+
+                            {[
+                              { chapter: 1, title: "Arjuna's Dilemma", verses: 47 },
+                              { chapter: 2, title: "The Yoga of Knowledge", verses: 72 },
+                              { chapter: 3, title: "The Yoga of Action", verses: 43 },
+                              { chapter: 4, title: "The Yoga of Divine Knowledge", verses: 42 },
+                              { chapter: 5, title: "The Yoga of Renunciation", verses: 29 },
+                              { chapter: 6, title: "The Yoga of Meditation", verses: 47 },
+                              { chapter: 7, title: "The Yoga of Divine Knowledge", verses: 30 },
+                              { chapter: 8, title: "The Yoga of the Imperishable Brahman", verses: 28 },
+                              { chapter: 9, title: "The Yoga of Royal Knowledge", verses: 34 },
+                              { chapter: 10, title: "The Yoga of Divine Manifestations", verses: 42 },
+                              { chapter: 11, title: "The Yoga of the Universal Form", verses: 55 },
+                              { chapter: 12, title: "The Yoga of Devotion", verses: 20 },
+                              { chapter: 13, title: "The Yoga of the Field and Knower", verses: 35 },
+                              { chapter: 14, title: "The Yoga of the Three Gunas", verses: 27 },
+                              { chapter: 15, title: "The Yoga of the Supreme Person", verses: 20 },
+                              { chapter: 16, title: "The Yoga of Divine and Demonic Natures", verses: 24 },
+                              { chapter: 17, title: "The Yoga of Threefold Faith", verses: 28 },
+                              { chapter: 18, title: "The Yoga of Liberation through Renunciation", verses: 78 }
+                            ].map((chapterInfo) => {
+                              const chapterData = bhagavadGitaChaptersComplete.find(ch => ch.chapter === chapterInfo.chapter);
+                              return (
+                                <Link key={chapterInfo.chapter} to={`/learn/bhagavad-gita/chapter/${chapterInfo.chapter}`}>
+                                  <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
+                                    <CardContent className="p-4">
+                                      <div className="flex justify-between items-start mb-2">
+                                        <h4 className="text-lg font-heading font-semibold">
+                                          Chapter {chapterInfo.chapter}
+                                        </h4>
+                                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <p className="text-sm text-gray-600 mb-3">{chapterInfo.title}</p>
+                                      <p className="text-xs text-gray-500 mb-3">
+                                        {chapterInfo.verses} verses
+                                      </p>
+                                      <div className="text-xs text-gray-500 italic">
+                                        Click to view all verses with Sanskrit text and transliterations
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </Link>
+                              );
+                            })}
+
+                            {/* Gita Mahatmyam - Glory of the Gita */}
+                            <Link to="/learn/bhagavad-gita/gita-mahatmyam">
+                              <Card className="bg-gradient-to-br from-spiritual-100 to-indian-cream border-2 border-spiritual-400 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
+                                <CardContent className="p-4">
+                                  <div className="flex justify-between items-start mb-2">
+                                    <h4 className="text-lg font-heading font-semibold text-spiritual-700">
+                                      Gita Mahatmyam
+                                    </h4>
+                                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                                  </div>
+                                  <p className="text-sm text-gray-600 mb-3">Glory of the Gita</p>
+                                  <p className="text-xs text-gray-500 mb-3">
+                                    7 verses
+                                  </p>
+                                  <div className="text-xs text-gray-500 italic">
+                                    Verses extolling the greatness and benefits of studying the Gita
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </Link>
+                          </div>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="devi-mahatmyam">
+                        <div className="space-y-6">
+                          <h3 className="text-2xl font-heading font-semibold mb-4">Devi Mahatmyam</h3>
+                          <p className="text-gray-600 mb-6">
+                            Sacred hymns and mantras from the Devi Mahatmyam, celebrating the Divine Mother.
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {[
+                              { chapter: 1, title: "The Slaying of Madhu and Kaitabha", verses: 88 },
+                              { chapter: 2, title: "The Slaying of Mahishasura", verses: 55 },
+                              { chapter: 3, title: "The Slaying of Mahishasura (continued)", verses: 54 },
+                              { chapter: 4, title: "The Slaying of Mahishasura (concluded)", verses: 44 },
+                              { chapter: 5, title: "Devi's Conversation with the Messenger", verses: 57 },
+                              { chapter: 6, title: "The Slaying of Dhumralochana", verses: 33 },
+                              { chapter: 7, title: "The Slaying of Chanda and Munda", verses: 27 },
+                              { chapter: 8, title: "The Slaying of Raktabija", verses: 62 },
+                              { chapter: 9, title: "The Slaying of Nishumbha", verses: 52 },
+                              { chapter: 10, title: "The Slaying of Shumbha", verses: 31 },
+                              { chapter: 11, title: "The Hymn of Praise by the Devas", verses: 55 },
+                              { chapter: 12, title: "The Boons Granted by Devi", verses: 51 },
+                              { chapter: 13, title: "The Slaying of the Two Demons", verses: 25 }
+                            ].map((chapterInfo) => {
+                              const chapterData = deviMahatmyamChaptersComplete.find(ch => ch.chapter === chapterInfo.chapter);
+                              return (
+                                <Link key={chapterInfo.chapter} to={`/learn/devi-mahatmyam/chapter/${chapterInfo.chapter}`}>
+                                  <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
+                                    <CardContent className="p-4">
+                                      <div className="flex justify-between items-start mb-2">
+                                        <h4 className="text-lg font-heading font-semibold">
+                                          Chapter {chapterInfo.chapter}
+                                        </h4>
+                                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                                      </div>
+                                      <p className="text-sm text-gray-600 mb-3">{chapterInfo.title}</p>
+                                      <p className="text-xs text-gray-500 mb-3">
+                                        {chapterInfo.verses} verses
+                                      </p>
+                                      <div className="text-xs text-gray-500 italic">
+                                        Click to view all verses with Sanskrit text and transliterations
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
                   </div>
                 </TabsContent>
               )}
@@ -380,18 +555,6 @@ const LearnPage = () => {
                           </div>
                           <h3 className="text-lg font-heading font-semibold mb-2">Word Scramble</h3>
                           <p className="text-gray-600 text-sm">Unscramble letters to form words related to Hindu philosophy.</p>
-                        </CardContent>
-                      </Link>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
-                      <Link to="/learn/games">
-                        <CardContent className="p-6 text-center">
-                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
-                            <Lightbulb className="w-6 h-6 text-spiritual-500" />
-                          </div>
-                          <h3 className="text-lg font-heading font-semibold mb-2">All Games</h3>
-                          <p className="text-gray-600 text-sm">Explore our complete collection of educational games.</p>
                         </CardContent>
                       </Link>
                     </Card>
