@@ -34,6 +34,30 @@ const SpecialFunctions = () => {
 
                       <tr>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sunday, <span className="whitespace-nowrap">30th November</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">9:00 AM - 10:30 AM</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Special Satsang</p>
+                          <p className="mt-1">
+                            <a href="/pics/Special Satsang invitation.jpg" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Invitation
+                            </a>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Special Satsang with Revered Swami Saradaprabhananadaji Maharaj</p>
+                          <p className="mt-1 text-sm text-gray-600">President: Ramakrishna Centre of South Africa - Phoenix</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Benvenuto Conference Centre
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>November</p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -193,6 +217,35 @@ const SpecialFunctions = () => {
 
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
+
+                  {/* Special Satsang Event */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 30th November</div>
+                    <div className="text-sm text-gray-600 mb-3">9:00 AM - 10:30 AM</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Special Satsang</p>
+                        <p className="mt-1">
+                          <a href="/pics/Special Satsang invitation.jpg" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Invitation
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Special Satsang with Revered Swami Saradaprabhananadaji Maharaj</p>
+                        <p className="mt-1 text-gray-600">President: Ramakrishna Centre of South Africa - Phoenix</p>
+                        <p className="mt-1 text-gray-600">
+                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Benvenuto Conference Centre
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* November Satsangs Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
