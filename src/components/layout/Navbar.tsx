@@ -5,6 +5,7 @@ import { navigation } from './NavbarData';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
 import UserAccountNav from '../auth/UserAccountNav';
+import { featureFlags } from '@/utils/featureFlags';
 import gsap from 'gsap';
 import './navbar.css';
 
@@ -113,14 +114,16 @@ const Navbar = () => {
             setActiveDropdown={setActiveDropdown}
           />
 
-          {/* User account navigation */}
-          <div className="hidden md:flex items-center ml-4">
-            <UserAccountNav />
-          </div>
+          {/* User account navigation - Only show if reading section is enabled */}
+          {featureFlags.enableReadingSection && (
+            <div className="hidden md:flex items-center ml-4">
+              <UserAccountNav />
+            </div>
+          )}
 
           {/* Mobile menu button - Only visible on mobile */}
           <div className="md:hidden flex items-center">
-            <UserAccountNav />
+            {featureFlags.enableReadingSection && <UserAccountNav />}
             <button
               type="button"
               className="inline-flex items-center justify-center p-2 ml-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-spiritual-500"
