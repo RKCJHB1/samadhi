@@ -43,7 +43,7 @@ const TimelinePage = () => {
     },
     {
       title: "Phase 4: Submission to Council for Approval",
-      period: "April 2025",
+      period: "November 2025",
       items: [
         "Preparation for submission of building plans",
         "Council review process",
