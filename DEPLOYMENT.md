@@ -22,7 +22,7 @@ NODE_VERSION=18.17.1
 VITE_ENABLE_3D_MODEL_VIEWER=false
 VITE_ENABLE_AUTH_FEATURES=false
 VITE_ENABLE_FUNDRAISING_FEATURES=true
-VITE_ENABLE_READING_SECTION=true
+VITE_ENABLE_READING_SECTION=false
 VITE_DEV_MODE=false
 VITE_PAYFAST_MERCHANT_ID=26034585
 VITE_PAYFAST_MERCHANT_KEY=thj27onulhboo
@@ -50,13 +50,13 @@ The following features are controlled by environment variables:
 - **3D Model Viewer**: Disabled in production (`VITE_ENABLE_3D_MODEL_VIEWER=false`)
 - **Authentication**: Disabled in production (`VITE_ENABLE_AUTH_FEATURES=false`)
 - **Fundraising**: Enabled in production (`VITE_ENABLE_FUNDRAISING_FEATURES=true`)
-- **Reading Section**: Enabled in production (`VITE_ENABLE_READING_SECTION=true`) ✅
+- **Reading Section**: Disabled in production (`VITE_ENABLE_READING_SECTION=false`) ✅
 - **Mantras**: Hidden in production (controlled by `NODE_ENV`)
 
 ### Development vs Production
 
 - **Development**: All features available, mantras tab visible
-- **Production**: 3D models and auth hidden, mantras tab hidden, fundraising enabled
+- **Production**: 3D models, auth, and reading section hidden; mantras tab hidden; fundraising enabled
 
 ### Troubleshooting
 
