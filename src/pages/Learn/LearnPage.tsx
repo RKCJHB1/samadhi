@@ -13,7 +13,6 @@ import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
 import { bhagavadGitaChaptersComplete, chapterVerseCounts as bgVerseCounts } from '../../data/bhagavadGitaVerses';
-import { deviMahatmyamChaptersComplete, chapterVerseCounts as dmVerseCounts } from '../../data/deviMahatmyamVerses';
 
 
 
@@ -470,7 +469,6 @@ const LearnPage = () => {
                               { chapter: 12, title: "The Boons Granted by Devi", verses: 51 },
                               { chapter: 13, title: "The Slaying of the Two Demons", verses: 25 }
                             ].map((chapterInfo) => {
-                              const chapterData = deviMahatmyamChaptersComplete.find(ch => ch.chapter === chapterInfo.chapter);
                               return (
                                 <Link key={chapterInfo.chapter} to={`/learn/devi-mahatmyam/chapter/${chapterInfo.chapter}`}>
                                   <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
