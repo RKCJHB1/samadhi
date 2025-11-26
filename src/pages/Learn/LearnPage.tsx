@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AudioPlayer from '../../components/audio/AudioPlayer';
 import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { gayatriMantraSyllables, sahaNavatuMantraSyllables } from '../../data/mantraTimings';
-import { bhagavadGitaChaptersComplete, chapterVerseCounts as bgVerseCounts } from '../../data/bhagavadGitaVerses';
 
 
 
@@ -399,7 +398,6 @@ const LearnPage = () => {
                               { chapter: 17, title: "The Yoga of Threefold Faith", verses: 28 },
                               { chapter: 18, title: "The Yoga of Liberation through Renunciation", verses: 78 }
                             ].map((chapterInfo) => {
-                              const chapterData = bhagavadGitaChaptersComplete.find(ch => ch.chapter === chapterInfo.chapter);
                               return (
                                 <Link key={chapterInfo.chapter} to={`/learn/bhagavad-gita/chapter/${chapterInfo.chapter}`}>
                                   <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 pop-shadow-card hover:shadow-lg transition-all duration-300 cursor-pointer">
