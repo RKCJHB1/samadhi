@@ -34,7 +34,6 @@ export const navigation: NavItem[] = [
     name: 'Hinduism',
     href: '/learn'
   },
-  { name: 'Read', href: '/read' },
 
   { name: 'Gallery', href: '/gallery' },
   { name: 'Donate', href: '/donate' },
