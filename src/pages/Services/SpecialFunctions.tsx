@@ -34,6 +34,34 @@ const SpecialFunctions = () => {
 
                       <tr>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sunday, <span className="whitespace-nowrap">7th December</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">10:00 AM - 11:45 AM</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sri Sarada Devi Jayanti</p>
+                          <p className="mt-1">
+                            <Link to="/services/sri-sarada-devi-jayanti-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Keynote address:</p>
+                          <div className="mt-1 text-sm leading-tight">
+                            <div className="font-semibold">Revered Pravrajika Ishtaprana Mataji</div>
+                            <div className="text-gray-600">Head: Sri Sarada Devi Ashram (Asherville)</div>
+                          </div>
+                          <p className="mt-2 text-sm text-gray-600">The programme will include bhajans, shanti mantras, and a performance by the Nateshwar Dance Academy.</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/4w3ncE7cXXHaZHqj9" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Eagle Canyon Golf Estate Conference Centre
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Sunday, <span className="whitespace-nowrap">30th November</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">9:00 AM - 10:30 AM</p>
                         </td>
@@ -217,6 +245,39 @@ const SpecialFunctions = () => {
 
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
+
+                  {/* Sri Sarada Devi Jayanti Event */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 7th December</div>
+                    <div className="text-sm text-gray-600 mb-3">10:00 AM - 11:45 AM</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Sri Sarada Devi Jayanti</p>
+                        <p className="mt-1">
+                          <Link to="/services/sri-sarada-devi-jayanti-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Keynote address:</p>
+                        <div className="mt-1 leading-tight">
+                          <div className="font-semibold">Revered Pravrajika Ishtaprana Mataji</div>
+                          <div className="text-gray-600">Head: Sri Sarada Devi Ashram (Asherville)</div>
+                        </div>
+                        <p className="mt-2 text-gray-600">The programme will include bhajans, shanti mantras, and a performance by the Nateshwar Dance Academy.</p>
+                        <p className="mt-1 text-gray-600">
+                          (<a href="https://maps.app.goo.gl/4w3ncE7cXXHaZHqj9" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Eagle Canyon Golf Estate Conference Centre
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Special Satsang Event */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">

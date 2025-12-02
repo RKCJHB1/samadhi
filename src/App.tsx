@@ -31,6 +31,7 @@ import SeminarRegistration from "./pages/Services/SeminarRegistration";
 import GuruPurnimaInvitation from "./pages/Services/GuruPurnimaInvitation";
 import SpecialProgrammeInvitation from "./pages/Services/SpecialProgrammeInvitation";
 import WelcomeReceptionInvitation from "./pages/Services/WelcomeReceptionInvitation";
+import SriSaradaDeviJayantiInvitation from "./pages/Services/SriSaradaDeviJayantiInvitation";
 
 
 
@@ -68,6 +69,7 @@ import GuessThePicturePage from "./pages/Learn/GuessThePicturePage.tsx";
 import MastersWordsGamePage from "./pages/Learn/MastersWordsGame.tsx";
 import QuotesPage from "./pages/Learn/QuotesPage";
 import WordScramblePage from "./pages/Learn/WordScramblePage";
+import AumChanterPage from "./pages/Learn/AumChanterPage.tsx";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 
 import ReadIndexPage from "./pages/Learn/ReadIndexPage";
@@ -91,6 +93,13 @@ import ReadAdminDashboardPage from "./pages/Learn/ReadAdminDashboardPage";
 import ReadProfilePage from "./pages/Learn/ReadProfilePage";
 import ReadFaqPage from "./pages/Learn/ReadFaqPage";
 import ReadPublicProfilePageWrapper from "./pages/Learn/ReadPublicProfilePageWrapper";
+
+// Import Chapter Pages for Mantras
+import BhagavadGitaChapterPage from "./pages/Learn/BhagavadGitaChapterPage";
+import GitaDhyanamPage from "./pages/Learn/GitaDhyanamPage";
+import GitaMahatmyamPage from "./pages/Learn/GitaMahatmyamPage";
+import DeviMahatmyamChapterPage from "./pages/Learn/DeviMahatmyamChapterPage";
+import BulkVerseImport from "./pages/Admin/BulkVerseImport";
 
 
 // Import Dashboard pages
@@ -151,6 +160,7 @@ const App = () => (
             <Route path="/services/guru-purnima-invitation" element={<GuruPurnimaInvitation />} />
             <Route path="/services/special-programme-invitation" element={<SpecialProgrammeInvitation />} />
             <Route path="/services/welcome-reception-invitation" element={<WelcomeReceptionInvitation />} />
+            <Route path="/services/sri-sarada-devi-jayanti-invitation" element={<SriSaradaDeviJayantiInvitation />} />
 
 
             {/* New Ashram Project Section */}
@@ -177,6 +187,16 @@ const App = () => (
               <Route path="/learn/games/wordle" element={<MastersWordsGamePage />} />
               <Route path="/learn/games/quotes" element={<QuotesPage />} />
               <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
+              <Route path="/learn/games/aum-chanter" element={<AumChanterPage />} />
+
+              {/* Mantra Chapter Pages (Development Only) */}
+              <Route path="/learn/bhagavad-gita/gita-dhyanam" element={<GitaDhyanamPage />} />
+              <Route path="/learn/bhagavad-gita/gita-mahatmyam" element={<GitaMahatmyamPage />} />
+              <Route path="/learn/bhagavad-gita/chapter/:chapter" element={<BhagavadGitaChapterPage />} />
+              <Route path="/learn/devi-mahatmyam/chapter/:chapter" element={<DeviMahatmyamChapterPage />} />
+
+              {/* Admin Tools (Development Only) */}
+              <Route path="/admin/import-verses" element={<BulkVerseImport />} />
 
 
 	              {/* Read/Translate (Dev-only) */}
