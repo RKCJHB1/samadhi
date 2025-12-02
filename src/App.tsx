@@ -93,12 +93,7 @@ import ReadProfilePage from "./pages/Learn/ReadProfilePage";
 import ReadFaqPage from "./pages/Learn/ReadFaqPage";
 import ReadPublicProfilePageWrapper from "./pages/Learn/ReadPublicProfilePageWrapper";
 
-// Import Chapter Pages for Mantras
-import BhagavadGitaChapterPage from "./pages/Learn/BhagavadGitaChapterPage";
-import GitaDhyanamPage from "./pages/Learn/GitaDhyanamPage";
-import GitaMahatmyamPage from "./pages/Learn/GitaMahatmyamPage";
-import DeviMahatmyamChapterPage from "./pages/Learn/DeviMahatmyamChapterPage";
-import BulkVerseImport from "./pages/Admin/BulkVerseImport";
+
 
 
 // Import Dashboard pages
@@ -187,14 +182,7 @@ const App = () => (
               <Route path="/learn/games/quotes" element={<QuotesPage />} />
               <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
 
-              {/* Mantra Chapter Pages (Development Only) */}
-              <Route path="/learn/bhagavad-gita/gita-dhyanam" element={<GitaDhyanamPage />} />
-              <Route path="/learn/bhagavad-gita/gita-mahatmyam" element={<GitaMahatmyamPage />} />
-              <Route path="/learn/bhagavad-gita/chapter/:chapter" element={<BhagavadGitaChapterPage />} />
-              <Route path="/learn/devi-mahatmyam/chapter/:chapter" element={<DeviMahatmyamChapterPage />} />
 
-              {/* Admin Tools (Development Only) */}
-              <Route path="/admin/import-verses" element={<BulkVerseImport />} />
 
 
 	              {/* Read/Translate (Dev-only) */}
