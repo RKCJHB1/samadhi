@@ -69,7 +69,6 @@ import GuessThePicturePage from "./pages/Learn/GuessThePicturePage.tsx";
 import MastersWordsGamePage from "./pages/Learn/MastersWordsGame.tsx";
 import QuotesPage from "./pages/Learn/QuotesPage";
 import WordScramblePage from "./pages/Learn/WordScramblePage";
-import AumChanterPage from "./pages/Learn/AumChanterPage.tsx";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 
 import ReadIndexPage from "./pages/Learn/ReadIndexPage";
@@ -187,7 +186,6 @@ const App = () => (
               <Route path="/learn/games/wordle" element={<MastersWordsGamePage />} />
               <Route path="/learn/games/quotes" element={<QuotesPage />} />
               <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
-              <Route path="/learn/games/aum-chanter" element={<AumChanterPage />} />
 
               {/* Mantra Chapter Pages (Development Only) */}
               <Route path="/learn/bhagavad-gita/gita-dhyanam" element={<GitaDhyanamPage />} />
