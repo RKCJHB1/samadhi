@@ -70,10 +70,9 @@ import MastersWordsGamePage from "./pages/Learn/MastersWordsGame.tsx";
 import QuotesPage from "./pages/Learn/QuotesPage";
 import WordScramblePage from "./pages/Learn/WordScramblePage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
-import { isDevelopment } from "./utils/featureFlags";
 import { lazy, Suspense } from "react";
 
-// Lazy load AumChanterPage for development only
+// Lazy load AumChanterPage (hidden route - not linked from Games section)
 const AumChanterPage = lazy(() => import("./pages/Learn/AumChanterPage.tsx"));
 
 import ReadIndexPage from "./pages/Learn/ReadIndexPage";
@@ -186,8 +185,8 @@ const App = () => (
               <Route path="/learn/games/wordle" element={<MastersWordsGamePage />} />
               <Route path="/learn/games/quotes" element={<QuotesPage />} />
               <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
-              {/* Aum Chanter (Development Only) */}
-              {isDevelopment() && <Route path="/learn/games/aum-chanter" element={<Suspense fallback={<div>Loading...</div>}><AumChanterPage /></Suspense>} />}
+              {/* Aum Chanter (Hidden route - not linked from Games section) */}
+              <Route path="/learn/games/aum-chanter" element={<Suspense fallback={<div>Loading...</div>}><AumChanterPage /></Suspense>} />
 
 
 
