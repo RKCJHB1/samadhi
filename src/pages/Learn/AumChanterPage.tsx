@@ -220,7 +220,7 @@ const AumChanterPage = () => {
         {/* Hidden Audio Element */}
         <audio
           ref={audioRef}
-          src="/Aum/aum.mp3"
+          src="/aum.mp3"
           preload="auto"
           crossOrigin="anonymous"
         />

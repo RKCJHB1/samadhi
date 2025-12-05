@@ -63,13 +63,8 @@ export default defineConfig(({ mode }) => ({
 
         // Copy Aum audio file
         try {
-          const srcAum = 'public/Aum/aum.mp3';
-          const destAum = 'dist/Aum/aum.mp3';
-          const destDir = path.dirname(destAum);
-
-          if (!existsSync(destDir)) {
-            mkdirSync(destDir, { recursive: true });
-          }
+          const srcAum = 'public/aum.mp3';
+          const destAum = 'dist/aum.mp3';
 
           if (existsSync(srcAum)) {
             copyFileSync(srcAum, destAum);
