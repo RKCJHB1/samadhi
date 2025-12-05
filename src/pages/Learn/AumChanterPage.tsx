@@ -63,7 +63,18 @@ const AumChanterPage = () => {
   const playChantSound = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(err => console.error("Audio play failed:", err));
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("✅ Audio playing successfully");
+          })
+          .catch(err => {
+            console.error("❌ Audio play failed:", err);
+            console.error("Audio src:", audioRef.current?.src);
+            console.error("Audio readyState:", audioRef.current?.readyState);
+          });
+      }
     }
   }, []);
 
@@ -133,29 +144,12 @@ const AumChanterPage = () => {
   return (
     <PageLayout title="Aum Chanter" className="no-top-padding">
       <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none overflow-hidden antialiased pt-16 sm:pt-20">
-        {/* Top Stats - Three Column Layout */}
-        <div className="absolute top-3 sm:top-4 w-full flex justify-center items-start gap-8 sm:gap-12 md:gap-16 z-10">
-          {/* Left: Your Chants */}
-          <div className="text-left flex flex-col gap-0 sm:gap-0.5">
+        {/* Top Stats - Your Chants Only */}
+        <div className="absolute top-3 sm:top-4 w-full flex justify-center items-start z-10">
+          <div className="text-center flex flex-col gap-0 sm:gap-0.5">
             <div className="mt-3 leading-tight">
               <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Your Chants</p>
               <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">{count.toLocaleString()}</p>
-            </div>
-          </div>
-
-          {/* Center: Global Chants */}
-          <div className="text-center flex flex-col gap-0 sm:gap-0.5">
-            <div className="mt-3 leading-tight">
-              <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Global Chants</p>
-              <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">123,461,218</p>
-            </div>
-          </div>
-
-          {/* Right: Record Chants */}
-          <div className="text-right flex flex-col gap-0 sm:gap-0.5">
-            <div className="mt-3 leading-tight">
-              <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Record Chants</p>
-              <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">12,425</p>
             </div>
           </div>
         </div>
@@ -221,22 +215,15 @@ const AumChanterPage = () => {
           />
         </div>
 
-        {/* Bottom Stats */}
-        <div className="absolute bottom-6 sm:bottom-10 w-full px-4 sm:px-8">
-          <div className="flex justify-center items-end gap-12 sm:gap-16 max-w-4xl mx-auto">
-            <div className="text-center">
-              <p className="text-[10px] sm:text-xs font-sans tracking-widest text-spiritual-300/70 uppercase">Avg Chants/User</p>
-              <p className="text-xl sm:text-2xl md:text-4xl font-mono tracking-wider text-white/70">2687.3</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] sm:text-xs font-sans tracking-widest text-spiritual-300/70 uppercase">Unique Users</p>
-              <p className="text-xl sm:text-2xl md:text-4xl font-mono tracking-wider text-white/70">45,943</p>
-            </div>
-          </div>
-        </div>
+
 
         {/* Hidden Audio Element */}
-        <audio ref={audioRef} src="/Aum/aum.mp3" />
+        <audio
+          ref={audioRef}
+          src="/Aum/aum.mp3"
+          preload="auto"
+          crossOrigin="anonymous"
+        />
 
         {/* History Modal */}
         {isHistoryVisible && (
