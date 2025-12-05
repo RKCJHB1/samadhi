@@ -75,8 +75,8 @@ const AumChanterPage = () => {
     };
 
     fetchStats();
-    // Refresh stats every 30 seconds
-    const interval = setInterval(fetchStats, 30000);
+    // Refresh stats every 1 second
+    const interval = setInterval(fetchStats, 1000);
     return () => clearInterval(interval);
   }, []);
 
