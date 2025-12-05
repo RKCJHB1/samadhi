@@ -60,6 +60,24 @@ export default defineConfig(({ mode }) => ({
             console.warn(`⚠️ Could not copy ${invitation}:`, error.message);
           }
         });
+
+        // Copy Aum audio file
+        try {
+          const srcAum = 'public/Aum/aum.mp3';
+          const destAum = 'dist/Aum/aum.mp3';
+          const destDir = path.dirname(destAum);
+
+          if (!existsSync(destDir)) {
+            mkdirSync(destDir, { recursive: true });
+          }
+
+          if (existsSync(srcAum)) {
+            copyFileSync(srcAum, destAum);
+            console.log(`✅ aum.mp3 copied to dist folder`);
+          }
+        } catch (error) {
+          console.warn(`⚠️ Could not copy aum.mp3:`, error.message);
+        }
       }
     },
 
