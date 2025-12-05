@@ -46,6 +46,40 @@ const AumChanterPage = () => {
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Backend stats - will be fetched from Digital Ocean server
+  const [globalChants, setGlobalChants] = useState<number>(0);
+  const [recordChants, setRecordChants] = useState<number>(0);
+  const [avgChantsPerUser, setAvgChantsPerUser] = useState<number>(0);
+  const [uniqueUsers, setUniqueUsers] = useState<number>(0);
+  const [statsLoading, setStatsLoading] = useState<boolean>(true);
+
+  // Fetch stats from backend
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setStatsLoading(true);
+        // TODO: Replace with your Digital Ocean backend URL
+        const response = await fetch('/api/aum-stats');
+        if (response.ok) {
+          const data = await response.json();
+          setGlobalChants(data.globalChants || 0);
+          setRecordChants(data.recordChants || 0);
+          setAvgChantsPerUser(data.avgChantsPerUser || 0);
+          setUniqueUsers(data.uniqueUsers || 0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch Aum stats:", error);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchStats();
+    // Refresh stats every 30 seconds
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Save local data to localStorage
   useEffect(() => {
     try {
@@ -144,12 +178,33 @@ const AumChanterPage = () => {
   return (
     <PageLayout title="Aum Chanter" className="no-top-padding">
       <main className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none overflow-hidden antialiased pt-16 sm:pt-20">
-        {/* Top Stats - Your Chants Only */}
-        <div className="absolute top-3 sm:top-4 w-full flex justify-center items-start z-10">
-          <div className="text-center flex flex-col gap-0 sm:gap-0.5">
+        {/* Top Stats - Three Column Layout */}
+        <div className="absolute top-3 sm:top-4 w-full flex justify-center items-start gap-8 sm:gap-12 md:gap-16 z-10">
+          {/* Left: Your Chants */}
+          <div className="text-left flex flex-col gap-0 sm:gap-0.5">
             <div className="mt-3 leading-tight">
               <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Your Chants</p>
               <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">{count.toLocaleString()}</p>
+            </div>
+          </div>
+
+          {/* Center: Global Chants */}
+          <div className="text-center flex flex-col gap-0 sm:gap-0.5">
+            <div className="mt-3 leading-tight">
+              <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Global Chants</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">
+                {statsLoading ? '...' : globalChants.toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Record Chants */}
+          <div className="text-right flex flex-col gap-0 sm:gap-0.5">
+            <div className="mt-3 leading-tight">
+              <p className="text-xs sm:text-sm font-sans tracking-widest text-spiritual-300/70 uppercase">Record Chants</p>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-mono tracking-wider text-white/70">
+                {statsLoading ? '...' : recordChants.toLocaleString()}
+              </p>
             </div>
           </div>
         </div>
@@ -216,6 +271,24 @@ const AumChanterPage = () => {
         </div>
 
 
+
+        {/* Bottom Stats */}
+        <div className="absolute bottom-6 sm:bottom-10 w-full px-4 sm:px-8">
+          <div className="flex justify-center items-end gap-12 sm:gap-16 max-w-4xl mx-auto">
+            <div className="text-center">
+              <p className="text-[10px] sm:text-xs font-sans tracking-widest text-spiritual-300/70 uppercase">Avg Chants/User</p>
+              <p className="text-xl sm:text-2xl md:text-4xl font-mono tracking-wider text-white/70">
+                {statsLoading ? '...' : avgChantsPerUser.toFixed(1)}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-[10px] sm:text-xs font-sans tracking-widest text-spiritual-300/70 uppercase">Unique Users</p>
+              <p className="text-xl sm:text-2xl md:text-4xl font-mono tracking-wider text-white/70">
+                {statsLoading ? '...' : uniqueUsers.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Hidden Audio Element */}
         <audio
