@@ -11,6 +11,8 @@ import { getLectureProgress, recordSentenceRead, addReadingDuration } from '@/st
 import { isSupabaseConfigured, upsertReadingProgress, getMyReadingProgressFor, recordReadingTime } from '@/services/translationsSupabase';
 import { useToast } from '@/hooks/use-toast';
 import { featureFlags } from '@/utils/featureFlags';
+import { useReadingProgress } from '@/hooks/useReadingProgress';
+import ReadingProgressBar from '@/components/learn/ReadingProgressBar';
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
@@ -32,6 +34,9 @@ const ReadEnglishOnlyPage: React.FC = () => {
 
   const lecture = vivekanandaLectures.find(l => l.id === lectureId);
   const sentences = useMemo(() => lecture ? flattenSentences(lecture.paragraphs) : [], [lecture]);
+
+  // Reading progress tracking
+  const { currentScrollPercent } = useReadingProgress(lectureId);
 
   const userId = user?.id || 'anonymous';
   const initialIdx = useMemo(() => {
@@ -140,7 +145,10 @@ const ReadEnglishOnlyPage: React.FC = () => {
 
   return (
     <TranslationLayout title={`Read: ${lecture.title}`}>
-      <div className="w-full bg-gradient-to-br from-white to-yellow-50 py-10 min-h-[80vh]">
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar percent={currentScrollPercent} showLabel variant="fixed" />
+
+      <div className="w-full bg-gradient-to-br from-white to-yellow-50 py-10 pt-14 min-h-[80vh]">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
 

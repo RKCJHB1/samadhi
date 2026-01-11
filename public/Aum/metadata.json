@@ -1,0 +1,5 @@
+{
+  "name": "Aum Chanter",
+  "description": "A simple and meditative app. Chant the Aum sign to increment the counter. Your score is saved automatically to your device.",
+  "requestFramePermissions": []
+}

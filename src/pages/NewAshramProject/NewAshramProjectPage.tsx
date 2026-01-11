@@ -11,10 +11,10 @@ const NewAshramProjectPage = () => {
 
   return (
     <PageLayout title="New Ashram Project">
-      <div className="flex items-center justify-center py-12 bg-gradient-to-br from-indian-cream to-white">
-        <div className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center">
-          <h1 className="text-3xl font-heading font-bold mb-4 text-black">New Ashram Project</h1>
-          <p className="text-gray-700">
+      <div className="flex items-center justify-center py-8 md:py-12 bg-gradient-to-br from-indian-cream to-white">
+        <div className="inline-block p-4 md:p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center mx-4">
+          <h1 className="text-xl md:text-3xl font-heading font-bold mb-3 md:mb-4 text-black">New Ashram Project</h1>
+          <p className="text-gray-700 text-sm md:text-base">
             Help us build a new spiritual home in Johannesburg
           </p>
         </div>
@@ -52,23 +52,6 @@ where devotees can find God in themselves and around them.
                 </div>
               </Link>
             </div>
-
-            {/* 3D Model Viewer - Only show in development, without blocks */}
-            {(featureFlags.enable3DModelViewer || featureFlags.isDevMode) && (
-              <div className="my-12">
-                <h3 className="text-2xl font-heading font-semibold mb-6 text-center">New Ashram 3D Model</h3>
-                <SimpleModelViewer
-                  modelPath="/pics/modelwithtexture.glb"
-                  title="New Ashram 3D Model"
-                  description="Interactive 3D visualization of the new ashram building"
-                  className="max-w-4xl mx-auto"
-                  showBlocks={false}
-                />
-                <p className="text-sm text-gray-600 text-center mt-4">
-                  <em>Use mouse to rotate, zoom, and explore the 3D model of our new ashram.</em>
-                </p>
-              </div>
-            )}
 
             <div className="bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-8 rounded-lg my-8 text-center pop-shadow-card">
               <h3 className="text-2xl font-heading font-semibold mb-4">Support Our Vision</h3>

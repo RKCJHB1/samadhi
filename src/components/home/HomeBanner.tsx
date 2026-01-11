@@ -101,27 +101,27 @@ const HomeBanner = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden bg-gradient-to-br from-indian-cream to-white flex items-center justify-center py-8">
+    <div className="relative w-full overflow-hidden bg-gradient-to-br from-indian-cream to-white flex items-center justify-center py-4 md:py-8">
       <div
         ref={cardRef}
-        className="inline-block p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center"
+        className="inline-block p-4 md:p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center mx-4"
       >
         <h1
           ref={headingRef}
-          className="text-3xl font-heading font-bold mb-4 text-black"
+          className="text-xl md:text-3xl font-heading font-bold mb-3 md:mb-4 text-black leading-tight"
         >
           Welcome to The Ramakrishna Centre of South Africa, Johannesburg
         </h1>
         <p
           ref={(el) => (textRefs.current[1] = el)}
-          className="mb-6 max-w-2xl mx-auto text-gray-700"
+          className="mb-4 md:mb-6 max-w-2xl mx-auto text-gray-700 text-sm md:text-base"
         >
           A Sub-Centre of the Ramakrishna Centre of South Africa - Phoenix
         </p>
         <a
           ref={(el) => (textRefs.current[2] = el)}
           href="/about/our-centre"
-          className="inline-block bg-indian-saffron hover:bg-indian-saffron/90 text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all"
+          className="inline-block bg-indian-saffron hover:bg-indian-saffron/90 text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all text-sm md:text-base"
         >
           Explore Our Centre
         </a>

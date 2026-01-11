@@ -1,0 +1,472 @@
+{
+  "gayatri": {
+    "id": "gayatri",
+    "name": "Gayatri Mantra",
+    "audioSrc": "/audio/gayatri.mp3",
+    "syllables": [
+      {
+        "text": "ॐ ",
+        "startTime": 2,
+        "endTime": 2.8,
+        "svara": "udatta"
+      },
+      {
+        "text": "भूर्",
+        "startTime": 2.8,
+        "endTime": 3.6,
+        "svara": "anudatta"
+      },
+      {
+        "text": "भुवः ",
+        "startTime": 3.6,
+        "endTime": 4.3,
+        "svara": "anudatta"
+      },
+      {
+        "text": "स्वः ",
+        "startTime": 4.3,
+        "endTime": 5,
+        "svara": "neutral"
+      },
+      {
+        "text": "तत्",
+        "startTime": 5.15,
+        "endTime": 5.64,
+        "svara": "svarita"
+      },
+      {
+        "text": "स",
+        "startTime": 5.64,
+        "endTime": 6.13,
+        "svara": "dirgha-svarita"
+      },
+      {
+        "text": "वि",
+        "startTime": 6.13,
+        "endTime": 6.62,
+        "svara": "neutral"
+      },
+      {
+        "text": "तुर्",
+        "startTime": 6.62,
+        "endTime": 7.11,
+        "svara": "neutral"
+      },
+      {
+        "text": "व",
+        "startTime": 7.11,
+        "endTime": 7.6,
+        "svara": "neutral"
+      },
+      {
+        "text": "रे",
+        "startTime": 7.6,
+        "endTime": 8.09,
+        "svara": "neutral"
+      },
+      {
+        "text": "ण्यं ",
+        "startTime": 8.09,
+        "endTime": 8.58,
+        "svara": "neutral"
+      },
+      {
+        "text": "भर्",
+        "startTime": 8.73,
+        "endTime": 9.22,
+        "svara": "neutral"
+      },
+      {
+        "text": "गो ",
+        "startTime": 9.22,
+        "endTime": 9.71,
+        "svara": "neutral"
+      },
+      {
+        "text": "दे",
+        "startTime": 9.71,
+        "endTime": 10.2,
+        "svara": "neutral"
+      },
+      {
+        "text": "व",
+        "startTime": 10.2,
+        "endTime": 10.69,
+        "svara": "neutral"
+      },
+      {
+        "text": "स्य ",
+        "startTime": 10.69,
+        "endTime": 11.18,
+        "svara": "neutral"
+      },
+      {
+        "text": "धी",
+        "startTime": 11.18,
+        "endTime": 11.67,
+        "svara": "neutral"
+      },
+      {
+        "text": "म",
+        "startTime": 11.67,
+        "endTime": 12.16,
+        "svara": "neutral"
+      },
+      {
+        "text": "हि ",
+        "startTime": 12.16,
+        "endTime": 12.65,
+        "svara": "neutral"
+      },
+      {
+        "text": "धि",
+        "startTime": 12.8,
+        "endTime": 13.29,
+        "svara": "neutral"
+      },
+      {
+        "text": "यो ",
+        "startTime": 13.29,
+        "endTime": 13.78,
+        "svara": "neutral"
+      },
+      {
+        "text": "यो ",
+        "startTime": 13.78,
+        "endTime": 14.27,
+        "svara": "neutral"
+      },
+      {
+        "text": "नः ",
+        "startTime": 14.27,
+        "endTime": 14.76,
+        "svara": "neutral"
+      },
+      {
+        "text": "प्र",
+        "startTime": 14.76,
+        "endTime": 15.25,
+        "svara": "neutral"
+      },
+      {
+        "text": "चो",
+        "startTime": 15.25,
+        "endTime": 15.74,
+        "svara": "neutral"
+      },
+      {
+        "text": "द",
+        "startTime": 15.74,
+        "endTime": 16.23,
+        "svara": "neutral"
+      },
+      {
+        "text": "यात्",
+        "startTime": 16.23,
+        "endTime": 17,
+        "svara": "neutral"
+      }
+    ],
+    "transliteration": "Oṁ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṁ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt",
+    "confirmed": true,
+    "lastModified": "2025-12-08T16:22:31.561Z"
+  },
+  "saha-navatu": {
+    "id": "saha-navatu",
+    "name": "Saha Nā Vavatu",
+    "audioSrc": "/audio/sahana.mp3",
+    "syllables": [
+      {
+        "text": "ॐ ",
+        "startTime": 3,
+        "endTime": 4,
+        "svara": "udatta"
+      },
+      {
+        "text": "स",
+        "startTime": 4,
+        "endTime": 4.3,
+        "svara": "neutral"
+      },
+      {
+        "text": "ह ",
+        "startTime": 4.3,
+        "endTime": 4.6,
+        "svara": "neutral"
+      },
+      {
+        "text": "ना",
+        "startTime": 4.6,
+        "endTime": 4.9,
+        "svara": "udatta"
+      },
+      {
+        "text": "व",
+        "startTime": 4.9,
+        "endTime": 5.2,
+        "svara": "neutral"
+      },
+      {
+        "text": "व",
+        "startTime": 5.2,
+        "endTime": 5.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "तु ",
+        "startTime": 5.5,
+        "endTime": 6,
+        "svara": "neutral"
+      },
+      {
+        "text": "स",
+        "startTime": 6.2,
+        "endTime": 6.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "ह ",
+        "startTime": 6.5,
+        "endTime": 6.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "नौ ",
+        "startTime": 6.8,
+        "endTime": 7.1,
+        "svara": "udatta"
+      },
+      {
+        "text": "भु",
+        "startTime": 7.1,
+        "endTime": 7.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "न",
+        "startTime": 7.5,
+        "endTime": 8,
+        "svara": "neutral"
+      },
+      {
+        "text": "क्तु ",
+        "startTime": 8,
+        "endTime": 9,
+        "svara": "neutral"
+      },
+      {
+        "text": "स",
+        "startTime": 9.2,
+        "endTime": 9.4,
+        "svara": "neutral"
+      },
+      {
+        "text": "ह ",
+        "startTime": 9.4,
+        "endTime": 9.6,
+        "svara": "neutral"
+      },
+      {
+        "text": "वी",
+        "startTime": 9.6,
+        "endTime": 9.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "र्य",
+        "startTime": 9.8,
+        "endTime": 10,
+        "svara": "udatta"
+      },
+      {
+        "text": "ं ",
+        "startTime": 10,
+        "endTime": 10.2,
+        "svara": "udatta"
+      },
+      {
+        "text": "क",
+        "startTime": 10.2,
+        "endTime": 10.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "र",
+        "startTime": 10.8,
+        "endTime": 11.4,
+        "svara": "neutral"
+      },
+      {
+        "text": "वा",
+        "startTime": 11.4,
+        "endTime": 12,
+        "svara": "neutral"
+      },
+      {
+        "text": "व",
+        "startTime": 12,
+        "endTime": 12.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "है ",
+        "startTime": 12.5,
+        "endTime": 13,
+        "svara": "neutral"
+      },
+      {
+        "text": "ते",
+        "startTime": 13.5,
+        "endTime": 14,
+        "svara": "anudatta"
+      },
+      {
+        "text": "ज",
+        "startTime": 14,
+        "endTime": 14.3,
+        "svara": "neutral"
+      },
+      {
+        "text": "स्वि",
+        "startTime": 14.3,
+        "endTime": 14.6,
+        "svara": "neutral"
+      },
+      {
+        "text": "ना",
+        "startTime": 14.6,
+        "endTime": 14.9,
+        "svara": "anudatta"
+      },
+      {
+        "text": "व",
+        "startTime": 14.9,
+        "endTime": 15.2,
+        "svara": "neutral"
+      },
+      {
+        "text": "धी",
+        "startTime": 15.2,
+        "endTime": 15.5,
+        "svara": "udatta"
+      },
+      {
+        "text": "त",
+        "startTime": 15.5,
+        "endTime": 15.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "म",
+        "startTime": 15.8,
+        "endTime": 16.1,
+        "svara": "neutral"
+      },
+      {
+        "text": "स्तु ",
+        "startTime": 16.1,
+        "endTime": 16.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "मा ",
+        "startTime": 16.5,
+        "endTime": 16.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "वि",
+        "startTime": 16.8,
+        "endTime": 17.2,
+        "svara": "neutral"
+      },
+      {
+        "text": "द्वि",
+        "startTime": 17.2,
+        "endTime": 17.6,
+        "svara": "neutral"
+      },
+      {
+        "text": "षा",
+        "startTime": 17.6,
+        "endTime": 18,
+        "svara": "neutral"
+      },
+      {
+        "text": "व",
+        "startTime": 18,
+        "endTime": 18.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "है ",
+        "startTime": 18.5,
+        "endTime": 20,
+        "svara": "svarita"
+      },
+      {
+        "text": "ॐ ",
+        "startTime": 20.2,
+        "endTime": 21,
+        "svara": "neutral"
+      },
+      {
+        "text": "शान्",
+        "startTime": 21,
+        "endTime": 21.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "ति",
+        "startTime": 21.8,
+        "endTime": 22.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "ः ",
+        "startTime": 22.5,
+        "endTime": 23,
+        "svara": "neutral"
+      },
+      {
+        "text": "शान्",
+        "startTime": 23,
+        "endTime": 23.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "ति",
+        "startTime": 23.8,
+        "endTime": 24.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "ः ",
+        "startTime": 24.5,
+        "endTime": 25,
+        "svara": "neutral"
+      },
+      {
+        "text": "शान्",
+        "startTime": 25,
+        "endTime": 25.5,
+        "svara": "neutral"
+      },
+      {
+        "text": "ति",
+        "startTime": 25.5,
+        "endTime": 25.8,
+        "svara": "neutral"
+      },
+      {
+        "text": "ः",
+        "startTime": 25.8,
+        "endTime": 26,
+        "svara": "neutral"
+      }
+    ],
+    "transliteration": "Oṁ saha nāvavatu saha nau bhunaktu saha vīryaṁ karavāvahai...",
+    "confirmed": true,
+    "lastModified": "2025-12-08T19:26:39.117Z"
+  }
+}

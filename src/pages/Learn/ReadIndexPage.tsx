@@ -5,11 +5,13 @@ import { Link, useSearchParams } from 'react-router-dom';
 import NotFoundMessage from '../../components/learn/NotFoundMessage';
 import { vivekanandaLectures } from '../../data/readings/vivekanandaParliament';
 
-import { Target, Users, BookOpen } from 'lucide-react';
+import { Target, Users, BookOpen, CheckCircle } from 'lucide-react';
 import { countSentences, flattenSentences } from '@/lib/translationUtils';
 import { getAllTranslations, mostTranslatedSentence } from '@/store/translations';
 import { isSupabaseConfigured } from '@/services/translationsSupabase';
 import { featureFlags } from '@/utils/featureFlags';
+import { useReadingProgress } from '@/hooks/useReadingProgress';
+import ReadingProgressBar from '@/components/learn/ReadingProgressBar';
 
 const ReadIndexPage: React.FC = () => {
   if (!featureFlags.enableReadingSection) {
@@ -22,6 +24,9 @@ const ReadIndexPage: React.FC = () => {
       />
     );
   }
+
+  // Reading progress tracking
+  const { getProgress, isLoaded: progressLoaded } = useReadingProgress();
 
   // Translation statistics
   const [translatedTotal, setTranslatedTotal] = useState(0);
@@ -155,29 +160,53 @@ const ReadIndexPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {vivekanandaLectures.map((lec, i) => (
-                <Card key={lec.id} className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/40 hover:shadow-lg transition-all">
-                  <CardContent className="p-6">
-                    <div className="text-sm text-gray-500 mb-1">Lecture {i + 1} • {lec.date}</div>
-                    <h2 className="text-xl font-heading font-semibold mb-3">{lec.title}</h2>
-                    <p className="text-gray-700 mb-4 line-clamp-3">{lec.paragraphs[1] ?? lec.paragraphs[0]}</p>
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <Link
-                        to={`/read/${lec.id}/english`}
-                        className="inline-flex items-center px-3 py-1 bg-white text-spiritual-700 border border-spiritual-300 text-sm rounded-md hover:bg-spiritual-50 transition-colors"
-                      >
-                        <BookOpen className="w-4 h-4 mr-2" /> Read the lecture
-                      </Link>
-                      <Link
-                        to={`/read/${lec.id}?lang=${new URLSearchParams(window.location.search).get('lang') || ''}`}
-                        className="inline-flex items-center px-3 py-1 bg-spiritual-500 text-white text-sm rounded-md hover:bg-spiritual-600 transition-colors"
-                      >
-                        <Target className="w-4 h-4 mr-2" /> Translate Sentences
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              {vivekanandaLectures.map((lec, i) => {
+                const progress = progressLoaded ? getProgress(lec.id) : null;
+                const isComplete = progress?.completed || false;
+                const scrollPercent = progress?.scrollPercent || 0;
+
+                return (
+                  <Card key={lec.id} className={`bg-gradient-to-br from-indian-cream to-white border hover:shadow-lg transition-all ${isComplete ? 'border-emerald-400/60' : 'border-indian-saffron/40'}`}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-sm text-gray-500">Lecture {i + 1} • {lec.date}</div>
+                        {isComplete && (
+                          <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                            <CheckCircle className="w-3.5 h-3.5" /> Complete
+                          </span>
+                        )}
+                        {!isComplete && scrollPercent > 0 && (
+                          <span className="text-xs text-gray-500">{scrollPercent}% read</span>
+                        )}
+                      </div>
+                      <h2 className="text-xl font-heading font-semibold mb-2">{lec.title}</h2>
+
+                      {/* Reading progress bar */}
+                      {scrollPercent > 0 && (
+                        <div className="mb-3">
+                          <ReadingProgressBar percent={scrollPercent} variant="inline" />
+                        </div>
+                      )}
+
+                      <p className="text-gray-700 mb-4 line-clamp-3">{lec.paragraphs[1] ?? lec.paragraphs[0]}</p>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <Link
+                          to={`/read/${lec.id}/english`}
+                          className="inline-flex items-center px-3 py-1 bg-white text-spiritual-700 border border-spiritual-300 text-sm rounded-md hover:bg-spiritual-50 transition-colors"
+                        >
+                          <BookOpen className="w-4 h-4 mr-2" /> {scrollPercent > 0 && !isComplete ? 'Continue Reading' : 'Read the lecture'}
+                        </Link>
+                        <Link
+                          to={`/read/${lec.id}?lang=${new URLSearchParams(window.location.search).get('lang') || ''}`}
+                          className="inline-flex items-center px-3 py-1 bg-spiritual-500 text-white text-sm rounded-md hover:bg-spiritual-600 transition-colors"
+                        >
+                          <Target className="w-4 h-4 mr-2" /> Translate Sentences
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
 
 

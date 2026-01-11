@@ -1,0 +1,5 @@
+{
+  "name": "Vivekananda Speech Memorizer",
+  "description": "An interactive tool to memorize Swami Vivekananda's famous Chicago speech using active recall, chunking, and AI-powered audio/explanations.",
+  "requestFramePermissions": []
+}

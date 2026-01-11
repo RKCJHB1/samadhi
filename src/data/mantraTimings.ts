@@ -2,10 +2,14 @@
 // The timings are in seconds and represent when each syllable should be highlighted
 // during audio playback
 
+// Svara types for Vedic accent/pitch marking
+export type SvaraType = 'udatta' | 'anudatta' | 'svarita' | 'dirgha-svarita' | 'neutral';
+
 export interface TimedSyllable {
   text: string;
   startTime: number;
   endTime: number;
+  svara?: SvaraType; // Optional: when set, overrides duration-based inference
 }
 
 // Om Mantra

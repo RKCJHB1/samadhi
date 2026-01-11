@@ -56,24 +56,31 @@ import IndividualQuizPage from "./pages/Learn/IndividualQuizPage";
 
 import SubmitQuestionPage from "./pages/Learn/SubmitQuestionPage";
 
-// Import 3D Model pages (development only) - gradually adding back
-// import AshramModel3D from "./pages/AshramModel3D";
-// import Test3D from "./pages/Test3D";
-// import Simple3DTest from "./pages/Simple3DTest";
-import BlockVisualization from "./pages/BlockVisualization";
-import ApiTest from "./pages/ApiTest";
 import LearnPage from "./pages/Learn/LearnPage";
 import LearnUnveilPage from "./pages/Learn/LearnUnveilPage";
 import GamesPage from "./pages/Learn/GamesPage";
-import GuessThePicturePage from "./pages/Learn/GuessThePicturePage.tsx";
-import MastersWordsGamePage from "./pages/Learn/MastersWordsGame.tsx";
-import QuotesPage from "./pages/Learn/QuotesPage";
-import WordScramblePage from "./pages/Learn/WordScramblePage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 import { lazy, Suspense } from "react";
 
-// Lazy load AumChanterPage (hidden route - not linked from Games section)
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indian-cream to-white">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-12 h-12 border-4 border-indian-saffron border-t-transparent rounded-full animate-spin" />
+      <p className="text-spiritual-600 font-medium">Loading...</p>
+    </div>
+  </div>
+);
+
+// Lazy load heavy pages for better performance
+const BlockVisualization = lazy(() => import("./pages/BlockVisualization"));
+const ApiTest = lazy(() => import("./pages/ApiTest"));
+const GuessThePicturePage = lazy(() => import("./pages/Learn/GuessThePicturePage.tsx"));
+const MastersWordsGamePage = lazy(() => import("./pages/Learn/MastersWordsGame.tsx"));
+const QuotesPage = lazy(() => import("./pages/Learn/QuotesPage"));
+const WordScramblePage = lazy(() => import("./pages/Learn/WordScramblePage"));
 const AumChanterPage = lazy(() => import("./pages/Learn/AumChanterPage.tsx"));
+const SpeechMemorizerPage = lazy(() => import("./pages/Learn/SpeechMemorizerPage.tsx"));
 
 import ReadIndexPage from "./pages/Learn/ReadIndexPage";
 import ReadLecturePage from "./pages/Learn/ReadLecturePage";
@@ -105,16 +112,19 @@ import StudentDashboard from "./pages/Dashboard/StudentDashboard";
 import TeacherDashboard from "./pages/Dashboard/TeacherDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 
-// Import Gallery pages
-import GalleryPage from "./pages/Gallery/GalleryPage";
-import GalleryImageView from "./pages/Gallery/GalleryImageView";
+// Import Admin pages
+import MantraAdminPage from "./pages/Admin/MantraAdminPage";
+
+// Lazy load Gallery pages (image-heavy)
+const GalleryPage = lazy(() => import("./pages/Gallery/GalleryPage"));
+const GalleryImageView = lazy(() => import("./pages/Gallery/GalleryImageView"));
 
 // Import Donation pages
 import DonatePage from "./pages/Donate/DonatePage";
 
-// Import Test Page
-import TestPage from "./pages/TestPage";
-import BlocksPage from "./pages/BlocksPage";
+// Lazy load Test/Dev pages
+const TestPage = lazy(() => import("./pages/TestPage"));
+const BlocksPage = lazy(() => import("./pages/BlocksPage"));
 
 const queryClient = new QueryClient();
 
@@ -166,10 +176,10 @@ const App = () => (
             <Route path="/new-ashram-project/vision" element={<VisionPage />} />
             <Route path="/new-ashram-project/timeline" element={<TimelinePage />} />
             <Route path="/new-ashram-project/fundraising" element={<FundraisingPage />} />
-            <Route path="/new-ashram-project/3d-model" element={<BlockVisualization />} />
+            <Route path="/new-ashram-project/3d-model" element={<Suspense fallback={<PageLoader />}><BlockVisualization /></Suspense>} />
             {/* <Route path="/test-3d" element={<Test3D />} /> */}
             <Route path="/simple-3d-test" element={<div style={{padding: '20px', backgroundColor: 'lightblue', minHeight: '100vh'}}><h1>Simple Test Page Works!</h1><p>If you can see this, routing is working.</p></div>} />
-            <Route path="/api-test" element={<ApiTest />} />
+            <Route path="/api-test" element={<Suspense fallback={<PageLoader />}><ApiTest /></Suspense>} />
 
             {/* Learn Section */}
             <Route path="/learnunveil" element={<LearnUnveilPage />} />
@@ -181,12 +191,14 @@ const App = () => (
 
               <Route path="/learn/submit" element={<SubmitQuestionPage />} />
               <Route path="/learn/games" element={<GamesPage />} />
-              <Route path="/learn/games/guess-picture" element={<GuessThePicturePage />} />
-              <Route path="/learn/games/wordle" element={<MastersWordsGamePage />} />
-              <Route path="/learn/games/quotes" element={<QuotesPage />} />
-              <Route path="/learn/games/word-scramble" element={<WordScramblePage />} />
+              <Route path="/learn/games/guess-picture" element={<Suspense fallback={<PageLoader />}><GuessThePicturePage /></Suspense>} />
+              <Route path="/learn/games/wordle" element={<Suspense fallback={<PageLoader />}><MastersWordsGamePage /></Suspense>} />
+              <Route path="/learn/games/quotes" element={<Suspense fallback={<PageLoader />}><QuotesPage /></Suspense>} />
+              <Route path="/learn/games/word-scramble" element={<Suspense fallback={<PageLoader />}><WordScramblePage /></Suspense>} />
               {/* Aum Chanter (Hidden route - not linked from Games section) */}
-              <Route path="/learn/games/aum-chanter" element={<Suspense fallback={<div>Loading...</div>}><AumChanterPage /></Suspense>} />
+              <Route path="/learn/games/aum-chanter" element={<Suspense fallback={<PageLoader />}><AumChanterPage /></Suspense>} />
+              {/* Speech Memorizer (Password protected) */}
+              <Route path="/speech" element={<Suspense fallback={<PageLoader />}><SpeechMemorizerPage /></Suspense>} />
 
 
 
@@ -226,8 +238,14 @@ const App = () => (
             <Route path="/auth/login" element={<SupabaseLoginPage />} />
             <Route path="/auth/signup" element={<SupabaseSignupPage />} />
             <Route path="/moderation/translations" element={<TranslationsModerationPage />} />
-            {/* Removed ProtectedRoute for testing */}
-            <Route path="/admin" element={<AdminDashboard />} />
+
+            {/* Admin Routes - Development only */}
+            {import.meta.env.DEV && (
+              <>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/mantras" element={<MantraAdminPage />} />
+              </>
+            )}
 
             {/* Dashboard Routes */}
             {/* Removed ProtectedRoute for testing */}
@@ -242,17 +260,17 @@ const App = () => (
             <Route path="/donate/thank-you" element={<ThankYouPage />} />
 
             {/* Gallery Section */}
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/gallery/image/:imageId" element={<GalleryImageView />} />
+            <Route path="/gallery" element={<Suspense fallback={<PageLoader />}><GalleryPage /></Suspense>} />
+            <Route path="/gallery/image/:imageId" element={<Suspense fallback={<PageLoader />}><GalleryImageView /></Suspense>} />
 
             {/* Contact Page */}
             <Route path="/contact" element={<ContactPage />} />
 
             {/* Test Page */}
-            <Route path="/test" element={<TestPage />} />
+            <Route path="/test" element={<Suspense fallback={<PageLoader />}><TestPage /></Suspense>} />
 
             {/* Blocks Page (Development Only) */}
-            <Route path="/blocks" element={<BlocksPage />} />
+            <Route path="/blocks" element={<Suspense fallback={<PageLoader />}><BlocksPage /></Suspense>} />
 
             {/* 404 Page */}
             <Route path="*" element={<NotFound />} />

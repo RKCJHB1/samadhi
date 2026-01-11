@@ -308,6 +308,100 @@
   .animate-firework-shoot {
     animation: firework-shoot 2s ease-out infinite;
   }
+
+  /* Mantra svara animations: vertical motion based on accent type */
+
+  /* Udatta (raise) - syllable moves UP and holds */
+  @keyframes svara-udatta {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-0.25em); }
+    100% { transform: translateY(-0.25em); }
+  }
+
+  /* Anudatta (lower) - syllable moves DOWN and holds */
+  @keyframes svara-anudatta {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(0.2em); }
+    100% { transform: translateY(0.2em); }
+  }
+
+  /* Svarita (double raise) - syllable moves UP double the height of udatta */
+  @keyframes svara-svarita {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-0.5em); }
+    100% { transform: translateY(-0.5em); }
+  }
+
+  /* Dirgha Svarita (extended) - same as svarita but animation duration is longer */
+  @keyframes svara-dirgha {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-0.5em); }
+    100% { transform: translateY(-0.5em); }
+  }
+
+  /* Legacy bounce animations for duration-based fallback (no explicit svara set) */
+  @keyframes svara-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.15em); }
+  }
+
+  @keyframes svara-bounce-long {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.2em); }
+  }
+
+  .svara-syllable {
+    display: inline-block;
+    padding: 0 0.03em;
+  }
+
+  /* Svara animation classes - duration set per-syllable in React */
+  .svara-syllable-udatta {
+    animation-name: svara-udatta;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+  }
+
+  .svara-syllable-anudatta {
+    animation-name: svara-anudatta;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+  }
+
+  .svara-syllable-svarita {
+    animation-name: svara-svarita;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+  }
+
+  .svara-syllable-dirgha {
+    animation-name: svara-dirgha;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+  }
+
+  /* Legacy classes for duration-based fallback */
+  .svara-syllable-active {
+    animation-name: svara-bounce;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+  }
+}
+
+/* Shake animation for quiz wrong answers */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
 }
 
 /* Floating hellos for Read Home */

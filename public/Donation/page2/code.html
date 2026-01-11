@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sponsor a Voxel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec6d13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221810",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-100">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="flex items-center p-4">
+<button class="p-2 -ml-2">
+<span class="material-symbols-outlined text-zinc-900 dark:text-zinc-100">arrow_back</span>
+</button>
+<h1 class="flex-1 text-lg font-bold text-center text-zinc-900 dark:text-zinc-100">Sponsor a Voxel</h1>
+<div class="w-8"></div>
+</div>
+</header>
+<main class="flex-1 px-4 pt-4 pb-24">
+<div class="space-y-6">
+<div>
+<h2 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">Select a Voxel</h2>
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD2leuzW-EpNyA5yLtcEI1_m9R7Rj9lrbYUp8FLpO9tpZxIZtd5i5vOXPGvBXX0QJqdJBKoGT2_eME0LJHmoiSXbfVJKtPiUyx5Q5y6Bvfs1Jvqg8Ve0pkT2qjlc6MWa6ZyIU4HklpibHhVM1icyUVxZGZ3OOLmER9SPH9AdIvWdgojBnV5DZ2lBBQv-7T9aPa75IQBlTmn1MU7_7Yq9UJUBJBiR-yoLi_WUdBU-UQ7p-MvK47g7N8dqNM98o9hC8uj9R8dbDIaHLA");'></div>
+</div>
+<div>
+<h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">Selected Voxel</h3>
+<div class="flex items-center gap-4 p-3 rounded-lg bg-background-light dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBVCz4-dTn4wEWJnY0mP-LTpz3WsQ2lempcZbtIzm90-Pj6LvK6XWAhosJWmOMizD405078kcbDVdlKQXJfHLhrKd5Tbqpw7KD1FTOOV0GvvKXiVpes-5KgBg74oxdG6RK3ffCo3f0I3CYEW-2ZFJJsq7AAXb3mCzBNjQHFzqNfs0iGfjPmpkMjeQkJVFGshaLF8yrU5OZQ6JwfxwhieBBG0xw-mUQpWWrHQeXlEN2OcnIv5jhuFosYc6fdf2DHC3i1jvUA6MvCOx4");'></div>
+<div class="flex flex-col justify-center">
+<p class="font-bold text-zinc-900 dark:text-zinc-100">Temple Spire</p>
+<p class="text-sm text-zinc-500 dark:text-zinc-400">Voxel ID: 12345</p>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-3">Donation Amount</h3>
+<div class="p-4 space-y-4 rounded-lg bg-background-light dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+<div class="flex items-center justify-between text-sm">
+<span class="font-medium text-zinc-600 dark:text-zinc-400">Minimum Donation</span>
+<span class="font-bold text-zinc-900 dark:text-zinc-100">$5.00</span>
+</div>
+<div class="relative w-full h-2 rounded-full bg-primary/20">
+<div class="h-full rounded-full bg-primary" style="width: 20%;"></div>
+<div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2" style="left: 20%;">
+<div class="w-5 h-5 rounded-full bg-primary border-4 border-background-light dark:border-zinc-800"></div>
+</div>
+</div>
+<label class="block">
+<span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">Custom Amount (USD)</span>
+<div class="relative mt-2">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500 dark:text-zinc-400">$</span>
+<input class="form-input w-full rounded-lg border-zinc-300 dark:border-zinc-600 bg-background-light dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:ring-primary focus:border-primary pl-7" placeholder="5.00" type="number"/>
+</div>
+</label>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100">Payment Method</h3>
+<a class="flex items-center gap-1 text-sm font-medium text-primary" href="#">
+<span class="material-symbols-outlined text-base">help_outline</span>
+<span>PayFast.io FAQ</span>
+</a>
+</div>
+<div class="space-y-2">
+<button class="w-full flex items-center gap-4 p-4 rounded-lg bg-primary/10 dark:bg-primary/20 border-2 border-primary">
+<img alt="PayFast Logo" class="h-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0pqfwPJyhq2kMZcJffWtehdaGcXRDNgMF19rMIWHKAq5yrkcxo4_OAb081V7CtOSVg9eUtO-iZkQUQyhWsKWk22_VJOAU5Ah0rFkmj6icP9FagP_qkQ2qIOWTh4Pg69knbSTqfD0CUW4ToTidlhHLXZ8j4JcE5N31JaLzJSo_3qtuMx4BDQOj9qkOFJBleryskEZbxdVw17u2ZvNuCMtg13rYbdpv1yC4DlkSKoVxazk3p9LgKqF6vBT0R8gbRN-UDn_ILFnJVig"/>
+<span class="font-bold text-zinc-900 dark:text-zinc-100 flex-1 text-left">PayFast.io</span>
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-base">check</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-zinc-200 dark:border-zinc-800">
+<button class="w-full h-12 px-6 text-base font-bold text-white rounded-lg bg-primary">
+                Confirm Donation
+            </button>
+</footer>
+</div>
+</body></html>

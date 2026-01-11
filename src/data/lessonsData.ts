@@ -44,138 +44,207 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'dharma-intro',
         title: 'Introduction to Dharma',
-        description: 'Learn about the foundational concept of dharma in Hindu philosophy',
+        description: 'Learn about dharma - doing what is right and good',
         videoUrl: 'https://www.youtube.com/embed/lFiNGO0joPk',
         content: `
           <h2>Understanding Dharma</h2>
           <div class="text-center mb-6">
-            <img src="/pics/dharma.png" alt="Dharma symbol representing cosmic order and righteousness" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
-            <p class="text-sm text-gray-600 mt-2 italic">The Dharma symbol representing cosmic order and righteousness</p>
+            <img src="/pics/dharma.png" alt="The Dharma symbol - it reminds us to always do what is right" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">The Dharma symbol - it reminds us to always do what is right</p>
           </div>
-          <p>Dharma is one of the most complex and profound concepts in Hindu philosophy. The term comes from the Sanskrit root "dhṛ," which means "to sustain, support, or uphold." While there is no exact English translation, dharma encompasses righteousness, duty, cosmic order, and the path of right living.</p>
+          <p>Dharma is a very important idea in Hinduism. The word "dharma" means doing what is right and good. It also means doing your duty - the things you are supposed to do.</p>
+          <p>Think of dharma like the rules that keep everything working nicely. Just like how traffic rules keep cars safe on the road, dharma helps keep our lives and the whole world in balance.</p>
 
-          <h3>Multiple Dimensions of Dharma</h3>
-          <p>Dharma operates on multiple levels:</p>
+          <h3>What Does Dharma Mean?</h3>
+          <p>Dharma has a few different meanings:</p>
           <ul>
-            <li><strong>Cosmic Dharma (Rita):</strong> The natural order and rhythm of the universe</li>
-            <li><strong>Social Dharma (Varnashrama Dharma):</strong> One's duties based on social position and stage of life</li>
-            <li><strong>Personal Dharma (Sva-dharma):</strong> One's individual purpose and path</li>
+            <li><strong>Doing what is right:</strong> Being honest, kind, and fair to others</li>
+            <li><strong>Doing your duty:</strong> Finishing your homework, helping at home, being a good friend</li>
+            <li><strong>Following nature's rules:</strong> The sun rises each day, seasons change - this is also dharma!</li>
+          </ul>
+          <p>When we follow dharma, we feel happy and peaceful. When we don't follow dharma, things can go wrong and we might feel bad inside.</p>
+
+          <h3>Dharma in Our Holy Books</h3>
+          <p>Our sacred books talk a lot about dharma:</p>
+          <ul>
+            <li><strong>The Bhagavad Gita</strong> tells the story of Arjuna, who had to make a very hard choice about doing his duty</li>
+            <li><strong>The Ramayana</strong> shows us Lord Rama, who always did what was right, even when it was very difficult</li>
+          </ul>
+          <p>Lord Vishnu protects dharma. Whenever people forget to do what is right, Lord Vishnu comes to Earth to teach us again.</p>
+
+          <h3>Rules That Are Good for Everyone</h3>
+          <p>Some rules of dharma are good for every person, everywhere. These are called <strong>Sanatana Dharma</strong> (eternal rules):</p>
+          <ul>
+            <li><strong>Ahimsa:</strong> Don't hurt others - be kind to all living things</li>
+            <li><strong>Satya:</strong> Always tell the truth</li>
+            <li><strong>Asteya:</strong> Don't take things that aren't yours</li>
+            <li><strong>Self-control:</strong> Think before you act</li>
+            <li><strong>Sharing:</strong> Don't be greedy - share with others</li>
+          </ul>
+          <p>These rules help us become good people and make the world a better place.</p>
+
+          <h3>Your Own Special Dharma</h3>
+          <p>Everyone also has their own special dharma based on who they are:</p>
+          <h4>As a Child</h4>
+          <ul>
+            <li>Listen to your parents and teachers</li>
+            <li>Study hard and do your best in school</li>
+            <li>Be kind to your brothers, sisters, and friends</li>
+            <li>Help with chores at home</li>
+          </ul>
+          <p>As you grow up, your dharma will change. A doctor's dharma is to help sick people. A teacher's dharma is to help students learn. Everyone has something special to do!</p>
+
+          <h3>Dharma at Home and School</h3>
+          <p>Dharma is not just for temples - it's for everyday life!</p>
+          <h4>At Home</h4>
+          <ul>
+            <li>Help your parents without being asked</li>
+            <li>Be kind to your siblings</li>
+            <li>Take care of your pets</li>
+            <li>Keep your room tidy</li>
+          </ul>
+          <h4>At School</h4>
+          <ul>
+            <li>Pay attention in class</li>
+            <li>Do your homework on your own</li>
+            <li>Be friendly to classmates</li>
+            <li>Don't cheat on tests</li>
+          </ul>
+          <h4>With Friends</h4>
+          <ul>
+            <li>Share your toys and games</li>
+            <li>Don't tell lies</li>
+            <li>Stand up for friends who are being bullied</li>
+            <li>Say sorry when you make mistakes</li>
           </ul>
 
-          <p>According to Hindu belief, following one's dharma leads to harmony, balance, and eventually, spiritual liberation (moksha). Acting against one's dharma creates disorder (adharma) and negative karma.</p>
+          <h3>When It's Hard to Do the Right Thing</h3>
+          <p>Sometimes it's not easy to know what is right. You might have to choose between two things that both seem okay.</p>
+          <p>For example: Your friend asks you to help them cheat on a test. You want to help your friend, but cheating is wrong. What should you do? The right choice is to say no to cheating, but offer to help your friend study instead!</p>
+          <p>When you're not sure what to do, ask yourself: "Is this kind? Is this honest? Would I be happy if everyone knew what I did?"</p>
 
-          <h3>Dharma in Sacred Texts</h3>
-          <p>The concept of dharma is extensively explored in Hindu scriptures:</p>
+          <h3>Dharma and Karma</h3>
+          <p>Dharma and karma work together like best friends:</p>
           <ul>
-            <li>The Bhagavad Gita presents the dilemma of conflicting dharmas through Arjuna's crisis</li>
-            <li>The Dharma Shastras provide specific guidelines for social and personal conduct</li>
-            <li>The Upanishads connect dharma to the ultimate reality (Brahman)</li>
+            <li>When you <strong>follow dharma</strong> (do good things), you get <strong>good karma</strong> (good things happen to you)</li>
+            <li>When you <strong>break dharma</strong> (do bad things), you get <strong>bad karma</strong> (not-so-good things happen)</li>
           </ul>
+          <p>It's like planting seeds: if you plant good seeds, you grow beautiful flowers. If you plant bad seeds, you grow weeds!</p>
 
-          <p>Lord Vishnu is revered as the protector of dharma, appearing as various avatars throughout cosmic cycles when dharma declines and adharma increases.</p>
+          <h3>Dharma Today</h3>
+          <h4>Taking Care of Nature</h4>
+          <p>It is our dharma to look after the Earth - not littering, saving water, and being kind to animals.</p>
+          <h4>Being a Good Person</h4>
+          <p>No matter what job you have when you grow up, you can follow dharma by being honest, working hard, and treating everyone fairly.</p>
 
-          <h3>Dharma in Daily Life</h3>
-          <p>In practice, dharma guides ethical decision-making and provides a framework for living a meaningful life. It encourages individuals to fulfill their responsibilities while maintaining spiritual awareness.</p>
+          <h3>Key Terms</h3>
+          <ul>
+            <li><strong>Dharma:</strong> Doing what is right; your duty</li>
+            <li><strong>Ahimsa:</strong> Not hurting others; being kind</li>
+            <li><strong>Satya:</strong> Telling the truth</li>
+            <li><strong>Karma:</strong> What happens because of your actions (good or bad)</li>
+            <li><strong>Sanatana Dharma:</strong> Rules that are good for everyone, forever</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What is the best translation of the word Dharma?',
+              question: 'What does dharma mean?',
               answers: [
-                'Duty',
-                'Religion',
-                'Righteousness',
-                'There is no exact translation'
-              ],
-              correctAnswer: 3
-            },
-            {
-              question: 'Which of the following is NOT a form of dharma?',
-              answers: [
-                'Sanatana Dharma',
-                'Sva-dharma (personal duty)',
-                'Maya Dharma',
-                'Raja Dharma (duty of kings)'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'Who is considered the guardian of dharma in Hindu tradition?',
-              answers: [
-                'Brahma',
-                'Vishnu',
-                'Shiva',
-                'Indra'
+                'Playing games',
+                'Doing what is right and good',
+                'Eating food',
+                'Sleeping well'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is the ultimate goal of following dharma?',
+              question: 'Who protects dharma in Hindu stories?',
               answers: [
-                'Wealth',
-                'Fame',
-                'Moksha (liberation)',
-                'Power'
+                'Lord Brahma',
+                'Lord Vishnu',
+                'Lord Shiva',
+                'Lord Indra'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does "Ahimsa" mean?',
+              answers: [
+                'Telling the truth',
+                'Being greedy',
+                'Not hurting others - being kind',
+                'Running fast'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What does the Sanskrit root "dhṛ" mean?',
+              question: 'What happens when you follow dharma?',
               answers: [
-                'To run',
-                'To sustain, support, or uphold',
-                'To destroy',
-                'To hide'
+                'You get bad karma',
+                'Nothing happens',
+                'You get good karma',
+                'You become sad'
               ],
-              correctAnswer: 1
+              correctAnswer: 2
+            },
+            {
+              question: 'What is a child\'s dharma at school?',
+              answers: [
+                'Sleep in class',
+                'Play all day',
+                'Pay attention and do homework',
+                'Be mean to classmates'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What does "Satya" mean?',
+              answers: [
+                'Telling the truth',
+                'Telling lies',
+                'Being lazy',
+                'Being angry'
+              ],
+              correctAnswer: 0
             },
             {
               question: 'What is Sanatana Dharma?',
               answers: [
-                'Personal duty',
-                'King\'s duty',
-                'Eternal cosmic order',
-                'Temporary rules'
+                'Rules for only one person',
+                'Rules that change every day',
+                'Eternal rules that are good for everyone',
+                'No rules at all'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What is Sva-dharma?',
+              question: 'If your friend asks you to help them cheat, what should you do?',
               answers: [
-                'Universal law',
-                'Personal duty based on individual circumstances',
-                'King\'s responsibility',
-                'Religious ritual'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What does dharma provide for living a meaningful life?',
-              answers: [
-                'Money',
-                'Fame',
-                'A framework for ethical decision-making',
-                'Physical strength'
+                'Help them cheat',
+                'Ignore them',
+                'Say no to cheating, but offer to help them study',
+                'Tell everyone'
               ],
               correctAnswer: 2
             },
             {
-              question: 'How does dharma guide individuals?',
+              question: 'What is like planting good seeds?',
               answers: [
-                'Only through rules',
-                'By encouraging fulfillment of responsibilities with spiritual awareness',
-                'Through punishment',
-                'By avoiding all action'
+                'Breaking dharma',
+                'Following dharma',
+                'Telling lies',
+                'Being mean'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does dharma encompass according to the lesson?',
+              question: 'It is our dharma to look after...',
               answers: [
-                'Only religious practices',
-                'Only personal duties',
-                'Righteousness, duty, cosmic order, and right living',
-                'Only social rules'
+                'Only ourselves',
+                'Only our toys',
+                'The Earth and all living things',
+                'Nothing'
               ],
               correctAnswer: 2
             }
@@ -195,136 +264,167 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'karma-principle',
         title: 'The Principle of Karma',
-        description: 'Understand the law of cause and effect in Hindu philosophy',
+        description: 'Learn how your actions create results - like planting seeds that grow',
         videoUrl: 'https://www.youtube.com/embed/yJMqULiDtOM?si=2AgJOdBvcEIUMI5b',
         content: `
-          <h2>The Law of Karma</h2>
-          <p>Karma, literally meaning "action," is a fundamental concept in Hindu philosophy that describes the principle of cause and effect. According to this law, every action (karma) generates a force of energy that returns to us in kind—good or bad, immediately or at some point in the future.</p>
+          <h2>What is Karma?</h2>
+          <p>The word <strong>karma</strong> means <strong>action</strong>. But karma is also about what happens because of your actions.</p>
+          <p>Think of it like this: when you throw a ball against a wall, it bounces back to you. Karma works the same way - what you do comes back to you!</p>
 
-          <h3>Types of Karma</h3>
-          <p>Hindu texts describe several types of karma:</p>
+          <h3>Good Actions, Good Results</h3>
+          <p>Karma is like planting seeds in a garden:</p>
           <ul>
-            <li><strong>Sanchita Karma:</strong> The accumulated karma from all past lives, stored until it can be resolved</li>
-            <li><strong>Prarabdha Karma:</strong> The portion of Sanchita Karma scheduled to be experienced in this lifetime</li>
-            <li><strong>Kriyamana/Agami Karma:</strong> The karma being created in the present life that will bear fruit in the future</li>
+            <li>If you plant <strong>flower seeds</strong> (do kind things), you will grow <strong>beautiful flowers</strong> (good things happen to you)</li>
+            <li>If you plant <strong>weed seeds</strong> (do mean things), you will grow <strong>weeds</strong> (not-so-good things happen)</li>
+          </ul>
+          <p>This is why it's so important to always try to do good things!</p>
+
+          <h3>Examples of Karma in Daily Life</h3>
+          <p>Here are some examples of how karma works:</p>
+          <ul>
+            <li><strong>If you share</strong> your toys with friends, they will want to share with you too</li>
+            <li><strong>If you are kind</strong> to someone who is sad, you will feel happy inside</li>
+            <li><strong>If you study hard</strong>, you will do well in your tests</li>
+            <li><strong>If you help</strong> your parents at home, they will be proud of you</li>
           </ul>
 
-          <p>Karma is not simply a system of punishment and reward but rather a natural law of the universe—like gravity—that functions regardless of awareness or intention.</p>
+          <h3>Karma Doesn't Forget</h3>
+          <p>Sometimes the results of our actions come back to us right away. Sometimes it takes longer - like planting a seed that takes time to grow into a tree.</p>
+          <p>But karma never forgets! That's why we should always try to do good things, even when nobody is watching.</p>
 
-          <h3>Karma and Reincarnation</h3>
-          <p>In Hindu thought, karma is intimately connected with the cycle of rebirth (samsara). The soul (atman) carries the karmic impressions (samskaras) from one life to the next. The quality and nature of these impressions determine the circumstances of the next birth.</p>
-
-          <h3>Transcending Karma</h3>
-          <p>While karma binds one to the cycle of birth and death, Hindu philosophy offers paths to transcend it:</p>
+          <h3>You Are in Charge</h3>
+          <p>The wonderful thing about karma is that <strong>you are in charge</strong> of your own future!</p>
           <ul>
-            <li>Through selfless action (Karma Yoga)</li>
-            <li>Through devotion to God (Bhakti Yoga)</li>
-            <li>Through spiritual knowledge (Jnana Yoga)</li>
+            <li>Nobody else can create your karma for you</li>
+            <li>Every choice you make matters</li>
+            <li>You can always choose to do the right thing</li>
+          </ul>
+          <p>If you made a mistake before, don't worry! You can start doing good things right now, and your future will get better.</p>
+
+          <h3>How to Create Good Karma</h3>
+          <p>Here are easy ways to create good karma every day:</p>
+          <ul>
+            <li><strong>Be kind</strong> - Help someone who needs help</li>
+            <li><strong>Be honest</strong> - Always tell the truth</li>
+            <li><strong>Be thankful</strong> - Say thank you when others help you</li>
+            <li><strong>Be forgiving</strong> - Don't hold anger in your heart</li>
+            <li><strong>Work hard</strong> - Do your best in everything you do</li>
           </ul>
 
-          <p>The ultimate goal is to achieve moksha (liberation), a state where one is freed from the cycle of karma and rebirth.</p>
+          <h3>A Story About Karma</h3>
+          <p>A boy once helped an old woman carry her heavy bags. She smiled and blessed him. Later that day, when the boy fell and hurt his knee, a kind stranger helped him and gave him a bandage.</p>
+          <p>The boy thought, "Maybe my good deed came back to me!" And he was right - that's karma!</p>
+
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Karma</strong> means "action" - what you do matters</li>
+            <li>Good actions bring good results</li>
+            <li>Bad actions bring bad results</li>
+            <li>You are in charge of your own karma</li>
+            <li>It's never too late to start doing good!</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What does the word "karma" literally mean?',
+              question: 'What does the word "karma" mean?',
               answers: [
-                'Destiny',
-                'Fate',
+                'Sleep',
+                'Food',
                 'Action',
-                'Reaction'
+                'Water'
               ],
               correctAnswer: 2
             },
             {
-              question: 'According to the law of karma, what determines a person\'s future?',
+              question: 'What happens when you do good things?',
               answers: [
-                'Divine will',
-                'Random chance',
-                'Past actions',
-                'Social status'
+                'Nothing happens',
+                'Bad things happen',
+                'Good things come back to you',
+                'You become tired'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Which type of karma is created by actions in the current life?',
+              question: 'Karma is like planting seeds. If you plant flower seeds, what grows?',
               answers: [
-                'Sanchita Karma',
-                'Prarabdha Karma',
-                'Agami Karma',
-                'Kriyamana Karma'
+                'Weeds',
+                'Nothing',
+                'Beautiful flowers',
+                'Rocks'
               ],
-              correctAnswer: 3
+              correctAnswer: 2
             },
             {
-              question: 'What is Sanchita Karma?',
+              question: 'Who is in charge of your karma?',
               answers: [
-                'Current life actions',
-                'Accumulated karma from all past lives',
-                'Future karma',
-                'Karma that cannot be changed'
+                'Your parents',
+                'Your teacher',
+                'You are!',
+                'Your friends'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'If you share your toys with friends, what will happen?',
+              answers: [
+                'They will take all your toys',
+                'They will want to share with you too',
+                'Nothing will happen',
+                'They will be angry'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is Prarabdha Karma?',
+              question: 'What should you do if you made a mistake before?',
               answers: [
-                'Future actions',
-                'All accumulated karma',
-                'Portion of karma that determines current life circumstances',
-                'Actions in current life'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What is Agami Karma?',
-              answers: [
-                'Past life karma',
-                'Current life karma',
-                'Future karma that will result from current actions',
-                'Unchangeable karma'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'According to karma, what is the relationship between actions and consequences?',
-              answers: [
-                'No relationship',
-                'Random relationship',
-                'Every action has consequences',
-                'Only bad actions have consequences'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What is the ultimate goal regarding karma?',
-              answers: [
-                'To accumulate good karma',
-                'To achieve moksha (liberation) and be freed from karma',
-                'To avoid all actions',
-                'To create more karma'
+                'Give up',
+                'Start doing good things now',
+                'Blame others',
+                'Hide from everyone'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How does understanding karma help in daily life?',
+              question: 'Which of these creates good karma?',
               answers: [
-                'It makes us fearful',
-                'It encourages responsible and ethical behavior',
-                'It makes us lazy',
-                'It has no practical benefit'
+                'Telling lies',
+                'Being mean to others',
+                'Helping someone who needs help',
+                'Cheating on a test'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Does karma forget your actions?',
+              answers: [
+                'Yes, karma forgets everything',
+                'No, karma never forgets',
+                'Only sometimes',
+                'Karma only remembers bad things'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does karma teach about personal responsibility?',
+              question: 'What is a good way to create good karma?',
               answers: [
-                'We are not responsible for our actions',
-                'Others are responsible for our actions',
-                'We are responsible for our own actions and their consequences',
-                'Only God is responsible'
+                'Be lazy',
+                'Be angry at everyone',
+                'Be kind and honest',
+                'Only think about yourself'
               ],
               correctAnswer: 2
+            },
+            {
+              question: 'In the story, the boy helped an old woman. What happened later?',
+              answers: [
+                'He got lost',
+                'A kind stranger helped him when he fell',
+                'Nothing happened',
+                'He forgot about it'
+              ],
+              correctAnswer: 1
             }
           ]
         }
@@ -8343,172 +8443,144 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'the-vedas',
         title: 'The Vedas',
-        description: 'Learn about the oldest and most sacred scriptures of Hinduism - the eternal knowledge of God',
+        description: 'Learn about the oldest and most special holy books of Hinduism',
         content: `
-          <h2>The Vedas</h2>
-<p>The oldest scripture of the Hindus, and the most important, is the <strong>Veda</strong>. The word 'Veda' means <strong>'knowledge of God'</strong>.</p>
+          <h2>The Vedas - Our Oldest Holy Books</h2>
+          <p>The <strong>Vedas</strong> are the oldest and most important holy books of Hinduism. The word "Veda" means <strong>"knowledge"</strong> - especially knowledge about God!</p>
+          <p>These books are so old that nobody knows exactly when they were written. They are thousands and thousands of years old!</p>
 
-          <h3>The Origin of the Vedas</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Revealed to the Great Rishis</h4>
-              <p class="mb-3">Great Rishis are said to have <strong>heard the eternal truths of religion</strong> and to have left a record of them for the benefit of others.</p>
-              <p class="font-medium">These records are called the <strong>Veda</strong>.</p>
-            </div>
-          </div>
+          <h3>How Did We Get the Vedas?</h3>
+          <p>Long, long ago, there were very wise and holy people called <strong>Rishis</strong> (sages). These Rishis spent many years praying and meditating.</p>
+          <p>During their deep prayers, God's wisdom came to them - it was like hearing a beautiful truth in their hearts. They wrote down what they learned so that everyone could benefit from this wisdom.</p>
+          <p>That's how we got the Vedas!</p>
 
           <h3>The Four Vedas</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-6 font-medium text-center">The Veda is divided into four parts:</p>
+          <p>There are <strong>four Vedas</strong>. Think of them like four special treasure boxes, each holding different kinds of wisdom:</p>
+          <ul>
+            <li><strong>Rig Veda:</strong> Contains beautiful songs and prayers to praise God</li>
+            <li><strong>Yajur Veda:</strong> Teaches how to perform worship ceremonies</li>
+            <li><strong>Sama Veda:</strong> Contains melodies and songs for worship - like a holy songbook!</li>
+            <li><strong>Atharva Veda:</strong> Has prayers for everyday life and wise teachings</li>
+          </ul>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">1. Rig Veda</h4>
-                <p class="text-sm">Contains hymns of praise and worship to various deities</p>
-              </div>
+          <h3>What Do the Vedas Teach Us?</h3>
+          <p>The Vedas teach us many wonderful things. Here are some beautiful messages:</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">2. Yajur Veda</h4>
-                <p class="text-sm">Contains ritual formulas and sacrificial procedures</p>
-              </div>
+          <h4>Be Kind to Everyone</h4>
+          <p>The Vedas say: "Live peacefully with everyone. Treat each other with love and kindness, just like a mother cow loves her baby calf."</p>
+          <p><em>This means we should be gentle and caring with everyone!</em></p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">3. Sama Veda</h4>
-                <p class="text-sm">Contains melodies and chants for worship</p>
-              </div>
+          <h4>God is One</h4>
+          <p>The Vedas teach: "God is one, but people call God by many different names."</p>
+          <p><em>This means that even though people may worship in different ways, they are all praying to the same God!</em></p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">4. Atharva Veda</h4>
-                <p class="text-sm">Contains prayers for daily life and spiritual wisdom</p>
-              </div>
-            </div>
-          </div>
+          <h4>Think Good Thoughts</h4>
+          <p>The Vedas say: "May good thoughts come to us from everywhere."</p>
+          <p><em>This means we should always try to think positive, kind thoughts!</em></p>
 
-          <h3>Sacred Teachings from the Vedas</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-6 font-medium text-center">Here are some beautiful teachings from the Vedas:</p>
+          <h3>Why Are the Vedas Important?</h3>
+          <p>The Vedas are like a guidebook for living a good life. They teach us:</p>
+          <ul>
+            <li>How to be good and kind</li>
+            <li>How to pray and connect with God</li>
+            <li>How to live happily with others</li>
+            <li>The difference between right and wrong</li>
+          </ul>
+          <p>Millions of people around the world still read and learn from the Vedas today!</p>
 
-            <div class="space-y-6">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">On Unity and Love</h4>
-                <blockquote class="italic mb-2">"Oh, man! Live peacefully and harmoniously with your fellow beings. May your minds think of unity so that there may be no envy and ill feelings amongst you. As a cow regards her newly born calf with tenderness so may you treat each other with love and kindness."</blockquote>
-                <p class="text-sm text-gray-600">— Atharva Veda (iii; 30; 1)</p>
-              </div>
-
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">On the Unity of God</h4>
-                <blockquote class="italic mb-2">"God is one, but wise men call Him by different names such as Agni, Soma, Indra, Varuṇa, etc."</blockquote>
-                <p class="text-sm text-gray-600">— Rig Veda (i; 1; 43)</p>
-              </div>
-
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">On Noble Thoughts</h4>
-                <blockquote class="italic mb-2">"May noble thoughts come to us from all sides..."</blockquote>
-                <p class="text-sm text-gray-600">— Rig Veda (i; 89; 1)</p>
-              </div>
-            </div>
-          </div>
-
-          <h3>The Eternal Wisdom</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-6 rounded-lg border border-indian-saffron mt-6">
-            <div class="text-center">
-              <h4 class="font-semibold text-xl mb-4">Timeless Knowledge</h4>
-              <p class="text-lg font-medium mb-4">The Vedas contain eternal truths that guide humanity toward spiritual understanding.</p>
-              <div class="bg-white p-4 rounded-lg">
-                <p class="italic">These ancient scriptures continue to inspire millions of people around the world with their profound wisdom about God, life, and the path to spiritual realization.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-spiritual-50 rounded-lg border-l-4 border-spiritual-300">
-            <h4 class="font-semibold mb-2">The Foundation of Hindu Dharma</h4>
-            <p>The Vedas form the foundation of Hindu dharma and spiritual practice. They teach us about the nature of God, the importance of righteous living, and the path to spiritual liberation. Through their timeless wisdom, we learn to live in harmony with ourselves, others, and the divine presence that pervades all existence.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Veda</strong> means "knowledge" (about God)</li>
+            <li>There are <strong>four Vedas</strong>: Rig, Yajur, Sama, and Atharva</li>
+            <li>The Vedas were given to us by holy <strong>Rishis</strong></li>
+            <li>They teach us to be <strong>kind, peaceful, and loving</strong></li>
+            <li>The Vedas are <strong>thousands of years old</strong> but still help us today!</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
               question: 'What does the word "Veda" mean?',
               answers: [
-                'Ancient book',
-                'Knowledge of God',
-                'Sacred ritual',
-                'Holy prayer'
+                'An old story',
+                'Knowledge about God',
+                'A type of food',
+                'A musical instrument'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How many parts is the Veda divided into?',
+              question: 'How many Vedas are there?',
               answers: [
+                'Two',
                 'Three',
                 'Four',
-                'Five',
-                'Six'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who are said to have heard the eternal truths recorded in the Vedas?',
-              answers: [
-                'Kings',
-                'Priests',
-                'Great Rishis',
-                'Scholars'
+                'Five'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Which Veda contains the teaching "God is one, but wise men call Him by different names"?',
+              question: 'Who received the wisdom of the Vedas?',
+              answers: [
+                'Kings',
+                'Soldiers',
+                'Holy Rishis (sages)',
+                'Children'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Which Veda is like a holy songbook with melodies?',
               answers: [
                 'Rig Veda',
                 'Yajur Veda',
                 'Sama Veda',
                 'Atharva Veda'
               ],
-              correctAnswer: 0
+              correctAnswer: 2
             },
             {
-              question: 'According to the Atharva Veda, how should we treat each other?',
+              question: 'What do the Vedas teach about how we should treat each other?',
               answers: [
-                'With competition',
-                'With indifference',
-                'With love and kindness',
-                'With suspicion'
+                'Be mean to others',
+                'Ignore everyone',
+                'Be loving and kind',
+                'Only help yourself'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What do the Vedas teach us about noble thoughts?',
+              question: 'What do the Vedas say about God?',
               answers: [
-                'They should be avoided',
-                'They should come to us from all sides',
-                'They are not important',
-                'They are only for priests'
+                'There is no God',
+                'God is one, but has many names',
+                'There are many different Gods',
+                'God does not care about us'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is the significance of the Vedas in Hinduism?',
+              question: 'Are the Vedas old or new?',
               answers: [
-                'They are recent additions',
-                'They are the oldest and most important scriptures',
-                'They are only for scholars',
-                'They are optional reading'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What do the Vedas teach about unity among people?',
-              answers: [
-                'People should live separately',
-                'Unity is impossible',
-                'People should live peacefully and harmoniously',
-                'Only some people deserve unity'
+                'They were written last year',
+                'They are 100 years old',
+                'They are thousands of years old',
+                'They were written yesterday'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Which Veda contains prayers for daily life and spiritual wisdom?',
+              question: 'What kind of thoughts should we have according to the Vedas?',
+              answers: [
+                'Angry thoughts',
+                'Sad thoughts',
+                'Good thoughts',
+                'No thoughts'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Which Veda has prayers for everyday life?',
               answers: [
                 'Rig Veda',
                 'Yajur Veda',
@@ -8518,12 +8590,12 @@ export const lessonsData: LessonGroup[] = [
               correctAnswer: 3
             },
             {
-              question: 'What do the Vedas form the foundation of?',
+              question: 'What do the Vedas help us learn?',
               answers: [
-                'Modern science',
-                'Hindu dharma and spiritual practice',
-                'Political systems',
-                'Economic theories'
+                'How to be mean',
+                'How to be good and kind',
+                'How to be lazy',
+                'How to be angry'
               ],
               correctAnswer: 1
             }
@@ -8533,143 +8605,152 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'bhagavad-gita-message',
         title: 'The Message of the Bhagavad Gita',
-        description: 'Essential teachings from Lord Krishna in the Bhagavad Gita',
+        description: 'Learn the beautiful lessons Lord Krishna taught Arjuna',
         content: `
-          <h2>The Message of the Bhagavad Gita</h2>
-          <p>In the Bhagavad Gita, Lord Krishna shares profound wisdom that guides us on the path of spiritual living. Here are four essential teachings:</p>
+          <h2>What is the Bhagavad Gita?</h2>
+          <p>The <strong>Bhagavad Gita</strong> is one of the most special and loved books in Hinduism. It means "The Song of God."</p>
+          <p>In this holy book, <strong>Lord Krishna</strong> teaches his friend <strong>Arjuna</strong> how to live a good life and how to be close to God.</p>
+          <p>Let's learn some of Krishna's beautiful teachings!</p>
 
-          <div class="space-y-6 mt-6">
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h3 class="font-semibold text-lg mb-2">1. Faith in Your Chosen Form</h3>
-              <p class="italic text-spiritual-700">"Whatever may be the form which each devotee wishes to worship - in that form alone do I make his faith grow."</p>
-              <p class="mt-2">This teaches us that the Divine accepts all sincere forms of worship and strengthens our faith according to our individual spiritual inclinations.</p>
-            </div>
+          <h3>1. God Loves Everyone's Prayers</h3>
+          <p>Krishna says that God is happy when we pray in any way we like. Whether you pray by singing, by being quiet, or by doing good things - God hears you!</p>
+          <p><strong>What this means for you:</strong> You can pray in your own special way, and God will listen!</p>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h3 class="font-semibold text-lg mb-2">2. Offering All Actions</h3>
-              <p class="italic text-spiritual-700">"Whatever you do, whatever you eat, whatever you offer, whatever you give as a gift, whatever hardship you undergo in prayer, do it as an offering unto Me."</p>
-              <p class="mt-2">This verse teaches us to transform every action into a spiritual practice by offering it to the Divine with the right attitude.</p>
-            </div>
+          <h3>2. Do Everything for God</h3>
+          <p>Krishna teaches: "Whatever you do - eating, playing, studying, helping - think of it as a gift to God."</p>
+          <p>Imagine giving your whole day to God, like a big present! When you eat, thank God for the food. When you play, be kind because that makes God happy.</p>
+          <p><strong>What this means for you:</strong> Everything you do can become special when you do it thinking of God!</p>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h3 class="font-semibold text-lg mb-2">3. Simple Devotional Offerings</h3>
-              <p class="italic text-spiritual-700">"Whomsoever offers Me with devotion a leaf, a flower, a fruit or a little water - I accept that offering of a pure heart."</p>
-              <p class="mt-2">The Divine values the sincerity and purity of heart behind our offerings, not their material worth. Even the simplest offering made with love is precious.</p>
-            </div>
+          <h3>3. Simple Gifts Are Beautiful</h3>
+          <p>Krishna says: "If someone gives me just a leaf, a flower, a fruit, or even a little water with love - I happily accept it!"</p>
+          <p>This means God doesn't want expensive things. God wants your love! Even a small flower given with a loving heart makes God very happy.</p>
+          <p><strong>What this means for you:</strong> You don't need to give big things to God. A prayer from your heart is the best gift!</p>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h3 class="font-semibold text-lg mb-2">4. Divine Vision and Unity</h3>
-              <p class="italic text-spiritual-700">"He who sees Me everywhere and sees everything in Me - I am never lost to him, and he is never lost to Me."</p>
-              <p class="mt-2">This highest teaching speaks of the vision of unity where we recognize the Divine presence in all beings and all existence, establishing an eternal connection with the Divine.</p>
-            </div>
-          </div>
+          <h3>4. God is Everywhere</h3>
+          <p>Krishna teaches: "When you see Me in everyone and everywhere, you will never feel alone. I will always be with you!"</p>
+          <p>This means God is in your family, in your friends, in animals, in trees, in the sun, and even in you! God is everywhere.</p>
+          <p><strong>What this means for you:</strong> When you are kind to others, you are being kind to God who lives in everyone!</p>
 
-          <div class="mt-8 p-4 bg-indian-cream rounded-lg">
-            <h3 class="font-semibold text-lg mb-2">Practical Application</h3>
-            <p>These teachings from the Bhagavad Gita show us how to live a spiritual life in the world - through devotion, selfless action, simple offerings, and cultivating divine vision in our daily lives.</p>
-          </div>
+          <h3>How to Use These Teachings Every Day</h3>
+          <ul>
+            <li><strong>Morning:</strong> Say "Good morning, God!" when you wake up</li>
+            <li><strong>Eating:</strong> Thank God for your food before eating</li>
+            <li><strong>At school:</strong> Do your best work as a gift to God</li>
+            <li><strong>With friends:</strong> Be kind because God is in everyone</li>
+            <li><strong>At night:</strong> Thank God for the day before sleeping</li>
+          </ul>
+
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li>The <strong>Bhagavad Gita</strong> means "The Song of God"</li>
+            <li><strong>Lord Krishna</strong> teaches Arjuna in this holy book</li>
+            <li>God loves <strong>all prayers</strong>, big or small</li>
+            <li>Everything we do can be a <strong>gift to God</strong></li>
+            <li>Simple things given with <strong>love</strong> are precious to God</li>
+            <li>God is <strong>everywhere and in everyone</strong></li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'According to the Bhagavad Gita, what does the Divine accept from a devotee?',
+              question: 'What does "Bhagavad Gita" mean?',
               answers: [
-                'Only expensive offerings',
-                'A leaf, flower, fruit, or water offered with devotion',
-                'Only formal prayers',
-                'Only temple worship'
+                'The Song of God',
+                'A type of prayer',
+                'A temple name',
+                'A festival'
+              ],
+              correctAnswer: 0
+            },
+            {
+              question: 'Who teaches in the Bhagavad Gita?',
+              answers: [
+                'Arjuna',
+                'Lord Krishna',
+                'A king',
+                'A teacher at school'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should we do with all our actions according to Krishna\'s teaching?',
+              question: 'What simple things does God happily accept?',
               answers: [
-                'Do them for personal gain',
-                'Avoid doing them',
-                'Offer them to the Divine',
-                'Do them carelessly'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What is most important in our offerings to the Divine?',
-              answers: [
-                'The monetary value',
-                'The size of the offering',
-                'The purity of heart and devotion',
-                'The location where it\'s offered'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'According to the first teaching, how does the Divine respond to different forms of worship?',
-              answers: [
-                'Only accepts one form',
-                'Rejects most forms',
-                'Makes faith grow in whatever form the devotee chooses',
-                'Is indifferent to all forms'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What should we do with our eating, according to Krishna\'s teaching?',
-              answers: [
-                'Eat without thinking',
-                'Offer it to the Divine',
-                'Eat only expensive food',
-                'Avoid eating'
+                'Gold and jewels',
+                'A leaf, flower, fruit, or water given with love',
+                'Only expensive things',
+                'Nothing at all'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should we do with our hardships and prayers?',
+              question: 'What is most important when we give something to God?',
               answers: [
-                'Keep them to ourselves',
-                'Complain about them',
-                'Offer them to the Divine',
-                'Avoid them completely'
+                'How expensive it is',
+                'How big it is',
+                'The love in our heart',
+                'Where we give it'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What happens when we pray with the knowledge that God is present everywhere?',
+              question: 'Where is God according to Krishna\'s teaching?',
               answers: [
-                'Nothing changes',
-                'Our prayers become more meaningful and God\'s grace flows',
-                'We become confused',
-                'We stop praying'
+                'Only in the temple',
+                'Only in the sky',
+                'Everywhere and in everyone',
+                'Nowhere'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'How can you make your homework special?',
+              answers: [
+                'Not do it',
+                'Do it thinking of it as a gift to God',
+                'Rush through it',
+                'Let someone else do it'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is the highest teaching about seeing the Divine?',
+              question: 'Why should we be kind to others?',
               answers: [
-                'See God only in temples',
-                'See God only in holy books',
-                'See God everywhere and everything in God',
-                'Never try to see God'
+                'So they give us things',
+                'Because God is in everyone',
+                'Only if they are kind first',
+                'We should not be kind'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
             },
             {
-              question: 'What is the result of seeing God everywhere?',
+              question: 'What happens when we remember God is everywhere?',
               answers: [
-                'We become lost',
-                'We are never lost to God, and God is never lost to us',
-                'We become confused',
+                'We feel scared',
+                'We never feel alone',
+                'We forget everything',
                 'Nothing happens'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How many main teachings from the Bhagavad Gita are presented in this lesson?',
+              question: 'What is a good way to start your morning according to these teachings?',
               answers: [
-                'Two',
-                'Three',
-                'Four',
-                'Five'
+                'Stay in bed',
+                'Say "Good morning, God!"',
+                'Watch TV',
+                'Be grumpy'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
+            },
+            {
+              question: 'Who was Krishna teaching in the Bhagavad Gita?',
+              answers: [
+                'His mother',
+                'His friend Arjuna',
+                'A stranger',
+                'A bird'
+              ],
+              correctAnswer: 1
             }
           ]
         }
@@ -8677,210 +8758,155 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'mahabharata-story',
         title: 'The Mahabharata',
-        description: 'Learn about the great epic of the Pandavas and Kauravas, and the longest poem ever written',
+        description: 'The exciting story of the Pandavas and Kauravas - the longest poem ever written!',
         content: `
-          <h2>The Mahabharata</h2>
-<p>The Mahabharata is one of the greatest epics of ancient India. It tells the story of two families - the Pandavas and the Kauravas - and their struggle for the kingdom of Hastinapura.</p>
+          <h2>The Mahabharata - An Amazing Story!</h2>
+          <p>The <strong>Mahabharata</strong> is one of the greatest stories ever told! It is about two families - the <strong>Pandavas</strong> and the <strong>Kauravas</strong> - and their struggle over a kingdom.</p>
+          <p>This story is SO long that it is the <strong>longest poem ever written</strong> in the whole world!</p>
 
-          <h3>King Dhritarashtra and His Family</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">King Dhritarashtra belonged to the Kuru race. He ruled over Hastinapura near Delhi. He was blind from birth.</p>
+          <h3>The Two Families</h3>
+          <p>Long ago, there was a king named <strong>Dhritarashtra</strong>. He was blind from birth, but he was still the king. He had 100 sons! They were called the <strong>Kauravas</strong>. The oldest one was named <strong>Duryodhana</strong>.</p>
+          <p>The king had a brother named <strong>Pandu</strong>. Pandu had 5 sons. They were called the <strong>Pandavas</strong>.</p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">The Kauravas</h4>
-              <p class="mb-3">Dhritarashtra had a hundred sons. They were called the <strong>Kauravas</strong>. The eldest of them was <strong>Duryodhana</strong>.</p>
-              <p>Gandhari was the wife of Dhritarashtra. She loved him and served him well. As her husband was blind, Gandhari also tied a cloth around her eyes and kept herself blind.</p>
-            </div>
-          </div>
+          <h3>Meet the Five Pandava Brothers!</h3>
+          <ul>
+            <li><strong>Yudhishthira</strong> - The oldest. He ALWAYS told the truth!</li>
+            <li><strong>Bhima</strong> - Super strong! The strongest of them all.</li>
+            <li><strong>Arjuna</strong> - The best archer in the world! He could shoot arrows better than anyone.</li>
+            <li><strong>Nakula and Sahadeva</strong> - The twin brothers. They were very wise and helpful.</li>
+          </ul>
 
-          <h3>Pandu and His Family</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4">Dhritarashtra had a brother called Pandu. Pandu had two wives - Kunti and Madri.</p>
+          <h3>The Problem Begins</h3>
+          <p>Sadly, the 100 Kaurava brothers were jealous of their 5 Pandava cousins. Duryodhana wanted the whole kingdom for himself. He didn't want to share anything with the Pandavas.</p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Pandavas</h4>
-              <p class="mb-3">They had five sons: Yudhishthira, Bhima, Arjuna, Nakula and Sahadeva. They were called the <strong>Pandavas</strong>.</p>
+          <h3>The Cheating Game</h3>
+          <p>Duryodhana came up with a tricky plan. He invited the Pandavas to play a <strong>dice game</strong> (like a board game with special dice).</p>
+          <p>But the Kauravas <strong>cheated</strong>! They won the game by being unfair. Because they lost, the Pandavas had to leave their home and live in the forest for many years.</p>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                <div class="bg-spiritual-50 p-3 rounded-lg">
-                  <strong>Yudhishthira</strong><br/>
-                  <span class="text-sm">Known for his truthfulness</span>
-                </div>
-                <div class="bg-spiritual-50 p-3 rounded-lg">
-                  <strong>Bhima</strong><br/>
-                  <span class="text-sm">Known for his great strength</span>
-                </div>
-                <div class="bg-spiritual-50 p-3 rounded-lg">
-                  <strong>Arjuna</strong><br/>
-                  <span class="text-sm">Known for his bravery and archery skills</span>
-                </div>
-                <div class="bg-spiritual-50 p-3 rounded-lg">
-                  <strong>Nakula & Sahadeva</strong><br/>
-                  <span class="text-sm">Known for wisdom and practicality</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h3>The Pandavas Come Back</h3>
+          <p>After living in the forest for a long time, the Pandavas came back and asked for their kingdom.</p>
+          <p>"Please give us our fair share," they said.</p>
+          <p>But Duryodhana said, "No! I won't give you anything. Not even land the size of a needle!"</p>
+          <p>This was very unfair. So a big war had to happen.</p>
 
-          <h3>The Early Challenges</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4">Pandu and Madri died early. Mother Kunti was left to take care of the five children, who loved and obeyed her always.</p>
+          <h3>Lord Krishna Helps</h3>
+          <p><strong>Lord Krishna</strong> was a friend of the Pandavas. He knew they were good and honest. During the war, Krishna became Arjuna's chariot driver. He didn't fight himself, but he guided Arjuna.</p>
+          <p>Before the war started, Arjuna was scared and sad. "I don't want to fight my own family," he said.</p>
+          <p>That's when Lord Krishna gave him special teachings called the <strong>Bhagavad Gita</strong>. These teachings helped Arjuna understand what was right.</p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Growing Rivalry</h4>
-              <p>The Kauravas did not like their cousins, the Pandavas, and tried to send them away from their kingdom.</p>
-            </div>
-          </div>
+          <h3>Good Wins Over Bad</h3>
+          <p>The great war was fought at a place called <strong>Kurukshetra</strong>. After many days of fighting, the <strong>Pandavas won</strong>!</p>
+          <p>This story teaches us that <strong>good always wins over bad</strong> in the end. Being truthful, kind, and fair is always the right way.</p>
 
-          <h3>Draupadi's Marriage</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Once, when the Pandavas were travelling, they reached the kingdom of Panchala. The king was looking for a good husband for his beautiful daughter Panchali, also called Draupadi.</p>
-
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">The Archery Contest</h4>
-              <p class="mb-3">In a difficult test of archery, Arjuna won and the princess was given to him in marriage.</p>
-              <p>Kunti, without seeing what Arjuna had won, asked all the five brothers to share what they had brought. Following their mother's words, all five Pandavas married Draupadi.</p>
-            </div>
-          </div>
-
-          <h3>The Game of Dice</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4">The Kauravas wanted to keep the kingdom for themselves. They invited the Pandavas to a game of dice.</p>
-
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Cheating</h4>
-              <p>They cheated the Pandavas in the game and drove them off to a forest. The Pandavas had to suffer great difficulties during their exile.</p>
-            </div>
-          </div>
-
-          <h3>The Great War</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4">After their exile, the Pandavas asked for their kingdom back, but the Kauravas refused.</p>
-
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Kurukshetra</h4>
-              <p class="mb-3">The Pandavas and the Kauravas fought against each other on the battlefield of Kurukshetra. That was called the great Mahabharata war.</p>
-              <p>Lord Krishna was on the side of the Pandavas, for they were good and truthful. He served as Arjuna's charioteer during the war.</p>
-              <p class="mt-3 font-medium">The Pandavas won and the Kauravas lost.</p>
-            </div>
-          </div>
-
-          <h3>The Bhagavad Gita</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Before the war began, Arjuna was hesitant to fight against his own relatives. It was then that Lord Krishna gave him the divine message known as the Bhagavad Gita.</p>
-
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">Divine Wisdom</h4>
-              <p>The Bhagavad Gita contains profound spiritual teachings about duty, righteousness, and the nature of the soul.</p>
-            </div>
-          </div>
-
-          <h3>The Great Epic</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron mt-6">
-            <p class="mb-4">Rishi Vedavyasa tells us the story of the Pandavas and Kauravas in the Mahabharata.</p>
-            <p class="mb-4">Like the Ramayana, the Mahabharata is one of the great epics of ancient India.</p>
-            <p class="font-medium text-center">It is the longest poem ever written in human history.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Mahabharata</strong> = The longest poem in the world</li>
+            <li><strong>Pandavas</strong> = 5 good brothers</li>
+            <li><strong>Kauravas</strong> = 100 brothers who were jealous</li>
+            <li><strong>Lord Krishna</strong> helped the Pandavas</li>
+            <li>The <strong>Bhagavad Gita</strong> comes from this story</li>
+            <li><strong>Good wins over bad</strong> in the end!</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'Who was the blind king of Hastinapura?',
+              question: 'How many Pandava brothers were there?',
               answers: [
-                'Pandu',
-                'Dhritarashtra',
-                'Yudhishthira',
-                'Duryodhana'
+                'Three',
+                'Five',
+                'Ten',
+                'One hundred'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How many sons did Dhritarashtra have?',
+              question: 'How many Kaurava brothers were there?',
               answers: [
                 'Five',
                 'Fifty',
                 'One hundred',
-                'One thousand'
+                'Two'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What did Gandhari do to show devotion to her blind husband?',
+              question: 'Which Pandava was the best archer?',
               answers: [
-                'She learned to sing',
-                'She tied a cloth around her eyes',
-                'She painted the palace walls',
-                'She wrote poems'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who was the eldest of the Pandavas?',
-              answers: [
-                'Arjuna',
-                'Bhima',
                 'Yudhishthira',
+                'Bhima',
+                'Arjuna',
                 'Nakula'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Which Pandava was known for his great strength?',
+              question: 'Which Pandava was super strong?',
               answers: [
                 'Yudhishthira',
                 'Bhima',
-                'Nakula',
+                'Arjuna',
                 'Sahadeva'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Who won the archery contest to marry Draupadi?',
+              question: 'How did the Kauravas trick the Pandavas?',
               answers: [
-                'Yudhishthira',
-                'Bhima',
-                'Arjuna',
-                'Nakula'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'How did the Kauravas cheat the Pandavas?',
-              answers: [
-                'In a race',
-                'In a game of dice',
-                'In a wrestling match',
-                'In a singing competition'
+                'They ran away',
+                'They cheated in a dice game',
+                'They hid their food',
+                'They told them stories'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Where was the great Mahabharata war fought?',
+              question: 'Who helped the Pandavas in the war?',
               answers: [
-                'Hastinapura',
-                'Indraprastha',
-                'Kurukshetra',
-                'Panchala'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What role did Lord Krishna play during the war?',
-              answers: [
-                'He was a warrior',
-                'He was Arjuna\'s charioteer',
-                'He was a general',
-                'He was a messenger'
+                'Duryodhana',
+                'Lord Krishna',
+                'The Kauravas',
+                'A wizard'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Who wrote the Mahabharata?',
+              question: 'What did Lord Krishna teach Arjuna before the war?',
               answers: [
-                'Sage Valmiki',
-                'Sage Vedavyasa',
-                'Sage Narada',
-                'Sage Vishwamitra'
+                'How to cook',
+                'The Bhagavad Gita',
+                'How to dance',
+                'How to sleep'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Who won the great war?',
+              answers: [
+                'The Kauravas',
+                'The Pandavas',
+                'Nobody',
+                'The animals'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does the Mahabharata teach us?',
+              answers: [
+                'Cheating is good',
+                'Being mean is fun',
+                'Good wins over bad',
+                'Fighting is always right'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What is special about the Mahabharata?',
+              answers: [
+                'It is the shortest story',
+                'It is the longest poem ever written',
+                'It was written yesterday',
+                'It has no characters'
               ],
               correctAnswer: 1
             }
@@ -8890,220 +8916,162 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'ramayana-story',
         title: 'The Ramayana',
-        description: 'Learn about the great epic story of Rama, Sita, and their adventures',
+        description: 'The beautiful story of Rama, Sita, and their adventures',
         content: `
-          <h2>The Ramayana</h2>
-          <p>The story of Rama, his brothers and Sita is found in the great book, the Ramayana. It is a long story written in beautiful language by Sage Valmiki. It is one of the most beautiful stories ever written. It is full of wisdom and truth.</p>
+          <h2>The Ramayana - A Beautiful Story</h2>
+          <p>The <strong>Ramayana</strong> is one of the most loved stories in India! It tells the story of a prince named <strong>Rama</strong>, his wife <strong>Sita</strong>, and their amazing adventures.</p>
+          <p>This story was written long ago by <strong>Sage Valmiki</strong>. It teaches us how to be good, brave, and kind.</p>
 
-          <h3>King Dasaratha and His Queens</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Dasaratha was the king of Kosala. Ayodhya, a big city, was its capital. King Dasaratha had three queens: Kausalya, Sumitra and Kaikeyi. For a long time they had no children.</p>
+          <h3>The Royal Family</h3>
+          <p><strong>King Dasaratha</strong> ruled a kingdom called Kosala. His city was called <strong>Ayodhya</strong>. The king was very kind and everyone loved him.</p>
+          <p>King Dasaratha wanted children very much. He prayed and prayed. Finally, God blessed him with <strong>four sons</strong>!</p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">The Special Yajna</h4>
-              <p>Dasaratha did a special hawan (yajna) in which he asked God to bless him with children. Agnideva, the god of fire, appeared. He gave the king a golden pot filled with payasam.</p>
-              <div class="mt-3 p-3 bg-indian-cream rounded-lg">
-                <p class="italic">"Give this payasam to your queens, and they will get children,"</p>
-                <p class="text-right text-sm">- Agnideva</p>
-              </div>
-              <p class="mt-3">The king gave the payasam to his queens. They drank it.</p>
-            </div>
-          </div>
+          <h3>Meet the Four Brothers!</h3>
+          <ul>
+            <li><strong>Rama</strong> - The oldest son. He was very good and truthful!</li>
+            <li><strong>Bharata</strong> - A loving brother who cared for everyone</li>
+            <li><strong>Lakshmana</strong> - Rama's best friend and helper</li>
+            <li><strong>Shatrughna</strong> - The youngest brother</li>
+          </ul>
+          <p>All four brothers loved each other very much!</p>
 
-          <h3>The Four Princes</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4">Much later, four sons were born to them:</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Rama</strong> - Born to Queen Kausalya<br/>
-                <span class="text-sm">The first son and heir</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Bharata</strong> - Born to Queen Kaikeyi<br/>
-                <span class="text-sm">Devoted brother</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Lakshmana</strong> - Born to Queen Sumitra<br/>
-                <span class="text-sm">Rama's loyal companion</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Shatrughna</strong> - Born to Queen Sumitra<br/>
-                <span class="text-sm">Twin brother of Lakshmana</span>
-              </div>
-            </div>
-          </div>
+          <h3>What Made Rama Special?</h3>
+          <p>Rama had many wonderful qualities:</p>
+          <ul>
+            <li><strong>Truthful</strong> - He always told the truth, no matter what</li>
+            <li><strong>Brave</strong> - He was never afraid to do the right thing</li>
+            <li><strong>Kind</strong> - He was gentle and caring to everyone</li>
+            <li><strong>Obedient</strong> - He always listened to his parents and teachers</li>
+            <li><strong>Loving</strong> - Everyone who met him loved him!</li>
+          </ul>
 
-          <h3>Rama's Noble Character</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4">Rama was the first son of king Dasaratha and possessed many admirable qualities:</p>
-            <ul class="space-y-2">
-              <li class="flex items-start">
-                <span class="text-spiritual-500 mr-2">•</span>
-                <span><strong>Truthful:</strong> Rama always spoke the truth</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-spiritual-500 mr-2">•</span>
-                <span><strong>Brave:</strong> He showed courage in all situations</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-spiritual-500 mr-2">•</span>
-                <span><strong>Gentle:</strong> He was kind and compassionate</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-spiritual-500 mr-2">•</span>
-                <span><strong>Good:</strong> He always chose the right path</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-spiritual-500 mr-2">•</span>
-                <span><strong>Obedient:</strong> He always obeyed his parents and Guru (teacher)</span>
-              </li>
-            </ul>
-            <p class="mt-4 font-medium">He was greatly admired and loved by all.</p>
-          </div>
+          <h3>Princess Sita</h3>
+          <p>When Rama grew up, he married a beautiful princess named <strong>Sita</strong>. Sita was kind, good, and everyone loved her too!</p>
+          <p>Rama and Sita loved each other very much. They were always there for each other.</p>
 
-          <h3>Sita - The Ideal Woman</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4">When Rama grew up he married Sita. Many look upon Sita as an ideal woman.</p>
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Sita's Qualities</h4>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>She was beautiful and good</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>She dutifully served Rama and all her elders</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>She was loved by all</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <h3>The Adventure in the Forest</h3>
+          <p>Rama, Sita, and brother Lakshmana went to live in the forest for <strong>14 years</strong>. Even though it was hard, they stayed happy and helped many people.</p>
+          <p>During their time in the forest, they had many adventures. They met <strong>Hanuman</strong>, the brave monkey god who became Rama's best friend and helper!</p>
+          <p>Rama and Lakshmana also protected good people from bad demons who were troubling them.</p>
 
-          <h3>The Forest Years and Adventures</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Rama and his brothers were very fond of one another. Rama, Sita and Lakshmana spent fourteen years in the forest.</p>
+          <h3>What the Ramayana Teaches Us</h3>
+          <p>This beautiful story teaches us many things:</p>
+          <ul>
+            <li>Always tell the truth</li>
+            <li>Be brave and kind</li>
+            <li>Love your family</li>
+            <li>Help people who need help</li>
+            <li>Good always wins over bad!</li>
+          </ul>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">Their Noble Mission</h4>
-              <p class="mb-3">Rama and Lakshmana killed many demons and rakshasas who were troubling good people.</p>
-              <p><strong>Hanuman</strong> was one of Rama's beloved friends who helped them greatly.</p>
-            </div>
-          </div>
-
-          <h3>The Great Epic</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron mt-6">
-            <p class="mb-4">The Ramayana was written by the great Sage Valmiki in beautiful language. It is one of the most beautiful stories ever written, full of wisdom and truth.</p>
-            <p class="font-medium text-center">Everyone must read the Ramayana and try to be like Rama or Sita.</p>
-          </div>
-
-          <div class="mt-6 p-4 bg-spiritual-50 rounded-lg">
-            <h4 class="font-semibold mb-2">Meaning</h4>
-            <p><strong>Payasam:</strong> Rice boiled in milk. It is a thick, sweet preparation for offering to God.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Ramayana</strong> = Story of Rama</li>
+            <li><strong>Sage Valmiki</strong> wrote the Ramayana</li>
+            <li><strong>Ayodhya</strong> = Rama's home city</li>
+            <li><strong>Hanuman</strong> = Rama's brave friend</li>
+            <li>Rama was <strong>truthful, brave, and kind</strong></li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'Who was the king of Kosala?',
+              question: 'Who was the oldest of the four brothers?',
               answers: [
-                'Rama',
-                'Dasaratha',
                 'Bharata',
-                'Lakshmana'
+                'Rama',
+                'Lakshmana',
+                'Shatrughna'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What was the capital city of Kosala?',
+              question: 'What was the name of Rama\'s city?',
               answers: [
-                'Delhi',
                 'Mumbai',
+                'Delhi',
                 'Ayodhya',
-                'Kolkata'
+                'Chennai'
               ],
               correctAnswer: 2
             },
             {
-              question: 'How many queens did King Dasaratha have?',
+              question: 'How many brothers did Rama have?',
               answers: [
+                'One',
                 'Two',
                 'Three',
-                'Four',
-                'Five'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who appeared when Dasaratha performed the special yajna?',
-              answers: [
-                'Vishnu',
-                'Shiva',
-                'Agnideva (god of fire)',
-                'Brahma'
+                'Four'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What did Agnideva give to the king?',
+              question: 'What is the name of Rama\'s wife?',
               answers: [
-                'A silver pot with water',
-                'A golden pot filled with payasam',
-                'A book',
-                'A sword'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who was Rama\'s mother?',
-              answers: [
-                'Kaikeyi',
-                'Sumitra',
-                'Kausalya',
-                'Sita'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'Which of these was NOT one of Rama\'s qualities?',
-              answers: [
-                'Always spoke the truth',
-                'Was brave and gentle',
-                'Always obeyed parents and guru',
-                'Was selfish and proud'
-              ],
-              correctAnswer: 3
-            },
-            {
-              question: 'How many years did Rama, Sita, and Lakshmana spend in the forest?',
-              answers: [
-                'Ten years',
-                'Twelve years',
-                'Fourteen years',
-                'Sixteen years'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'Who was one of Rama\'s beloved friends?',
-              answers: [
-                'Hanuman',
-                'Ravana',
-                'Dasaratha',
-                'Agnideva'
+                'Sita',
+                'Radha',
+                'Lakshmi',
+                'Parvati'
               ],
               correctAnswer: 0
             },
             {
+              question: 'Who was Rama\'s brave monkey friend?',
+              answers: [
+                'Bhima',
+                'Arjuna',
+                'Hanuman',
+                'Krishna'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Which of these was true about Rama?',
+              answers: [
+                'He told lies',
+                'He was mean',
+                'He was always truthful and kind',
+                'He was lazy'
+              ],
+              correctAnswer: 2
+            },
+            {
               question: 'Who wrote the Ramayana?',
               answers: [
-                'Sage Vyasa',
                 'Sage Valmiki',
-                'Sage Narada',
-                'Sage Vishwamitra'
+                'Sage Vyasa',
+                'Lord Krishna',
+                'King Dasaratha'
+              ],
+              correctAnswer: 0
+            },
+            {
+              question: 'How many years did Rama, Sita, and Lakshmana live in the forest?',
+              answers: [
+                '4 years',
+                '10 years',
+                '14 years',
+                '20 years'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What does the Ramayana teach us?',
+              answers: [
+                'Be mean to others',
+                'Always tell the truth and be kind',
+                'Don\'t help anyone',
+                'Be lazy'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Who was Rama\'s father?',
+              answers: [
+                'King Janaka',
+                'King Dasaratha',
+                'King Bharata',
+                'King Hanuman'
               ],
               correctAnswer: 1
             }
@@ -9113,232 +9081,161 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'sita-marriage',
         title: 'Sita\'s Marriage',
-        description: 'Learn about the beautiful story of how Sita and Rama were united in marriage through divine providence',
+        description: 'The exciting story of how Sita and Rama got married',
         content: `
-          <h2>Sita's Marriage</h2>
-<p>The marriage of Rama to Sita is told in the ancient Indian epic, the Ramayana. It is a beautiful story of how divine providence brought together two noble souls destined for each other.</p>
+          <h2>How Sita and Rama Got Married</h2>
+          <p>This is one of the most exciting stories from the Ramayana! Let's learn how <strong>Prince Rama</strong> and <strong>Princess Sita</strong> met and got married.</p>
 
-          <h3>King Janaka of Mithila</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Janaka was the king of Mithila. He was a very wise king, known for his righteousness and spiritual wisdom. Sunayana was his beloved queen.</p>
+          <h3>Where Did Sita Come From?</h3>
+          <p>There was a kind king named <strong>King Janaka</strong>. He ruled a place called Mithila.</p>
+          <p>One day, King Janaka was ploughing his field. Suddenly, he found a beautiful baby girl in the earth! He was so happy. He took the baby home and raised her as his own daughter.</p>
+          <p>He named her <strong>Sita</strong>, which means "from the earth." She was also called <strong>Janaki</strong> because she was King Janaka's daughter.</p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">A Wise and Just Ruler</h4>
-              <p>King Janaka was not only a great king but also a philosopher-king who was deeply devoted to dharma and spiritual knowledge. His court was famous for attracting learned sages and scholars.</p>
-            </div>
-          </div>
+          <h3>Sita Grows Up</h3>
+          <p>Sita grew up to be a wonderful princess. She was:</p>
+          <ul>
+            <li><strong>Beautiful</strong> - Everyone said she was lovely</li>
+            <li><strong>Kind</strong> - She was nice to everyone</li>
+            <li><strong>Smart</strong> - She was very intelligent</li>
+            <li><strong>Good</strong> - She always did the right thing</li>
+          </ul>
+          <p>King Janaka loved her very much!</p>
 
-          <h3>The Discovery of Sita</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <h4 class="font-semibold mb-3">A Divine Gift from Mother Earth</h4>
-            <p class="mb-4">Once, King Janaka went to plough his fields. While ploughing, he found a lovely baby girl in a furrow of the earth.</p>
+          <h3>The Big Challenge</h3>
+          <p>When Sita was old enough to get married, King Janaka thought, "I want to find the best husband for my daughter. He must be very special!"</p>
+          <p>The king had a very special bow. It was given to him by <strong>Lord Shiva</strong>. This bow was SO big and SO heavy that even <strong>100 strong men</strong> couldn't lift it!</p>
+          <p>King Janaka announced: <em>"The prince who can lift this bow and string it can marry my daughter Sita!"</em></p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Sita - Daughter of the Earth</h4>
-              <p class="mb-3">He took the baby home and brought her up as his own daughter. He named her <strong>Sita</strong>, which means "furrow" in Sanskrit, as she was found in the earth.</p>
-              <p>She was also called <strong>Janaki</strong>, as she was King Janaka's beloved daughter.</p>
-            </div>
-          </div>
+          <h3>Many Princes Try</h3>
+          <p>Princes came from everywhere to try to lift the bow. They wanted to marry the beautiful Princess Sita.</p>
+          <p>One by one, they tried. But not one prince could even move the heavy bow! Even the evil king Ravana (who had TEN heads!) tried, but he couldn't lift it either.</p>
+          <p>Everyone wondered, "Who will be strong enough?"</p>
 
-          <h3>Sita's Noble Character</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4">She grew up to be a lovely and good girl, embodying all the virtues of an ideal woman.</p>
+          <h3>Rama Arrives!</h3>
+          <p>Then Prince <strong>Rama</strong> came to Mithila with his brother <strong>Lakshmana</strong> and a wise sage named <strong>Vishwamitra</strong>.</p>
+          <p>Sage Vishwamitra said, "Rama, why don't you try to lift the bow?"</p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Sita's Qualities</h4>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span><strong>Beautiful:</strong> She possessed divine beauty</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span><strong>Virtuous:</strong> She was known for her pure character</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span><strong>Devoted:</strong> She was devoted to dharma and her family</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span><strong>Wise:</strong> She possessed great wisdom and intelligence</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <h3>The Amazing Moment!</h3>
+          <p>Rama walked up to the heavy bow. He picked it up <strong>as if it was as light as a flower</strong>!</p>
+          <p>Everyone gasped in surprise!</p>
+          <p>Then Rama bent the bow to put the string on it. The bow was so heavy, but Rama bent it so hard that it <strong>BROKE</strong> with a big CRASH!</p>
+          <p>The sound was like thunder in the sky. Everyone cheered! They had found the perfect husband for Sita!</p>
 
-          <h3>The Divine Bow of Lord Shiva</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">The king began to think about Sita's marriage. He decided to choose her husband by a test of skill and strength.</p>
+          <h3>The Happy Wedding</h3>
+          <p>King Janaka was overjoyed! He knew Rama was the perfect person for his daughter.</p>
+          <p>Rama and Sita got married in a beautiful ceremony. Everyone was happy and celebrated!</p>
+          <p>Sita and Rama loved each other very much. They were perfect for each other!</p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">The Sacred Bow</h4>
-              <p class="mb-3">Lord Shiva had given King Janaka one of his divine bows. It was very big and heavy - so massive that hundreds of people were needed to carry it.</p>
-              <p class="font-medium">This was no ordinary bow, but a divine weapon of immense power.</p>
-            </div>
-          </div>
-
-          <h3>The Challenge</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">King Janaka's Declaration</h4>
-              <div class="bg-spiritual-50 p-4 rounded-lg mt-3">
-                <p class="italic text-center text-lg">"The prince who can bend and string this bow of Lord Shiva may marry Sita!"</p>
-              </div>
-              <p class="mt-3">This challenge would ensure that only a truly worthy prince, blessed with divine strength and virtue, could win Sita's hand.</p>
-            </div>
-          </div>
-
-          <h3>The Failed Attempts</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4">Many princes came from far and wide, eager to win the hand of the beautiful and virtuous Sita.</p>
-
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Unsuccessful Suitors</h4>
-              <p class="mb-3">Many princes came and tried to lift the bow and string it. Not one of them succeeded.</p>
-              <p>Even the wicked king Ravana came and tried, but even he, with all his might and ten heads, could not lift the divine bow.</p>
-            </div>
-          </div>
-
-          <h3>The Arrival of Rama</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Rama and Lakshmana, sons of King Dasaratha, had also come to Mithila at that time along with the great Sage Vishwamitra.</p>
-
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">Divine Guidance</h4>
-              <p>Sage Vishwamitra, recognizing Rama's divine nature, asked Rama to attempt the challenge and bend the bow.</p>
-            </div>
-          </div>
-
-          <h3>Rama's Victory</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron mt-6">
-            <h4 class="font-semibold mb-3">The Divine Moment</h4>
-            <p class="mb-4">Rama approached the mighty bow with reverence and humility.</p>
-
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Miraculous Feat</h4>
-              <p class="mb-3">Rama lifted the great bow with ease, as if it were a mere toy. As he bent it to string it, the bow broke in two with a thunderous sound that echoed across the heavens.</p>
-              <p class="font-medium">Everyone felt happy that the test was successful and that a worthy groom had been found for Sita.</p>
-            </div>
-          </div>
-
-          <h3>The Sacred Union</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <h4 class="font-semibold mb-3">A Marriage Made in Heaven</h4>
-            <p class="mb-4">King Janaka was overjoyed to see that Rama had successfully completed the challenge. He recognized in Rama the ideal husband for his beloved daughter.</p>
-
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Wedding</h4>
-              <p>King Janaka gave Sita in marriage to Rama with great joy and celebration. The marriage was blessed by the gods and celebrated by all of creation.</p>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-indian-cream rounded-lg text-center">
-            <h4 class="font-semibold text-lg mb-2">The Significance</h4>
-            <p>The marriage of Sita and Rama represents the perfect union of virtue, strength, and divine love. Their story teaches us about the importance of dharma, the power of divine providence, and the beauty of a relationship built on mutual respect and spiritual values.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Sita</strong> was found by King Janaka in the earth</li>
+            <li>The special <strong>bow was from Lord Shiva</strong></li>
+            <li>Many princes tried but <strong>couldn't lift the bow</strong></li>
+            <li><strong>Rama</strong> lifted it easily and broke it!</li>
+            <li>Rama and Sita got married and were very happy</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'Who was the king of Mithila?',
+              question: 'Who found baby Sita?',
               answers: [
-                'Dasaratha',
-                'Janaka',
-                'Ravana',
-                'Vishwamitra'
+                'King Rama',
+                'King Janaka',
+                'King Ravana',
+                'Sage Vishwamitra'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How did King Janaka find Sita?',
+              question: 'Where was Sita found?',
               answers: [
-                'She was brought by merchants',
-                'She was found while ploughing his fields',
-                'She was given by another king',
-                'She was found in the forest'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Why was Sita also called Janaki?',
-              answers: [
-                'Because she was born in January',
-                'Because she was King Janaka\'s daughter',
-                'Because she was found in a jar',
-                'Because she liked that name'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who gave King Janaka the divine bow?',
-              answers: [
-                'Lord Vishnu',
-                'Lord Brahma',
-                'Lord Shiva',
-                'Lord Indra'
+                'In a river',
+                'In a tree',
+                'In the earth while ploughing',
+                'In a palace'
               ],
               correctAnswer: 2
-            },
-            {
-              question: 'What was special about Lord Shiva\'s bow?',
-              answers: [
-                'It was made of gold',
-                'It was very small and light',
-                'It was very big and heavy',
-                'It could fly'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What was King Janaka\'s condition for Sita\'s marriage?',
-              answers: [
-                'The prince must be very rich',
-                'The prince must be very handsome',
-                'The prince must bend and string Lord Shiva\'s bow',
-                'The prince must solve a riddle'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'Who came with Rama and Lakshmana to Mithila?',
-              answers: [
-                'King Dasaratha',
-                'Sage Vishwamitra',
-                'Hanuman',
-                'Bharata'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What happened when Rama tried to string the bow?',
-              answers: [
-                'He could not lift it',
-                'He lifted it with ease and broke it in two',
-                'He dropped it',
-                'He gave up trying'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Who among the following could NOT lift the bow?',
-              answers: [
-                'Rama',
-                'Ravana',
-                'Lakshmana',
-                'Vishwamitra'
-              ],
-              correctAnswer: 1
             },
             {
               question: 'What does the name "Sita" mean?',
               answers: [
+                'Star',
+                'From the earth',
                 'Beautiful',
-                'Furrow',
-                'Princess',
-                'Goddess'
+                'Princess'
               ],
               correctAnswer: 1
+            },
+            {
+              question: 'Who gave the special bow to King Janaka?',
+              answers: [
+                'Lord Vishnu',
+                'Lord Brahma',
+                'Lord Shiva',
+                'Sage Vishwamitra'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What was the challenge to marry Sita?',
+              answers: [
+                'Win a race',
+                'Lift and string Lord Shiva\'s bow',
+                'Solve a puzzle',
+                'Sing a song'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Could any of the other princes lift the bow?',
+              answers: [
+                'Yes, many could',
+                'Only Ravana could',
+                'No, nobody could lift it',
+                'Everyone could lift it'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What happened when Rama picked up the bow?',
+              answers: [
+                'He couldn\'t lift it',
+                'He lifted it easily like it was light as a flower',
+                'He dropped it',
+                'He ran away'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What happened to the bow when Rama bent it?',
+              answers: [
+                'Nothing',
+                'It broke with a big crash',
+                'It flew away',
+                'It became bigger'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How did King Janaka feel when Rama won?',
+              answers: [
+                'Sad',
+                'Angry',
+                'Overjoyed and happy',
+                'Scared'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Who came with Rama to Mithila?',
+              answers: [
+                'Lakshmana and Sage Vishwamitra',
+                'Hanuman',
+                'King Dasaratha',
+                'Sita'
+              ],
+              correctAnswer: 0
             }
           ]
         }
@@ -9346,213 +9243,163 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'upanishads',
         title: 'The Upanishads',
-        description: 'Learn about the profound spiritual teachings found in the concluding parts of the Vedas',
+        description: 'Learn about the special teachings that tell us about God and ourselves',
         content: `
-          <h2>The Upanishads</h2>
-          <p>The Upanishads contain the highest spiritual wisdom of Hinduism and form the foundation of Vedantic philosophy.</p>
+          <h2>The Upanishads - Special Teachings About God</h2>
+          <p>The <strong>Upanishads</strong> are very special books that teach us the most important things about God and ourselves.</p>
+          <p>They are part of the Vedas (our oldest holy books) and contain the deepest wisdom!</p>
 
-          <h3>What Are the Upanishads?</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <div class="bg-white p-4 rounded-lg mb-4">
-              <h4 class="font-semibold mb-2">Position in the Vedas</h4>
-              <p class="mb-3">The earlier parts of the Veda deal with rituals and prayers.</p>
-              <p class="font-medium">The concluding parts of the Veda are called the <strong>Upanishads</strong>.</p>
-            </div>
+          <h3>What Does "Upanishad" Mean?</h3>
+          <p>The word <strong>Upanishad</strong> means <strong>"sitting close"</strong> to a teacher.</p>
+          <p>Imagine sitting close to a very wise teacher who tells you the most important secrets about God. That's what the Upanishads are like!</p>
+          <p>Long ago, students would sit near their teachers and listen carefully to learn these special teachings.</p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Term "Vedanta"</h4>
-              <p class="mb-3">As they come at the end of the Veda, the teachings that are based on them are called <strong>Vedanta</strong>.</p>
-              <div class="bg-indian-cream p-3 rounded-lg">
-                <p><strong>Veda</strong> = Sacred knowledge</p>
-                <p><strong>Anta</strong> = End/conclusion</p>
-                <p class="font-medium">Vedanta = "The end/conclusion of the Vedas"</p>
-              </div>
-            </div>
-          </div>
+          <h3>How Many Upanishads Are There?</h3>
+          <p>There are many Upanishads, but we study <strong>10 main ones</strong>. These ten have the most important lessons!</p>
 
-          <h3>The Meaning of "Upanishad"</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Etymology and Significance</h4>
-              <p class="mb-3">The word <strong>Upanishad</strong> means <strong>'sitting close'</strong> to a great spiritual teacher.</p>
+          <h3>What Do the Upanishads Teach Us?</h3>
+          <p>The Upanishads teach us four very important things about God:</p>
 
-              <div class="bg-spiritual-50 p-4 rounded-lg mt-4">
-                <h5 class="font-semibold mb-2">The Traditional Learning Method</h5>
-                <p class="mb-2">The teacher imparts spiritual wisdom to his pupils who sit close to receive the sacred knowledge.</p>
-                <p class="italic text-sm">This intimate setting ensures the proper transmission of profound spiritual truths.</p>
-              </div>
-            </div>
-          </div>
+          <h4>1. God is Everywhere!</h4>
+          <p>God fills the whole universe - the sky, the earth, the stars, and everything! There is no place where God is not.</p>
+          <p><em>Think of it like air - air is everywhere around us, even though we can't see it. God is like that too!</em></p>
 
-          <h3>Foundation of Hinduism</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="text-center font-medium text-lg mb-4">These lessons form the foundation of Hinduism.</p>
+          <h4>2. God is in Everyone!</h4>
+          <p>God lives inside every person, every animal, every plant - inside everything that lives! When you look at your friend, your pet, or a flower, God is there.</p>
+          <p><em>This is why we should be kind to everyone - because God is in everyone!</em></p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">Number of Upanishads</h4>
-              <p class="mb-3">There are many Upanishads, but <strong>ten are commonly studied</strong>.</p>
-              <div class="bg-indian-cream p-3 rounded-lg">
-                <p class="text-sm">These ten principal Upanishads contain the core teachings that have guided spiritual seekers for thousands of years.</p>
-              </div>
-            </div>
-          </div>
+          <h4>3. We Are All Connected to God!</h4>
+          <p>Deep inside, we are all part of God. It's like how drops of water are part of the ocean. We may look separate, but we are all connected!</p>
+          <p><em>This is the most special secret of the Upanishads!</em></p>
 
-          <h3>The Four Great Teachings</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-6 font-medium text-center">The Upanishads teach us four fundamental truths:</p>
+          <h4>4. God is Amazing!</h4>
+          <p>God is:</p>
+          <ul>
+            <li><strong>Always alive</strong> - God never dies</li>
+            <li><strong>Always knowing</strong> - God knows everything</li>
+            <li><strong>Always happy</strong> - God is full of joy</li>
+            <li><strong>Forever and ever</strong> - God has no beginning and no end</li>
+          </ul>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">1. God Pervades the Universe</h4>
-                <p>God pervades the whole universe.</p>
-                <div class="mt-2 p-2 bg-spiritual-50 rounded">
-                  <p class="text-sm italic">Nothing exists outside of God's presence - the entire cosmos is filled with divine consciousness.</p>
-                </div>
-              </div>
+          <h3>Why Are These Teachings Important?</h3>
+          <p>When we understand these teachings, we learn:</p>
+          <ul>
+            <li>To love and respect everyone (because God is in everyone)</li>
+            <li>To feel safe (because God is always with us)</li>
+            <li>To be kind (because we are all connected)</li>
+            <li>To feel happy (because we are part of something wonderful!)</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">2. God is Present in All Beings</h4>
-                <p>God is therefore present in all beings.</p>
-                <div class="mt-2 p-2 bg-indian-cream rounded">
-                  <p class="text-sm italic">Every living creature contains the divine spark - God dwells within all forms of life.</p>
-                </div>
-              </div>
-
-              <div class="bg-white p-4 rounded-lg border-l-4 border-green-300">
-                <h4 class="font-semibold mb-2">3. All Beings Are Essentially God</h4>
-                <p>In essence or spirit all beings are therefore God.</p>
-                <div class="mt-2 p-2 bg-green-50 rounded">
-                  <p class="text-sm italic">At the deepest level of existence, there is no separation between individual souls and the Supreme Reality.</p>
-                </div>
-              </div>
-
-              <div class="bg-white p-4 rounded-lg border-l-4 border-purple-300">
-                <h4 class="font-semibold mb-2">4. God's Divine Nature</h4>
-                <p>God is consciousness, undying, eternal and all knowing. He is free from misery and death.</p>
-                <div class="mt-2 p-2 bg-purple-50 rounded">
-                  <p class="text-sm italic">The Supreme Reality transcends all limitations and possesses infinite knowledge, eternal existence, and perfect bliss.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h3>The Highest Knowledge</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-6 rounded-lg border border-indian-saffron mt-6">
-            <div class="text-center">
-              <h4 class="font-semibold text-xl mb-4">The Ultimate Wisdom</h4>
-              <p class="text-lg font-medium mb-4">Knowing this is the highest knowledge.</p>
-              <div class="bg-white p-4 rounded-lg">
-                <p class="italic">Understanding these four truths about God's nature and our relationship with the Divine represents the pinnacle of spiritual wisdom and the goal of all Vedantic study.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-spiritual-50 rounded-lg border-l-4 border-spiritual-300">
-            <h4 class="font-semibold mb-2">The Eternal Relevance</h4>
-            <p>The teachings of the Upanishads remain as relevant today as they were thousands of years ago, offering profound insights into the nature of reality, consciousness, and our spiritual journey toward understanding our true divine nature.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Upanishads</strong> = Special teachings about God</li>
+            <li><strong>Upanishad means</strong> = "Sitting close" to a teacher</li>
+            <li>We study <strong>10 main Upanishads</strong></li>
+            <li><strong>God is everywhere</strong> and in everyone!</li>
+            <li><strong>We are all connected</strong> to God</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What do the earlier parts of the Veda deal with?',
-              answers: [
-                'Stories and legends',
-                'Rituals and prayers',
-                'Mathematics and science',
-                'History and geography'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What are the concluding parts of the Veda called?',
-              answers: [
-                'Puranas',
-                'Upanishads',
-                'Sutras',
-                'Mantras'
-              ],
-              correctAnswer: 1
-            },
-            {
               question: 'What does the word "Upanishad" mean?',
               answers: [
-                'Sacred book',
-                'Sitting close to a spiritual teacher',
-                'Ancient wisdom',
-                'Divine knowledge'
+                'A big book',
+                'Sitting close to a teacher',
+                'A type of food',
+                'A song'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Why are the teachings based on Upanishads called "Vedanta"?',
-              answers: [
-                'Because they are very old',
-                'Because they come at the end of the Veda',
-                'Because they are difficult to understand',
-                'Because they are written in Sanskrit'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'How many Upanishads are commonly studied?',
+              question: 'How many main Upanishads do we study?',
               answers: [
                 'Five',
                 'Ten',
-                'Fifteen',
-                'Twenty'
+                'Twenty',
+                'One hundred'
               ],
               correctAnswer: 1
             },
             {
-              question: 'According to the Upanishads, where does God pervade?',
+              question: 'According to the Upanishads, where is God?',
               answers: [
+                'Only in the sky',
                 'Only in temples',
-                'Only in holy books',
-                'The whole universe',
-                'Only in good people'
+                'Everywhere!',
+                'Nowhere'
               ],
               correctAnswer: 2
             },
             {
-              question: 'According to the Upanishads, where is God present?',
+              question: 'According to the Upanishads, who has God inside them?',
               answers: [
-                'Only in heaven',
-                'In all beings',
-                'Only in priests',
-                'Only in sacred places'
+                'Only good people',
+                'Only adults',
+                'Only teachers',
+                'Everyone and everything!'
+              ],
+              correctAnswer: 3
+            },
+            {
+              question: 'What do the Upanishads say about us and God?',
+              answers: [
+                'We are far from God',
+                'We are all connected to God',
+                'God doesn\'t know us',
+                'We should be afraid of God'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What are all beings in essence or spirit, according to the Upanishads?',
+              question: 'Why should we be kind to everyone?',
               answers: [
-                'Different from God',
-                'Separate from God',
-                'God',
-                'Inferior to God'
+                'To get gifts',
+                'Because God is in everyone',
+                'Because we have to',
+                'Only on special days'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Does God ever die?',
+              answers: [
+                'Yes, sometimes',
+                'No, God is always alive',
+                'Maybe',
+                'God sleeps'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How did students learn the Upanishads long ago?',
+              answers: [
+                'From the internet',
+                'By sitting close to their teachers',
+                'From TV',
+                'By reading alone'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What is God like according to the Upanishads?',
+              answers: [
+                'Angry and scary',
+                'All-knowing and always happy',
+                'Far away and quiet',
+                'Sleeping all the time'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'The Upanishads are part of which holy books?',
+              answers: [
+                'The Ramayana',
+                'The Mahabharata',
+                'The Vedas',
+                'The Bhagavad Gita'
               ],
               correctAnswer: 2
-            },
-            {
-              question: 'What qualities does God possess according to the Upanishads?',
-              answers: [
-                'Consciousness, undying, eternal and all knowing',
-                'Only powerful',
-                'Only loving',
-                'Only creative'
-              ],
-              correctAnswer: 0
-            },
-            {
-              question: 'What is considered the highest knowledge according to the Upanishads?',
-              answers: [
-                'Knowing how to perform rituals',
-                'Knowing the four truths about God\'s nature',
-                'Knowing many languages',
-                'Knowing worldly sciences'
-              ],
-              correctAnswer: 1
             }
           ]
         }
@@ -9566,232 +9413,181 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'meditation',
         title: 'Meditation',
-        description: 'Learn the sacred practice of meditation - the continuous flow of thought towards God',
+        description: 'Learn how to be quiet and think about God - it makes you feel peaceful!',
         content: `
-          <h2>Meditation</h2>
-<p>Meditation means the <strong>continuous flow of thought towards God</strong>. It is one of the most important spiritual practices that helps us connect deeply with the Divine.</p>
+          <h2>Meditation - Being Quiet with God</h2>
+          <p><strong>Meditation</strong> is when we sit quietly and think about God. It helps us feel calm, peaceful, and happy inside!</p>
+          <p>Think of it like this: just like your body needs food to be strong, your mind and heart need quiet time with God to be peaceful.</p>
 
           <h3>What is Meditation?</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Essence of Meditation</h4>
-              <p class="mb-3">Meditation is not just sitting quietly. It is the practice of <strong>focusing our mind continuously on God</strong>.</p>
-              <p class="font-medium">Through meditation, we learn to control our wandering thoughts and direct them toward the Divine.</p>
-            </div>
-          </div>
+          <p>Meditation is NOT just sitting with your eyes closed!</p>
+          <p>Real meditation means <strong>thinking about God</strong> with a calm, focused mind. It's like having a quiet conversation with God in your heart.</p>
 
-          <h3>How to Meditate</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-6 font-medium text-center">Follow these steps for proper meditation:</p>
+          <h3>How to Meditate - Easy Steps!</h3>
+          <p>Here's how you can meditate:</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">1. Proper Posture</h4>
-                <p>Sit in a comfortable posture, preferably on the floor cross-legged. Keep your back straight but relaxed.</p>
-              </div>
+          <h4>Step 1: Find a Quiet Spot</h4>
+          <p>Find a place where you won't be disturbed. It could be your room, a prayer corner, or any quiet place.</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">2. Relaxation</h4>
-                <p>Be relaxed. Let go of all tension in your body and mind. Close your eyes gently.</p>
-              </div>
+          <h4>Step 2: Sit Comfortably</h4>
+          <p>Sit on the floor with your legs crossed, or on a chair. Keep your back straight but relaxed - like a tall tree!</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">3. Focus on the Heart</h4>
-                <p>In the temple of your heart, concentrate on God. This is where you will feel the Divine presence most clearly.</p>
-              </div>
+          <h4>Step 3: Close Your Eyes</h4>
+          <p>Gently close your eyes. This helps you focus on what's inside rather than what's around you.</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">4. Visualize God</h4>
-                <p>Imagine the living form of God that you like best and feel that God is blessing you. This could be Rama, Krishna, Shiva, the Divine Mother, or any form that inspires you.</p>
-              </div>
+          <h4>Step 4: Relax!</h4>
+          <p>Take a few deep breaths. Let go of all worries. Pretend you're putting your worries in a box and closing the lid!</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">5. Let Go of Everything Else</h4>
-                <p>Forget everything else. Let go of all worldly thoughts, worries, and distractions.</p>
-              </div>
-            </div>
-          </div>
+          <h4>Step 5: Think of God</h4>
+          <p>Now, think of God in your heart. You can imagine:</p>
+          <ul>
+            <li>Lord Krishna with his beautiful smile</li>
+            <li>Lord Rama looking kind and brave</li>
+            <li>Lord Shiva sitting peacefully</li>
+            <li>The Divine Mother blessing you</li>
+            <li>A bright, warm light in your heart</li>
+          </ul>
+          <p>Pick whoever makes you feel most loved!</p>
 
-          <h3>Dealing with the Wandering Mind</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <h4 class="font-semibold mb-3">The Nature of the Mind</h4>
-            <p class="mb-4">It is the nature of the uncontrolled mind to wander. This is completely normal and happens to everyone who meditates.</p>
+          <h4>Step 6: Say God's Name (Optional)</h4>
+          <p>While thinking of God, you can softly repeat God's name in your mind. Like "Om", "Rama", "Krishna", or any name you love. This is called a <strong>mantra</strong>.</p>
 
-            <div class="bg-white p-4 rounded-lg">
-              <h4 class="font-semibold mb-2">The Gentle Practice</h4>
-              <p class="mb-3">Every time the mind strays away from the thought of God, <strong>gently bring it back</strong> and fix it upon the Lord.</p>
-              <p class="font-medium">By repeatedly bringing the mind back, one can perfect the practice of fixing the mind on the Lord.</p>
-            </div>
-          </div>
+          <h3>My Mind Won't Stay Still!</h3>
+          <p>Don't worry - everyone's mind wanders! Even grown-ups! Your mind might think about:</p>
+          <ul>
+            <li>"What's for lunch?"</li>
+            <li>"I want to play!"</li>
+            <li>"Did I do my homework?"</li>
+          </ul>
+          <p>That's okay! When this happens, <strong>just gently bring your mind back to God</strong>. It's like training a puppy - you have to keep bringing it back gently!</p>
 
-          <h3>Using Mantras in Meditation</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Whilst concentrating on God, you may also repeat a mantra, or God's holy Name.</p>
+          <h3>When Should You Meditate?</h3>
+          <p>Try to meditate:</p>
+          <ul>
+            <li><strong>Morning:</strong> Right after you wake up - start your day with God!</li>
+            <li><strong>Evening:</strong> Before bed - end your day feeling peaceful</li>
+          </ul>
+          <p>Even 5 minutes is great when you're starting!</p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">Benefits of Mantra</h4>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Helps focus the mind</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Creates sacred vibrations</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Deepens the connection with God</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Brings peace to the heart</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <h3>What Happens When You Meditate?</h3>
+          <p>If you meditate regularly, you'll notice some wonderful things:</p>
+          <ul>
+            <li>You feel <strong>more peaceful</strong> inside</li>
+            <li>You feel <strong>less worried</strong> about things</li>
+            <li>You feel <strong>closer to God</strong></li>
+            <li>You become <strong>kinder</strong> to others</li>
+            <li>You can <strong>focus better</strong> at school!</li>
+          </ul>
 
-          <h3>When to Meditate</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <h4 class="font-semibold mb-3">Daily Practice</h4>
-            <p class="mb-4">Meditation must be practiced <strong>at least every morning and evening</strong>.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-white p-4 rounded-lg">
-                <h5 class="font-semibold mb-2">Morning Meditation</h5>
-                <p class="text-sm">Start your day with God. Morning meditation sets a peaceful tone for the entire day.</p>
-              </div>
-
-              <div class="bg-white p-4 rounded-lg">
-                <h5 class="font-semibold mb-2">Evening Meditation</h5>
-                <p class="text-sm">End your day in God's presence. Evening meditation brings peace and prepares you for restful sleep.</p>
-              </div>
-            </div>
-          </div>
-
-          <h3>The Benefits of Regular Meditation</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron mt-6">
-            <h4 class="font-semibold mb-3">Spiritual Growth</h4>
-            <div class="space-y-3">
-              <div class="bg-white p-3 rounded-lg">
-                <p><strong>Inner Peace:</strong> Regular meditation brings deep peace to the mind and heart</p>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <p><strong>Divine Connection:</strong> Strengthens your relationship with God</p>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <p><strong>Mental Clarity:</strong> Helps clear the mind of unnecessary thoughts</p>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <p><strong>Spiritual Progress:</strong> Accelerates growth on the spiritual path</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-spiritual-50 rounded-lg border-l-4 border-spiritual-300">
-            <h4 class="font-semibold mb-2">Remember</h4>
-            <p>Meditation is a practice that develops over time. Be patient with yourself and maintain regular practice. Even a few minutes of sincere meditation each day can bring profound changes to your spiritual life. The key is consistency and devotion.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Meditation</strong> = Thinking about God quietly</li>
+            <li>Sit <strong>comfortably</strong> with a straight back</li>
+            <li><strong>Close your eyes</strong> and relax</li>
+            <li>When your mind wanders, <strong>gently bring it back</strong></li>
+            <li>Practice <strong>every day</strong> for best results!</li>
+            <li>Even <strong>5 minutes</strong> is helpful!</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What does meditation mean?',
+              question: 'What is meditation?',
               answers: [
-                'Sitting quietly without thinking',
-                'The continuous flow of thought towards God',
-                'Reading spiritual books',
-                'Going to temple'
+                'Watching TV quietly',
+                'Thinking about God quietly',
+                'Sleeping',
+                'Running around'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is the recommended posture for meditation?',
+              question: 'How should you sit during meditation?',
               answers: [
-                'Standing upright',
                 'Lying down flat',
-                'Sitting comfortably, preferably cross-legged on the floor',
-                'Walking slowly'
+                'Standing on one foot',
+                'Comfortably with your back straight',
+                'Jumping up and down'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Where should you concentrate during meditation?',
+              question: 'What should you do when you meditate?',
               answers: [
-                'On your breathing',
-                'In the temple of your heart',
-                'On external sounds',
-                'On your hands'
+                'Keep your eyes open',
+                'Close your eyes and think of God',
+                'Talk loudly',
+                'Think about toys'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should you do when your mind wanders during meditation?',
+              question: 'What should you do when your mind wanders?',
               answers: [
-                'Stop meditating immediately',
-                'Get frustrated and give up',
-                'Gently bring it back and fix it upon the Lord',
-                'Let it wander freely'
+                'Stop meditating and give up',
+                'Get angry',
+                'Gently bring your mind back to God',
+                'Fall asleep'
               ],
               correctAnswer: 2
             },
             {
-              question: 'How often should meditation be practiced?',
+              question: 'When is a good time to meditate?',
               answers: [
-                'Only on weekends',
-                'Once a week',
-                'At least every morning and evening',
-                'Only when you feel like it'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What can you repeat during meditation to help focus?',
-              answers: [
-                'Worldly thoughts',
-                'A mantra or God\'s holy Name',
-                'Daily problems',
-                'Random words'
+                'Only on your birthday',
+                'Morning and evening',
+                'Never',
+                'Only when it rains'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should you imagine during meditation?',
+              question: 'What is a mantra?',
               answers: [
-                'Your daily schedule',
-                'Material possessions',
-                'The living form of God that you like best',
-                'Past memories'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What is the nature of the uncontrolled mind?',
-              answers: [
-                'To stay perfectly still',
-                'To wander',
-                'To sleep',
-                'To become angry'
+                'A type of food',
+                'God\'s name that you repeat in meditation',
+                'A game',
+                'A book'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should you forget during meditation?',
+              question: 'Is it okay if your mind wanders during meditation?',
               answers: [
-                'God\'s name',
-                'How to breathe',
-                'Everything else except God',
-                'Your meditation posture'
+                'No, you failed',
+                'Yes! Just gently bring it back',
+                'You should never try again',
+                'Only adults can meditate'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How does meditation help you?',
+              answers: [
+                'It makes you tired',
+                'It makes you feel peaceful and closer to God',
+                'It makes you hungry',
+                'It does nothing'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How long should beginners meditate?',
+              answers: [
+                '5 hours',
+                'All day',
+                'Even 5 minutes is helpful!',
+                'No time at all'
               ],
               correctAnswer: 2
             },
             {
-              question: 'How can one perfect the practice of meditation?',
+              question: 'Where in your body do you imagine God during meditation?',
               answers: [
-                'By meditating only once',
-                'By repeatedly bringing the mind back to God',
-                'By avoiding all practice',
-                'By meditating only in temples'
+                'In your foot',
+                'In your heart',
+                'In your elbow',
+                'Outside your body'
               ],
               correctAnswer: 1
             }
@@ -10652,195 +10448,186 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'prayer',
         title: 'Prayer',
-        description: 'Learn about the different ways to pray and connect with the Divine',
+        description: 'Learn how to talk to God and feel close to Him',
         content: `
-          <h2>Prayer</h2>
-          <p>Prayer is the remembrance of God, the Almighty Power behind all creation. Let us see how we can pray.</p>
+          <h2>Prayer - Talking to God</h2>
+          <p><strong>Prayer</strong> is when we talk to God and remember Him. It's like having a conversation with your best friend - except this friend is always with you and loves you more than anyone!</p>
 
-          <h3>Three Types of Prayer</h3>
+          <h3>Why Do We Pray?</h3>
+          <p>We pray because:</p>
+          <ul>
+            <li>It helps us feel <strong>close to God</strong></li>
+            <li>It makes us feel <strong>peaceful and happy</strong></li>
+            <li>We can <strong>thank God</strong> for all the good things</li>
+            <li>We can ask for <strong>help and blessings</strong></li>
+          </ul>
 
-          <div class="space-y-6 mt-6">
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold text-lg mb-3">1. Traditional Forms of Prayer</h4>
-              <p>One way is to remember Him as the traditional gods we are used to, such as Rama, Krishna, Shiva, Hanuman, and the Divine Mother. But we must understand that really they are different forms of the one God. We can ask them to bless us in whatever we do.</p>
-            </div>
+          <h3>Three Ways to Pray</h3>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold text-lg mb-3">2. Seeing God in Everything</h4>
-              <p>Through prayer we can try to see God present in everything around us, for example, beauty, harmony, power, strength, knowledge and love. It is His power that makes the sun shine and the trees and plants grow. Seasons, day and night come and go at His command. Everything we see around us is only an outward expression of His divine power.</p>
-              <p class="mt-2 font-medium">When we pray to God with this knowledge our prayers become more meaningful. Without asking for anything, God's grace will flow into us.</p>
-            </div>
+          <h4>Way 1: Pray to Your Favorite Form of God</h4>
+          <p>You can pray to the form of God you love most:</p>
+          <ul>
+            <li><strong>Lord Rama</strong> - the brave and kind prince</li>
+            <li><strong>Lord Krishna</strong> - the playful and loving God</li>
+            <li><strong>Lord Shiva</strong> - the peaceful and powerful God</li>
+            <li><strong>Hanuman</strong> - the strong and devoted helper</li>
+            <li><strong>Divine Mother</strong> - the loving mother of all</li>
+          </ul>
+          <p>Remember: All these are different forms of the <strong>same one God</strong>! It's like how water can be ice, liquid, or steam - but it's all water!</p>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold text-lg mb-3">3. Recognizing Oneness (Most Powerful Prayer)</h4>
-              <p>A third type of prayer, which is most powerful and meaningful, is to recognize that God's power works through us, controlling all that we think, feel, speak and do. It is the same Power that is seen all around us in the entire creation. A feeling that we are 'one with all creation' comes to us through such prayer. It is the most wonderful and best of prayers.</p>
-            </div>
-          </div>
+          <h4>Way 2: See God in Everything!</h4>
+          <p>God is everywhere! When you see:</p>
+          <ul>
+            <li>The <strong>sun shining</strong> - that's God's power!</li>
+            <li><strong>Trees and flowers growing</strong> - that's God's magic!</li>
+            <li><strong>Day and night</strong> coming - that's God's plan!</li>
+            <li><strong>Love in your family</strong> - that's God's love!</li>
+          </ul>
+          <p>When you see God in everything, your prayers become extra special!</p>
 
-          <h3>Understanding Through Example</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <h4 class="font-semibold mb-2">The Electricity Example</h4>
-            <p>We can illustrate this knowledge using electricity as an example. First we are told that lights, fans, fridges, and stoves work with a power which comes through the wire as we switch it on. As we learn more about science we understand that electricity is a great source of energy with many possibilities. It shows itself through many things in the form of light or heat, but it is the one electrical energy working in many forms.</p>
-            <p class="mt-2 font-medium">We must understand that God's power works in a similar way.</p>
-          </div>
+          <h4>Way 3: Feel God Inside You!</h4>
+          <p>This is the most powerful prayer! Know that:</p>
+          <ul>
+            <li>God's power is <strong>inside you</strong></li>
+            <li>God helps you <strong>think, speak, and do</strong> good things</li>
+            <li>You are <strong>connected to everything</strong> in the world</li>
+          </ul>
+          <p>When you feel this, you feel like you're part of one big, beautiful family with all of creation!</p>
 
-          <h3>Sri Ramakrishna's Teaching</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg mt-6 border-l-4 border-indian-saffron">
-            <p class="italic">"We can pray in whichever way that pleases us best: Even if we pray in a low voice God will hear us. He hears the movement of tiny ants."</p>
-            <p class="text-right mt-2 font-medium">- Sri Ramakrishna</p>
-          </div>
+          <h3>Does God Hear My Prayers?</h3>
+          <p>Yes! Always! A great teacher named <strong>Sri Ramakrishna</strong> said:</p>
+          <p><em>"God hears even the movement of tiny ants!"</em></p>
+          <p>So even if you pray in a whisper, or just in your heart, God hears you!</p>
 
-          <h3>Daily Practice and Temple Worship</h3>
-          <p class="mt-6">We must pray daily. Whenever possible we must also go to a temple and pray. Hinduism has some of the most beautiful, universal prayers.</p>
+          <h3>A Beautiful Prayer to Learn</h3>
+          <p>Here's a special prayer that Hindus have said for thousands of years:</p>
+          <p><strong>In Sanskrit:</strong> "Asato ma sad gamaya, Tamaso ma jyotir gamaya, Mrityor ma amritam gamaya"</p>
+          <p><strong>What it means:</strong></p>
+          <ul>
+            <li>"Lead me from <strong>wrong things to right things</strong>"</li>
+            <li>"Lead me from <strong>darkness to light</strong>"</li>
+            <li>"Lead me from <strong>fear to courage</strong>"</li>
+          </ul>
+          <p>This prayer asks God to help us become better people!</p>
 
-          <h3>Universal Hindu Prayers</h3>
-          <div class="space-y-6 mt-6">
-            <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron">
-              <h4 class="font-semibold mb-3">Prayer for Truth, Light, and Immortality</h4>
-              <div class="text-center mb-4">
-                <p class="font-medium text-lg">ॐ असतो मा सद्गमय</p>
-                <p class="font-medium text-lg">तमसो मा ज्योतिर्गमय</p>
-                <p class="font-medium text-lg">मृत्योर्मा अमृतं गमय</p>
-              </div>
-              <div class="text-center">
-                <p class="italic">Aum asato ma sad gamaya</p>
-                <p class="italic">Tamaso ma jyotir gamaya</p>
-                <p class="italic">Mrityor ma amritam gamaya</p>
-              </div>
-              <div class="mt-4 text-center">
-                <p class="font-medium">Meaning:</p>
-                <p>Lead me from untruth to Truth</p>
-                <p>Lead me from darkness to Light</p>
-                <p>Lead me from death to Immortality</p>
-              </div>
-            </div>
+          <h3>When Should You Pray?</h3>
+          <ul>
+            <li><strong>Every morning</strong> - start your day with God</li>
+            <li><strong>Every evening</strong> - thank God for the day</li>
+            <li><strong>Before meals</strong> - thank God for food</li>
+            <li><strong>Anytime!</strong> - God is always listening</li>
+          </ul>
 
-            <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron">
-              <h4 class="font-semibold mb-3">Prayer of Fullness</h4>
-              <div class="text-center mb-4">
-                <p class="font-medium text-lg">ॐ पूर्णमदः पूर्णमिदम्</p>
-                <p class="font-medium text-lg">पूर्णात्पूर्णमुदच्यते</p>
-                <p class="font-medium text-lg">पूर्णस्य पूर्णमादाय</p>
-                <p class="font-medium text-lg">पूर्णमेवावशिष्यते</p>
-              </div>
-              <div class="text-center">
-                <p class="italic">Aum purnamadah purnamidam</p>
-                <p class="italic">Purnat purnamudachyate</p>
-                <p class="italic">Purnasya purnamadaya</p>
-                <p class="italic">Purnameva vasishyate</p>
-              </div>
-              <div class="mt-4 text-center">
-                <p class="font-medium">Meaning:</p>
-                <p class="text-sm mb-2">(God is represented as 'Fullness' in this prayer)</p>
-                <p>Fullness is there, Fullness is here</p>
-                <p>From Fullness arises Fullness</p>
-                <p>Remove Fullness from Fullness,</p>
-                <p>Fullness alone remains</p>
-              </div>
-            </div>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Prayer</strong> = Talking to God and remembering Him</li>
+            <li>You can pray to <strong>any form of God</strong> you love</li>
+            <li><strong>God is everywhere</strong> - in nature, in people, in you!</li>
+            <li>God hears <strong>every prayer</strong>, even whispers</li>
+            <li>Pray <strong>every day</strong> - morning and evening</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What is prayer according to this lesson?',
+              question: 'What is prayer?',
               answers: [
-                'Asking for material things',
-                'The remembrance of God',
-                'Reading books',
-                'Going to temple only'
+                'Just sitting quietly',
+                'Talking to God and remembering Him',
+                'Reading a book',
+                'Sleeping'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Which type of prayer is described as the most powerful and meaningful?',
+              question: 'Are Rama, Krishna, and Shiva different Gods?',
               answers: [
-                'Praying to traditional gods',
-                'Seeing God in everything around us',
-                'Recognizing that God\'s power works through us',
-                'Praying loudly'
+                'Yes, they are completely different',
+                'No, they are different forms of the same one God',
+                'They don\'t exist',
+                'Only Rama is God'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
             },
             {
               question: 'According to Sri Ramakrishna, what can God hear?',
               answers: [
                 'Only loud prayers',
-                'Only temple prayers',
+                'Only prayers in temples',
                 'Even the movement of tiny ants',
-                'Only Sanskrit prayers'
+                'Nothing at all'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What does "Asato ma sad gamaya" mean?',
+              question: 'What does "Lead me from darkness to light" mean?',
               answers: [
-                'Lead me from truth to untruth',
-                'Lead me from untruth to Truth',
-                'Lead me from light to darkness',
-                'Lead me from immortality to death'
+                'Turn on the lights',
+                'Help me understand and learn',
+                'Go outside',
+                'Close my eyes'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What are the traditional gods mentioned as different forms of one God?',
+              question: 'Where is God according to this lesson?',
               answers: [
-                'Only Rama and Krishna',
-                'Rama, Krishna, Shiva, Hanuman, and Divine Mother',
-                'Only Shiva',
-                'Only the Divine Mother'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What does "Tamaso ma jyotir gamaya" mean?',
-              answers: [
-                'Lead me from light to darkness',
-                'Lead me from darkness to Light',
-                'Lead me from truth to untruth',
-                'Lead me from death to immortality'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What does "Mrityor ma amritam gamaya" mean?',
-              answers: [
-                'Lead me from truth to untruth',
-                'Lead me from darkness to light',
-                'Lead me from death to Immortality',
-                'Lead me from untruth to truth'
+                'Only in temples',
+                'Only in the sky',
+                'Everywhere - in nature, people, and inside you!',
+                'Nowhere'
               ],
               correctAnswer: 2
             },
             {
-              question: 'In the second prayer, what is God represented as?',
+              question: 'When should you pray?',
               answers: [
-                'Light',
-                'Truth',
-                'Fullness',
-                'Power'
+                'Only on Sundays',
+                'Only when you\'re sad',
+                'Every morning and evening',
+                'Never'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What happens when we see God in everything around us?',
+              question: 'What makes prayers extra special?',
               answers: [
-                'We become confused',
-                'Our prayers become more meaningful and God\'s grace flows',
-                'We stop praying',
-                'Nothing changes'
+                'Praying very loudly',
+                'Seeing God in everything around you',
+                'Only praying in Sanskrit',
+                'Praying only in temples'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What feeling comes when we recognize God\'s power working through us?',
+              question: 'What is the most powerful type of prayer?',
               answers: [
-                'Fear',
-                'Confusion',
-                'A feeling of oneness with all creation',
-                'Loneliness'
+                'Asking for toys',
+                'Feeling God\'s power inside you',
+                'Praying only when you need something',
+                'Praying once a year'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
+            },
+            {
+              question: 'Can you pray in a whisper?',
+              answers: [
+                'No, God won\'t hear',
+                'Yes! God hears everything',
+                'Only if you\'re in a temple',
+                'Only adults can whisper prayers'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Why do we pray?',
+              answers: [
+                'Because we have to',
+                'To feel close to God and peaceful',
+                'To get presents',
+                'Because it\'s boring'
+              ],
+              correctAnswer: 1
             }
           ]
         }
@@ -10848,189 +10635,183 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'pilgrimage',
         title: 'Pilgrimage - Visiting Temples',
-        description: 'Learn about the sacred practice of visiting temples and offering worship',
+        description: 'Learn how to visit temples and why it\'s special',
         content: `
-          <h2>Temples - The Abode of God</h2>
-          <p>The temple is the abode of God. In the temple God is worshipped as the King of kings. You should visit the nearby temple everyday if possible or at least on all festival days.</p>
+          <h2>Visiting Temples - God's Special Home</h2>
+          <p>A <strong>temple</strong> is like God's special home on Earth! When we visit a temple, we get to be close to God and feel His love and blessings.</p>
 
-          <h3>How to Visit a Temple</h3>
-          <div class="space-y-4 mt-6">
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold mb-2">1. Cleanliness and Dress</h4>
-              <p>One must be clean and neatly dressed when going to a temple. This shows respect for the sacred space and the Divine presence.</p>
-            </div>
+          <h3>Why Visit Temples?</h3>
+          <ul>
+            <li>To feel <strong>close to God</strong></li>
+            <li>To pray and <strong>ask for blessings</strong></li>
+            <li>To feel <strong>peaceful and happy</strong></li>
+            <li>To <strong>thank God</strong> for all the good things</li>
+          </ul>
+          <p>Try to visit a temple as often as you can - every day if possible, or at least on special festival days!</p>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold mb-2">2. Sacred Mindset</h4>
-              <p>It is not good to talk about worldly things or gossip when one goes to visit the Lord. In fact, one should lovingly repeat God's sweet name all along the way to the temple.</p>
-            </div>
+          <h3>How to Visit a Temple - 3 Important Things</h3>
 
-            <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300">
-              <h4 class="font-semibold mb-2">3. Bringing Offerings</h4>
-              <p>One should go to the Temple with incense sticks, flowers, or some fruits to offer to God.</p>
-              <div class="mt-3 p-3 bg-indian-cream rounded-lg">
-                <p class="italic font-medium">In the Bhagavad Gita, Lord Krishna tells us:</p>
-                <p class="italic">"Whomsoever offers Me with devotion a leaf, a flower, a fruit or little water - I accept that offering of a pure heart."</p>
-              </div>
-            </div>
-          </div>
+          <h4>1. Be Clean and Neat</h4>
+          <p>Before going to the temple:</p>
+          <ul>
+            <li>Take a bath or wash up</li>
+            <li>Wear clean, nice clothes</li>
+            <li>Look your best - you're visiting God!</li>
+          </ul>
+          <p><em>Think of it like visiting a king - you would want to look your best!</em></p>
 
-          <h3>How Does God Eat?</h3>
-          <div class="bg-gradient-to-br from-indian-cream to-white p-6 rounded-lg border border-indian-saffron mt-6">
-            <h4 class="font-semibold mb-3">A Beautiful Story from Sri Sarada Devi</h4>
-            <p class="mb-4">There is a beautiful incident in the life of Sri Sarada Devi which shows us how God eats. Once a devotee asked the Holy Mother Sri Sarada Devi:</p>
+          <h4>2. Think of God on the Way</h4>
+          <p>While walking to the temple:</p>
+          <ul>
+            <li>Don't gossip or talk about random things</li>
+            <li>Instead, say God's name softly: "Rama, Rama" or "Krishna, Krishna"</li>
+            <li>Think happy thoughts about God</li>
+          </ul>
 
-            <div class="bg-white p-4 rounded-lg mb-4 border-l-4 border-spiritual-300">
-              <p class="italic">"Mother, I see you offering food daily before the picture of Sri Ramakrishna. Does the Lord really eat the food?"</p>
-            </div>
+          <h4>3. Bring a Gift for God</h4>
+          <p>You can bring:</p>
+          <ul>
+            <li><strong>Flowers</strong> - God loves flowers!</li>
+            <li><strong>Fruits</strong> - like bananas or coconuts</li>
+            <li><strong>Incense sticks</strong> - they smell nice</li>
+          </ul>
+          <p>Lord Krishna said: <em>"If someone gives Me even a leaf, a flower, or a little water with love, I happily accept it!"</em></p>
+          <p>It's not about how expensive your gift is - it's about the <strong>love in your heart</strong>!</p>
 
-            <p class="mb-4">The Holy Mother, in her kindness replied:</p>
+          <h3>What is Prasad?</h3>
+          <p><strong>Prasad</strong> is food that has been offered to God. After God blesses it, we get to eat it!</p>
+          <p>Prasad is very special because it has God's blessings in it. When you eat prasad:</p>
+          <ul>
+            <li><strong>Don't drop it</strong> on the floor</li>
+            <li><strong>Don't waste it</strong></li>
+            <li><strong>Share it</strong> with others</li>
+            <li>Say <strong>God's name</strong> before eating</li>
+          </ul>
 
-            <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-              <p class="italic">"Yes, my child, God really eats the food. When I place the food before Sri Ramakrishna's picture I lovingly invite him to come and eat. I then see rays of light coming out of his eyes, entering the food, taking its essence, blessing the food, and then returning into the Lord's eyes once more."</p>
-            </div>
+          <h3>Does God Really Eat the Food?</h3>
+          <p>A holy lady named <strong>Sri Sarada Devi</strong> explained this beautifully:</p>
+          <p>She said that when she offered food to God, she saw <strong>rays of light</strong> come from God's eyes, touch the food, take its goodness, and bless it!</p>
+          <p>So yes, God does "eat" the food - but in a special, magical way!</p>
 
-            <p class="mt-4 font-medium">This is one of the ways in which the Lord eats.</p>
-          </div>
+          <h3>Why Are There Lamps in Temples?</h3>
+          <p>You'll see lamps burning in temples. These lamps mean:</p>
+          <ul>
+            <li><strong>God's light</strong> - God is like a bright light</li>
+            <li><strong>Knowledge</strong> - light helps us see and understand</li>
+            <li><strong>Goodness</strong> - light chases away darkness</li>
+          </ul>
 
-          <h3>Sacred Food - Prasad</h3>
-          <div class="space-y-4 mt-6">
-            <p>Food offered to God is therefore blessed. By eating it we are also blessed. Such sacred food is called <strong>prasad</strong> and must be treated with respect.</p>
-
-            <div class="bg-spiritual-50 p-4 rounded-lg">
-              <h4 class="font-semibold mb-3">How to Treat Prasad with Respect:</h4>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Do not drop it on the floor</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Do not keep it in unclean places</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Share it with all</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-spiritual-500 mr-2">•</span>
-                  <span>Repeat the sweet name of the Lord and eat some of it yourself</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>Temple Lamps - Symbol of Divine Light</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p>In all temples lamps are lit as a symbol of God's light and knowledge. These lamps represent the divine illumination that dispels the darkness of ignorance and guides us on the spiritual path.</p>
-          </div>
-
-          <div class="mt-8 p-4 bg-spiritual-50 rounded-lg border-l-4 border-spiritual-300">
-            <h4 class="font-semibold mb-2">Remember</h4>
-            <p>Temple visits are not just rituals, but opportunities to connect with the Divine, purify our hearts, and receive blessings. Approach each visit with devotion, respect, and an open heart.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li>A <strong>temple</strong> is God's special home</li>
+            <li>Be <strong>clean and neat</strong> when visiting</li>
+            <li><strong>Think of God</strong> on the way</li>
+            <li>Bring <strong>flowers, fruits, or incense</strong></li>
+            <li><strong>Prasad</strong> = blessed food from God</li>
+            <li><strong>Lamps</strong> = God's light and knowledge</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'How should one be dressed when visiting a temple?',
+              question: 'What is a temple?',
               answers: [
-                'Any way is fine',
-                'Clean and neatly dressed',
-                'In expensive clothes only',
+                'A playground',
+                'God\'s special home',
+                'A school',
+                'A shop'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How should you dress when visiting a temple?',
+              answers: [
+                'Any way you want',
+                'Clean and neat',
+                'In dirty clothes',
                 'It doesn\'t matter'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should one do while going to the temple?',
+              question: 'What should you do while walking to the temple?',
               answers: [
-                'Talk about worldly things',
                 'Gossip with friends',
-                'Lovingly repeat God\'s name',
-                'Think about work'
+                'Think of God and say His name',
+                'Talk about TV shows',
+                'Complain about things'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
+            },
+            {
+              question: 'What can you bring as a gift for God?',
+              answers: [
+                'Toys',
+                'Flowers, fruits, or incense',
+                'Video games',
+                'Nothing ever'
+              ],
+              correctAnswer: 1
             },
             {
               question: 'What is prasad?',
               answers: [
                 'Regular food',
-                'Food offered to God that becomes blessed',
+                'Food blessed by God',
                 'Expensive food',
                 'Temple decoration'
               ],
               correctAnswer: 1
             },
             {
-              question: 'According to Sri Sarada Devi, how does God eat the offered food?',
+              question: 'What should you do with prasad?',
               answers: [
-                'God doesn\'t eat the food',
-                'Rays of light from God\'s eyes take the essence',
-                'The food physically disappears',
-                'Only priests can see it'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What do temple lamps symbolize?',
-              answers: [
-                'Decoration only',
-                'God\'s light and knowledge',
-                'Fire worship',
-                'Traditional custom'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What should one bring when visiting a temple?',
-              answers: [
-                'Nothing',
-                'Incense sticks, flowers, or fruits',
-                'Only money',
-                'Only books'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'How often should one visit the temple according to the lesson?',
-              answers: [
-                'Once a year',
-                'Only on birthdays',
-                'Daily if possible, or at least on festival days',
-                'Never'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What should one NOT do with prasad?',
-              answers: [
-                'Share it with others',
+                'Throw it away',
+                'Share it and eat it with respect',
                 'Drop it on the floor',
-                'Eat it with devotion',
-                'Repeat God\'s name while eating'
+                'Hide it'
               ],
               correctAnswer: 1
             },
             {
-              question: 'How is God worshipped in the temple?',
+              question: 'What do lamps in temples represent?',
               answers: [
-                'As a friend',
-                'As King of kings',
-                'As a servant',
-                'As an equal'
+                'Just decoration',
+                'God\'s light and knowledge',
+                'Fire danger',
+                'Nothing special'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What did Sri Sarada Devi see when offering food to Sri Ramakrishna?',
+              question: 'According to Lord Krishna, what matters most when giving to God?',
               answers: [
-                'Nothing special',
-                'The food disappearing',
-                'Rays of light from his eyes entering and blessing the food',
-                'The picture moving'
+                'How expensive the gift is',
+                'The love in your heart',
+                'How big the gift is',
+                'How many gifts you bring'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'How often should you visit a temple?',
+              answers: [
+                'Never',
+                'Once a year',
+                'As often as possible, at least on festival days',
+                'Only when forced'
               ],
               correctAnswer: 2
+            },
+            {
+              question: 'Why do we visit temples?',
+              answers: [
+                'To play games',
+                'To feel close to God and get blessings',
+                'To meet friends only',
+                'Because we have to'
+              ],
+              correctAnswer: 1
             }
           ]
         }
@@ -11038,233 +10819,200 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'right-living',
         title: 'Right Living - Part 1',
-        description: 'Learn how to live properly at home, school, and in daily life',
+        description: 'Learn how to be a good person at home and school',
         content: `
-          <h2>Right Living</h2>
-          <p>Living a good and disciplined life helps us grow into strong, kind, and wise individuals. Let us learn how to live properly in different aspects of our lives.</p>
+          <h2>Right Living - Being Your Best Self!</h2>
+          <p>Living a good life means being kind, helpful, and doing your best every day. Let's learn how to be our best selves at home and at school!</p>
 
-          <h3>Our Homes</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">Our home is the place from where we start our life. We must learn to obey and respect our parents. They work hard to make us happy in every way. They buy us clothes, toys, books and send us to school.</p>
+          <h3>Being Good at Home</h3>
+          <p>Your home is where your family loves you and takes care of you. Here's how to be a great family member:</p>
 
-            <h4 class="font-semibold mb-3">How to Behave at Home:</h4>
-            <div class="space-y-3">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Respect Parents:</strong> Be in the habit of greeting your parents in the morning, on arising, and at night before going to bed.
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Family Love:</strong> Be kind and loving to your brothers, sisters, relatives and servants.
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Care for Animals:</strong> Be kind to animals.
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Love Nature:</strong> Learn to love nature. Develop a small garden and see how plants respond to your loving care.
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Keep Clean:</strong> Keep your room tidy and clean. Decorate it with flowers and photographs of your favorite god or saint.
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Daily Prayer:</strong> Pray to God every morning and evening.
-              </div>
-            </div>
-          </div>
+          <h4>Love and Respect Your Parents</h4>
+          <ul>
+            <li>Say <strong>"Good morning!"</strong> when you wake up</li>
+            <li>Say <strong>"Good night!"</strong> before bed</li>
+            <li>Say <strong>"Thank you"</strong> when they help you</li>
+            <li>Listen when they talk to you</li>
+          </ul>
+          <p><em>Your parents work hard to give you everything you need!</em></p>
 
-          <h3>Schools - Temples of Mother Saraswati</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4">Schools are temples of Mother Saraswati - the Goddess of Knowledge. The beauty of our life depends on the knowledge which we have. Education, to a great extent, provides us with knowledge.</p>
+          <h4>Be Kind to Everyone</h4>
+          <ul>
+            <li>Be nice to your <strong>brothers and sisters</strong></li>
+            <li>Be kind to <strong>pets and animals</strong></li>
+            <li>Help <strong>grandparents and relatives</strong></li>
+          </ul>
 
-            <h4 class="font-semibold mb-3">How to Behave at School:</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Be Punctual:</strong> Arrive at school on time
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Regular Studies:</strong> Be consistent in your learning
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Do Homework:</strong> Complete assignments properly every day
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Be Disciplined:</strong> Follow school rules
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Respect Teachers:</strong> Honor those who guide your learning
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Be Friendly:</strong> Get along well with all classmates
-              </div>
-            </div>
+          <h4>Keep Your Room Clean</h4>
+          <ul>
+            <li>Make your bed every morning</li>
+            <li>Put your toys away</li>
+            <li>Keep your clothes tidy</li>
+            <li>You can put up pictures of God or things you love!</li>
+          </ul>
 
-            <div class="mt-4 p-3 bg-spiritual-50 rounded-lg">
-              <p><strong>Balanced Development:</strong> Pay careful attention to your studies. Take an interest in games and exercises. A strong mind and a strong body must go together. Keep your classrooms and school grounds tidy and clean.</p>
-            </div>
-          </div>
+          <h4>Love Nature</h4>
+          <p>Try growing a small plant! Water it, care for it, and watch it grow. Plants love your care!</p>
 
-          <h3>Daily Routine</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4 font-medium">A disciplined life is the basis of a strong character. We must have a good daily routine so that we use time properly. Time is very valuable.</p>
+          <h3>Being Good at School</h3>
+          <p>School is like a temple of <strong>Mother Saraswati</strong> - the Goddess of Learning! Here's how to be a great student:</p>
+          <ul>
+            <li><strong>Be on time</strong> - don't be late!</li>
+            <li><strong>Do your homework</strong> - every day!</li>
+            <li><strong>Listen to your teachers</strong> - they help you learn</li>
+            <li><strong>Be friendly</strong> - be nice to all your classmates</li>
+            <li><strong>Follow the rules</strong> - they keep everyone safe</li>
+            <li><strong>Keep your classroom clean</strong></li>
+          </ul>
+          <p>Remember: A strong mind AND a strong body go together! So study hard AND play sports!</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">Morning Habits</h4>
-                <p>Early rising is a good habit. It is good to see the sun rise and listen to the birds chirping. It is healthy to be in the sunshine.</p>
-              </div>
+          <h3>Your Daily Routine</h3>
+          <p>Having a good routine helps you be your best. Here's a great daily plan:</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Personal Care</h4>
-                <ul class="space-y-1">
-                  <li>• Have clean personal habits</li>
-                  <li>• Make your bed on arising</li>
-                  <li>• Brush your teeth</li>
-                  <li>• Keep your clothes tidy and clean</li>
-                  <li>• As far as possible help in the washing of your clothes and dishes</li>
-                </ul>
-                <p class="mt-2 font-medium italic">Self-help is the best help.</p>
-              </div>
+          <h4>Morning</h4>
+          <ul>
+            <li>Wake up early - see the sunrise!</li>
+            <li>Make your bed</li>
+            <li>Brush your teeth</li>
+            <li>Pray to God</li>
+            <li>Eat a good breakfast</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Study and Work</h4>
-                <ul class="space-y-1">
-                  <li>• Be punctual in your studies</li>
-                  <li>• Do your daily homework without fail</li>
-                  <li>• Learn to concentrate</li>
-                  <li>• Work while you work, play while you play</li>
-                  <li>• Set apart time for extra reading, music, and prayer</li>
-                </ul>
-              </div>
+          <h4>During the Day</h4>
+          <ul>
+            <li>Focus on your studies</li>
+            <li>Do your homework</li>
+            <li>Play and exercise</li>
+            <li>Help at home</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Eating Habits</h4>
-                <ul class="space-y-1">
-                  <li>• Eat properly at regular times</li>
-                  <li>• Avoid overeating</li>
-                  <li>• Choose only good nutritious food</li>
-                </ul>
-              </div>
+          <h4>Evening</h4>
+          <ul>
+            <li>Pray to God</li>
+            <li>Eat dinner with family</li>
+            <li>Go to bed early</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Sleep and Rest</h4>
-                <ul class="space-y-1">
-                  <li>• Go to bed early</li>
-                  <li>• Do not stay awake till late</li>
-                  <li>• Sleep in a proper posture to get good rest</li>
-                </ul>
-              </div>
-            </div>
+          <h3>The Five "Wells" of Life</h3>
+          <p>Remember these five things to do WELL:</p>
+          <ol>
+            <li><strong>Pray well</strong> - talk to God every day</li>
+            <li><strong>Play well</strong> - exercise and have fun</li>
+            <li><strong>Eat well</strong> - eat healthy food</li>
+            <li><strong>Study well</strong> - learn new things</li>
+            <li><strong>Sleep well</strong> - get enough rest</li>
+          </ol>
 
-            <div class="mt-6 p-4 bg-indian-cream rounded-lg text-center">
-              <h4 class="font-semibold text-lg mb-2">The Five Wells of Life</h4>
-              <p class="text-lg font-medium">Pray well, play well, eat well, study well, sleep well.</p>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-spiritual-50 rounded-lg border-l-4 border-indian-saffron">
-            <h4 class="font-semibold mb-2">Remember</h4>
-            <p>Right living is about creating harmony in all aspects of life - at home, at school, and in our daily routine. When we live with discipline, respect, and love, we grow into better human beings and contribute positively to the world around us.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Respect your parents</strong> - greet them morning and night</li>
+            <li><strong>Be kind</strong> to everyone - family, friends, animals</li>
+            <li><strong>Keep things clean</strong> - your room, your school</li>
+            <li><strong>Do your homework</strong> every day</li>
+            <li><strong>Self-help is the best help</strong> - do things yourself!</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What should we do when we wake up and before going to bed?',
+              question: 'What should you say to your parents when you wake up?',
               answers: [
-                'Watch television',
-                'Greet our parents',
-                'Play games',
-                'Eat snacks'
+                'Nothing',
+                'Good morning!',
+                'I\'m hungry',
+                'Leave me alone'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What are schools compared to in this lesson?',
+              question: 'Who is Mother Saraswati?',
               answers: [
-                'Temples of Mother Saraswati',
-                'Playgrounds',
-                'Markets',
-                'Factories'
-              ],
-              correctAnswer: 0
-            },
-            {
-              question: 'What is the basis of a strong character?',
-              answers: [
-                'Wealth',
-                'A disciplined life',
-                'Fame',
-                'Power'
+                'A teacher at school',
+                'The Goddess of Learning',
+                'A friend',
+                'A book'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does "Work while you work, play while you play" teach us?',
+              question: 'What are the Five "Wells" of Life?',
               answers: [
-                'To be lazy',
-                'To concentrate on one thing at a time',
-                'To always work',
-                'To always play'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What are the "Five Wells of Life"?',
-              answers: [
+                'Five water wells',
                 'Pray, play, eat, study, sleep - all done well',
-                'Five different wells for water',
-                'Five types of food',
-                'Five school subjects'
+                'Five friends',
+                'Five books'
               ],
-              correctAnswer: 0
+              correctAnswer: 1
+            },
+            {
+              question: 'What should you do with your room?',
+              answers: [
+                'Leave it messy',
+                'Keep it clean and tidy',
+                'Never go in it',
+                'Fill it with junk'
+              ],
+              correctAnswer: 1
             },
             {
               question: 'What does "Self-help is the best help" mean?',
               answers: [
-                'Never help others',
-                'Only ask for expensive help',
-                'Learning to do things for yourself',
-                'Avoiding all work'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What should we do to our room according to the lesson?',
-              answers: [
-                'Leave it messy',
-                'Keep it tidy and clean, decorate with flowers and spiritual pictures',
-                'Never clean it',
-                'Only use it for sleeping'
+                'Never help anyone',
+                'Do things yourself instead of always asking others',
+                'Only help yourself',
+                'Don\'t do anything'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should we do with our garden according to the lesson?',
+              question: 'Why is waking up early good?',
               answers: [
-                'Ignore it',
-                'Destroy it',
-                'Develop it and see how plants respond to loving care',
-                'Only look at it'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What should we avoid when eating?',
-              answers: [
-                'Eating nutritious food',
-                'Eating at regular times',
-                'Overeating',
-                'Eating properly'
-              ],
-              correctAnswer: 2
-            },
-            {
-              question: 'What is good about early rising?',
-              answers: [
-                'It\'s unhealthy',
-                'It\'s good to see sunrise, listen to birds, and be in sunshine',
-                'It makes us tired',
-                'It\'s unnecessary'
+                'It\'s not good',
+                'You can see the sunrise and hear birds',
+                'You can watch TV',
+                'You can sleep more'
               ],
               correctAnswer: 1
+            },
+            {
+              question: 'How should you treat your classmates?',
+              answers: [
+                'Be mean to them',
+                'Ignore them',
+                'Be friendly and nice',
+                'Fight with them'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What should you do every day at school?',
+              answers: [
+                'Skip homework',
+                'Be late',
+                'Do your homework',
+                'Break the rules'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What goes together according to this lesson?',
+              answers: [
+                'A strong mind and a strong body',
+                'Sleeping and eating',
+                'Playing and sleeping',
+                'Nothing'
+              ],
+              correctAnswer: 0
+            },
+            {
+              question: 'How should you treat animals?',
+              answers: [
+                'Be mean to them',
+                'Ignore them',
+                'Be kind to them',
+                'Scare them'
+              ],
+              correctAnswer: 2
             }
           ]
         }
@@ -11272,234 +11020,180 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'right-living-part2',
         title: 'Right Living - Part 2',
-        description: 'Learn about good company, reading good books, and proper speech',
+        description: 'Learn about choosing good friends, reading good books, and speaking kindly',
         content: `
-          <h2>Right Living - Part 2</h2>
-          <p>Continuing our journey of right living, let us learn about three important aspects that shape our character: the company we keep, the books we read, and how we use our speech.</p>
+          <h2>Right Living - Part 2: Friends, Books, and Words</h2>
+          <p>Who you spend time with, what you read, and how you talk all help make you who you are! Let's learn how to make good choices.</p>
 
-          <h3>Keep Good Company</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4 font-medium">A man is judged by the company he keeps. Good company brings joy and happiness. Bad company brings sorrow.</p>
+          <h3>Choose Good Friends</h3>
+          <p>There's a saying: <strong>"You become like the people you spend time with."</strong></p>
+          <p>This is so true! If you have good friends, you'll learn good things. If you have bad friends, you might learn bad things.</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">Choose Your Friends Wisely</h4>
-                <p>Avoid companions who may lead you into bad habits. Always seek the company of the good, wise and godly people.</p>
-              </div>
+          <h4>What Makes a Good Friend?</h4>
+          <ul>
+            <li>They are <strong>kind and honest</strong></li>
+            <li>They <strong>help you</strong> do the right thing</li>
+            <li>They <strong>don't get you in trouble</strong></li>
+            <li>They make you feel <strong>happy and safe</strong></li>
+          </ul>
 
-              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-300">
-                <h4 class="font-semibold mb-2 text-red-700">Avoid These Harmful Habits</h4>
-                <ul class="space-y-1 text-red-700">
-                  <li>• Do not smoke</li>
-                  <li>• Do not gamble</li>
-                  <li>• Do not take alcoholic drinks</li>
-                  <li>• Do not take drugs</li>
-                </ul>
-              </div>
-
-              <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-300">
-                <h4 class="font-semibold mb-2 text-green-700">Seek Good Company</h4>
-                <p class="text-green-700">Spend time with people who are good, wise, and godly. Their positive influence will help you grow into a better person.</p>
-              </div>
-            </div>
-          </div>
+          <h4>Things to ALWAYS Avoid</h4>
+          <p>These things are very bad for you - never do them:</p>
+          <ul>
+            <li><strong>Smoking</strong> - hurts your body</li>
+            <li><strong>Alcohol</strong> - makes you sick</li>
+            <li><strong>Drugs</strong> - very dangerous</li>
+            <li><strong>Gambling</strong> - wastes money</li>
+          </ul>
+          <p>If someone tries to get you to do these things, they are NOT a good friend!</p>
 
           <h3>Read Good Books</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4 font-medium">Reading books with good, strong and powerful thoughts will help us to become good, strong and powerful. Reading brings knowledge and expands our understanding.</p>
+          <p>Reading is like food for your brain! Good books make you smarter and better.</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Benefits of Good Reading</h4>
-                <ul class="space-y-2">
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Through reading we can learn and understand about the people and places of the world</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>One who has good reading habits will never feel lonely or bored in life</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Reading expands our understanding and brings knowledge</span>
-                  </li>
-                </ul>
-              </div>
+          <h4>Why Reading is Great</h4>
+          <ul>
+            <li>You learn about <strong>people and places</strong> around the world</li>
+            <li>You'll <strong>never be bored</strong> if you love reading</li>
+            <li>You become <strong>smarter and wiser</strong></li>
+            <li>You get <strong>new ideas</strong></li>
+          </ul>
 
-              <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200">
-                <h4 class="font-semibold mb-2">Read Holy Books</h4>
-                <p class="mb-3">We must also read holy books. They help us to clean our minds of unwanted thoughts and feelings.</p>
-                <p class="font-medium">Through such reading we develop love for God and holy men and acquire their good qualities.</p>
-              </div>
-            </div>
-          </div>
+          <h4>Read Holy Books Too!</h4>
+          <p>Holy books (like stories about God and good people) help clean your mind of bad thoughts. They teach you to be a better person!</p>
 
-          <h3>Speech and Silence</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4 font-medium">Speech is God's wonderful gift to us. Through speech we understand each other.</p>
+          <h3>Use Your Words Wisely</h3>
+          <p>Being able to talk is a <strong>wonderful gift from God</strong>! But we need to use this gift carefully.</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Guidelines for Good Speech</h4>
-                <ul class="space-y-2">
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Speak Truth:</strong> We must learn to speak the truth and to speak kindly too</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Think Before Speaking:</strong> Think carefully before you speak because words once spoken cannot be taken back</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Avoid Quarrels:</strong> Do not waste the gift of speech over quarrels</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Avoid Unnecessary Talking:</strong> Don't speak just to fill silence</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Be Sincere:</strong> Always be honest and genuine in your speech</span>
-                  </li>
-                </ul>
-              </div>
+          <h4>Rules for Good Speaking</h4>
+          <ul>
+            <li><strong>Always tell the truth</strong> - lying hurts everyone</li>
+            <li><strong>Be kind</strong> - don't say mean things</li>
+            <li><strong>Think before you speak</strong> - you can't take words back!</li>
+            <li><strong>Don't fight with words</strong> - no quarreling</li>
+            <li><strong>Don't talk too much</strong> - sometimes quiet is good</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">The Art of Listening</h4>
-                <p>We must learn to listen also. Listen silently and carefully when elders speak to you.</p>
-              </div>
+          <h4>Learn to Listen!</h4>
+          <p>Listening is just as important as talking! When grown-ups or teachers speak, listen carefully and quietly.</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">The Power of Silence</h4>
-                <p>It is good to practice silence once in a while. Often beautiful thoughts come when we are silent.</p>
-              </div>
-            </div>
-          </div>
+          <h4>The Power of Silence</h4>
+          <p>Sometimes being quiet is wonderful! When you're silent, beautiful thoughts can come to you.</p>
 
-          <div class="mt-8 p-4 bg-indian-cream rounded-lg text-center">
-            <h4 class="font-semibold text-lg mb-2">Three Pillars of Character</h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Good Company</strong><br/>
-                <span class="text-sm">Choose wise friends</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Good Reading</strong><br/>
-                <span class="text-sm">Feed your mind well</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Good Speech</strong><br/>
-                <span class="text-sm">Use words wisely</span>
-              </div>
-            </div>
-          </div>
+          <h3>Three Things That Make You Great</h3>
+          <ol>
+            <li><strong>Good Friends</strong> - choose wisely!</li>
+            <li><strong>Good Books</strong> - read often!</li>
+            <li><strong>Good Words</strong> - speak kindly!</li>
+          </ol>
 
-          <div class="mt-6 p-4 bg-spiritual-50 rounded-lg border-l-4 border-indian-saffron">
-            <h4 class="font-semibold mb-2">Remember</h4>
-            <p>The company we keep, the books we read, and the way we speak all shape who we become. Choose carefully in all three areas, and you will grow into a person of good character and wisdom.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Good friends</strong> bring happiness; bad friends bring trouble</li>
+            <li><strong>Never</strong> smoke, drink alcohol, take drugs, or gamble</li>
+            <li><strong>Reading</strong> makes you smart and never bored</li>
+            <li><strong>Think before you speak</strong> - words can't be taken back</li>
+            <li><strong>Listen</strong> as much as you talk</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'How is a person judged according to this lesson?',
+              question: 'What happens when you have good friends?',
               answers: [
-                'By their wealth',
-                'By the company they keep',
-                'By their appearance',
-                'By their age'
+                'You learn bad things',
+                'You learn good things',
+                'Nothing happens',
+                'You get in trouble'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should we avoid to maintain good character?',
+              question: 'Which of these should you NEVER do?',
               answers: [
-                'Reading books',
-                'Smoking, gambling, drinking, and drugs',
-                'Making friends',
-                'Going to school'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What do holy books help us do?',
-              answers: [
-                'Become wealthy',
-                'Clean our minds of unwanted thoughts',
-                'Win competitions',
-                'Become famous'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Why should we think before speaking?',
-              answers: [
-                'To speak louder',
-                'Because words once spoken cannot be taken back',
-                'To speak faster',
-                'To impress others'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What happens when we practice silence?',
-              answers: [
-                'We become sad',
-                'We lose our voice',
-                'Beautiful thoughts often come',
-                'We become angry'
+                'Read books',
+                'Make friends',
+                'Smoke, drink alcohol, or take drugs',
+                'Go to school'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What are the three pillars of character mentioned in this lesson?',
+              question: 'Why is reading good for you?',
               answers: [
-                'Money, fame, power',
-                'Good company, good reading, good speech',
-                'Food, sleep, exercise',
-                'Work, play, rest'
+                'It makes you tired',
+                'It makes you smarter and you\'ll never be bored',
+                'It wastes time',
+                'It\'s not good for you'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does good company bring according to the lesson?',
+              question: 'Why should you think before you speak?',
               answers: [
-                'Sorrow and problems',
-                'Joy and happiness',
-                'Confusion',
+                'To speak louder',
+                'Because you can\'t take words back',
+                'To speak faster',
+                'It doesn\'t matter'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What can happen when you are silent?',
+              answers: [
+                'You get bored',
+                'Beautiful thoughts can come to you',
+                'You forget how to talk',
+                'Nothing good'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What are the three things that make you great?',
+              answers: [
+                'Money, toys, games',
+                'Good friends, good books, good words',
+                'TV, phone, computer',
+                'Sleeping, eating, playing'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does good company (good friends) bring?',
+              answers: [
+                'Sadness',
+                'Happiness',
+                'Problems',
                 'Nothing'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does bad company bring?',
+              question: 'What should you do when grown-ups speak?',
               answers: [
-                'Joy and happiness',
-                'Sorrow',
-                'Good habits',
-                'Wisdom'
+                'Ignore them',
+                'Talk over them',
+                'Listen carefully and quietly',
+                'Walk away'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What do holy books help you do?',
+              answers: [
+                'Become rich',
+                'Clean your mind of bad thoughts',
+                'Win games',
+                'Sleep better'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What will happen to someone with good reading habits?',
+              question: 'What is speaking described as?',
               answers: [
-                'They will become rich',
-                'They will never feel lonely or bored in life',
-                'They will become famous',
-                'They will become lazy'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'What is speech described as in this lesson?',
-              answers: [
-                'A burden',
-                'God\'s wonderful gift to us',
+                'A problem',
+                'A wonderful gift from God',
                 'Something to avoid',
-                'Only for adults'
+                'Not important'
               ],
               correctAnswer: 1
             }
@@ -11509,281 +11203,178 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'right-living-part3',
         title: 'Right Living - Part 3',
-        description: 'Learn about staying busy, serving others, and practicing charity',
+        description: 'Learn about staying busy, helping others, and sharing',
         content: `
-          <h2>Right Living - Part 3</h2>
-          <p>In this final part of our Right Living series, we explore three essential qualities that make life meaningful: staying actively busy, serving others, and practicing charity.</p>
+          <h2>Right Living - Part 3: Be Busy, Help Others, Share!</h2>
+          <p>In this lesson, we learn three wonderful things: staying busy with good work, helping others, and sharing what we have!</p>
 
-          <h3>Be Busy</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4 font-medium italic">'Busy like a bee' is a saying with great meaning.</p>
+          <h3>Be Busy Like a Bee!</h3>
+          <p>Have you seen how busy bees are? They're always working! We should be like that too - but doing GOOD things!</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Keep Body and Mind Active</h4>
-                <p>We must learn to keep the body and mind active. One should never waste time but use it properly for studying, reading, prayer and serving others.</p>
-              </div>
+          <h4>Don't Waste Time!</h4>
+          <p>Time is precious. Use it for:</p>
+          <ul>
+            <li><strong>Studying</strong> - learn new things</li>
+            <li><strong>Reading</strong> - books make you smart</li>
+            <li><strong>Praying</strong> - talk to God</li>
+            <li><strong>Helping others</strong> - be kind</li>
+            <li><strong>Playing</strong> - exercise is important too!</li>
+          </ul>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">Do Useful, Good Work</h4>
-                <ul class="space-y-2">
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Avoid the company of idle people</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>An active mind and body are necessary for a healthy life</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Great things can only be achieved by hard work</span>
-                  </li>
-                </ul>
-              </div>
+          <h4>Ways to Be Helpful</h4>
+          <ul>
+            <li>Help your <strong>parents</strong> with chores</li>
+            <li>Help your <strong>brothers and sisters</strong></li>
+            <li>Help your <strong>teachers</strong> at school</li>
+            <li>Help your <strong>friends</strong></li>
+          </ul>
+          <p>Remember: <strong>"Be good and do good!"</strong></p>
 
-              <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-300">
-                <h4 class="font-semibold mb-2 text-green-700">Ways to Be Helpful</h4>
-                <ul class="space-y-2 text-green-700">
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Help your parents, brothers and sisters</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Share household work with them</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Learn to work joyfully</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>At school, help your teachers</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Be helpful to your friends</span>
-                  </li>
-                </ul>
-                <p class="mt-3 font-medium">Be good and do good. There lies the seed of greatness.</p>
-              </div>
-            </div>
-          </div>
+          <h3>Helping Others is Like Helping God!</h3>
+          <p>A great teacher named <strong>Swami Vivekananda</strong> said:</p>
+          <p><em>"Helping people is like helping God. Work is worship!"</em></p>
+          <p>This means when you help someone, it's like you're serving God!</p>
 
-          <h3>Service</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mb-4">
-              <p class="text-lg font-medium italic text-center">"Service to man is service to God. Work is worship."</p>
-              <p class="text-center mt-2 font-medium">- Swami Vivekananda</p>
-            </div>
+          <h4>Who Should We Help?</h4>
+          <ul>
+            <li>People who are <strong>poor</strong></li>
+            <li>People who are <strong>sick</strong></li>
+            <li>People who <strong>need help</strong></li>
+            <li>Animals who are <strong>hungry</strong></li>
+          </ul>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Who Should We Serve?</h4>
-                <p class="mb-3">We must learn to serve the unfortunate, the poor, the sick and the needy with love and kindness.</p>
-                <ul class="space-y-1">
-                  <li>• The unfortunate</li>
-                  <li>• The poor</li>
-                  <li>• The sick</li>
-                  <li>• The needy</li>
-                </ul>
-              </div>
+          <h4>Important Rule!</h4>
+          <p><strong>Don't expect anything in return!</strong> When you help someone, don't ask for a reward. Just feel happy that you helped!</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">How to Serve</h4>
-                <ul class="space-y-2">
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Try to feel God's presence in all</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Such service brings a rare joy into our lives</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Never look for any reward</strong> while you help or serve others</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <h3>Sharing is Caring!</h3>
+          <p>Everything in the world belongs to God. We should:</p>
+          <ul>
+            <li><strong>Take only what we need</strong> - don't be greedy!</li>
+            <li><strong>Share with others</strong> - sharing makes everyone happy</li>
+            <li><strong>Give with love</strong> - give happily, not sadly</li>
+          </ul>
 
-          <h3>Charity</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4 font-medium">The whole world is God's creation. Everything here truly belongs to Him. Ours is to take from it only what we need and share everything with everybody else.</p>
+          <h4>Ways to Share</h4>
+          <ul>
+            <li>Share your <strong>food</strong> with hungry people or animals</li>
+            <li>Share your <strong>toys</strong> with friends</li>
+            <li>Share your <strong>knowledge</strong> - help others learn</li>
+            <li>Share your <strong>time</strong> - spend time with people who need company</li>
+          </ul>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">Principles of Giving</h4>
-                <ul class="space-y-2">
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Give willingly, lovingly and abundantly</strong></span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span><strong>Never be greedy</strong></span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Take only what you need</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="text-spiritual-500 mr-2">•</span>
-                    <span>Share everything with everybody else</span>
-                  </li>
-                </ul>
-              </div>
+          <h3>A Beautiful Quote</h3>
+          <p>Swami Vivekananda also said:</p>
+          <p><em>"Only they truly live who live for others!"</em></p>
+          <p>This means the happiest people are those who help others!</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-green-300">
-                <h4 class="font-semibold mb-2 text-green-700">Ways to Practice Charity</h4>
-                <ul class="space-y-2 text-green-700">
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Whenever possible feed all God's creatures that are hungry</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Share your knowledge and gifts</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span>Help those in need without expecting anything in return</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="bg-gradient-to-br from-indian-cream to-white p-4 rounded-lg border border-indian-saffron">
-                <p class="text-lg font-medium italic text-center">"Only they live who live for others. The rest are more dead than alive."</p>
-                <p class="text-center mt-2 font-medium">- Swami Vivekananda</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 p-4 bg-indian-cream rounded-lg text-center">
-            <h4 class="font-semibold text-lg mb-2">Three Paths to Meaningful Life</h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Be Busy</strong><br/>
-                <span class="text-sm">Active body and mind</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Serve Others</strong><br/>
-                <span class="text-sm">Work is worship</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Practice Charity</strong><br/>
-                <span class="text-sm">Give willingly and lovingly</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 p-4 bg-spiritual-50 rounded-lg border-l-4 border-indian-saffron">
-            <h4 class="font-semibold mb-2">The Complete Path</h4>
-            <p>Through the three parts of Right Living, we learn to live properly at home and school (Part 1), choose good company and use our speech wisely (Part 2), and finally, to stay active in service and charity (Part 3). This complete approach helps us grow into caring, productive, and spiritually aware individuals.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Be busy</strong> like a bee - don't waste time!</li>
+            <li><strong>Help others</strong> - it's like helping God</li>
+            <li><strong>Don't expect rewards</strong> when you help</li>
+            <li><strong>Share</strong> what you have with love</li>
+            <li><strong>Don't be greedy</strong> - take only what you need</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'What does "Busy like a bee" teach us?',
+              question: 'What does "Busy like a bee" mean?',
               answers: [
-                'To make honey',
-                'To keep body and mind active',
-                'To fly around',
-                'To live in groups'
+                'Make honey',
+                'Stay active and do good work',
+                'Fly around',
+                'Sleep all day'
               ],
               correctAnswer: 1
             },
             {
-              question: 'According to Swami Vivekananda, what is "Service to man"?',
+              question: 'According to Swami Vivekananda, helping people is like helping who?',
               answers: [
-                'Service to God',
-                'A waste of time',
-                'Only for adults',
-                'Not important'
-              ],
-              correctAnswer: 0
-            },
-            {
-              question: 'What should we never look for while serving others?',
-              answers: [
-                'Happiness',
-                'Any reward',
-                'God\'s presence',
-                'Joy'
+                'Yourself',
+                'God',
+                'Nobody',
+                'Only friends'
               ],
               correctAnswer: 1
             },
             {
-              question: 'According to this lesson, everything in the world belongs to whom?',
+              question: 'Should you expect a reward when you help someone?',
+              answers: [
+                'Yes, always',
+                'No, just be happy you helped',
+                'Only sometimes',
+                'Only from family'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Who does everything in the world belong to?',
               answers: [
                 'Rich people',
-                'Government',
+                'The government',
                 'God',
                 'Nobody'
               ],
               correctAnswer: 2
             },
             {
-              question: 'How should we give according to the lesson on charity?',
+              question: 'How should you share with others?',
               answers: [
-                'Reluctantly and little',
+                'Sadly and little',
                 'Only when forced',
-                'Willingly, lovingly and abundantly',
-                'Only to family'
+                'Happily and with love',
+                'Never share'
               ],
               correctAnswer: 2
             },
             {
-              question: 'Complete Swami Vivekananda\'s quote: "Only they live who..."',
+              question: 'Who said "Only they truly live who live for others"?',
               answers: [
-                'live for money',
-                'live for themselves',
-                'live for others',
-                'live for fame'
+                'A teacher at school',
+                'Swami Vivekananda',
+                'A friend',
+                'Nobody'
               ],
-              correctAnswer: 2
+              correctAnswer: 1
             },
             {
-              question: 'What should we use our time for according to this lesson?',
+              question: 'What should you use your time for?',
               answers: [
                 'Only sleeping',
-                'Studying, reading, prayer and serving others',
-                'Only playing',
+                'Studying, reading, praying, and helping others',
+                'Only playing video games',
                 'Wasting it'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What type of people should we avoid the company of?',
+              question: 'What should you NOT be when it comes to taking things?',
               answers: [
-                'Active people',
-                'Idle people',
-                'Helpful people',
-                'Hardworking people'
+                'Happy',
+                'Greedy',
+                'Helpful',
+                'Kind'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Who should we serve according to this lesson?',
+              question: 'Who should we help?',
               answers: [
                 'Only rich people',
-                'Only family members',
-                'The unfortunate, poor, sick and needy',
-                'Only ourselves'
+                'Only family',
+                'Poor, sick, and needy people',
+                'Nobody'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What should we do whenever possible according to the charity section?',
+              question: 'What can you share besides toys?',
               answers: [
-                'Keep everything for ourselves',
-                'Feed all God\'s creatures that are hungry',
-                'Ignore hungry creatures',
-                'Only feed pets'
+                'Nothing else',
+                'Food, knowledge, and time',
+                'Only money',
+                'Only clothes'
               ],
               correctAnswer: 1
             }
@@ -11793,261 +11384,185 @@ export const lessonsData: LessonGroup[] = [
       {
         id: 'right-living-part4',
         title: 'Right Living - Part 4',
-        description: 'Learn about avoiding fault-finding, developing self-control, and cultivating good hobbies',
+        description: 'Learn about not finding faults, controlling yourself, and having good hobbies',
         content: `
-          <h2>Right Living - Part 4</h2>
-          <p>In this final part of our Right Living series, we explore three important aspects of inner development: avoiding fault-finding, developing self-control, and cultivating beneficial hobbies.</p>
+          <h2>Right Living - Part 4: Be Kind, Control Yourself, Have Fun!</h2>
+          <p>This is the last part of Right Living! We'll learn about being kind to others, controlling our minds, and having good hobbies.</p>
 
-          <h3>Fault-Finding</h3>
-          <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 mt-6">
-            <p class="mb-4">It is very easy to find faults in others and not notice them in ourselves. Finding faults and teasing others leaves bitter feelings and disturbs the minds of those around. One should avoid this at all times.</p>
+          <h3>Don't Find Faults in Others!</h3>
+          <p>It's easy to see what's wrong with other people. But it's hard to see what's wrong with ourselves!</p>
 
-            <div class="bg-gradient-to-br from-indian-cream to-white p-6 rounded-lg border border-indian-saffron mt-4">
-              <h4 class="font-semibold mb-3">Holy Mother Sri Sarada Devi's Teaching</h4>
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <p class="italic text-lg mb-3">"If you want peace of mind, do not find fault with others. Rather see your own faults. Learn to make the whole world your own. No one is a stranger, my child; the whole world is your own."</p>
-                <p class="text-right font-medium">- Sri Sarada Devi</p>
-              </div>
-            </div>
+          <h4>A Wise Teaching</h4>
+          <p>A holy woman named <strong>Sri Sarada Devi</strong> said:</p>
+          <p><em>"If you want peace, don't find faults in others. Look at your own faults instead. The whole world is your family!"</em></p>
 
-            <div class="bg-white p-4 rounded-lg mt-4">
-              <h4 class="font-semibold mb-2">Why Avoid Fault-Finding?</h4>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <span class="text-red-500 mr-2">•</span>
-                  <span>It leaves bitter feelings in others</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-red-500 mr-2">•</span>
-                  <span>It disturbs the minds of those around us</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-red-500 mr-2">•</span>
-                  <span>It prevents us from seeing our own faults</span>
-                </li>
-                <li class="flex items-start">
-                  <span class="text-green-500 mr-2">•</span>
-                  <span>Instead, focus on seeing your own faults and improving yourself</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <h4>Why is Fault-Finding Bad?</h4>
+          <ul>
+            <li>It <strong>hurts people's feelings</strong></li>
+            <li>It makes people <strong>upset and sad</strong></li>
+            <li>It stops you from <strong>seeing your own mistakes</strong></li>
+            <li>It makes <strong>you unhappy</strong> too!</li>
+          </ul>
 
-          <h3>Self-Control</h3>
-          <div class="bg-indian-cream p-4 rounded-lg mt-6">
-            <p class="mb-4 font-medium">Self-control is a great quality by which we change from animals into godly persons.</p>
+          <h4>What to Do Instead</h4>
+          <ul>
+            <li>Look at <strong>your own faults</strong> and fix them</li>
+            <li>Be <strong>kind</strong> to everyone</li>
+            <li>Remember: <strong>everyone is part of your big family!</strong></li>
+          </ul>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Understanding the Mind</h4>
-                <p class="mb-3">We can tame a wild lion or an elephant. We can train them and make them obey us. Our uncontrolled minds are like wild animals. In the same way we must control and train our minds.</p>
-              </div>
+          <h3>Control Your Mind!</h3>
+          <p><strong>Self-control</strong> is super important! It helps us become better people.</p>
 
-              <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200">
-                <h4 class="font-semibold mb-2">Sri Ramakrishna's Example</h4>
-                <p class="mb-3">To show us how restless our minds can be, Sri Ramakrishna uses an example of a drunk monkey bitten by a scorpion.</p>
-                <p class="italic text-sm">This vivid image helps us understand just how wild and uncontrolled our minds can become without proper training.</p>
-              </div>
+          <h4>The Monkey Mind</h4>
+          <p>A great teacher named <strong>Sri Ramakrishna</strong> said our minds are like a <strong>crazy monkey</strong> - always jumping around!</p>
+          <p>Just like we can train a wild animal, we can train our minds to be calm and good.</p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-green-300">
-                <h4 class="font-semibold mb-2 text-green-700">Ways to Tame the Mind</h4>
-                <p class="mb-3">There are very many ways in which we can tame this 'monkey' and keep him under control:</p>
-                <ul class="space-y-2 text-green-700">
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span><strong>Prayer</strong> - Connecting with the Divine</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span><strong>Reading good books</strong> - Feeding the mind with wisdom</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span><strong>Keeping good company</strong> - Surrounding ourselves with positive influences</span>
-                  </li>
-                  <li class="flex items-start">
-                    <span class="mr-2">•</span>
-                    <span><strong>Having good hobbies</strong> - Channeling energy positively</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <h4>How to Control Your Mind</h4>
+          <ul>
+            <li><strong>Pray</strong> - talk to God</li>
+            <li><strong>Read good books</strong> - fill your mind with good thoughts</li>
+            <li><strong>Have good friends</strong> - they help you be good</li>
+            <li><strong>Have good hobbies</strong> - keep busy with good things</li>
+          </ul>
 
-          <h3>Hobbies</h3>
-          <div class="bg-gradient-to-br from-spiritual-50 to-white p-4 rounded-lg border border-spiritual-200 mt-6">
-            <p class="mb-4 font-medium">It is good to have hobbies to rest and relax the mind.</p>
+          <h3>Have Good Hobbies!</h3>
+          <p>Hobbies are fun things you do in your free time. Good hobbies help your mind relax and grow!</p>
 
-            <div class="space-y-4">
-              <div class="bg-white p-4 rounded-lg border-l-4 border-indian-saffron">
-                <h4 class="font-semibold mb-2">Music - The Divine Hobby</h4>
-                <p class="mb-3">Learning music, singing or playing instruments are very good ways of soothing the mind. Through music one learns to understand the harmony in creation.</p>
+          <h4>Music is Wonderful!</h4>
+          <p>Learning to sing or play an instrument is great because:</p>
+          <ul>
+            <li>It makes your mind <strong>calm and happy</strong></li>
+            <li>It helps you <strong>concentrate</strong></li>
+            <li>Even <strong>animals and plants</strong> like music!</li>
+          </ul>
 
-                <div class="bg-indian-cream p-3 rounded-lg mt-3">
-                  <h5 class="font-semibold mb-2">Indian Music and Nature</h5>
-                  <p class="mb-2">Indian music is made up of the harmonious notes taken from different parts of nature.</p>
-                  <ul class="space-y-1 text-sm">
-                    <li>• Listening to good music can help us to relax and to concentrate</li>
-                    <li>• Even animals and plants respond to music</li>
-                  </ul>
-                </div>
-              </div>
+          <h4>Other Great Hobbies</h4>
+          <ul>
+            <li><strong>Reading</strong> - learn new things</li>
+            <li><strong>Drawing and painting</strong> - be creative</li>
+            <li><strong>Making crafts</strong> - create beautiful things</li>
+            <li><strong>Collecting stamps</strong> - learn about the world</li>
+            <li><strong>Playing sports</strong> - keep your body healthy</li>
+            <li><strong>Gardening</strong> - grow plants</li>
+          </ul>
+          <p>Good hobbies make your free time <strong>happy and useful!</strong></p>
 
-              <div class="bg-white p-4 rounded-lg border-l-4 border-spiritual-300">
-                <h4 class="font-semibold mb-2">Other Beneficial Hobbies</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>Reading & Learning</strong><br/>
-                    <span class="text-sm">Reading good books and improving knowledge</span>
-                  </div>
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>Handicrafts</strong><br/>
-                    <span class="text-sm">Creating useful and beautiful things</span>
-                  </div>
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>Painting</strong><br/>
-                    <span class="text-sm">Expressing creativity through colors</span>
-                  </div>
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>Sculpture</strong><br/>
-                    <span class="text-sm">Creating art through form and shape</span>
-                  </div>
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>Stamp Collecting</strong><br/>
-                    <span class="text-sm">Learning about world cultures</span>
-                  </div>
-                  <div class="bg-spiritual-50 p-3 rounded-lg">
-                    <strong>And Many More!</strong><br/>
-                    <span class="text-sm">Any positive, creative activity</span>
-                  </div>
-                </div>
-                <p class="mt-3 font-medium text-center">These hobbies can make our leisure hours happy and useful.</p>
-              </div>
-            </div>
-          </div>
+          <h3>Three Important Things</h3>
+          <ol>
+            <li><strong>Don't find faults</strong> - be kind to everyone</li>
+            <li><strong>Control your mind</strong> - train it like a pet</li>
+            <li><strong>Have good hobbies</strong> - use free time wisely</li>
+          </ol>
 
-          <div class="mt-8 p-4 bg-indian-cream rounded-lg text-center">
-            <h4 class="font-semibold text-lg mb-2">Three Keys to Inner Development</h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Avoid Fault-Finding</strong><br/>
-                <span class="text-sm">See your own faults instead</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Develop Self-Control</strong><br/>
-                <span class="text-sm">Tame the mind monkey</span>
-              </div>
-              <div class="bg-white p-3 rounded-lg">
-                <strong>Cultivate Good Hobbies</strong><br/>
-                <span class="text-sm">Rest and develop the mind</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 p-4 bg-spiritual-50 rounded-lg border-l-4 border-indian-saffron">
-            <h4 class="font-semibold mb-2">The Complete Journey</h4>
-            <p>Through all four parts of Right Living, we have learned a complete approach to life: proper daily habits (Part 1), good character choices (Part 2), active service (Part 3), and inner development (Part 4). Together, these teachings guide us toward becoming well-rounded, spiritually aware, and genuinely helpful human beings.</p>
-          </div>
+          <h3>Key Things to Remember</h3>
+          <ul>
+            <li><strong>Don't point out</strong> other people's mistakes - look at your own</li>
+            <li>The <strong>whole world</strong> is like your family</li>
+            <li>Your mind is like a <strong>monkey</strong> - train it!</li>
+            <li><strong>Prayer, reading, and good friends</strong> help control your mind</li>
+            <li><strong>Music and hobbies</strong> make you calm and happy</li>
+          </ul>
         `,
         quiz: {
           questions: [
             {
-              question: 'According to Sri Sarada Devi, what should we do if we want peace of mind?',
+              question: 'What did Sri Sarada Devi say we should do for peace of mind?',
               answers: [
                 'Find faults in others',
-                'Do not find fault with others, rather see your own faults',
+                'Look at our own faults instead of others\'',
                 'Ignore everyone',
-                'Complain about everything'
+                'Complain a lot'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What does self-control help us change from?',
+              question: 'What does self-control help us become?',
               answers: [
-                'Children into adults',
-                'Students into teachers',
-                'Animals into godly persons',
-                'Poor into rich'
+                'Rich',
+                'Famous',
+                'Better people',
+                'Lazy'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What example does Sri Ramakrishna use to describe our restless minds?',
+              question: 'What did Sri Ramakrishna compare our minds to?',
               answers: [
-                'A wild horse',
-                'A drunk monkey bitten by a scorpion',
-                'A flying bird',
-                'A running river'
+                'A calm lake',
+                'A crazy monkey',
+                'A sleeping cat',
+                'A slow turtle'
               ],
               correctAnswer: 1
             },
             {
-              question: 'Which of these is NOT mentioned as a way to tame the mind?',
+              question: 'Which of these helps control your mind?',
               answers: [
-                'Prayer',
-                'Reading good books',
-                'Watching too much television',
-                'Keeping good company'
+                'Watching too much TV',
+                'Being lazy',
+                'Prayer and reading good books',
+                'Eating candy'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What does Indian music contain according to this lesson?',
+              question: 'What does music help you do?',
               answers: [
-                'Only modern sounds',
-                'Harmonious notes taken from different parts of nature',
-                'Only loud noises',
-                'Only foreign influences'
+                'Make noise',
+                'Feel calm and concentrate',
+                'Stay awake all night',
+                'Nothing'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What is the purpose of having good hobbies?',
+              question: 'Why should you have good hobbies?',
               answers: [
                 'To waste time',
-                'To show off to others',
-                'To rest and relax the mind',
-                'To avoid work'
+                'To show off',
+                'To relax your mind and have fun',
+                'To avoid homework'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What does fault-finding do to others according to the lesson?',
+              question: 'What does fault-finding do to others?',
               answers: [
                 'Makes them happy',
-                'Leaves bitter feelings and disturbs their minds',
-                'Helps them improve',
-                'Has no effect'
+                'Hurts their feelings',
+                'Helps them',
+                'Nothing'
               ],
               correctAnswer: 1
             },
             {
-              question: 'What should we learn to make according to Sri Sarada Devi?',
+              question: 'According to Sri Sarada Devi, who is your family?',
               answers: [
-                'Only our family our own',
-                'Only our friends our own',
-                'The whole world our own',
-                'Only our country our own'
+                'Only your parents',
+                'Only your friends',
+                'The whole world',
+                'Only your neighbors'
               ],
               correctAnswer: 2
             },
             {
-              question: 'What do music, singing, and playing instruments help with?',
-              answers: [
-                'Making noise',
-                'Soothing the mind and understanding harmony in creation',
-                'Showing off',
-                'Wasting time'
-              ],
-              correctAnswer: 1
-            },
-            {
-              question: 'Which creatures respond to music according to the lesson?',
+              question: 'Who likes music according to the lesson?',
               answers: [
                 'Only humans',
-                'Only pets',
+                'Only children',
                 'Even animals and plants',
-                'No one'
+                'Nobody'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What should you do instead of finding faults in others?',
+              answers: [
+                'Ignore them',
+                'Be mean to them',
+                'Look at your own faults and be kind',
+                'Tell everyone about their faults'
               ],
               correctAnswer: 2
             }

@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
-
-interface TimedSyllable {
-  text: string;
-  startTime: number;
-  endTime: number;
-}
+import { TimedSyllable, SvaraType } from '@/data/mantraTimings';
+import { getConfirmedSyllables, initMantraConfigs } from '@/utils/mantraStorage';
 
 interface SyncedAudioPlayerProps {
   src: string;
@@ -15,15 +11,17 @@ interface SyncedAudioPlayerProps {
   originalText: string;
   transliteration?: string;
   transliterationSyllables?: string[];
+  mantraId?: string;
 }
 
 const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   src,
   title,
-  syllables,
+  syllables: defaultSyllables,
   originalText,
   transliteration,
-  transliterationSyllables
+  transliterationSyllables,
+  mantraId
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -33,13 +31,23 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [configsReady, setConfigsReady] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const highlightIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Initialize configs from JSON file on mount
   useEffect(() => {
-    // Reset state when src changes
+    initMantraConfigs().then(() => setConfigsReady(true));
+  }, []);
+
+  // Use confirmed syllables from admin if available
+  const syllables = mantraId && configsReady
+    ? getConfirmedSyllables(mantraId, defaultSyllables)
+    : defaultSyllables;
+
+  useEffect(() => {
     setIsPlaying(false);
     setCurrentTime(0);
     setIsLoaded(false);
@@ -73,8 +81,6 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
           console.error("Error playing audio:", err);
           setError("Could not play audio");
         });
-        
-        // Start the highlighting interval
         startHighlightInterval();
       }
       setIsPlaying(!isPlaying);
@@ -85,19 +91,14 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     if (highlightIntervalRef.current) {
       clearInterval(highlightIntervalRef.current);
     }
-    
-    // Check every 100ms which syllable should be highlighted
     highlightIntervalRef.current = setInterval(() => {
       if (audioRef.current) {
         const currentAudioTime = audioRef.current.currentTime;
-        
-        // Find the syllable that should be active at the current time
         const activeIdx = syllables.findIndex(
-          syllable => 
-            currentAudioTime >= syllable.startTime && 
+          syllable =>
+            currentAudioTime >= syllable.startTime &&
             currentAudioTime <= syllable.endTime
         );
-        
         setActiveIndex(activeIdx);
       }
     }, 100);
@@ -114,11 +115,9 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
       const newTime = values[0];
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
-      
-      // Update the highlighted syllable immediately
       const activeIdx = syllables.findIndex(
-        syllable => 
-          newTime >= syllable.startTime && 
+        syllable =>
+          newTime >= syllable.startTime &&
           newTime <= syllable.endTime
       );
       setActiveIndex(activeIdx);
@@ -130,11 +129,7 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
       const newVolume = values[0];
       audioRef.current.volume = newVolume;
       setVolume(newVolume);
-      if (newVolume === 0) {
-        setIsMuted(true);
-      } else {
-        setIsMuted(false);
-      }
+      setIsMuted(newVolume === 0);
     }
   };
 
@@ -158,7 +153,6 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
       if (!isPlaying) {
         togglePlayPause();
       } else {
-        // If already playing, restart the highlighting
         startHighlightInterval();
       }
     }
@@ -179,58 +173,97 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     };
   }, []);
 
-  // Render the text with highlighting
+  // Get animation class based on explicit svara or fallback to duration-based
+  const getSvaraAnimationClass = (svara: SvaraType | undefined, dur: number): string => {
+    // If svara is explicitly set, use it (including 'neutral' which means no animation)
+    if (svara) {
+      switch (svara) {
+        case 'udatta': return 'svara-syllable-udatta';
+        case 'anudatta': return 'svara-syllable-anudatta';
+        case 'svarita': return 'svara-syllable-svarita';
+        case 'dirgha-svarita': return 'svara-syllable-dirgha';
+        case 'neutral': return ''; // Explicitly no animation
+      }
+    }
+    // Fallback to duration-based inference only if no svara is set
+    const isShort = dur <= 0.35;
+    const isDirgha = dur >= 1.0;
+    if (isShort) return '';
+    return isDirgha ? 'svara-syllable-dirgha' : 'svara-syllable-active';
+  };
+
+  // Render the text with highlighting and svara animation
   const renderSyncedText = () => {
     if (syllables.length === 0) {
-      return <p className="font-mono text-center text-lg">{originalText}</p>;
+      return <p className="font-sanskrit text-center text-2xl md:text-3xl lg:text-4xl leading-relaxed">{originalText}</p>;
     }
 
-    // If we have timing data, render with highlighting
     return (
-      <div className="font-mono text-center text-lg leading-relaxed">
-        {syllables.map((syllable, index) => (
-          <span
-            key={index}
-            className={`transition-colors duration-200 ${
-              index === activeIndex
-                ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
-                : ''
-            }`}
-          >
-            {syllable.text}
-          </span>
-        ))}
+      <div className="font-sanskrit text-center text-2xl md:text-3xl lg:text-4xl leading-relaxed">
+        {syllables.map((syllable, index) => {
+          const isActive = index === activeIndex;
+          const dur = syllable.endTime - syllable.startTime;
+          const animationClass = isActive ? getSvaraAnimationClass(syllable.svara, dur) : '';
+
+          const highlightClasses = isActive
+            ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
+            : '';
+
+          const animationStyle = isActive && animationClass
+            ? { animationDuration: `${Math.max(dur, 0.2)}s` }
+            : undefined;
+
+          return (
+            <span
+              key={index}
+              className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
+              style={animationStyle}
+            >
+              {syllable.text}
+            </span>
+          );
+        })}
       </div>
     );
   };
 
-  // Render the transliteration with highlighting
+  // Render the transliteration with highlighting and svara animation
   const renderSyncedTransliteration = () => {
     if (!transliteration) return null;
 
-    // If we have transliteration syllables that match the Sanskrit syllables, render with highlighting
     if (transliterationSyllables && transliterationSyllables.length === syllables.length) {
       return (
-        <div className="text-center text-sm text-gray-600 italic font-medium leading-relaxed">
-          {transliterationSyllables.map((syllable, index) => (
-            <span
-              key={index}
-              className={`transition-colors duration-200 ${
-                index === activeIndex
-                  ? 'bg-indian-saffron/20 text-indian-saffron font-bold'
-                  : ''
-              }`}
-            >
-              {syllable}
-            </span>
-          ))}
+        <div className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed">
+          {transliterationSyllables.map((syllable, index) => {
+            const isActive = index === activeIndex;
+            const source = syllables[index];
+            const dur = source ? source.endTime - source.startTime : 0;
+            const animationClass = isActive ? getSvaraAnimationClass(source?.svara, dur) : '';
+
+            const highlightClasses = isActive
+              ? 'bg-indian-saffron/20 text-indian-saffron font-bold'
+              : '';
+
+            const animationStyle = isActive && animationClass
+              ? { animationDuration: `${Math.max(dur, 0.2)}s` }
+              : undefined;
+
+            return (
+              <span
+                key={index}
+                className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
+                style={animationStyle}
+              >
+                {syllable}
+              </span>
+            );
+          })}
         </div>
       );
     }
 
-    // Fallback to simple transliteration display
     return (
-      <p className="text-center text-sm text-gray-600 italic font-medium">
+      <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium">
         {transliteration}
       </p>
     );
@@ -246,12 +279,12 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
           </div>
         )}
       </div>
-      
+
       <div className="bg-gradient-to-br from-indian-cream/30 to-white rounded-lg p-4 shadow-sm border border-indian-saffron/20">
         {title && (
           <div className="mb-2 text-center font-medium text-gray-700">{title}</div>
         )}
-        
+
         <audio
           ref={audioRef}
           src={src}
@@ -259,13 +292,8 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onError={handleLoadError}
-          onCanPlay={() => {
-            console.log('Audio can play:', src);
-            setIsLoaded(true);
-          }}
-          onLoadStart={() => {
-            console.log('Audio load started:', src);
-          }}
+          onCanPlay={() => setIsLoaded(true)}
+          onLoadStart={() => console.log('Audio load started:', src)}
           onEnded={() => {
             setIsPlaying(false);
             if (highlightIntervalRef.current) {
@@ -343,3 +371,4 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
 };
 
 export default SyncedAudioPlayer;
+

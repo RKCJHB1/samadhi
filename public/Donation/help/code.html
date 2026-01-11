@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>General Help</title>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec6d13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221810",
+                        "text-light": "#1b130d",
+                        "text-dark": "#f8f7f6",
+                        "text-muted-light": "#9a6c4c",
+                        "text-muted-dark": "#a8a29e",
+                        "border-light": "#e7d9cf",
+                        "border-dark": "#44403c"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .icon-muted {
+            color: #9a6c4c;
+        }
+        .dark .icon-muted {
+            color: #a8a29e;
+        }
+        .text-body {
+            color: #1b130d;
+        }
+        .dark .text-body {
+            color: #f8f7f6;
+        }
+        .text-muted {
+            color: #9a6c4c;
+        }
+        .dark .text-muted {
+            color: #a8a29e;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="flex items-center p-4">
+<button class="p-2 -ml-2 text-text-light dark:text-text-dark">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+</svg>
+</button>
+<h1 class="flex-1 text-lg font-bold text-center text-text-light dark:text-text-dark">Help</h1>
+<div class="w-8"></div>
+</div>
+</header>
+<main class="flex-grow px-4 pb-8">
+<div class="relative mt-4 mb-8">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none icon-muted">
+<svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<input class="w-full py-3 pl-12 pr-4 text-base rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Search for help" type="search"/>
+</div>
+<div class="mb-8">
+<h2 class="text-xl font-bold text-text-light dark:text-text-dark">Popular Topics</h2>
+<div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
+<a class="flex flex-col gap-3 p-4 transition-all duration-200 ease-in-out border rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<div class="text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M230.33,141.06a24.34,24.34,0,0,0-18.61-4.77C230.5,117.33,240,98.48,240,80c0-26.47-21.29-48-47.46-48A47.58,47.58,0,0,0,156,48.75,47.58,47.58,0,0,0,119.46,32C93.29,32,72,53.53,72,80c0,11,3.24,21.69,10.06,33a31.87,31.87,0,0,0-14.75,8.4L44.69,144H16A16,16,0,0,0,0,160v40a16,16,0,0,0,16,16H120a7.93,7.93,0,0,0,1.94-.24l64-16a6.94,6.94,0,0,0,1.19-.4L226,182.82l.44-.2a24.6,24.6,0,0,0,3.93-41.56ZM119.46,48A31.15,31.15,0,0,1,148.6,67a8,8,0,0,0,14.8,0,31.15,31.15,0,0,1,29.14-19C209.59,48,224,62.65,224,80c0,19.51-15.79,41.58-45.66,63.9l-11.09,2.55A28,28,0,0,0,140,112H100.68C92.05,100.36,88,90.12,88,80,88,62.65,102.41,48,119.46,48ZM16,160H40v40H16Zm203.43,8.21-38,16.18L119,200H56V155.31l22.63-22.62A15.86,15.86,0,0,1,89.94,128H140a12,12,0,0,1,0,24H112a8,8,0,0,0,0,16h32a8.32,8.32,0,0,0,1.79-.2l67-15.41.31-.08a8.6,8.6,0,0,1,6.3,15.9Z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-body">How to Donate</h3>
+<p class="text-sm text-muted">Learn how to make a donation</p>
+</div>
+</a>
+<a class="flex flex-col gap-3 p-4 transition-all duration-200 ease-in-out border rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<div class="text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M223.68,66.15,135.68,18h0a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32h0l80.34,44L128,120,47.66,76ZM40,90l80,43.78v85.79L40,175.82Zm96,129.57V133.82L216,90v85.78Z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-body">Understanding the 3D Model</h3>
+<p class="text-sm text-muted">Explore the 3D model and its features</p>
+</div>
+</a>
+<a class="flex flex-col gap-3 p-4 transition-all duration-200 ease-in-out border rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<div class="text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-body">Managing Your Profile</h3>
+<p class="text-sm text-muted">Manage your account settings</p>
+</div>
+</a>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-bold text-text-light dark:text-text-dark">Video Tutorials</h2>
+<div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
+<a class="flex flex-col gap-2" href="#">
+<div class="relative w-full overflow-hidden rounded-lg aspect-video">
+<img alt="How to Donate Thumbnail" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrxn4FQAB2WEfFSZjecLEKpurYUWvK25KD16dbhWQOEbqtjg50r-QJoy-tU5_QL7Pnq8v8dvH0qXfvqccXiKUourqHOdSXPfxZAj-H-wKfRT6wQ_w4KxBWGdfr5DFrsUH0iy1iHjRR7-LPHfhYeolFOEsfSxyG0PDHKpU8edArH2gahcV4ZeOBKyuq4eyHmpyF5c1ZroFtrvukPwYuCK4BbymekOOYIrPkVg4daB6IdTqqD_stOOb5De2lj0mRRd4P4SNQpaIv4mI"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30">
+<svg class="text-white" fill="currentColor" height="48" viewBox="0 0 256 256" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path></svg>
+</div>
+</div>
+<h3 class="font-bold text-body">How to Donate</h3>
+</a>
+<a class="flex flex-col gap-2" href="#">
+<div class="relative w-full overflow-hidden rounded-lg aspect-video">
+<img alt="Exploring the 3D Model Thumbnail" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKcgAVqqWme4dAuJOy60EivkqwHXUKaIpyNDk-NjypNmmNTynxud-69ssMMOnKKNMdkm5cOmiOPTEfnYxgACOtA0ulyMMro_QwKnHoAMq3GPEeDgzEhWp90UYsJGdz10LwgjbJKCIktYJLS2AHhpiduFNxgmQAyFVKKoWkxEodBX-vLUwfG09qHNpYXRSDFEuROX5EZT6PT-HJ8ipoEE4yb7ZzcYvC1iDfg5tdRkronrxy3BslzX5zv6dy0Fbw4RCjfrafFRY1628"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30">
+<svg class="text-white" fill="currentColor" height="48" viewBox="0 0 256 256" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path></svg>
+</div>
+</div>
+<h3 class="font-bold text-body">Exploring the 3D Model</h3>
+</a>
+<a class="flex flex-col gap-2" href="#">
+<div class="relative w-full overflow-hidden rounded-lg aspect-video">
+<img alt="Managing Your Donor Profile Thumbnail" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhHdJEClIgNPv3o9fka956OfY635F_s-v4GQcn6YQLt5Xb7aldthd4OY99AmW4U9GuvYxz4ParnMkRAwCIVPQOWRygedw8yGX88keZKJ4IkiFSpGIJpiqdhwMcBBfGrAMutFAnR7ckOAI1VlS6tlr7agqT_dsipTE7D85QYf5d-BMulyNtB_mBtUya4Mp8BnCV2wptLsSqGQBXfMhJ4CjLzNGn60iC4p2L49xYex-3isMFa4qTZwUesAhrI9WdcvBwMI3Yg9xJ4EI"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30">
+<svg class="text-white" fill="currentColor" height="48" viewBox="0 0 256 256" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path></svg>
+</div>
+</div>
+<h3 class="font-bold text-body">Managing Your Donor Profile</h3>
+</a>
+<a class="flex flex-col gap-2" href="#">
+<div class="relative w-full overflow-hidden rounded-lg aspect-video">
+<img alt="Understanding Impact Reports Thumbnail" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTMWYUcRksvGYvlJpNTpw6X7MboPA_PRrtGH9la-nq2JZWLvLflqVbE2CQemwtQRkA76g50OqEyBpVwOUxXEiHRFgMM8Wov9ko27XRD6NDu13HDCc5Jq9NMSRXxmqV5yDSioq4f44i3E-P9MNlef-RqreH5LR3IF2xwjJ961eDrKyNpFercIhLcLB08HuwmhVcZnqGnmkldq1QPFbmJM9rY9LWA-PZnPk9qQfKHzVWGOvT21JK44C77ZIia7rBHActenl7f43W4wM"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/30">
+<svg class="text-white" fill="currentColor" height="48" viewBox="0 0 256 256" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path></svg>
+</div>
+</div>
+<h3 class="font-bold text-body">Understanding Impact Reports</h3>
+</a>
+</div>
+</div>
+</main>
+<footer class="sticky bottom-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-border-light dark:border-border-dark">
+<nav class="flex justify-around p-2">
+<a class="flex flex-col items-center justify-center w-1/5 gap-1 py-1 text-muted" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M218.83,103.77l-80-75.48a1.14,1.14,0,0,1-.11-.11,16,16,0,0,0-21.53,0l-.11.11L37.17,103.77A16,16,0,0,0,32,115.55V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V160h32v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V115.55A16,16,0,0,0,218.83,103.77ZM208,208H160V160a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v48H48V115.55l.11-.1L128,40l79.9,75.43.11.1Z"></path>
+</svg>
+<span class="text-xs font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-1/5 gap-1 py-1 text-muted" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+<span class="text-xs font-medium">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center w-1/5 gap-1 py-1 text-muted" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M178,32c-20.65,0-38.73,8.88-50,23.89C116.73,40.88,98.65,32,78,32A62.07,62.07,0,0,0,16,94c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,220.66,240,164,240,94A62.07,62.07,0,0,0,178,32ZM128,206.8C109.74,196.16,32,147.69,32,94A46.06,46.06,0,0,1,78,48c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,147.61,146.24,196.15,128,206.8Z"></path>
+</svg>
+<span class="text-xs font-medium">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center w-1/5 gap-1 py-1 text-muted" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path>
+</svg>
+<span class="text-xs font-medium">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center w-1/5 gap-1 py-1 text-primary rounded-full bg-primary/10 dark:bg-primary/20" href="#">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,168a12,12,0,1,1,12-12A12,12,0,0,1,128,192Zm8-48.72V144a8,8,0,0,1-16,0v-8a8,8,0,0,1,8-8c13.23,0,24-9,24-20s-10.77-20-24-20-24,9-24,20v4a8,8,0,0,1-16,0v-4c0-19.85,17.94-36,40-36s40,16.15,40,36C168,125.38,154.24,139.93,136,143.28Z"></path>
+</svg>
+<span class="text-xs font-bold">Help</span>
+</a>
+</nav>
+</footer>
+</div>
+</body></html>

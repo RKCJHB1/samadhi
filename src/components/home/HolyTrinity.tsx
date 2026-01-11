@@ -65,7 +65,7 @@ const HolyTrinity = () => {
               className="flex flex-col items-center p-6 border-2 border-indian-saffron/50 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-indian-cream to-white trinity-container"
             >
               <div
-                className="w-48 h-64 overflow-hidden mb-6 bg-white rounded-lg trinity-image pop-shadow"
+                className="w-32 h-40 md:w-48 md:h-64 overflow-hidden mb-4 md:mb-6 bg-white rounded-lg trinity-image pop-shadow"
                 style={{
                   ...(index === 0 ? imageStyles.ramakrishna :
                      index === 1 ? imageStyles.saradaDevi :
@@ -76,7 +76,7 @@ const HolyTrinity = () => {
                 }}
                 aria-label={deity.name}
               ></div>
-              <h3 className="text-2xl font-heading font-bold mb-3 tracking-tight trinity-name">{deity.name}</h3>
+              <h3 className="text-lg md:text-2xl font-heading font-bold mb-2 md:mb-3 tracking-tight trinity-name">{deity.name}</h3>
               <div className="text-center text-gray-600 leading-relaxed tracking-wide whitespace-pre-line">{deity.description}</div>
             </Link>
           ))}

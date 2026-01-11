@@ -11,6 +11,8 @@ import { ArrowLeft, Info, Lock } from 'lucide-react';
 
 import { useToast } from '@/hooks/use-toast';
 import ExistingTranslations from '@/components/learn/ExistingTranslations';
+import { useReadingProgress } from '@/hooks/useReadingProgress';
+import ReadingProgressBar from '@/components/learn/ReadingProgressBar';
 
 import SocialShareButtons from '@/components/shared/SocialShareButtons';
 import CharacterPalette, { TRANSLITERATION_IAST } from '@/components/learn/CharacterPalette';
@@ -60,6 +62,9 @@ const ReadLecturePage: React.FC = () => {
   const idx = vivekanandaLectures.findIndex(l => l.id === lecture.id);
   const prev = idx > 0 ? vivekanandaLectures[idx - 1] : undefined;
   const next = idx < vivekanandaLectures.length - 1 ? vivekanandaLectures[idx + 1] : undefined;
+
+  // Reading progress tracking
+  const { currentScrollPercent } = useReadingProgress(lectureId);
 
   // Approved languages set (manual approvals only)
   const [approvedLangs, setApprovedLangs] = useState<Set<string>>(new Set());
@@ -247,7 +252,10 @@ const ReadLecturePage: React.FC = () => {
 
   return (
     <TranslationLayout title={`Translate: ${lecture.title}`}>
-      <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar percent={currentScrollPercent} showLabel variant="fixed" />
+
+      <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12 pt-14">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
@@ -266,9 +274,9 @@ const ReadLecturePage: React.FC = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="ml-3 inline-flex items-center gap-1 text-xs text-gray-600 cursor-help">
+                      <span className="ml-3 inline-flex items-center gap-1 text-xs text-emerald-600 cursor-help">
                         <Info className="h-3.5 w-3.5" />
-                        Reading progress is tracked on the Read page only
+                        Progress: {currentScrollPercent}%
                       </span>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
