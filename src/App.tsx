@@ -79,7 +79,6 @@ const GuessThePicturePage = lazy(() => import("./pages/Learn/GuessThePicturePage
 const MastersWordsGamePage = lazy(() => import("./pages/Learn/MastersWordsGame.tsx"));
 const QuotesPage = lazy(() => import("./pages/Learn/QuotesPage"));
 const WordScramblePage = lazy(() => import("./pages/Learn/WordScramblePage"));
-const AumChanterPage = lazy(() => import("./pages/Learn/AumChanterPage.tsx"));
 const SpeechMemorizerPage = lazy(() => import("./pages/Learn/SpeechMemorizerPage.tsx"));
 
 import ReadIndexPage from "./pages/Learn/ReadIndexPage";
@@ -195,8 +194,6 @@ const App = () => (
               <Route path="/learn/games/wordle" element={<Suspense fallback={<PageLoader />}><MastersWordsGamePage /></Suspense>} />
               <Route path="/learn/games/quotes" element={<Suspense fallback={<PageLoader />}><QuotesPage /></Suspense>} />
               <Route path="/learn/games/word-scramble" element={<Suspense fallback={<PageLoader />}><WordScramblePage /></Suspense>} />
-              {/* Aum Chanter (Hidden route - not linked from Games section) */}
-              <Route path="/learn/games/aum-chanter" element={<Suspense fallback={<PageLoader />}><AumChanterPage /></Suspense>} />
               {/* Speech Memorizer (Password protected) */}
               <Route path="/speech" element={<Suspense fallback={<PageLoader />}><SpeechMemorizerPage /></Suspense>} />
 

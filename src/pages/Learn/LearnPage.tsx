@@ -1485,17 +1485,6 @@ const LearnPage = () => {
                       </Link>
                     </Card>
 
-                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
-                      <Link to="/learn/games/aum-chanter">
-                        <CardContent className="p-6 text-center">
-                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
-                            <Music className="w-6 h-6 text-spiritual-500" />
-                          </div>
-                          <h3 className="text-lg font-heading font-semibold mb-2">Aum Chanter</h3>
-                          <p className="text-gray-600 text-sm">A meditative practice to chant the sacred Aum and track your spiritual journey.</p>
-                        </CardContent>
-                      </Link>
-                    </Card>
                   </div>
                 </div>
               </TabsContent>
