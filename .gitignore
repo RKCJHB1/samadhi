@@ -36,3 +36,4 @@ dist-ssr
 # Large development files (excluded from production)
 public/dev-only/
 public/pics/turso_ready_blocks.csv
+*.glb
