@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import TranslationLayout from '@/components/layout/TranslationLayout';
+import PageLayout from '@/components/layout/PageLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ const SpeechMemorizerPage: React.FC = () => {
   // Password gate UI
   if (!isAuthenticated) {
     return (
-      <TranslationLayout title="Speech Memorizer">
+      <PageLayout title="Speech Memorizer">
         <div className="min-h-[60vh] flex items-center justify-center p-4">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
@@ -88,13 +88,13 @@ const SpeechMemorizerPage: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-      </TranslationLayout>
+      </PageLayout>
     );
   }
 
   // Main app UI
   return (
-    <TranslationLayout title="Speech Memorizer">
+    <PageLayout title="Speech Memorizer">
       <div className="min-h-screen bg-gradient-to-b from-indian-cream/30 to-white">
         {/* Orange Header Bar */}
         <div className="bg-indian-saffron text-white py-4 px-4">
@@ -177,7 +177,7 @@ const SpeechMemorizerPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </TranslationLayout>
+    </PageLayout>
   );
 };
 
