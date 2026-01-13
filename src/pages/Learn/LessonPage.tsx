@@ -229,8 +229,8 @@ const LessonPage = () => {
                 </p>
               </header>
 
-          {/* Video Section (if available) */}
-          {lesson?.videoUrl && (
+          {/* Video Section - Temporarily disabled */}
+          {/* {lesson?.videoUrl && (
             <div className="mb-10">
               <div className="relative aspect-video rounded-xl overflow-hidden shadow-lg border border-indian-saffron/20">
                 <iframe
@@ -246,7 +246,7 @@ const LessonPage = () => {
                 Watch the video lesson above, then continue reading below
               </p>
             </div>
-          )}
+          )} */}
 
           {/* Lesson Content */}
           <div ref={contentRef} className="lesson-content">
