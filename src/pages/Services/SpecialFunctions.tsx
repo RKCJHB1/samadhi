@@ -32,10 +32,43 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
+                      {/* Swami Vivekananda Jayanti - Upcoming */}
                       <tr>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sunday, <span className="whitespace-nowrap">1st February</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">10:00 AM - 11:45 AM</p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Swami Vivekananda Jayanti</p>
+                          <p className="mt-1">
+                            <a href="/pics/SVJayanti.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details (PDF)
+                            </a>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>The 163rd Birth Anniversary of Swami Vivekananda</p>
+                          <p className="mt-1 text-sm">Keynote address:</p>
+                          <div className="mt-1 text-sm leading-tight">
+                            <div className="font-semibold">Revered Swami Saradaprabhanandaji Maharaj</div>
+                            <div className="text-gray-600">President: Ramakrishna Centre of South Africa - Phoenix</div>
+                          </div>
+                          <p className="mt-1 text-sm italic text-gray-700">"The Journey of Swami Vivekananda - Sainthood and the Service of Humankind"</p>
+                          <p className="mt-2 text-sm text-gray-600">The programme will include a musical performance by Five Elements Music Group. Lunch thereafter.</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/blairgowrie-community-centre" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Blairgowrie Community Centre, 8 Park Lane, Blairgowrie
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+
+                      {/* Sri Sarada Devi Jayanti - Completed */}
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Sunday, <span className="whitespace-nowrap">7th December</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">10:00 AM - 11:45 AM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Sri Sarada Devi Jayanti</p>
@@ -60,10 +93,12 @@ const SpecialFunctions = () => {
                         </td>
                       </tr>
 
-                      <tr>
+                      {/* Special Satsang - Completed */}
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Sunday, <span className="whitespace-nowrap">30th November</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">9:00 AM - 10:30 AM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Special Satsang</p>
@@ -84,9 +119,11 @@ const SpecialFunctions = () => {
                         </td>
                       </tr>
 
-                      <tr>
+                      {/* November Satsangs - Completed */}
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>November</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Satsangs for November</p>
@@ -246,10 +283,44 @@ const SpecialFunctions = () => {
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
 
-                  {/* Sri Sarada Devi Jayanti Event */}
+                  {/* Swami Vivekananda Jayanti Event - Upcoming */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 1st February</div>
+                    <div className="text-sm text-gray-600 mb-3">10:00 AM - 11:45 AM</div>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Swami Vivekananda Jayanti</p>
+                        <p className="mt-1">
+                          <a href="/pics/SVJayanti.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details (PDF)
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>The 163rd Birth Anniversary of Swami Vivekananda</p>
+                        <p className="mt-1">Keynote address:</p>
+                        <div className="mt-1 leading-tight">
+                          <div className="font-semibold">Revered Swami Saradaprabhanandaji Maharaj</div>
+                          <div className="text-gray-600">President: Ramakrishna Centre of South Africa - Phoenix</div>
+                        </div>
+                        <p className="mt-1 italic text-gray-700">"The Journey of Swami Vivekananda - Sainthood and the Service of Humankind"</p>
+                        <p className="mt-2 text-gray-600">The programme will include a musical performance by Five Elements Music Group. Lunch thereafter.</p>
+                        <p className="mt-1 text-gray-600">
+                          (Blairgowrie Community Centre, 8 Park Lane, Blairgowrie)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sri Sarada Devi Jayanti Event - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
                     <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 7th December</div>
                     <div className="text-sm text-gray-600 mb-3">10:00 AM - 11:45 AM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
@@ -279,10 +350,11 @@ const SpecialFunctions = () => {
                     </div>
                   </div>
 
-                  {/* Special Satsang Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                  {/* Special Satsang Event - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
                     <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 30th November</div>
                     <div className="text-sm text-gray-600 mb-3">9:00 AM - 10:30 AM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
@@ -308,9 +380,10 @@ const SpecialFunctions = () => {
                     </div>
                   </div>
 
-                  {/* November Satsangs Event */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card">
+                  {/* November Satsangs Event - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
                     <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">November</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
