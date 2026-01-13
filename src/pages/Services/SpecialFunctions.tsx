@@ -56,7 +56,7 @@ const SpecialFunctions = () => {
                           <p className="mt-1 text-sm italic text-gray-700">"The Journey of Swami Vivekananda - Sainthood and the Service of Humankind"</p>
                           <p className="mt-2 text-sm text-gray-600">The programme will include a musical performance by Five Elements Music Group. Lunch thereafter.</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/blairgowrie-community-centre" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            (<a href="https://maps.app.goo.gl/Vw2Qt8PFpvffPtWW7" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                               Blairgowrie Community Centre, 8 Park Lane, Blairgowrie
                             </a>)
                           </p>
@@ -310,7 +310,9 @@ const SpecialFunctions = () => {
                         <p className="mt-1 italic text-gray-700">"The Journey of Swami Vivekananda - Sainthood and the Service of Humankind"</p>
                         <p className="mt-2 text-gray-600">The programme will include a musical performance by Five Elements Music Group. Lunch thereafter.</p>
                         <p className="mt-1 text-gray-600">
-                          (Blairgowrie Community Centre, 8 Park Lane, Blairgowrie)
+                          (<a href="https://maps.app.goo.gl/Vw2Qt8PFpvffPtWW7" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Blairgowrie Community Centre, 8 Park Lane, Blairgowrie
+                          </a>)
                         </p>
                       </div>
                     </div>
