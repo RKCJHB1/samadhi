@@ -2,15 +2,18 @@
 import React, { useState } from 'react';
 import PageLayout from '../../components/layout/PageLayout';
 import SectionHeader from '../../components/shared/SectionHeader';
-import AudioPlayer from '../../components/audio/AudioPlayer';
+import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { isDevelopment } from '@/utils/featureFlags';
+import { omMantraSyllables, gayatriMantraSyllables, mahamrityunjayaMantraSyllables } from '../../data/mantraTimings';
 
 const mantras = [
   {
     id: 'om',
     title: 'Om (ॐ)',
     sanskrit: 'ॐ',
-    audio: '/audio/om.mp3', // Placeholder
+    transliteration: 'Oṃ',
+    audio: '/audio/om.mp3',
+    syllables: omMantraSyllables,
     description: 'The most sacred sound in Hinduism, representing the essence of the ultimate reality, consciousness or Atman.',
     explanation: 'Om is considered the primordial sound from which all creation emerged. It consists of three sounds: A, U, and M, which represent creation, preservation, and dissolution, as well as the three states of consciousness (waking, dreaming, and deep sleep).',
     instructions: 'Begin by sitting comfortably with your spine straight. Take a few deep breaths. Then, intone "Om" by pronouncing all three sounds (A-U-M) and letting the sound vibration fade into silence. Repeat 3-11 times.',
@@ -19,7 +22,9 @@ const mantras = [
     id: 'gayatri',
     title: 'Gayatri Mantra',
     sanskrit: 'ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्',
-    audio: '/audio/gayatri.mp3', // Placeholder
+    transliteration: 'Oṃ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṃ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt',
+    audio: '/audio/gayatri.mp3',
+    syllables: gayatriMantraSyllables,
     description: 'One of the most important mantras in Hinduism, dedicated to Savitr, the sun deity.',
     explanation: 'The Gayatri Mantra is from the Rigveda (3.62.10) and is dedicated to Savitr, the sun deity. It is a prayer for illumination of the intellect. The mantra asks the divine to illuminate our minds and inspire our understanding.',
     instructions: 'Traditionally chanted at dawn, noon, and dusk, but can be practiced at any time. Sit facing east if possible. Chant slowly and with reverence, contemplating the meaning. Can be repeated 3, 9, or 108 times.',
@@ -28,7 +33,9 @@ const mantras = [
     id: 'mahamrityunjaya',
     title: 'Mahamrityunjaya Mantra',
     sanskrit: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्',
-    audio: '/audio/mahamrityunjaya.mp3', // Placeholder
+    transliteration: 'Oṃ tryambakaṃ yajāmahe sugandhiṃ puṣṭivardhanam urvārukamiva bandhanānmṛtyormukṣīya mā\'mṛtāt',
+    audio: '/audio/mahamrityunjaya.mp3',
+    syllables: mahamrityunjayaMantraSyllables,
     description: 'A healing mantra dedicated to Lord Shiva that provides protection and liberation.',
     explanation: 'Known as the "Great Death-Conquering Mantra," it is addressed to Lord Shiva for overcoming death and disease. It promotes health, longevity, and ultimate liberation. It is believed to have strong healing properties.',
     instructions: 'Can be chanted during illness or challenging times. Ideally chanted 11 times daily. Focus on the healing vibrations of the mantra and its protective qualities.',
@@ -82,18 +89,17 @@ const MantrasPage = () => {
               <div key={mantra.id} className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-gray-100">
                 <h2 className="text-2xl font-heading font-semibold mb-4">{mantra.title}</h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-                  <div className="col-span-1">
-                    <h3 className="text-lg font-medium mb-2">Sanskrit</h3>
-                    <p className="text-2xl font-sans leading-relaxed">{mantra.sanskrit}</p>
-                  </div>
-
-                  <div className="col-span-2">
-                    <h3 className="text-lg font-medium mb-2">Audio Pronunciation</h3>
-                    <div className="rounded-md">
-                      <AudioPlayer src={mantra.audio} title={`${mantra.title} Pronunciation`} />
-                    </div>
-                  </div>
+                {/* Audio Player with Sanskrit and Transliteration */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium mb-3">Listen & Learn</h3>
+                  <SyncedAudioPlayer
+                    src={mantra.audio}
+                    title={`${mantra.title} Pronunciation`}
+                    syllables={mantra.syllables}
+                    originalText={mantra.sanskrit}
+                    transliteration={mantra.transliteration}
+                    mantraId={mantra.id}
+                  />
                 </div>
 
                 <div className="mb-4">

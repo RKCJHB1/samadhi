@@ -197,21 +197,24 @@ const TestPage = () => {
       title: 'Om (ॐ)',
       description: 'The most sacred sound in Hinduism, representing the essence of the ultimate reality',
       audio: '/audio/om.mp3',
-      text: 'ॐ'
+      text: 'ॐ',
+      transliteration: 'Oṃ'
     },
     {
       id: 'gayatri',
       title: 'Gayatri Mantra',
       description: 'A highly revered mantra from Rigveda dedicated to Savitr, the sun deity',
       audio: '/audio/gayatri.mp3',
-      text: 'Om Bhur Bhuvah Swah, Tat Savitur Varenyam, Bhargo Devasya Dhimahi, Dhiyo Yo Nah Prachodayat'
+      text: 'ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्',
+      transliteration: 'Oṃ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṃ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt'
     },
     {
       id: 'mahamrityunjaya',
       title: 'Mahamrityunjaya Mantra',
       description: 'A healing mantra dedicated to Lord Shiva that rejuvenates and bestows immortality',
       audio: '/audio/mahamrityunjaya.mp3',
-      text: 'Om Tryambakam Yajamahe Sugandhim Pushtivardhanam Urvarukamiva Bandhanan Mrityormukshiya Mamritat'
+      text: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय मा‌ऽमृतात्',
+      transliteration: 'Oṃ tryambakaṃ yajāmahe sugandhiṃ puṣṭivardhanam urvārukamiva bandhanānmṛtyormukṣīya mā\'mṛtāt'
     },
   ];
   return (
@@ -297,6 +300,8 @@ const TestPage = () => {
                                 title={`${mantra.title} Pronunciation`}
                                 syllables={omMantraSyllables}
                                 originalText={mantra.text}
+                                transliteration={mantra.transliteration}
+                                mantraId={mantra.id}
                               />
                             )}
                             {mantra.id === 'gayatri' && (
@@ -305,6 +310,8 @@ const TestPage = () => {
                                 title={`${mantra.title} Pronunciation`}
                                 syllables={gayatriMantraSyllables}
                                 originalText={mantra.text}
+                                transliteration={mantra.transliteration}
+                                mantraId={mantra.id}
                               />
                             )}
                             {mantra.id === 'mahamrityunjaya' && (
@@ -313,6 +320,8 @@ const TestPage = () => {
                                 title={`${mantra.title} Pronunciation`}
                                 syllables={mahamrityunjayaMantraSyllables}
                                 originalText={mantra.text}
+                                transliteration={mantra.transliteration}
+                                mantraId={mantra.id}
                               />
                             )}
                           </div>
