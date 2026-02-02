@@ -231,39 +231,12 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   const renderSyncedTransliteration = () => {
     if (!transliteration) return null;
 
-    if (transliterationSyllables && transliterationSyllables.length === syllables.length) {
-      return (
-        <div className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed">
-          {transliterationSyllables.map((syllable, index) => {
-            const isActive = index === activeIndex;
-            const source = syllables[index];
-            const dur = source ? source.endTime - source.startTime : 0;
-            const animationClass = isActive ? getSvaraAnimationClass(source?.svara, dur) : '';
-
-            const highlightClasses = isActive
-              ? 'bg-indian-saffron/20 text-indian-saffron font-bold'
-              : '';
-
-            const animationStyle = isActive && animationClass
-              ? { animationDuration: `${Math.max(dur, 0.2)}s` }
-              : undefined;
-
-            return (
-              <span
-                key={index}
-                className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
-                style={animationStyle}
-              >
-                {syllable}
-              </span>
-            );
-          })}
-        </div>
-      );
-    }
-
-    // Only render full transliteration if syllables are not available
-    return null;
+    // Always render the full transliteration with proper spacing
+    return (
+      <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium">
+        {transliteration}
+      </p>
+    );
   };
 
   return (
