@@ -262,11 +262,8 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
       );
     }
 
-    return (
-      <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium">
-        {transliteration}
-      </p>
-    );
+    // Only render full transliteration if syllables are not available
+    return null;
   };
 
   return (
