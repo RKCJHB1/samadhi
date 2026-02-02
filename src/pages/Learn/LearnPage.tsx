@@ -457,14 +457,6 @@ const MantraModal = ({
             </p>
           </div>
 
-          {/* Transliteration */}
-          <div className="bg-gradient-to-br from-spiritual-50 to-white rounded-xl p-6 shadow-sm border border-spiritual-200">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Transliteration</h3>
-            <p className="text-center text-xl md:text-2xl text-gray-700 italic leading-relaxed">
-              {mantra.transliteration}
-            </p>
-          </div>
-
           {/* Audio Player - Only show if audio is available */}
           {mantra.audio && (
             <div className="bg-gradient-to-br from-spiritual-50 to-white rounded-xl p-6 shadow-sm border border-spiritual-200">
