@@ -5029,6 +5029,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about the Holy Mother, Sri Ramakrishna\'s spiritual consort and the Divine Mother incarnate',
         content: `
           <h2>Sri Sāradā Devi</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/ssd.jpg" alt="Sri Sāradā Devi - The Holy Mother" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Sri Sāradā Devi - The Holy Mother</p>
+          </div>
 <p>Sri Sāradā Devi, known as the Holy Mother, was the spiritual consort of Sri Ramakrishna and is revered as the Divine Mother incarnate. Her life exemplifies perfect devotion, service, and spiritual wisdom.</p>
 
           <h3>The Sacred Birth</h3>
