@@ -4716,6 +4716,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn Sri Ramakrishna\'s profound teaching about the unity of all religions and the infinite nature of God',
         content: `
           <h2>God is Infinite</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/infinite.jpg" alt="God is Infinite" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">God is Infinite</p>
+          </div>
 <p>This lesson teaches us Sri Ramakrishna's most important message to humanity - that God is One, infinite, and can be reached through many different paths. His direct experience of various religions gave him the authority to speak this universal truth.</p>
 
           <h3>The Great Realization</h3>
