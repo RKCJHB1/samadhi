@@ -41,9 +41,9 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Maha Shivaratri Celebrations</p>
                           <p className="mt-1">
-                            <a href="/pics/Maha Shivartri 2026 .pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
-                              View Programme Details (PDF)
-                            </a>
+                            <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -70,9 +70,9 @@ const SpecialFunctions = () => {
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>190th Birth Anniversary of Sri Ramakrishna</p>
                           <p className="mt-1">
-                            <a href="/pics/190th Birth Anniversary  of  Sri Ramakrishna.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
-                              View Programme Details (PDF)
-                            </a>
+                            <Link to="/services/sri-ramakrishna-190th-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
                           </p>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -352,9 +352,9 @@ const SpecialFunctions = () => {
                       <div>
                         <p>Maha Shivaratri Celebrations</p>
                         <p className="mt-1">
-                          <a href="/pics/Maha Shivartri 2026 .pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
-                            View Programme Details (PDF)
-                          </a>
+                          <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
                         </p>
                       </div>
                     </div>
@@ -385,9 +385,9 @@ const SpecialFunctions = () => {
                       <div>
                         <p>190th Birth Anniversary of Sri Ramakrishna</p>
                         <p className="mt-1">
-                          <a href="/pics/190th Birth Anniversary  of  Sri Ramakrishna.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
-                            View Programme Details (PDF)
-                          </a>
+                          <Link to="/services/sri-ramakrishna-190th-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
                         </p>
                       </div>
                     </div>

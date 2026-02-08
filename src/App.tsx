@@ -32,6 +32,8 @@ import GuruPurnimaInvitation from "./pages/Services/GuruPurnimaInvitation";
 import SpecialProgrammeInvitation from "./pages/Services/SpecialProgrammeInvitation";
 import WelcomeReceptionInvitation from "./pages/Services/WelcomeReceptionInvitation";
 import SriSaradaDeviJayantiInvitation from "./pages/Services/SriSaradaDeviJayantiInvitation";
+import MahaShivaratriInvitation from "./pages/Services/MahaShivaratriInvitation";
+import SriRamakrishna190thInvitation from "./pages/Services/SriRamakrishna190thInvitation";
 
 
 
@@ -168,6 +170,8 @@ const App = () => (
             <Route path="/services/special-programme-invitation" element={<SpecialProgrammeInvitation />} />
             <Route path="/services/welcome-reception-invitation" element={<WelcomeReceptionInvitation />} />
             <Route path="/services/sri-sarada-devi-jayanti-invitation" element={<SriSaradaDeviJayantiInvitation />} />
+            <Route path="/services/maha-shivaratri-invitation" element={<MahaShivaratriInvitation />} />
+            <Route path="/services/sri-ramakrishna-190th-invitation" element={<SriRamakrishna190thInvitation />} />
 
 
             {/* New Ashram Project Section */}
