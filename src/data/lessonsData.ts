@@ -3056,6 +3056,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about the beautiful village life and early spiritual experiences of young Gadai',
         content: `
           <h2>Childhood Days of Sri Ramakrishna</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/childhood.jpg" alt="Childhood Days of Sri Ramakrishna" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Childhood Days of Sri Ramakrishna</p>
+          </div>
 <p>The childhood of Sri Ramakrishna, known then as Gadai, was spent in a beautiful village that shaped his love for God and nature. His early years show us how a divine soul grows in an environment of love, devotion, and simplicity.</p>
 
           <h3>The Beautiful Village of Kamārpukur</h3>
