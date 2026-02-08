@@ -3652,6 +3652,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about young Gadai\'s divine experience while playing the role of Lord Shiva',
         content: `
           <h2>Gadai Playing Shiva</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/shiva.jpg" alt="Gadai Playing Shiva" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Gadai Playing Shiva</p>
+          </div>
 <p>This beautiful story shows us how young Gadai's deep devotion to God could transform even a simple drama into a profound spiritual experience. It demonstrates the power of sincere devotion and complete absorption in the Divine.</p>
 
           <h3>The Sacred Night of Shivarātri</h3>
