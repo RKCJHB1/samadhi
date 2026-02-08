@@ -5324,6 +5324,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about the early life of Narendranath Datta, who would become the great Swami Vivekananda',
         content: `
           <h2>Swami Vivekānanda - Part 1</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/vivekananda blessing children.png" alt="Swami Vivekananda blessing children" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Swami Vivekananda blessing children</p>
+          </div>
 <p>This is the story of a remarkable boy named Narendranath who would grow up to become one of India's greatest spiritual teachers and the first Hindu missionary to the West. His childhood shows us the qualities that made him extraordinary.</p>
 
           <h3>The Birth of a Great Soul</h3>
@@ -5669,6 +5673,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about Naren\'s spiritual training under Sri Ramakrishna and his transformation into Swami Vivekananda',
         content: `
           <h2>Swami Vivekānanda - Part 2</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/swamijiwriting.jpg" alt="Swami Vivekananda writing" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Swami Vivekananda writing</p>
+          </div>
 <p>This lesson continues the story of Narendranath's spiritual journey under the guidance of Sri Ramakrishna, showing how a sincere seeker becomes a great spiritual teacher and world messenger.</p>
 
           <h3>Sri Ramakrishna's Love for Naren</h3>
