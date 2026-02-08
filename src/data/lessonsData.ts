@@ -2772,6 +2772,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about the birth and early life of Sri Ramakrishna, the great spiritual teacher',
         content: `
           <h2>An Introduction to Sri Ramakrishna</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/srk.jpg" alt="Sri Ramakrishna - The Great Spiritual Teacher" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Sri Ramakrishna - The Great Spiritual Teacher</p>
+          </div>
 <p>Sri Ramakrishna was one of the greatest spiritual teachers the world has ever known. His life story shows us how God can be born among us to guide humanity toward truth and love.</p>
 
           <h3>The Holy Parents</h3>
