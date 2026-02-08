@@ -84,7 +84,9 @@ const SpecialFunctions = () => {
                           <p className="mt-1 text-sm italic text-gray-700">"The Life and Teachings of Sri Ramakrishna"</p>
                           <p className="mt-2 text-sm text-gray-600">The programme includes cultural items, devotional singing, and peace chants. Lunch thereafter.</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg)
+                            (<a href="https://maps.app.goo.gl/hjBs9ZfkPp1uqFRd8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
+                            </a>)
                           </p>
                         </td>
                       </tr>
@@ -400,7 +402,9 @@ const SpecialFunctions = () => {
                         <p className="mt-1 italic text-gray-700">"The Life and Teachings of Sri Ramakrishna"</p>
                         <p className="mt-2 text-gray-600">The programme includes cultural items, devotional singing, and peace chants. Lunch thereafter.</p>
                         <p className="mt-1 text-gray-600">
-                          (Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg)
+                          (<a href="https://maps.app.goo.gl/hjBs9ZfkPp1uqFRd8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
+                          </a>)
                         </p>
                       </div>
                     </div>
