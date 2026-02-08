@@ -268,6 +268,10 @@ export const lessonsData: LessonGroup[] = [
         videoUrl: 'https://www.youtube.com/embed/yJMqULiDtOM?si=2AgJOdBvcEIUMI5b',
         content: `
           <h2>What is Karma?</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/karma.jpg" alt="Karma - the principle of action and reaction" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Karma - the principle of action and reaction</p>
+          </div>
           <p>The word <strong>karma</strong> means <strong>action</strong>. But karma is also about what happens because of your actions.</p>
           <p>Think of it like this: when you throw a ball against a wall, it bounces back to you. Karma works the same way - what you do comes back to you!</p>
 
