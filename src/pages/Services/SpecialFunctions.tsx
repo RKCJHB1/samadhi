@@ -54,7 +54,7 @@ const SpecialFunctions = () => {
                           <p className="mt-1 text-sm italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
                           <p className="mt-2 text-sm text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/your-map-link" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                               Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
                             </a>)
                           </p>
@@ -84,9 +84,7 @@ const SpecialFunctions = () => {
                           <p className="mt-1 text-sm italic text-gray-700">"The Life and Teachings of Sri Ramakrishna"</p>
                           <p className="mt-2 text-sm text-gray-600">The programme includes cultural items, devotional singing, and peace chants. Lunch thereafter.</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/your-map-link" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
-                            </a>)
+                            (Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg)
                           </p>
                         </td>
                       </tr>
@@ -368,7 +366,7 @@ const SpecialFunctions = () => {
                         <p className="mt-1 italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
                         <p className="mt-2 text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
                         <p className="mt-1 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/your-map-link" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                             Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
                           </a>)
                         </p>
@@ -402,9 +400,7 @@ const SpecialFunctions = () => {
                         <p className="mt-1 italic text-gray-700">"The Life and Teachings of Sri Ramakrishna"</p>
                         <p className="mt-2 text-gray-600">The programme includes cultural items, devotional singing, and peace chants. Lunch thereafter.</p>
                         <p className="mt-1 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/your-map-link" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
-                          </a>)
+                          (Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg)
                         </p>
                       </div>
                     </div>
