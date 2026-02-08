@@ -4441,6 +4441,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn how Sri Ramakrishna explored Christianity and experienced the divine love of Jesus Christ',
         content: `
           <h2>The Christian Way to God</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/christian.jpg" alt="The Christian Way to God" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">The Christian Way to God</p>
+          </div>
 <p>This beautiful story shows how Sri Ramakrishna's pure heart and sincere seeking led him to experience the Divine through Christianity, proving that all sincere paths lead to the same God.</p>
 
           <h3>The Divine Encounter</h3>
