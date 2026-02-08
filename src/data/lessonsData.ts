@@ -4200,6 +4200,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn how Sri Ramakrishna explored the Islamic path and discovered the universal truth of God',
         content: `
           <h2>The Muslim Way to God</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/muslim.jpg" alt="The Muslim Way to God" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">The Muslim Way to God</p>
+          </div>
 <p>This beautiful story shows us Sri Ramakrishna's quest to understand how different religions reach the same Divine Truth. His exploration of Islam demonstrates that there are many paths to God, all leading to the same ultimate reality.</p>
 
           <h3>Sri Ramakrishna's Previous Experience</h3>
