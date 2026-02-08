@@ -3358,6 +3358,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn about young Gadai\'s deep spiritual connection with nature and his divine experiences in natural beauty',
         content: `
           <h2>Gadai's Love for Nature</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/nature.jpg" alt="Gadai's Love for Nature" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Gadai's Love for Nature</p>
+          </div>
 <p>This beautiful story shows us how young Gadai's pure heart could see the Divine in nature's beauty. His experiences teach us that God can be found everywhere - even in the simple, beautiful scenes around us.</p>
 
           <h3>A Heart Open to Beauty</h3>
