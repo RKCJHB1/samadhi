@@ -1749,7 +1749,10 @@ export const lessonsData: LessonGroup[] = [
         description: 'Learn the profound wisdom and practical guidance from Sri Sārada Devi, the Holy Mother',
         content: `
           <h2>Teachings of Sri Sārada Devi</h2>
-
+          <div class="text-center mb-6">
+            <img src="/pics/ssd.jpg" alt="Sri Sārada Devi - The Holy Mother" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Sri Sārada Devi - The Holy Mother</p>
+          </div>
 
           <p>Sri Sārada Devi, known as the Holy Mother, was the spiritual consort of Sri Ramakrishna and a great spiritual teacher in her own right. Her teachings are filled with practical wisdom that can guide us in our daily lives and spiritual journey.</p>
 
