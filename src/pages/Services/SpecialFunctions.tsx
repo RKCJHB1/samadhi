@@ -32,36 +32,6 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      {/* Maha Shivaratri 2026 - Completed */}
-                      <tr className="opacity-60">
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Sunday, <span className="whitespace-nowrap">15th February</span></p>
-                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">6:00 PM - 8:00 PM</p>
-                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p>Maha Shivaratri Celebrations</p>
-                          <p className="mt-1">
-                            <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                              View Programme Details
-                            </Link>
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p className="text-sm">Address by:</p>
-                          <div className="mt-1 text-sm leading-tight">
-                            <div className="font-semibold">Revered Swami Vipranandaji</div>
-                          </div>
-                          <p className="mt-1 text-sm italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
-                          <p className="mt-2 text-sm text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
-                          <p className="mt-1 text-sm text-gray-600">
-                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                              Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
-                            </a>)
-                          </p>
-                        </td>
-                      </tr>
-
                       {/* 190th Birth Anniversary of Sri Ramakrishna - Upcoming */}
                       <tr>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
@@ -87,6 +57,36 @@ const SpecialFunctions = () => {
                           <p className="mt-1 text-sm text-gray-600">
                             (<a href="https://maps.app.goo.gl/hjBs9ZfkPp1uqFRd8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                               Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+
+                      {/* Maha Shivaratri 2026 - Completed */}
+                      <tr className="opacity-60">
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sunday, <span className="whitespace-nowrap">15th February</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">6:00 PM - 8:00 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Maha Shivaratri Celebrations</p>
+                          <p className="mt-1">
+                            <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                              View Programme Details
+                            </Link>
+                          </p>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p className="text-sm">Address by:</p>
+                          <div className="mt-1 text-sm leading-tight">
+                            <div className="font-semibold">Revered Swami Vipranandaji</div>
+                          </div>
+                          <p className="mt-1 text-sm italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
+                          <p className="mt-2 text-sm text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                              Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
                             </a>)
                           </p>
                         </td>
@@ -344,40 +344,6 @@ const SpecialFunctions = () => {
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
 
-                  {/* Maha Shivaratri 2026 - Completed */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 15th February</div>
-                    <div className="text-sm text-gray-600 mb-3">6:00 PM - 8:00 PM</div>
-                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div className="font-medium">Event:</div>
-                      <div>
-                        <p>Maha Shivaratri Celebrations</p>
-                        <p className="mt-1">
-                          <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
-                            View Programme Details
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-2">
-                      <div className="font-medium">Details:</div>
-                      <div className="text-sm">
-                        <p>Address by:</p>
-                        <div className="mt-1 leading-tight">
-                          <div className="font-semibold">Revered Swami Vipranandaji</div>
-                        </div>
-                        <p className="mt-1 italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
-                        <p className="mt-2 text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
-                        <p className="mt-1 text-gray-600">
-                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
-                            Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
-                          </a>)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* 190th Birth Anniversary of Sri Ramakrishna - Upcoming */}
                   <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
                     <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 22nd February</div>
@@ -406,6 +372,40 @@ const SpecialFunctions = () => {
                         <p className="mt-1 text-gray-600">
                           (<a href="https://maps.app.goo.gl/hjBs9ZfkPp1uqFRd8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
                             Fontainebleau Community Campus, Corner of Fourth Ave & Rabie St, Fontainebleau, Randburg
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Maha Shivaratri 2026 - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 15th February</div>
+                    <div className="text-sm text-gray-600 mb-3">6:00 PM - 8:00 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Maha Shivaratri Celebrations</p>
+                        <p className="mt-1">
+                          <Link to="/services/maha-shivaratri-invitation" className="text-indian-saffron hover:underline font-medium text-sm">
+                            View Programme Details
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm">
+                        <p>Address by:</p>
+                        <div className="mt-1 leading-tight">
+                          <div className="font-semibold">Revered Swami Vipranandaji</div>
+                        </div>
+                        <p className="mt-1 italic text-gray-700">"Lord Shiva - The Lord who is easily pleased"</p>
+                        <p className="mt-2 text-gray-600">The programme will include devotional songs, hymns, and arati.</p>
+                        <p className="mt-1 text-gray-600">
+                          (<a href="https://maps.app.goo.gl/UrNQXYUviohniWLw8" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline">
+                            Benvenuto Conference Centre, 1 Pitsani Rd, Kelland, Randburg
                           </a>)
                         </p>
                       </div>
