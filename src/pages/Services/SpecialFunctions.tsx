@@ -32,11 +32,12 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      {/* 190th Birth Anniversary of Sri Ramakrishna - Upcoming */}
-                      <tr>
+                      {/* 190th Birth Anniversary of Sri Ramakrishna - Completed */}
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>Sunday, <span className="whitespace-nowrap">22nd February</span></p>
                           <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">10:00 AM - 12:00 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
                           <p>190th Birth Anniversary of Sri Ramakrishna</p>
@@ -344,10 +345,11 @@ const SpecialFunctions = () => {
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
 
-                  {/* 190th Birth Anniversary of Sri Ramakrishna - Upcoming */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5">
+                  {/* 190th Birth Anniversary of Sri Ramakrishna - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card bg-indian-saffron/5 opacity-60">
                     <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 22nd February</div>
                     <div className="text-sm text-gray-600 mb-3">10:00 AM - 12:00 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
