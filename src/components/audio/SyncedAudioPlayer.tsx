@@ -195,34 +195,104 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   // Render the text with highlighting and svara animation
   const renderSyncedText = () => {
     if (syllables.length === 0) {
-      return <p className="font-sanskrit text-center text-2xl md:text-3xl lg:text-4xl leading-relaxed">{originalText}</p>;
+      return <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed">{transliteration || originalText}</p>;
     }
 
+    const hasAlignedTransliterationSyllables =
+      Array.isArray(transliterationSyllables) && transliterationSyllables.length === syllables.length;
+
+    const displayTokens = syllables.map((syllable, idx) => {
+      if (hasAlignedTransliterationSyllables) {
+        return transliterationSyllables![idx] ?? syllable.text;
+      }
+      return syllable.text;
+    });
+
+    // Check if tokens have trailing spaces (word-level spacing)
+    const hasTrailingSpaces = displayTokens.some(t => /\s$/.test(t));
+    // Only auto-insert spaces when tokens don't have trailing spaces
+    const shouldAutoSpace = !hasTrailingSpaces && displayTokens.every(t => !/\s/.test(t));
+
+    const currentHighlightedToken = activeIndex >= 0 && activeIndex < displayTokens.length
+      ? displayTokens[activeIndex].trim()
+      : '';
+
+    // Check if we have an active syllable (even if it's just whitespace)
+    const hasActiveSyllable = activeIndex >= 0 && activeIndex < displayTokens.length;
+
+    // Svara animation for the large centre syllable & circle
+    const activeSyllable = hasActiveSyllable ? syllables[activeIndex] : undefined;
+    const activeDur = activeSyllable
+      ? (activeSyllable.endTime - activeSyllable.startTime) || 0
+      : 0;
+
+    // Use whatever svara is set on the syllable. If it's explicitly
+    // 'neutral', we want NO svara animation (flat). Only when there is
+    // truly no svara at all (undefined) do we fall back to duration-based
+    // inference for a gentle motion.
+    const explicitSvara = activeSyllable?.svara;
+    let activeSvaraClass = hasActiveSyllable
+      ? getSvaraAnimationClass(explicitSvara, activeDur)
+      : '';
+
+    // If there is NO svara information at all (undefined) and the
+    // duration-based logic returns no animation (e.g. very short
+    // syllable), use a gentle fallback bounce for the large centre
+    // display so it still "moves" with the chant. Do NOT apply this
+    // when the syllable is explicitly marked 'neutral'.
+    if (hasActiveSyllable && !activeSvaraClass && typeof explicitSvara === 'undefined') {
+      activeSvaraClass = 'svara-syllable-active';
+    }
+    const activeSvaraStyle = hasActiveSyllable && activeSvaraClass
+      ? { animationDuration: `${Math.max(activeDur, 0.2)}s` }
+      : undefined;
+
     return (
-      <div className="font-sanskrit text-center text-2xl md:text-3xl lg:text-4xl leading-relaxed">
-        {syllables.map((syllable, index) => {
-          const isActive = index === activeIndex;
-          const dur = syllable.endTime - syllable.startTime;
-          const animationClass = isActive ? getSvaraAnimationClass(syllable.svara, dur) : '';
-
-          const highlightClasses = isActive
-            ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
-            : '';
-
-          const animationStyle = isActive && animationClass
-            ? { animationDuration: `${Math.max(dur, 0.2)}s` }
-            : undefined;
-
-          return (
-            <span
-              key={index}
-              className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
-              style={animationStyle}
+      <div className="space-y-6">
+        {/* Large centered display of highlighted syllable with svara-based motion and circle */}
+        <div className="flex items-center justify-center min-h-32 py-4">
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center">
+            {/* Circle background - always render but with opacity transition */}
+            <div
+              className={`absolute inset-0 rounded-full border-4 border-indian-saffron bg-indian-saffron/10 shadow-md transition-opacity duration-200 ${hasActiveSyllable ? 'opacity-100' : 'opacity-0'} ${activeSvaraClass}`}
+              style={activeSvaraStyle}
+            ></div>
+            {/* Syllable text */}
+            <div
+              className={`relative text-5xl md:text-6xl lg:text-7xl font-bold text-indian-saffron text-center transition-all duration-200 z-10 svara-syllable ${activeSvaraClass}`}
+              style={activeSvaraStyle}
             >
-              {syllable.text}
-            </span>
-          );
-        })}
+              {currentHighlightedToken || ''}
+            </div>
+          </div>
+        </div>
+
+        {/* Normal-sized transliteration text below */}
+        <div className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed whitespace-pre-wrap">
+          {displayTokens.map((token, index) => {
+            const isActive = index === activeIndex;
+            const dur = syllables[index]?.endTime - syllables[index]?.startTime || 0;
+            const animationClass = isActive ? getSvaraAnimationClass(syllables[index]?.svara, dur) : '';
+
+            const highlightClasses = isActive
+              ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
+              : '';
+
+            const animationStyle = isActive && animationClass
+              ? { animationDuration: `${Math.max(dur, 0.2)}s` }
+              : undefined;
+
+            return (
+              <span
+                key={index}
+                className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
+                style={animationStyle}
+              >
+                {token}
+              </span>
+            );
+          })}
+        </div>
       </div>
     );
   };
@@ -233,7 +303,7 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
 
     // Always render the full transliteration with proper spacing
     return (
-      <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium">
+      <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium whitespace-pre-wrap">
         {transliteration}
       </p>
     );
@@ -241,14 +311,16 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-br from-indian-cream/50 to-white/50 border border-indian-saffron/30 p-4 rounded mb-4 min-h-[60px] flex flex-col items-center justify-center">
-        {renderSyncedText()}
-        {transliteration && (
-          <div className="mt-3 pt-3 border-t border-indian-saffron/20 w-full">
-            {renderSyncedTransliteration()}
-          </div>
-        )}
-      </div>
+      {/* Show synced text with syllable highlighting if syllables are available */}
+      {syllables.length > 0 && (
+        <div className="bg-gradient-to-br from-white to-indian-cream/30 rounded-xl p-6 shadow-sm border border-indian-saffron/20">
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Follow Along</h3>
+          {renderSyncedText()}
+        </div>
+      )}
+
+      {/* Show initial transliteration display when no syllables or before audio plays */}
+      {syllables.length === 0 && renderSyncedTransliteration()}
 
       <div className="bg-gradient-to-br from-indian-cream/30 to-white rounded-lg p-4 shadow-sm border border-indian-saffron/20">
         {title && (

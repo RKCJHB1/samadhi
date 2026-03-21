@@ -6,7 +6,7 @@ import SyncedAudioPlayer from '../../components/audio/SyncedAudioPlayer';
 import { isDevelopment } from '@/utils/featureFlags';
 import { omMantraSyllables, gayatriMantraSyllables, mahamrityunjayaMantraSyllables } from '../../data/mantraTimings';
 
-const mantras = [
+const allMantras = [
   {
     id: 'om',
     title: 'Om (ॐ)',
@@ -41,6 +41,9 @@ const mantras = [
     instructions: 'Can be chanted during illness or challenging times. Ideally chanted 11 times daily. Focus on the healing vibrations of the mantra and its protective qualities.',
   },
 ];
+
+// Filter mantras based on environment - only show Saha Navavatu in production
+const mantras = import.meta.env.DEV ? allMantras : [];
 
 const MantrasPage = () => {
   const [audioErrors, setAudioErrors] = useState<Record<string, boolean>>({});

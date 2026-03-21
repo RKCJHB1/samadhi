@@ -4,7 +4,7 @@ import PageLayout from '../../components/layout/PageLayout';
 import SectionHeader from '../../components/shared/SectionHeader';
 import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
-import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2, ExternalLink, CheckCircle2, X, Expand, Play, Pause, RotateCcw, Repeat } from 'lucide-react';
+import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2, ExternalLink, CheckCircle2, X, Expand, Play, Pause, RotateCcw, Repeat, Maximize2, Minimize2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,7 +13,6 @@ import { gayatriMantraSyllables, sahaNavatuMantraSyllables, TimedSyllable } from
 import { getMantraConfig } from '../../utils/mantraStorage';
 import LearnHero from '../../components/learn/LearnHero';
 import LessonCard from '../../components/learn/LessonCard';
-import LessonSearch from '../../components/learn/LessonSearch';
 import BookmarksPanel from '../../components/learn/BookmarksPanel';
 import { useLearningProgress } from '../../hooks/useLearningProgress';
 import { cn } from '@/lib/utils';
@@ -53,7 +52,7 @@ const SyllablePractice = ({
   transliterationSyllables
 }: {
   mantra: Mantra;
-  syllables: { startTime: number; endTime: number }[];
+  syllables: TimedSyllable[];
   transliterationSyllables: string[];
 }) => {
   const [startSyllable, setStartSyllable] = useState(1);
@@ -404,9 +403,16 @@ const MantraModal = ({
 }: {
   mantra: Mantra;
   onClose: () => void;
-  syllables: { startTime: number; endTime: number }[];
+  syllables: TimedSyllable[];
   transliterationSyllables: string[];
 }) => {
+  // State for hide/show Sanskrit (disabled - always hidden)
+  const [isSanskritVisible, setIsSanskritVisible] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const hasAlignedTransliterationFollowAlong =
+    syllables.length > 0 && transliterationSyllables.length === syllables.length;
+
   // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -427,17 +433,34 @@ const MantraModal = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-indian-cream via-white to-spiritual-50 rounded-2xl shadow-2xl border-2 border-indian-saffron/30"
+        className={`relative overflow-y-auto bg-gradient-to-br from-indian-cream via-white to-spiritual-50 shadow-2xl border-2 border-indian-saffron/30 ${
+          isFullscreen
+            ? 'fixed inset-0 w-full h-full rounded-none'
+            : 'w-full max-w-4xl max-h-[90vh] rounded-2xl'
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white shadow-md transition-all duration-200 hover:scale-110"
-          aria-label="Close modal"
-        >
-          <X className="w-6 h-6 text-gray-700" />
-        </button>
+        {/* Close and Fullscreen buttons */}
+        <div className="absolute top-4 right-4 z-10 flex gap-2">
+          <button
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md transition-all duration-200 hover:scale-110"
+            aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-6 h-6 text-gray-700" />
+            ) : (
+              <Maximize2 className="w-6 h-6 text-gray-700" />
+            )}
+          </button>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md transition-all duration-200 hover:scale-110"
+            aria-label="Close modal"
+          >
+            <X className="w-6 h-6 text-gray-700" />
+          </button>
+        </div>
 
         {/* Header */}
         <div className="bg-gradient-to-r from-indian-saffron/20 to-spiritual-100/50 p-6 md:p-8 border-b border-indian-saffron/20">
@@ -451,10 +474,25 @@ const MantraModal = ({
         <div className="p-6 md:p-8 space-y-8">
           {/* Sanskrit Text */}
           <div className="bg-gradient-to-br from-indian-cream/50 to-white rounded-xl p-6 shadow-sm border border-indian-saffron/20">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Sanskrit</h3>
-            <p className="font-sanskrit text-center text-2xl md:text-3xl leading-relaxed text-gray-800">
-              {mantra.text}
-            </p>
+            <button
+              onClick={() => setIsSanskritVisible(!isSanskritVisible)}
+              className="w-full flex items-center justify-between text-left group"
+            >
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Sanskrit</h3>
+              <svg
+                className={`w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-transform duration-200 ${isSanskritVisible ? 'rotate-0' : '-rotate-90'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {isSanskritVisible && (
+              <p className="font-sanskrit text-center text-2xl md:text-3xl leading-relaxed text-gray-800 mt-4">
+                {mantra.text}
+              </p>
+            )}
           </div>
 
           {/* Audio Player - Only show if audio is available */}
@@ -468,7 +506,7 @@ const MantraModal = ({
                   syllables={syllables}
                   originalText={mantra.text}
                   transliteration={mantra.transliteration}
-                  transliterationSyllables={mantra.transliterationSyllables}
+                  transliterationSyllables={transliterationSyllables}
                   mantraId={mantra.id}
                 />
               </div>
@@ -476,7 +514,7 @@ const MantraModal = ({
           )}
 
           {/* Syllable Practice Mode */}
-          {syllables.length > 0 && transliterationSyllables.length > 0 && (
+          {hasAlignedTransliterationFollowAlong && (
             <SyllablePractice
               mantra={mantra}
               syllables={syllables}
@@ -708,8 +746,8 @@ const LearnPage = () => {
 
 
 
-  // Shanti Mantras for display
-  const mantras: Mantra[] = [
+  // Shanti Mantras for display - all mantras
+  const allMantras: Mantra[] = [
     {
       id: 'ganapati-prarthana',
       title: 'Ganapati Prarthana',
@@ -736,9 +774,15 @@ const LearnPage = () => {
       description: 'A peace mantra invoking protection and harmony for teacher and student',
       audio: '/audio/sahana.mp3',
       text: 'ॐ सह नाववतु । सह नौ भुनक्तु । सह वीर्यं करवावहै । तेजस्विनावधीतमस्तु मा विद्विषावहै । ॐ शान्तिः शान्तिः शान्तिः ॥',
-      transliteration: 'Om saha nāvavatu. Saha nau bhunaktu. Saha vīryaṃ karavāvahai. Tejasvināvadhītamastu mā vidviṣāvahai. Om śāntiḥ śāntiḥ śāntiḥ.',
+	      transliteration: 'Oṃ sa ha nā va va tu sa ha nau bhu nak tu sa ha vīr yaṃ ka ra vā va hai te jas vi nā va dhī ta mas tu mā vid vi ṣā va hai oṃ śān tiḥ śān tiḥ śān tiḥ',
       englishMeaning: 'May He protect us both (the teacher and the taught) together. May He nourish us both together. May we both together acquire strength (arising from knowledge, etc). Let our study be brilliant. May we not have ill-feeling against each other.',
-      transliterationSyllables: ['Oṃ ', 'sa', 'ha ', 'nā', 'va', 'va', 'tu ', 'sa', 'ha ', 'nau ', 'bhu', 'na', 'ktu ', 'sa', 'ha ', 'vī', 'rya', 'ṃ ', 'ka', 'ra', 'vā', 'va', 'hai ', 'te', 'ja', 'svi', 'nā', 'va', 'dhī', 'ta', 'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ']
+	      transliterationSyllables: [
+	        'Oṃ ', 'sa ', 'ha ', 'nā ', 'va ', 'va ', 'tu ', 'sa ', 'ha ', 'nau ',
+	        'bhu ', 'nak ', 'tu ', 'sa ', 'ha ', 'vīr ', 'yaṃ ', 'ka ', 'ra ', 'vā ',
+	        'va ', 'hai ', 'te ', 'jas ', 'vi ', 'nā ', 'va ', 'dhī ', 'ta ', 'mas ',
+	        'tu ', 'mā ', 'vid ', 'vi ', 'ṣā ', 'va ', 'hai ', 'oṃ ', 'śān ', 'tiḥ ',
+	        'śān ', 'tiḥ ', 'śān ', 'tiḥ'
+	      ]
     },
     {
       id: 'sham-no-mitrah',
@@ -841,6 +885,9 @@ const LearnPage = () => {
       transliterationSyllables: ['Oṃ ', 'bhūr', 'bhuvaḥ ', 'svaḥ ', 'tat', 'sa', 'vi', 'tur', 'va', 're', 'ṇyaṃ ', 'bhar', 'go ', 'de', 'va', 'sya ', 'dhī', 'ma', 'hi ', 'dhi', 'yo ', 'yo ', 'naḥ ', 'pra', 'cho', 'da', 'yāt']
     },
   ];
+
+	  // For now, only Saha Navavatu should be live on the site
+	  const mantras = allMantras.filter(m => m.id === 'saha-navavatu');
 
   // Suktams - collections of mantras
   const suktams: Suktam[] = [
@@ -961,25 +1008,56 @@ const LearnPage = () => {
     },
   ];
 
-  // Helper to get syllables for a mantra - checks saved configs first, then falls back to defaults
-  const getMantraSyllables = (mantraId: string): TimedSyllable[] => {
-    // First check if there's a saved config from the admin page
-    const savedConfig = getMantraConfig(mantraId);
-    if (savedConfig && savedConfig.confirmed && savedConfig.syllables && savedConfig.syllables.length > 0) {
-      return savedConfig.syllables;
-    }
-    // Fall back to hardcoded defaults
-    if (mantraId === 'gayatri') return gayatriMantraSyllables;
-    if (mantraId === 'saha-navavatu') return sahaNavatuMantraSyllables;
-    return [];
-  };
+	  // Helper to get syllables for a mantra - prefers healthy saved configs, then falls back to defaults
+	  const getMantraSyllables = (mantraId: string): TimedSyllable[] => {
+	    const savedConfig = getMantraConfig(mantraId);
+
+	    // Saha Navavatu: only trust saved syllables if they stay aligned with the canonical timing array
+	    if (mantraId === 'saha-navavatu') {
+	      if (
+	        savedConfig &&
+	        savedConfig.confirmed &&
+	        Array.isArray(savedConfig.syllables) &&
+	        savedConfig.syllables.length === sahaNavatuMantraSyllables.length
+	      ) {
+	        return savedConfig.syllables;
+	      }
+	      return sahaNavatuMantraSyllables;
+	    }
+
+	    // Gayatri: similarly, only use saved syllables when aligned with the canonical array
+	    if (mantraId === 'gayatri') {
+	      if (
+	        savedConfig &&
+	        savedConfig.confirmed &&
+	        Array.isArray(savedConfig.syllables) &&
+	        savedConfig.syllables.length === gayatriMantraSyllables.length
+	      ) {
+	        return savedConfig.syllables;
+	      }
+	      return gayatriMantraSyllables;
+	    }
+
+	    // Other mantras (placeholders without dedicated timing arrays yet)
+	    if (savedConfig && savedConfig.confirmed && savedConfig.syllables && savedConfig.syllables.length > 0) {
+	      return savedConfig.syllables;
+	    }
+	    return [];
+	  };
 
   // Helper to get transliteration syllables from saved config or mantra definition
   const getTransliterationSyllables = (mantra: Mantra): string[] => {
     const savedConfig = getMantraConfig(mantra.id);
-    if (savedConfig && savedConfig.confirmed && savedConfig.transliterationSyllables && savedConfig.transliterationSyllables.length > 0) {
-      return savedConfig.transliterationSyllables;
-    }
+	    if (
+	      savedConfig &&
+	      savedConfig.confirmed &&
+	      savedConfig.transliterationSyllables &&
+	      mantra.transliteration &&
+	      savedConfig.transliterationSyllables.length === mantra.transliterationSyllables.length &&
+	      savedConfig.transliterationSyllables.join('') === mantra.transliteration
+	    ) {
+	      return savedConfig.transliterationSyllables;
+	    }
     // Fall back to mantra's static definition
     return mantra.transliterationSyllables;
   };
@@ -991,23 +1069,17 @@ const LearnPage = () => {
         <div className="max-w-4xl mx-auto mb-16">
 
           <div id="lessons" className="scroll-mt-20">
-            <SectionHeader
-              title="Explore Lessons"
-              subtitle="Discover our collection of lessons on Hindu philosophy and deities"
-            />
-
-            {/* Progress Bar */}
+            {/* Enhanced Hero Section */}
             <LearnHero
               totalLessons={totalLessons}
               completedLessons={progressState.completedLessons.length}
+              totalGames={4}
+	              totalMantras={mantras.length}
               lastLesson={lastLesson}
             />
 
-            {/* Search and Bookmarks */}
-            <div className="flex flex-col sm:flex-row gap-4 my-6">
-              <div className="flex-1">
-                <LessonSearch lessonsData={lessonsData} />
-              </div>
+            {/* Bookmarks Panel */}
+            <div className="mb-8">
               <BookmarksPanel
                 bookmarks={progressState.bookmarks}
                 getLessonTitle={getLessonTitle}
@@ -1037,6 +1109,7 @@ const LearnPage = () => {
               </TabsList>
 
               <TabsContent value="lessons">
+                {/* Flattened Tab Structure - Single Level */}
                 <Tabs value={activeLessonTab} onValueChange={handleLessonTabChange} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                     <TabsTrigger value="philosophy" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
