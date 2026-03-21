@@ -59,7 +59,7 @@ export const gayatriMantraSyllables: TimedSyllable[] = [
 // Canonical timing + svara data exported from mantra-configs.json
 // Must stay in 1:1 alignment with transliterationSyllables for Saha Navavatu
 export const sahaNavatuMantraSyllables: TimedSyllable[] = [
-  { text: "ॐ ", startTime: 3.0, endTime: 4.0, svara: 'udatta' },
+	  { text: "ॐ ", startTime: 3.0, endTime: 4.0, svara: 'neutral' },
   { text: "स", startTime: 4.0, endTime: 4.3, svara: 'neutral' },
   { text: "ह ", startTime: 4.3, endTime: 4.6, svara: 'neutral' },
   { text: "ना", startTime: 4.6, endTime: 4.9, svara: 'udatta' },

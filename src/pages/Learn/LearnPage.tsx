@@ -781,7 +781,7 @@ const LearnPage = () => {
 	        'bhu', 'na', 'ktu ', 'sa', 'ha ', 'vī', 'rya', 'ṃ ', 'ka', 'ra',
 	        'vā', 'va', 'hai ', 'te', 'ja', 'svi', 'nā', 'va', 'dhī', 'ta',
 	        'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śān',
-	        'ti', 'ḥ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ ',
+	        'tiḥ ', '', 'śān', 'tiḥ ', '', 'śān', 'tiḥ ', '',
 	      ]
     },
     {
