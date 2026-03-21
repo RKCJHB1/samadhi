@@ -774,14 +774,14 @@ const LearnPage = () => {
       description: 'A peace mantra invoking protection and harmony for teacher and student',
       audio: '/audio/sahana.mp3',
       text: 'ॐ सह नाववतु । सह नौ भुनक्तु । सह वीर्यं करवावहै । तेजस्विनावधीतमस्तु मा विद्विषावहै । ॐ शान्तिः शान्तिः शान्तिः ॥',
-	      transliteration: 'Oṃ sa ha nā va va tu sa ha nau bhu nak tu sa ha vīr yaṃ ka ra vā va hai te jas vi nā va dhī ta mas tu mā vid vi ṣā va hai oṃ śān tiḥ śān tiḥ śān tiḥ',
+	      transliteration: 'Oṃ saha nāvavatu saha nau bhunaktu saha vīryaṃ karavāvahai tejasvināvadhītamastu mā vidviṣāvahai oṃ śāntiḥ śāntiḥ śāntiḥ',
       englishMeaning: 'May He protect us both (the teacher and the taught) together. May He nourish us both together. May we both together acquire strength (arising from knowledge, etc). Let our study be brilliant. May we not have ill-feeling against each other.',
 	      transliterationSyllables: [
-	        'Oṃ ', 'sa ', 'ha ', 'nā ', 'va ', 'va ', 'tu ', 'sa ', 'ha ', 'nau ',
-	        'bhu ', 'nak ', 'tu ', 'sa ', 'ha ', 'vīr ', 'yaṃ ', 'ka ', 'ra ', 'vā ',
-	        'va ', 'hai ', 'te ', 'jas ', 'vi ', 'nā ', 'va ', 'dhī ', 'ta ', 'mas ',
-	        'tu ', 'mā ', 'vid ', 'vi ', 'ṣā ', 'va ', 'hai ', 'oṃ ', 'śān ', 'tiḥ ',
-	        'śān ', 'tiḥ ', 'śān ', 'tiḥ'
+	        'Oṃ ', 'sa', 'ha ', 'nā', 'va', 'va', 'tu ', 'sa', 'ha ', 'nau ',
+	        'bhu', 'na', 'ktu ', 'sa', 'ha ', 'vī', 'rya', 'ṃ ', 'ka', 'ra',
+	        'vā', 'va', 'hai ', 'te', 'ja', 'svi', 'nā', 'va', 'dhī', 'ta',
+	        'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śān',
+	        'ti', 'ḥ ', 'śān', 'ti', 'ḥ ', 'śān', 'ti', 'ḥ ',
 	      ]
     },
     {
