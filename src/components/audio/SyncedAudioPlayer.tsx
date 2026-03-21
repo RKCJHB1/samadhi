@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { TimedSyllable, SvaraType } from '@/data/mantraTimings';
-import { getConfirmedSyllables, initMantraConfigs } from '@/utils/mantraStorage';
 
 interface SyncedAudioPlayerProps {
   src: string;
@@ -30,22 +29,16 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const [configsReady, setConfigsReady] = useState(false);
+	  const [activeIndex, setActiveIndex] = useState(-1);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const highlightIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize configs from JSON file on mount
-  useEffect(() => {
-    initMantraConfigs().then(() => setConfigsReady(true));
-  }, []);
-
-  // Use confirmed syllables from admin if available
-  const syllables = mantraId && configsReady
-    ? getConfirmedSyllables(mantraId, defaultSyllables)
-    : defaultSyllables;
+	  // Use the syllables passed in from the parent (Learn page / Admin).
+	  // Any admin-confirmed configs should be resolved BEFORE calling this
+	  // component, so we don't override the carefully tuned timings here.
+	  const syllables = defaultSyllables;
 
   useEffect(() => {
     setIsPlaying(false);
