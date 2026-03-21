@@ -1088,19 +1088,17 @@ const LearnPage = () => {
               />
             </div>
 
-            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-              <TabsList className={`grid w-full ${import.meta.env.DEV ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
+	            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
+	              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
                 </TabsTrigger>
-                {/* DEVELOPMENT ONLY - Mantras tab hidden from production */}
-                {import.meta.env.DEV && (
-                  <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                    <Music className="w-5 h-5 mr-2" />
-                    Mantras (Dev)
-                  </TabsTrigger>
-                )}
+	                {/* Mantras tab - visible in production, content is internally filtered to live mantras */}
+	                <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+	                  <Music className="w-5 h-5 mr-2" />
+	                  Mantras
+	                </TabsTrigger>
 
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
@@ -1108,8 +1106,8 @@ const LearnPage = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="lessons">
-                {/* Flattened Tab Structure - Single Level */}
+	              <TabsContent value="lessons">
+	                {/* Flattened Tab Structure - Single Level */}
                 <Tabs value={activeLessonTab} onValueChange={handleLessonTabChange} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
                     <TabsTrigger value="philosophy" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron px-1 md:px-3">
@@ -1246,16 +1244,17 @@ const LearnPage = () => {
                 </Tabs>
               </TabsContent>
 
-              {/* DEVELOPMENT ONLY - Mantras content hidden from production */}
-              {import.meta.env.DEV && (
-                <TabsContent value="mantras">
-                  <div className="space-y-8">
-                    <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-                      <strong>Development Mode:</strong> This mantras section is currently in development and not available in production.
-                    </div>
-                    <p className="text-lg">
-                      Mantras are sacred sound formulas that have spiritual and psychological effects.
-                    </p>
+	              {/* Mantras content */}
+	              <TabsContent value="mantras">
+	                <div className="space-y-8">
+	                  {import.meta.env.DEV && (
+	                    <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+	                      <strong>Development Note:</strong> Additional mantras and tools are still being refined. In production, only completed mantras are shown.
+	                    </div>
+	                  )}
+	                  <p className="text-lg">
+	                    Mantras are sacred sound formulas that have spiritual and psychological effects.
+	                  </p>
 
                     {/* Nested Tabs for Mantra Categories */}
                     <Tabs defaultValue="vedic-shanti" className="w-full">
@@ -1339,10 +1338,10 @@ const LearnPage = () => {
                             </div>
                           </div>
                         </div>
-                      </TabsContent>
-
-                      {import.meta.env.DEV && (
-                      <TabsContent value="bhagavad-gita">
+	                      </TabsContent>
+	
+	                      {import.meta.env.DEV && (
+	                      <TabsContent value="bhagavad-gita">
                         <div className="space-y-6">
                           <h3 className="text-2xl font-heading font-semibold mb-4">Bhagavad Gita</h3>
                           <p className="text-gray-600 mb-6">
@@ -1483,14 +1482,13 @@ const LearnPage = () => {
                                 </Link>
                               );
                             })}
-                          </div>
-                        </div>
-                      </TabsContent>
-                      )}
-                    </Tabs>
-                  </div>
-                </TabsContent>
-              )}
+	                          </div>
+	                        </div>
+	                      </TabsContent>
+	                      )}
+	                    </Tabs>
+	                  </div>
+	                </TabsContent>
 
 
 
