@@ -32,8 +32,11 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   quiz
 }) => {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
+  const previewRef = useRef<HTMLDivElement>(null);
 
-  const handleDownload = async () => {
+  const handleOpenPreview = async () => {
     if (!contentRef.current || isGenerating) return;
 
     setIsGenerating(true);
