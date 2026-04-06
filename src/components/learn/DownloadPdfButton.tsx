@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Download, Loader2, Save, FileText, Edit3, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -41,6 +41,13 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   const [pageSize, setPageSize] = useState('a4');
   const [pdfDataUri, setPdfDataUri] = useState('');
   const [isPreviewGenerating, setIsPreviewGenerating] = useState(false);
+
+  useEffect(() => {
+    if (!isPreviewOpen && pdfDataUri && pdfDataUri.startsWith('blob:')) {
+      URL.revokeObjectURL(pdfDataUri);
+      setPdfDataUri('');
+    }
+  }, [isPreviewOpen, pdfDataUri]);
 
   const handleOpenPreview = async () => {
     if (!contentRef.current || isGenerating) return;
@@ -326,7 +333,8 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       const pdfInstance = html2pdf().set(opt).from(contentToPrint);
 
       if (action === 'preview') {
-        const pdfDataUriString = await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
+        let uriString = '';
+        await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
           const totalPages = pdf.internal.getNumberOfPages();
           const pageWidth = pdf.internal.pageSize.getWidth();
           const pageHeight = pdf.internal.pageSize.getHeight();
@@ -338,9 +346,13 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
             const textWidth = pdf.getTextWidth(pageText);
             pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
           }
-          return pdf.output('datauristring');
+          const blob = pdf.output('blob');
+          uriString = URL.createObjectURL(blob);
         });
-        setPdfDataUri(pdfDataUriString);
+        setPdfDataUri(prev => {
+          if (prev && prev.startsWith('blob:')) URL.revokeObjectURL(prev);
+          return uriString;
+        });
       } else {
         await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
           const totalPages = pdf.internal.getNumberOfPages();
