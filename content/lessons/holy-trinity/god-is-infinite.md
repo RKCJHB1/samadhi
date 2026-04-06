@@ -11,6 +11,11 @@ quiz: god-is-infinite
 
 # God is Infinite
 
+<div class="text-center mb-6">
+            <img src="/pics/infinite.jpg" alt="God is Infinite" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">God is Infinite</p>
+          </div>
+
 This profound teaching from Sri Ramakrishna reveals one of the most important spiritual truths: that God is infinite and can be approached through many different paths. This understanding forms the foundation for religious harmony and universal acceptance.
 
 ## The Great Realization

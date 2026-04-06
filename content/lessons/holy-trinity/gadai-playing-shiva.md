@@ -11,6 +11,11 @@ quiz: gadai-playing-shiva
 
 # Gadai Playing Shiva
 
+<div class="text-center mb-6">
+            <img src="/pics/shiva.jpg" alt="Gadai Playing Shiva" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Gadai Playing Shiva</p>
+          </div>
+
 This beautiful story shows us how young Gadai's deep devotion to God could transform even a simple drama into a profound spiritual experience. It demonstrates the power of sincere devotion and complete absorption in the Divine.
 
 ## The Sacred Night of Shivarātri

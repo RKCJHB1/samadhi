@@ -11,6 +11,11 @@ quiz: swami-vivekananda-part-2
 
 # Swami Vivekānanda - Part 2
 
+<div class="text-center mb-6">
+            <img src="/pics/swamijiwriting.jpg" alt="Swami Vivekananda writing" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Swami Vivekananda writing</p>
+          </div>
+
 This continues the remarkable story of Narendranath Datta's spiritual journey and his transformation under Sri Ramakrishna's guidance into the great world teacher, Swami Vivekānanda.
 
 ## The First Meeting with Sri Ramakrishna

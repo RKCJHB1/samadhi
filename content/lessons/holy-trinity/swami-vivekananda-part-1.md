@@ -11,6 +11,11 @@ quiz: swami-vivekananda-part-1
 
 # Swami Vivekānanda - Part 1
 
+<div class="text-center mb-6">
+            <img src="/pics/vivekananda blessing children.png" alt="Swami Vivekananda blessing children" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Swami Vivekananda blessing children</p>
+          </div>
+
 This is the story of a remarkable young man named Narendranath Datta, who would grow up to become one of the greatest spiritual teachers of modern times - Swami Vivekānanda.
 
 ## The Birth of a Great Soul

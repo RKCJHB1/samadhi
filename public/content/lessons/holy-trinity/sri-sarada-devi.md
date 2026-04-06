@@ -11,6 +11,11 @@ quiz: sri-sarada-devi
 
 # Sri Sāradā Devi
 
+<div class="text-center mb-6">
+            <img src="/pics/ssd.jpg" alt="Sri Sāradā Devi - The Holy Mother" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Sri Sāradā Devi - The Holy Mother</p>
+          </div>
+
 Sri Sāradā Devi, known as the Holy Mother, was the spiritual consort of Sri Ramakrishna and is revered as the Divine Mother incarnate. Her life exemplifies perfect devotion, service, and spiritual wisdom.
 
 ## The Sacred Birth

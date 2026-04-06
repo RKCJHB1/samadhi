@@ -11,6 +11,11 @@ quiz: teachings-sri-sarada-devi
 
 # Teachings of Sri Sārada Devi
 
+<div class="text-center mb-6">
+            <img src="/pics/ssd.jpg" alt="Sri Sārada Devi - The Holy Mother" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Sri Sārada Devi - The Holy Mother</p>
+          </div>
+
 Sri Sārada Devi, known as the Holy Mother, was not only the spiritual consort of Sri Ramakrishna but also a great teacher in her own right. Her teachings provide practical wisdom for spiritual life and show us how to live with love, compassion, and inner strength.
 
 ## The Universal Mother

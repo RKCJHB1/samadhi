@@ -11,6 +11,11 @@ quiz: rani-rasmani-ramakrishna
 
 # Rāni Rāsmani and Sri Rāmakrishna
 
+<div class="text-center mb-6">
+            <img src="/pics/rani.jpg" alt="Rāni Rāsmani and Sri Rāmakrishna" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Rāni Rāsmani and Sri Rāmakrishna</p>
+          </div>
+
 This story teaches us about the importance of keeping our minds focused on God during worship, and shows us the courage of a truthful devotee who accepts correction with humility.
 
 ## Rāni Rāsmani - The Devoted Queen

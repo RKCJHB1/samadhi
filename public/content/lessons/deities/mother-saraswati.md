@@ -14,6 +14,11 @@ relatedLessons:
 
 # Mother Saraswati
 
+<div class="text-center mb-6">
+            <img src="/pics/saras.jpg" alt="Mother Saraswati - Goddess of Knowledge and Wisdom" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Mother Saraswati - Goddess of Knowledge and Wisdom</p>
+          </div>
+
 Mother Saraswati is the goddess of knowledge and wisdom. It is Her grace which gives us intelligence, speech, music and learning. School children, teachers, poets, artists, sculptors, dancers and all lovers of knowledge worship Mother Saraswati and seek Her blessings.
 
 ## The Divine Form

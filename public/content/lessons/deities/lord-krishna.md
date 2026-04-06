@@ -11,6 +11,11 @@ quiz: lord-krishna
 
 # Lord Krishna
 
+<div class="text-center mb-6">
+            <img src="/pics/krishna.jpg" alt="Lord Krishna - the beloved deity with peacock feather, playing flute" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Lord Krishna - the beloved deity whose life and teachings inspire millions</p>
+          </div>
+
 Lord Krishna lived in India long, long ago. His most wonderful life and teachings, full of love and wisdom, are of everlasting interest to one and all.
 
 ## The Beloved Child Krishna

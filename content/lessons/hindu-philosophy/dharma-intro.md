@@ -15,6 +15,11 @@ relatedLessons:
 
 # Understanding Dharma
 
+<div class="text-center mb-6">
+            <img src="/pics/dharma.png" alt="The Dharma symbol - it reminds us to always do what is right" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">The Dharma symbol - it reminds us to always do what is right</p>
+          </div>
+
 ![Dharma symbol representing cosmic order and righteousness](/pics/dharma.png)
 *The Dharma symbol representing cosmic order and righteousness*
 

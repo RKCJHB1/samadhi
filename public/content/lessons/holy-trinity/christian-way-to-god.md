@@ -11,6 +11,11 @@ quiz: christian-way-to-god
 
 # The Christian Way to God
 
+<div class="text-center mb-6">
+            <img src="/pics/christian.jpg" alt="The Christian Way to God" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">The Christian Way to God</p>
+          </div>
+
 This beautiful story shows Sri Ramakrishna's exploration of Christianity and his profound realization that Jesus Christ leads to the same Divine Reality that he had experienced through other spiritual paths.
 
 ## Sri Ramakrishna's Quest for Universal Truth

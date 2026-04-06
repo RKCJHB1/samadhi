@@ -11,6 +11,11 @@ quiz: childhood-days-sri-ramakrishna
 
 # Childhood Days of Sri Ramakrishna
 
+<div class="text-center mb-6">
+            <img src="/pics/childhood.jpg" alt="Childhood Days of Sri Ramakrishna" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Childhood Days of Sri Ramakrishna</p>
+          </div>
+
 The childhood of Sri Ramakrishna, known then as Gadai, was spent in a beautiful village that shaped his love for God and nature. His early years show us how a divine soul grows in an environment of love, devotion, and simplicity.
 
 ## The Beautiful Village of Kamārpukur
