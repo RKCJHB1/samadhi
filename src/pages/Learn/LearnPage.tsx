@@ -395,7 +395,7 @@ const SyllablePractice = ({
 };
 
 // Full-page Mantra Modal Component
-const MantraModal = ({
+	const MantraModal = ({
   mantra,
   onClose,
   syllables,
@@ -410,8 +410,15 @@ const MantraModal = ({
   const [isSanskritVisible, setIsSanskritVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const hasAlignedTransliterationFollowAlong =
-    syllables.length > 0 && transliterationSyllables.length === syllables.length;
+	  // Show Practice Mode when we have real timing data and at least some
+	  // transliteration tokens to label the syllables. For Saha Navavatu we
+	  // allow a length mismatch between timing and transliteration arrays,
+	  // because Admin is the source of truth for timings and we keep a
+	  // curated transliteration token list for display.
+	  const hasAlignedTransliterationFollowAlong =
+	    syllables.length > 0 &&
+	    transliterationSyllables.length > 0 &&
+	    (transliterationSyllables.length === syllables.length || mantra.id === 'saha-navavatu');
 
   // Close on escape key
   useEffect(() => {
@@ -780,8 +787,8 @@ const LearnPage = () => {
 	        'Oṃ ', 'sa', 'ha ', 'nā', 'va', 'va', 'tu ', 'sa', 'ha ', 'nau ',
 	        'bhu', 'na', 'ktu ', 'sa', 'ha ', 'vī', 'rya', 'ṃ ', 'ka', 'ra',
 	        'vā', 'va', 'hai ', 'te', 'ja', 'svi', 'nā', 'va', 'dhī', 'ta',
-	        'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śān',
-	        'tiḥ ', '', 'śān', 'tiḥ ', '', 'śān', 'tiḥ ', '',
+		        'ma', 'stu ', 'mā ', 'vi', 'dvi', 'ṣā', 'va', 'hai ', 'oṃ ', 'śāntiḥ ',
+		        '', 'śāntiḥ ', '', 'śāntiḥ ', '', '', '',
 	      ]
     },
     {
@@ -790,7 +797,7 @@ const LearnPage = () => {
       description: 'A peace invocation calling upon cosmic forces for well-being and truth',
       audio: '/audio/shannomitra.mp3',
       text: 'ॐ शं नो मित्रः शं वरुणः । शं नो भवत्वर्यमा । शं न इन्द्रो बृहस्पतिः । शं नो विष्णुरुरुक्रमः । नमो ब्रह्मणे । नमस्ते वायो । त्वमेव प्रत्यक्षं ब्रह्मासि । त्वमेव प्रत्यक्षं ब्रह्म वदिष्यामि । ऋतं वदिष्यामि । सत्यं वदिष्यामि । तन्मामवतु । तद्वक्तारमवतु । अवतु माम् । अवतु वक्तारम् ॥ ॐ शान्तिः शान्तिः शान्तिः ॥',
-      transliteration: 'Om śaṃ no mitraḥ śaṃ varuṇaḥ. Śaṃ no bhavatvaryamā. Śaṃ na indro bṛhaspatiḥ. Śaṃ no viṣṇururukramaḥ. Namo brahmaṇe. Namaste vāyo. Tvameva pratyakṣaṃ brahmāsi. Tvameva pratyakṣaṃ brahma vadiṣyāmi. Ṛtaṃ vadiṣyāmi. Satyaṃ vadiṣyāmi. Tanmāmavatu. Tadvaktāramavatu. Avatu mām. Avatu vaktāram. Om śāntiḥ śāntiḥ śāntiḥ.',
+	      transliteration: 'Oṃ śaṃ no mitraḥ śaṃ varuṇaḥ | śaṃ no bhavatvaryamā | śaṃ na indro bṛhaspatiḥ | śaṃ no viṣṇururukramaḥ | namo brahmaṇe | namaste vāyo | tvameva pratyakṣaṃ brahmāsi | tvāmevapratyakṣaṃ brahma vadiṣyāmi | ṛtaṃ vadiṣyāmi | satyaṃ vadiṣyāmi | tanmāmavatu | tadvaktāramavatu | avatu mām | avatu vaktāram | oṃ śāntiḥ śāntiḥ śāntiḥ',
       englishMeaning: 'May Mitra be propitious to us. May Varuna be propitious to us. May Aryaman be propitious to us. May Indra and Brhaspati be propitious to us. May Vishnu of long strides be propitious to us. Salutation to Brahman. Salutation to you, O Vayu. You indeed are the immediate Brahman. You alone I shall call the direct Brahman. I shall call you righteousness. I shall call you truth. May He protect me. May He protect the teacher. May He protect me. May He protect the teacher. Om Peace! Peace! Peace!',
       transliterationSyllables: []
     },
@@ -886,8 +893,8 @@ const LearnPage = () => {
     },
   ];
 
-	  // For now, only Saha Navavatu should be live on the site
-	  const mantras = allMantras.filter(m => m.id === 'saha-navavatu');
+	  	  // Shanti mantras currently live on the site
+	  	  const mantras = allMantras.filter(m => ['saha-navavatu', 'sham-no-mitrah'].includes(m.id));
 
   // Suktams - collections of mantras
   const suktams: Suktam[] = [
@@ -1008,46 +1015,45 @@ const LearnPage = () => {
     },
   ];
 
-	  // Helper to get syllables for a mantra - prefers healthy saved configs, then falls back to defaults
-	  const getMantraSyllables = (mantraId: string): TimedSyllable[] => {
-	    const savedConfig = getMantraConfig(mantraId);
-
-	    // Saha Navavatu: only trust saved syllables if they stay aligned with the canonical timing array
-	    if (mantraId === 'saha-navavatu') {
-	      if (
-	        savedConfig &&
-	        savedConfig.confirmed &&
-	        Array.isArray(savedConfig.syllables) &&
-	        savedConfig.syllables.length === sahaNavatuMantraSyllables.length
-	      ) {
-	        return savedConfig.syllables;
-	      }
-	      return sahaNavatuMantraSyllables;
-	    }
-
-	    // Gayatri: similarly, only use saved syllables when aligned with the canonical array
-	    if (mantraId === 'gayatri') {
-	      if (
-	        savedConfig &&
-	        savedConfig.confirmed &&
-	        Array.isArray(savedConfig.syllables) &&
-	        savedConfig.syllables.length === gayatriMantraSyllables.length
-	      ) {
-	        return savedConfig.syllables;
-	      }
-	      return gayatriMantraSyllables;
-	    }
-
-	    // Other mantras (placeholders without dedicated timing arrays yet)
-	    if (savedConfig && savedConfig.confirmed && savedConfig.syllables && savedConfig.syllables.length > 0) {
-	      return savedConfig.syllables;
-	    }
-	    return [];
-	  };
+		  // Helper to get syllables for a mantra
+		  // Admin (confirmed config) is the source of truth; code defaults are just fallback.
+		  const getMantraSyllables = (mantraId: string): TimedSyllable[] => {
+		    const savedConfig = getMantraConfig(mantraId);
+		
+		    // 1) If Admin has a confirmed config with real syllables, always trust that first
+		    if (
+		      savedConfig &&
+		      savedConfig.confirmed &&
+		      Array.isArray(savedConfig.syllables) &&
+		      savedConfig.syllables.length > 0
+		    ) {
+		      return savedConfig.syllables;
+		    }
+		
+		    // 2) Fall back to per-mantra canonical timing arrays where available
+		    if (mantraId === 'saha-navavatu') {
+		      return sahaNavatuMantraSyllables;
+		    }
+		
+		    if (mantraId === 'gayatri') {
+		      return gayatriMantraSyllables;
+		    }
+		
+		    // 3) Other mantras without dedicated timing arrays yet: no timings by default
+		    return [];
+		  };
 
   // Helper to get transliteration syllables from saved config or mantra definition
   const getTransliterationSyllables = (mantra: Mantra): string[] => {
-    const savedConfig = getMantraConfig(mantra.id);
+	    // For Saha Navavatu, always use the curated static syllable tokens for
+	    // display so the sentence reads naturally ("bhunaktu", "vīryaṃ",
+	    // "tejasvināvadhītamastu", "vidviṣāvahai", "oṃ śāntiḥ śāntiḥ śāntiḥ")
+	    // regardless of any older saved configs.
+	    if (mantra.id === 'saha-navavatu') {
+	      return mantra.transliterationSyllables;
+	    }
+
+	    const savedConfig = getMantraConfig(mantra.id);
 	    if (
 	      savedConfig &&
 	      savedConfig.confirmed &&
@@ -1058,8 +1064,8 @@ const LearnPage = () => {
 	    ) {
 	      return savedConfig.transliterationSyllables;
 	    }
-    // Fall back to mantra's static definition
-    return mantra.transliterationSyllables;
+	    // Fall back to mantra's static definition
+	    return mantra.transliterationSyllables;
   };
   return (
     <PageLayout title="Hinduism for Children">

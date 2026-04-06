@@ -432,6 +432,205 @@ export const lessonsData: LessonGroup[] = [
             }
           ]
         }
+      },
+      {
+        id: 'rama-gita-space-hack',
+        title: 'The Teachings of Rama Gita',
+        description: 'Learn about Rama\'s teachings on understanding your true self and finding inner peace',
+        content: `
+          <h2>The Teachings of Rama Gita</h2>
+          <div class="text-center mb-6">
+            <img src="/pics/rama.jpg" alt="Lord Rama - the ideal of dharma and wisdom" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <p class="text-sm text-gray-600 mt-2 italic">Lord Rama - the ideal of dharma and wisdom</p>
+          </div>
+          <p>The Rama Gita is a teaching from the Ramayana where Lord Rama shares wisdom with his brother Lakshmana. In this teaching, Rama explains something very important about who we really are and how to find true peace in life.</p>
+
+          <h3>Understanding Your True Self</h3>
+          <p>Rama teaches that each of us has two parts to understand:</p>
+          <ul>
+            <li><strong>Our body and mind:</strong> This is what we see in the mirror. It changes as we grow older. It gets tired, hungry, and sick.</li>
+            <li><strong>Our true self (Atman):</strong> This is the real "you" inside - the awareness that watches everything. It never changes and is always peaceful.</li>
+          </ul>
+          <p>Most people think they are only their body and mind. But Rama teaches that your true self is much bigger and more wonderful than that.</p>
+
+          <h3>The Jar and the Space Inside</h3>
+          <p>Rama uses a beautiful example to explain this. Imagine a clay jar filled with air.</p>
+          <p>The air inside the jar is exactly the same as the air outside the jar. The jar doesn't change the air - it just seems to separate it. The air inside thinks "I am trapped in this jar," but really, it is the same as all the air everywhere.</p>
+
+          <h4>What Does This Mean for You?</h4>
+          <p>Your body is like the jar. Your true self (Atman) is like the air. Your body seems to separate you from the rest of the world, but your true self is connected to everything.</p>
+          <p>When you understand this, you realize:</p>
+          <ul>
+            <li>You are not just a student or an athlete or a child</li>
+            <li>You are not just your name or your family</li>
+            <li>Your true self is part of the infinite consciousness that is in all things</li>
+          </ul>
+
+          <h3>Knowledge and Action Work Together</h3>
+          <p>Rama teaches that both knowledge and action are important. They work together like two wings of a bird - you need both to fly.</p>
+          <p>Doing good actions is very important. When you help others, study hard, and follow dharma, you create good karma and make the world better. This is like sweeping a room - it keeps things clean and organized.</p>
+          <p>But knowledge of who you really are is also essential. Think about darkness. If a room has been dark for a thousand years, sweeping it helps keep it organized, but the darkness remains. You need to turn on a light to remove the darkness completely.</p>
+
+          <h4>How Do They Work Together?</h4>
+          <p>Action without knowledge can leave you feeling empty even when you do good things. You might help others, succeed in school, and achieve your goals - but still feel worried or sad inside.</p>
+          <p>Knowledge without action is incomplete too. Understanding that you are the infinite consciousness is wonderful, but you still need to live that understanding through your actions - being kind, honest, and helpful.</p>
+          <p>When you combine both - doing good actions AND understanding your true nature - you experience real peace. You do your duty with full effort, but you know that your true self is not affected by success or failure. Fear cannot touch you. Sadness cannot hurt you. Worry cannot control you.</p>
+          <p>This is why Rama himself was a great King - he took action, made decisions, and fulfilled his duties. But he did all of this while understanding his true nature. That is the perfect balance.</p>
+
+          <h3>You Are the Witness</h3>
+          <p>Rama teaches that you are the Witness (Sakshi) - the awareness that watches everything that happens.</p>
+          <p>Try this exercise:</p>
+          <ul>
+            <li>Close your eyes and listen to sounds around you</li>
+            <li>Notice your thoughts - "I'm hungry," "This is interesting," "I'm bored"</li>
+            <li>Notice your feelings - happy, sad, excited, tired</li>
+          </ul>
+          <p>Here is the important part: <strong>If you can notice your thoughts and feelings, then you are not your thoughts and feelings.</strong></p>
+          <p>You are the awareness that watches them. You are the Witness.</p>
+
+          <h4>What Does This Mean?</h4>
+          <p>When someone says something mean to you, they are hurting your feelings or your reputation. But they cannot touch the real you - the Witness inside.</p>
+          <p>When you fail at something, your body and mind feel sad. But the real you - the Witness - remains peaceful and untouched.</p>
+          <p>This is why understanding that you are the Witness brings peace. Nothing in the world can hurt your true self.</p>
+
+          <h3>Living with This Understanding</h3>
+          <p>Rama did not teach Lakshmana to stop being a warrior or to run away from life. Instead, he taught him to do his duty while understanding his true nature.</p>
+          <p>Rama himself was a King. He made decisions, fought battles, and took care of his people. But he did all of this while knowing that his true self was not affected by success or failure.</p>
+
+          <h4>How Can You Use This?</h4>
+          <p>You can study hard and do your best in school. You can play sports and try to win. You can help your family and be a good friend. But you can do all of this while knowing:</p>
+          <ul>
+            <li>Your true self is not your grades or your sports achievements</li>
+            <li>Your true self is not what others think of you</li>
+            <li>Your true self is peaceful, eternal, and connected to all things</li>
+          </ul>
+          <p>This understanding brings real peace - not because you stop trying, but because you understand what you really are.</p>
+
+          <h3>The Connection to All Things</h3>
+          <p>When you understand that your true self is the same as the true self in all beings, you naturally become kinder and more compassionate.</p>
+          <p>You see that:</p>
+          <ul>
+            <li>The same consciousness that is in you is in your parents, your teachers, and your friends</li>
+            <li>The same consciousness is in animals and plants</li>
+            <li>The same consciousness is in all of nature</li>
+          </ul>
+          <p>This understanding is the foundation of ahimsa (non-violence) and compassion.</p>
+
+          <h3>Key Terms</h3>
+          <ul>
+            <li><strong>Atman:</strong> Your true self; the eternal consciousness within you</li>
+            <li><strong>Ghatakasha:</strong> Individual consciousness; the air inside the jar</li>
+            <li><strong>Mahakasha:</strong> Universal consciousness; the infinite space</li>
+            <li><strong>Jnana:</strong> Knowledge of your true nature</li>
+            <li><strong>Sakshi:</strong> The Witness; the awareness that observes all experiences</li>
+            <li><strong>Advaita Vedanta:</strong> The teaching that all is one consciousness</li>
+            <li><strong>Rama Gita:</strong> Rama's teachings on understanding the true self</li>
+          </ul>
+        `,
+        quiz: {
+          questions: [
+            {
+              question: 'What is the main analogy Rama uses to explain the relationship between individual consciousness and universal consciousness?',
+              answers: [
+                'A wave in the ocean',
+                'Air inside a jar vs. air in the entire room',
+                'A shadow and its source',
+                'A student and a teacher'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does "Ghatakasha" represent in Rama\'s teaching?',
+              answers: [
+                'Universal consciousness',
+                'Individual consciousness; the "air in the jar"',
+                'The physical body only',
+                'The mind and thoughts'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'According to Rama, what happens to the air inside a jar when the jar is broken?',
+              answers: [
+                'The air escapes to the sky',
+                'The air becomes trapped in the broken pieces',
+                'The air was always the sky; it just thought it was limited',
+                'The air disappears completely'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'According to Rama, how do knowledge and action work together?',
+              answers: [
+                'Action is important, but knowledge is not necessary',
+                'Knowledge is important, but action is not necessary',
+                'Both knowledge and action are important - they work together like two wings of a bird',
+                'Neither knowledge nor action matters'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'In the darkness analogy, what does "turning on the light" represent?',
+              answers: [
+                'Doing more good deeds',
+                'Avoiding difficult situations',
+                'Understanding your true nature as infinite consciousness',
+                'Changing your external circumstances'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What is the key insight from the "Witness Challenge" exercise?',
+              answers: [
+                'You are your thoughts and emotions',
+                'If you can notice a thought, you are not the thought; you are the Witness',
+                'Thoughts are more real than the observer',
+                'You should try to stop all thoughts'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does "Sakshi" mean in Rama\'s teaching?',
+              answers: [
+                'The physical body',
+                'The mind and intellect',
+                'The Witness; the awareness that observes all experiences',
+                'The ego and personality'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'According to Rama, how should you respond when someone insults you?',
+              answers: [
+                'Fight back immediately',
+                'Feel hurt and sad',
+                'Remember they are attacking your "jar," not the infinite space inside',
+                'Avoid all conflict'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'How did Rama himself live according to his teachings?',
+              answers: [
+                'He avoided all responsibilities and lived in isolation',
+                'He was a King who made decisions and fought battles while knowing his true self was unaffected',
+                'He only focused on meditation and ignored his duties',
+                'He taught others but did not practice what he taught'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What is the foundation of ahimsa (non-violence) according to Rama\'s teaching?',
+              answers: [
+                'Being afraid of others',
+                'Understanding that the same consciousness is in all beings',
+                'Avoiding all conflict at any cost',
+                'Only being kind to people you like'
+              ],
+              correctAnswer: 1
+            }
+          ]
+        }
       }
     ]
   },
@@ -2776,7 +2975,7 @@ export const lessonsData: LessonGroup[] = [
         content: `
           <h2>An Introduction to Sri Ramakrishna</h2>
           <div class="text-center mb-6">
-            <img src="/pics/srk.jpg" alt="Sri Ramakrishna - The Great Spiritual Teacher" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
+            <img src="/pics/srk.png" alt="Sri Ramakrishna - The Great Spiritual Teacher" class="mx-auto rounded-lg shadow-md max-w-md w-full" />
             <p class="text-sm text-gray-600 mt-2 italic">Sri Ramakrishna - The Great Spiritual Teacher</p>
           </div>
 <p>Sri Ramakrishna was one of the greatest spiritual teachers the world has ever known. His life story shows us how God can be born among us to guide humanity toward truth and love.</p>
@@ -9457,10 +9656,384 @@ export const lessonsData: LessonGroup[] = [
             }
           ]
         }
-      }
-    ]
-  },
-  {
+      },
+      {
+        id: 'bhagavad-gita-students-perspective',
+        title: 'Bhagavad Gita: A Student\'s Perspective',
+        description: 'Discover how the Bhagavad Gita offers practical wisdom and guidance for students facing modern challenges',
+        content: `
+          <h2>Bhagavad Gita: A Student's Perspective</h2>
+
+          <h3>What is the Bhagavad Gita?</h3>
+          <p>The <strong>Bhagavad Gita</strong> is a treasure-house of wisdom. It contains valuable insights into how to live life and is one of the most widely read spiritual classics of the world. The teachings of the Gita have become part of the lives of countless men and women everywhere.</p>
+          <p>Scholars and thinkers of India and other countries alike, as well as saints, leaders, scientists, spiritual seekers and simple commoners—the Gita has been a source of inspiration and strength to one and all. It is indeed the Scripture of India.</p>
+
+          <h3>Is the Gita Relevant for Students?</h3>
+          <p>While the Gita is widely respected, it is not always popular with students. To most students in India, the Gita is a kind of riddle. They have heard of its name, and some also know that it is part of the epic Mahabharata. But most young people do not know whether the Gita contains anything practically relevant for them.</p>
+          <p>Often it is felt that the Gita deals with issues which are rather 'too high' for modern students. Of course they 'revere' the Gita but think that it is just too difficult to understand (and give up reading it altogether) or postpone it to a more suitable time, later in life—somewhere in the future which, of course, never comes!</p>
+
+          <h3>What Can the Gita Teach Us?</h3>
+          <p>Living in today's demanding world of diverse challenges and pressures, students ask: <strong>'What can the Gita teach us?'</strong></p>
+          <p>Modern day education does not pay much attention to cultivating interest in this matter. In these times of cell phones, SMSs, Internet browsing, emails, digital cameras, iPods, television and reckless use of other electronic gadgets, modern students live under great inner and outer challenges.</p>
+
+          <h3>The Challenges Students Face Today</h3>
+          <h4>Outer Challenges</h4>
+          <p>The 'outer' challenges come to students in the form of:</p>
+          <ul>
+            <li>Learning to keep their focus on their studies and examinations</li>
+            <li>Dealing with constant distractions and pulls of various kinds</li>
+            <li>Managing the pressure of academic performance</li>
+          </ul>
+
+          <h4>Inner Challenges</h4>
+          <p>The 'inner' challenges come through:</p>
+          <ul>
+            <li>Lack of a lasting goal and purpose</li>
+            <li>Difficulty in concentration of mind</li>
+            <li>Resisting peer pressure and temptations</li>
+            <li>Living a consumerist and selfish way of life</li>
+          </ul>
+          <p>In the process, higher values such as truthfulness, honesty, unselfishness, gratitude, self-control, self-sacrifice and self-discipline—which form the basis of a healthy and strong personality—are pushed aside.</p>
+
+          <h3>What the Gita Offers to Young Minds</h3>
+          <p>Contrary to popular perception, the Gita contains much to guide and help students right now, during their student years and while preparing for their adult years. The Gita is not merely a book of deep philosophical thoughts; it is also a book of practical wisdom.</p>
+          <p>An earnest study of the Gita can make one a more effective student and better human being. The Gita contains many suggestions and guidelines for self-improvement in all its varied aspects, such as:</p>
+          <ul>
+            <li>Understanding the real nature of man</li>
+            <li>Developing concentration of mind</li>
+            <li>Overcoming negative thoughts</li>
+            <li>Overcoming anger</li>
+            <li>Evolving a healthy outlook towards life</li>
+            <li>Building a strong and pure personality</li>
+          </ul>
+
+          <h3>How to Study the Gita</h3>
+          <p>The Gita distils some of the highest and best ideas mankind has thought of. As you read through it, you will discover how it can enrich and strengthen your personal and collective lives.</p>
+          <p>While a quick reading of the book will reveal to you the beauty of the wisdom the Gita contains, a calm, repeated thinking over them will reveal a deeper and new meaning.</p>
+
+          <h3>Key Takeaways for Students</h3>
+          <ul>
+            <li>The Gita is not just for philosophers—it has practical wisdom for students</li>
+            <li>It addresses the real challenges students face today</li>
+            <li>It teaches how to develop focus, concentration, and a strong personality</li>
+            <li>It helps you understand your purpose and duty in life</li>
+            <li>Regular study and reflection on the Gita reveals deeper meanings</li>
+            <li>The Gita can guide you to become a better student and a better person</li>
+          </ul>
+        `,
+        quiz: {
+          questions: [
+            {
+              question: 'What is the Bhagavad Gita?',
+              answers: [
+                'A modern self-help book',
+                'A treasure-house of wisdom and one of the most widely read spiritual classics',
+                'A book only for old people',
+                'A book about science'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'Is the Gita part of any epic?',
+              answers: [
+                'No, it stands alone',
+                'Yes, it is part of the Ramayana',
+                'Yes, it is part of the Mahabharata',
+                'Yes, it is part of the Vedas'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'What are the "outer challenges" students face today?',
+              answers: [
+                'Only homework',
+                'Keeping focus on studies and dealing with constant distractions',
+                'Playing sports',
+                'Making friends'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What are the "inner challenges" students face?',
+              answers: [
+                'Lack of lasting goals and difficulty in concentration',
+                'Not having enough money',
+                'Not liking their teachers',
+                'Not having a phone'
+              ],
+              correctAnswer: 0
+            },
+            {
+              question: 'Is the Gita only about philosophy?',
+              answers: [
+                'Yes, it is only philosophy',
+                'No, it is also a book of practical wisdom',
+                'It is only about history',
+                'It is only about stories'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What can studying the Gita help you develop?',
+              answers: [
+                'Only mathematical skills',
+                'Concentration of mind, overcoming negative thoughts, and building a strong personality',
+                'Only physical strength',
+                'Only cooking skills'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What happens when you read the Gita repeatedly and think about it calmly?',
+              answers: [
+                'You get bored',
+                'You understand it less',
+                'You discover deeper and new meanings',
+                'Nothing changes'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'Which of these is NOT mentioned as a value that should form the basis of a healthy personality?',
+              answers: [
+                'Truthfulness',
+                'Self-control',
+                'Greed',
+                'Honesty'
+              ],
+              correctAnswer: 2
+            },
+            {
+              question: 'According to the lesson, why is the Gita not popular with many students?',
+              answers: [
+                'It is too short',
+                'They think it is too difficult to understand or deals with issues too high for them',
+                'It is written in English',
+                'It is too expensive'
+              ],
+              correctAnswer: 1
+            },
+            {
+              question: 'What does the Gita contain besides deep philosophical thoughts?',
+              answers: [
+                'Only stories',
+                'Only history',
+                'Practical wisdom for everyday life',
+                'Only poetry'
+              ],
+              correctAnswer: 2
+            }
+	  	          ]
+	  	        }
+	  	      },
+	  	      {
+	  	        id: 'bhagavad-gita-facts',
+	    	    title: 'Some Facts about the Bhagavad Gita',
+	  	        description: 'Explore key facts, concepts, and background of the Bhagavad Gita.',
+	    	    content: `
+	    	      <h2>Some Facts about the Bhagavad Gita</h2>
+	    	      <p>The <strong>Bhagavad Gita</strong>, often simply called the <strong>Gita</strong>, is one of the most important scriptures in Hinduism. The Sanskrit word <em>gita</em> means "song". Because this song is sung by <strong>Sri Krishna</strong>, the God Incarnate (<em>Bhagavan</em>), it is called the <strong>Bhagavad Gita</strong> – the Song of God.</p>
+	    	      <p>There are many other Gita-s such as <em>Hamsa Gita</em>, <em>Avadhuta Gita</em>, and <em>Ashtavakra Gita</em>, but when people simply say "the Gita", they almost always mean the <strong>Bhagavad Gita</strong>.</p>
+	    	      
+	    	      <h3>Structure of the Gita</h3>
+	    	      <p>The Gita has about <strong>700 verses</strong>, divided into <strong>18 chapters</strong>. It forms part of the epic <strong>Mahabharata</strong> (specifically in <em>Bhishma Parva</em>, Chapters 25 to 42).</p>
+	    	      <p>Every chapter of the Gita is regarded as a <strong>Yoga</strong> – a way to self-perfection – and has its own name such as <em>Jnana Yoga</em>, <em>Karma Yoga</em>, <em>Bhakti Yoga</em> and so on. These names are traditionally mentioned at the end of each chapter.</p>
+	    	      
+	    	      <h3>Main Characters and Setting</h3>
+	    	      <p>The Gita is presented as a dialogue between <strong>Arjuna</strong> and <strong>Sri Krishna</strong>. Arjuna was one of the five Pandava brothers who had been deprived of their right to rule the kingdom and were persecuted by their cousins, the Kauravas.</p>
+	    	      <p>After all negotiations and peaceful alternatives failed, the Pandavas were forced to prepare for a war against the Kauravas. The teachings of the Gita are given <strong>on the battlefield of Kurukshetra</strong> just before this war begins.</p>
+	    	      <p>In the Mahabharata, Arjuna is addressed by many names such as <em>Partha</em>, <em>Pandava</em>, <em>Bharata</em>, <em>Mahabaho</em>, and <em>Kaunteya</em>.</p>
+	    	      
+	    	      <h3>Important Terms in the Gita</h3>
+	    	      <p>As Sri Krishna, the God Incarnate, counsels Arjuna, he often uses the personal pronouns <strong>"I"</strong> and <strong>"Me"</strong>. In the Gita, these refer not to an ordinary human being but to <strong>God</strong> or the <strong>Ultimate Reality</strong>.</p>
+	    	      <p>The Gita also carefully distinguishes between <strong>self</strong> and <strong>Self</strong>:</p>
+	    	      <ul>
+	    	        <li><strong>self</strong> (with a small "s") refers to the body, mind or ego – our changing personality.</li>
+	    	        <li><strong>Self</strong> or <strong>Atman</strong> (with a capital "S") refers to the deepest core of our being – our inner divinity.</li>
+	    	      </ul>
+	    	      
+	    	      <h3>How the Gita Begins</h3>
+	    	      <p>The Gita begins with <strong>Dhritarashtra</strong>, the blind king and father of the Kauravas, asking his companion <strong>Sanjaya</strong> to describe what is happening on the battlefield of Kurukshetra. Sanjaya has been gifted with divine sight so that he can see and narrate the events of the war.</p>
+	    	      <p>Sanjaya first describes how <strong>Duryodhana</strong>, the eldest Kaurava, approaches the royal teacher <strong>Dronacharya</strong> and lists the great warriors standing on both sides. Then both armies blow their conches loudly, announcing that the battle is about to begin.</p>
+	    	      
+	    	      <h3>Arjuna's Crisis and Krishna's Guidance</h3>
+	    	      <p>At Arjuna's request, Sri Krishna – acting as his charioteer – drives the chariot and stations it between the two armies. Arjuna sees his beloved grandsire <strong>Bhishma</strong>, his teacher <strong>Drona</strong>, friends and relatives on both sides. He sinks in horror and sorrow at the thought of having to fight them.</p>
+	    	      <p>Arjuna becomes nervous and confused. He argues that fighting such a war will lead to terrible consequences – destruction of families, collapse of society, and loss of dharma. Overwhelmed by grief and tension, he puts down his famous <em>Gandiva</em> bow and sits down on the chariot, asking Krishna to tell him what will truly lead to good.</p>
+	    	      <p>In the dialogue that follows, Sri Krishna gently but firmly corrects Arjuna. He reminds him of his duty (<em>svadharma</em>) as a warrior and the righteousness of the war. He draws Arjuna's attention to his inherent strength and wisdom that come from his divine core – the <strong>Atman</strong> within.</p>
+	    	      
+	    	      <h3>Kurukshetra: Place and Symbol</h3>
+	    	      <p>The war is believed to have been fought in <strong>Kurukshetra</strong>, a town in the modern state of Haryana, about 120 km from New Delhi. Even today, there are many places in Kurukshetra connected with incidents from the Mahabharata war.</p>
+	    	      <p>Symbolically, Kurukshetra represents the <strong>battlefield of life</strong>. The Pandavas stand for the forces of good, while the Kauravas stand for the forces of evil born of an impure, undisciplined and indiscriminate mind. The inner battle between these forces takes place in every human heart.</p>
+	    	      
+	    	      <h3>What Does the Gita Teach?</h3>
+	    	      <p>The Gita deals with many important issues, including:</p>
+	    	      <ul>
+	    	        <li>The results of <strong>selfish</strong> and <strong>unselfish</strong> actions</li>
+	    	        <li>The process and disciplines of <strong>meditation</strong></li>
+	    	        <li><strong>Devotion to God</strong> and surrender</li>
+	    	        <li>Methods to control one’s <strong>passions</strong> and <strong>temper</strong></li>
+	    	        <li>How to become <strong>spiritually</strong> and <strong>morally</strong> free and strong</li>
+	    	      </ul>
+	    	      <p>For sincere high school students, the Gita is not just an ancient text; it is a powerful guide to understanding duty, inner strength and the deeper purpose of life.</p>
+	    	    `,
+	    	    quiz: {
+	    	      questions: [
+	    	        {
+	    	          question: 'What does the Sanskrit word "gita" mean?',
+	    	          answers: [
+	    	            'Song',
+	    	            'Scripture',
+	    	            'Wisdom',
+	    	            'Conversation'
+	    	          ],
+	    	          correctAnswer: 0
+	    	        },
+	    	        {
+	    	          question: 'Why is this scripture called the "Bhagavad Gita"?',
+	    	          answers: [
+	    	            'Because it was composed by many sages over time',
+	    	            'Because it is a song sung by Sri Krishna, the God Incarnate',
+	    	            'Because Arjuna wrote it as his diary',
+	    	            'Because it belongs to the Bhagavata Purana'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'Approximately how many verses and chapters does the Bhagavad Gita have?',
+	    	          answers: [
+	    	            '700 verses and 18 chapters',
+	    	            '108 verses and 10 chapters',
+	    	            '1,000 verses and 20 chapters',
+	    	            '365 verses and 12 chapters'
+	    	          ],
+	    	          correctAnswer: 0
+	    	        },
+	    	        {
+	    	          question: 'The Bhagavad Gita forms a part of which epic?',
+	    	          answers: [
+	    	            'The Ramayana',
+	    	            'The Mahabharata',
+	    	            'The Upanishads',
+	    	            'The Puranas'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'In which section of the Mahabharata is the Gita found?',
+	    	          answers: [
+	    	            'Adi Parva',
+	    	            'Bhishma Parva',
+	    	            'Drona Parva',
+	    	            'Shanti Parva'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'Each chapter of the Gita is regarded as what?',
+	    	          answers: [
+	    	            'A Parva',
+	    	            'A Sarga',
+	    	            'A Yoga – a way to self-perfection',
+	    	            'A Kanda'
+	    	          ],
+	    	          correctAnswer: 2
+	    	        },
+	    	        {
+	    	          question: 'Who are the main speakers in the Bhagavad Gita?',
+	    	          answers: [
+	    	            'Dhritarashtra and Sanjaya',
+	    	            'Krishna and Arjuna',
+	    	            'Bhishma and Drona',
+	    	            'The Pandavas and Kauravas together'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'Which of the following is NOT a name by which Arjuna is addressed in the Gita?',
+	    	          answers: [
+	    	            'Partha',
+	    	            'Kaunteya',
+	    	            'Mahabaho',
+	    	            'Vasudeva'
+	    	          ],
+	    	          correctAnswer: 3
+	    	        },
+	    	        {
+	    	          question: 'In the Gita, when Sri Krishna uses the words "I" or "Me", what do they refer to?',
+	    	          answers: [
+	    	            'Any human being',
+	    	            'Arjuna himself',
+	    	            'God or Ultimate Reality',
+	    	            'The king of Hastinapura'
+	    	          ],
+	    	          correctAnswer: 2
+	    	        },
+	    	        {
+	    	          question: 'According to this lesson, what does the term "self" with a small "s" refer to?',
+	    	          answers: [
+	    	            'The entire universe',
+	    	            'The body, mind or ego',
+	    	            'The Supreme Self',
+	    	            'Society as a whole'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'What does "Self" or "Atman" (with a capital "S") refer to?',
+	    	          answers: [
+	    	            'Our social identity',
+	    	            'The deepest divine core of our being',
+	    	            'Our changing moods',
+	    	            'Only the physical body'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'Who asks Sanjaya to describe what is happening on the battlefield at the beginning of the Gita?',
+	    	          answers: [
+	    	            'Bhishma',
+	    	            'Duryodhana',
+	    	            'Dhritarashtra',
+	    	            'Yudhishthira'
+	    	          ],
+	    	          correctAnswer: 2
+	    	        },
+	    	        {
+	    	          question: 'Why does Arjuna become nervous and confused on the battlefield?',
+	    	          answers: [
+	    	            'He forgets how to use his weapons',
+	    	            'He sees his relatives and teachers on both sides and does not want to fight them',
+	    	            'He is afraid his chariot will break down',
+	    	            'He wants to run away to the forest immediately'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        },
+	    	        {
+	    	          question: 'Symbolically, what does Kurukshetra represent in this lesson?',
+	    	          answers: [
+	    	            'A holy river where people bathe',
+	    	            'A school where children study',
+	    	            'The battlefield of life with forces of good and evil',
+	    	            'A forest hermitage for meditation'
+	    	          ],
+	    	          correctAnswer: 2
+	    	        },
+	    	        {
+	    	          question: 'Which of the following topics is mentioned as being dealt with in the Gita?',
+	    	          answers: [
+	    	            'Techniques for earning money quickly',
+	    	            'The results of selfish and unselfish actions, meditation, devotion and self-control',
+	    	            'Rules for building temples',
+	    	            'Only ritual methods of worship'
+	    	          ],
+	    	          correctAnswer: 1
+	    	        }
+	  	      ]
+	  	    }
+	  	  }
+	  	]
+	  },
+	  {
     topicId: 'practices',
     topicName: 'Hindu Practices / Moral Stories/ Festivals',
     lessons: [

@@ -160,6 +160,7 @@ const LessonPage = () => {
                   topicName={topic?.topicName}
                   topicId={topicId}
                   lessonId={lessonId}
+	                quiz={lesson?.quiz ?? lessonData?.quiz}
                 />
 
                 {/* Reading mode controls */}

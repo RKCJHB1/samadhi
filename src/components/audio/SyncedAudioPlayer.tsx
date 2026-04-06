@@ -27,8 +27,9 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(0.75);
   const [isMuted, setIsMuted] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+	  const [isLoaded, setIsLoaded] = useState(false);
+	  const [playbackRate, setPlaybackRate] = useState(1);
+	  const [error, setError] = useState<string | null>(null);
 	  const [activeIndex, setActiveIndex] = useState(-1);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -48,12 +49,14 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     setActiveIndex(-1);
   }, [src]);
 
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
-      setIsLoaded(true);
-    }
-  };
+	  const handleLoadedMetadata = () => {
+	    if (audioRef.current) {
+	      setDuration(audioRef.current.duration);
+	      setIsLoaded(true);
+	      // Ensure the audio element respects the current playback rate
+	      audioRef.current.playbackRate = playbackRate;
+	    }
+	  };
 
   const handleLoadError = (e: any) => {
     console.error('Audio load error:', e, 'for file:', src);
@@ -157,6 +160,13 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+	  const handlePlaybackRateChange = (value: number) => {
+	    setPlaybackRate(value);
+	    if (audioRef.current) {
+	      audioRef.current.playbackRate = value;
+	    }
+	  };
+
   // Clean up interval on unmount
   useEffect(() => {
     return () => {
@@ -191,6 +201,34 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
       return <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed">{transliteration || originalText}</p>;
     }
 
+	    		    // Treat the pipe separator as a visual delimiter only, not as a syllable
+	    		    const isSeparatorToken = (token: string) => token.trim() === '|';
+	    		
+	    		    // For some mantras we want a slightly friendlier display token in the
+	    		    // large centre highlight than the low-level syllable split. For
+	    		    // Saha Navavatu, the *line* of text should read "śāntiḥ śāntiḥ
+	    		    // śāntiḥ", but the centre highlight should still step through the
+	    		    // underlying syllables as: "śān tiḥ śān tiḥ śān tiḥ".
+	    		    const normalizeActiveTokenForDisplay = (token: string, index: number): string => {
+	    		      if (mantraId === 'saha-navavatu') {
+	    		        const syllable = syllables[index];
+	    		        if (syllable) {
+	    		          const text = syllable.text;
+	    		          // Map the final Sanskrit pieces to two logical syllables per "śāntiḥ":
+	    		          //   शान् → "śān"
+	    		          //   ति or ः → "tiḥ"
+	    		          if (/शान्/.test(text)) {
+	    		            return 'śān';
+	    		          }
+	    		          if (/ति|ः/.test(text)) {
+	    		            return 'tiḥ';
+	    		          }
+	    		        }
+	    		      }
+	    		      if (!token) return '';
+	    		      return token.trim();
+	    		    };
+
     const hasAlignedTransliterationSyllables =
       Array.isArray(transliterationSyllables) && transliterationSyllables.length === syllables.length;
 
@@ -206,12 +244,20 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
     // Only auto-insert spaces when tokens don't have trailing spaces
     const shouldAutoSpace = !hasTrailingSpaces && displayTokens.every(t => !/\s/.test(t));
 
-    const currentHighlightedToken = activeIndex >= 0 && activeIndex < displayTokens.length
-      ? displayTokens[activeIndex].trim()
-      : '';
-
-    // Check if we have an active syllable (even if it's just whitespace)
-    const hasActiveSyllable = activeIndex >= 0 && activeIndex < displayTokens.length;
+	    		    const rawActiveToken = activeIndex >= 0 && activeIndex < displayTokens.length
+	    		      ? displayTokens[activeIndex]
+	    		      : '';
+	    		
+	    		    const isActiveSeparator = rawActiveToken ? isSeparatorToken(rawActiveToken) : false;
+	    		
+	    		    // Treat '|' as a non-syllable separator: do not show it as an active syllable
+	    		    const hasActiveSyllable =
+	    		      activeIndex >= 0 && activeIndex < displayTokens.length && !isActiveSeparator;
+	    		
+	    		    const currentHighlightedToken =
+	    		      hasActiveSyllable && !isActiveSeparator
+	    		        ? normalizeActiveTokenForDisplay(rawActiveToken, activeIndex)
+	    		        : '';
 
     // Svara animation for the large centre syllable & circle
     const activeSyllable = hasActiveSyllable ? syllables[activeIndex] : undefined;
@@ -260,32 +306,42 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
           </div>
         </div>
 
-        {/* Normal-sized transliteration text below */}
-        <div className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed whitespace-pre-wrap">
-          {displayTokens.map((token, index) => {
-            const isActive = index === activeIndex;
-            const dur = syllables[index]?.endTime - syllables[index]?.startTime || 0;
-            const animationClass = isActive ? getSvaraAnimationClass(syllables[index]?.svara, dur) : '';
+	        {/* Normal-sized transliteration text below */}
+	        {mantraId === 'saha-navavatu' ? (
+	          // For Saha Navavatu, always show the clean, continuous transliteration
+	          // line ("Oṃ saha nāvavatu ... oṃ śāntiḥ śāntiḥ śāntiḥ") so that
+	          // children don't see the internal syllable splits like "śān tiḥ".
+	          <p className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed whitespace-pre-wrap">
+	            {transliteration || originalText}
+	          </p>
+	        ) : (
+	          <div className="text-center text-xl md:text-2xl text-gray-600 italic font-medium leading-relaxed whitespace-pre-wrap">
+	            {displayTokens.map((token, index) => {
+	              const isSeparator = isSeparatorToken(token);
+	              const isActive = !isSeparator && index === activeIndex;
+	              const dur = syllables[index]?.endTime - syllables[index]?.startTime || 0;
+	              const animationClass = isActive ? getSvaraAnimationClass(syllables[index]?.svara, dur) : '';
 
-            const highlightClasses = isActive
-              ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
-              : '';
+	              const highlightClasses = isActive
+	                ? 'bg-indian-saffron/30 text-indian-saffron font-bold'
+	                : '';
 
-            const animationStyle = isActive && animationClass
-              ? { animationDuration: `${Math.max(dur, 0.2)}s` }
-              : undefined;
+	              const animationStyle = isActive && animationClass
+	                ? { animationDuration: `${Math.max(dur, 0.2)}s` }
+	                : undefined;
 
-            return (
-              <span
-                key={index}
-                className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
-                style={animationStyle}
-              >
-                {token}
-              </span>
-            );
-          })}
-        </div>
+	              return (
+	                <span
+	                  key={index}
+	                  className={`svara-syllable transition-colors duration-200 ${highlightClasses} ${animationClass}`}
+	                  style={animationStyle}
+	                >
+	                  {token}
+	                </span>
+	              );
+	            })}
+	          </div>
+	        )}
       </div>
     );
   };
@@ -363,8 +419,8 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
               <span className="text-xs text-gray-500">{formatTime(duration)}</span>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
+	            <div className="flex items-center justify-between flex-wrap gap-2">
+	              <div className="flex items-center space-x-2">
                 <button
                   onClick={togglePlayPause}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-indian-saffron text-white hover:bg-indian-saffron/90 transition-colors"
@@ -379,7 +435,20 @@ const SyncedAudioPlayer: React.FC<SyncedAudioPlayerProps> = ({
                 </button>
               </div>
 
-              <div className="flex items-center space-x-2">
+	              <div className="flex items-center space-x-2 text-xs text-gray-600">
+	                <span className="hidden sm:inline">Speed</span>
+	                <select
+	                  value={playbackRate.toString()}
+	                  onChange={(e) => handlePlaybackRateChange(parseFloat(e.target.value))}
+	                  className="border border-gray-300 rounded-full px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-indian-saffron"
+	                >
+	                  <option value="0.5">0.5x</option>
+	                  <option value="0.75">0.75x</option>
+	                  <option value="1">1x</option>
+	                </select>
+	              </div>
+
+	              <div className="flex items-center space-x-2">
                 <button
                   onClick={toggleMute}
                   className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
