@@ -160,6 +160,7 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
           img.parentElement.style.pageBreakInside = 'avoid';
           img.parentElement.style.breakInside = 'avoid-page';
           img.parentElement.style.display = 'block';
+          img.parentElement.classList.add('avoid-break');
         }
       });
 
@@ -270,7 +271,7 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
 	        // and try to avoid splitting table rows, list items, and paragraphs across pages
 	        pagebreak: {
 	          mode: ['css', 'legacy'],
-	          avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3']
+	          avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3', '.avoid-break']
 	        }
       };
 
