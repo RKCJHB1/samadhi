@@ -154,7 +154,8 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Style images - ensure they don't cause gaps
       const images = contentClone.querySelectorAll('img');
       images.forEach(img => {
-        img.style.cssText = 'max-width: 100%; height: auto; display: block; margin: 16px auto; border-radius: 6px; page-break-inside: avoid; break-inside: avoid-page;';
+        // Restrict maximum width and height so large images (like the Sri Ramakrishna portrait) fit on the first page
+        img.style.cssText = 'max-width: 60%; max-height: 350px; object-fit: contain; display: block; margin: 16px auto; border-radius: 6px; page-break-inside: avoid; break-inside: avoid-page;';
         // Also protect the parent container (which often holds the caption)
         if (img.parentElement) {
           img.parentElement.style.pageBreakInside = 'avoid';
