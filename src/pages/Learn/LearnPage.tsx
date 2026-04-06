@@ -1064,7 +1064,7 @@ const LearnPage = () => {
   return (
     <PageLayout title="Hinduism for Children">
 
-      <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
+      <div className="w-full bg-gradient-to-br from-indian-cream to-white pt-4 pb-12">
         <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto mb-16">
 

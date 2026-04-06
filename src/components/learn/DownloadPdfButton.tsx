@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Download, Loader2, Save, FileText, Edit3, Eye } from 'lucide-react';
+import { Download, Loader2, Save, FileText, Edit3, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -41,6 +41,7 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   const [pageSize, setPageSize] = useState('a4');
   const [pdfDataUri, setPdfDataUri] = useState('');
   const [isPreviewGenerating, setIsPreviewGenerating] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!isPreviewOpen && pdfDataUri && pdfDataUri.startsWith('blob:')) {
@@ -432,7 +433,14 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       </Button>
 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] max-h-[90vh] flex flex-col p-0">
+        <DialogContent
+          className={cn(
+            "flex flex-col p-0 transition-all duration-200",
+            isFullscreen
+              ? "max-w-[100vw] w-screen h-screen max-h-screen rounded-none border-none"
+              : "max-w-5xl w-[95vw] max-h-[90vh]"
+          )}
+        >
           <DialogHeader className="p-6 pb-2 border-b">
             <div className="flex justify-between items-center">
               <div>
@@ -441,18 +449,29 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
                   Edit the document layout directly or preview the final PDF format.
                 </p>
               </div>
-              <div className="flex items-center space-x-2 mr-6">
-                <span className="text-sm text-gray-600 font-medium">Page Size:</span>
-                <Select value={pageSize} onValueChange={handlePageSizeChange}>
-                  <SelectTrigger className="w-[120px] h-8 text-sm">
-                    <SelectValue placeholder="Page Size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="a4">A4</SelectItem>
-                    <SelectItem value="letter">US Letter</SelectItem>
-                    <SelectItem value="legal">Legal</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="flex items-center space-x-4 mr-6">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600 font-medium">Page Size:</span>
+                  <Select value={pageSize} onValueChange={handlePageSizeChange}>
+                    <SelectTrigger className="w-[120px] h-8 text-sm">
+                      <SelectValue placeholder="Page Size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="a4">A4</SelectItem>
+                      <SelectItem value="letter">US Letter</SelectItem>
+                      <SelectItem value="legal">Legal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsFullscreen(!isFullscreen)}
+                  className="h-8 w-8 p-0"
+                  title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                >
+                  {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                </Button>
               </div>
             </div>
           </DialogHeader>
