@@ -154,7 +154,13 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Style images - ensure they don't cause gaps
       const images = contentClone.querySelectorAll('img');
       images.forEach(img => {
-        img.style.cssText = 'max-width: 100%; height: auto; display: block; margin: 16px auto; border-radius: 6px; page-break-inside: avoid;';
+        img.style.cssText = 'max-width: 100%; height: auto; display: block; margin: 16px auto; border-radius: 6px; page-break-inside: avoid; break-inside: avoid-page;';
+        // Also protect the parent container (which often holds the caption)
+        if (img.parentElement) {
+          img.parentElement.style.pageBreakInside = 'avoid';
+          img.parentElement.style.breakInside = 'avoid-page';
+          img.parentElement.style.display = 'block';
+        }
       });
 
       // Style blockquotes
@@ -264,7 +270,7 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
 	        // and try to avoid splitting table rows, list items, and paragraphs across pages
 	        pagebreak: {
 	          mode: ['css', 'legacy'],
-	          avoid: ['tr', 'li', 'p', 'blockquote']
+	          avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3']
 	        }
       };
 
