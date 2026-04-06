@@ -279,9 +279,23 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   const generatePdfWithSettings = async (action: 'preview' | 'download', formatSize: string) => {
     if (!previewRef.current) return;
 
+    let printContainer: HTMLDivElement | null = null;
+
     try {
       const html2pdf = (await import('html2pdf.js')).default;
-      const contentToPrint = previewRef.current.firstElementChild as HTMLElement;
+
+      // Clone the content so it's not affected by display: none from inactive tabs
+      const contentToPrint = previewRef.current.firstElementChild?.cloneNode(true) as HTMLElement;
+      if (!contentToPrint) return;
+
+      // Append temporarily to the document body so html2canvas can measure it
+      printContainer = document.createElement('div');
+      printContainer.style.position = 'absolute';
+      printContainer.style.left = '-9999px';
+      printContainer.style.top = '0';
+      printContainer.style.width = '800px';
+      printContainer.appendChild(contentToPrint);
+      document.body.appendChild(printContainer);
 
       const opt = {
         margin: [15, 15, 20, 15],
@@ -346,15 +360,21 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
     } catch (error) {
       console.error('Error with PDF:', error);
       alert('Sorry, there was an error generating the PDF. Please try again.');
+    } finally {
+      if (printContainer && document.body.contains(printContainer)) {
+        document.body.removeChild(printContainer);
+      }
     }
   };
 
   const handleTabChange = async (val: string) => {
-    setActiveTab(val);
     if (val === 'preview') {
       setIsPreviewGenerating(true);
       await generatePdfWithSettings('preview', pageSize);
       setIsPreviewGenerating(false);
+      setActiveTab(val);
+    } else {
+      setActiveTab(val);
     }
   };
 
@@ -439,7 +459,14 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
               </TabsList>
             </div>
 
-            <TabsContent value="edit" className="flex-1 overflow-y-auto bg-gray-100 p-4 m-0 data-[state=active]:flex flex-col">
+            <TabsContent
+              forceMount
+              value="edit"
+              className={cn(
+                "flex-1 overflow-y-auto bg-gray-100 p-4 m-0 flex-col",
+                activeTab === 'edit' ? 'flex' : 'hidden'
+              )}
+            >
               <div
                 ref={previewRef}
                 className="mx-auto shadow-md"
