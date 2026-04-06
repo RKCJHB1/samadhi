@@ -37,11 +37,14 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
 
       // Create a wrapper div for the PDF content
       const pdfContent = document.createElement('div');
-      pdfContent.style.padding = '15px 25px 25px 25px';
+      pdfContent.style.padding = '40px';
       pdfContent.style.fontFamily = 'Georgia, serif';
       pdfContent.style.backgroundColor = '#ffffff';
       pdfContent.style.color = '#1a1a1a';
       pdfContent.style.lineHeight = '1.6';
+      pdfContent.style.width = '800px';
+      pdfContent.style.maxWidth = '800px';
+      pdfContent.style.margin = '0 auto';
 
       // Build lesson URL for linking
       const baseUrl = 'https://www.ramakrishna-johannesburg.org.za';
@@ -50,16 +53,16 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Add header with logo and branding
       const header = document.createElement('div');
       header.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f97316;">
-          <div style="display: flex; justify-content: center; margin-bottom: 8px;">
-            <img src="/pics/icon.png" alt="Ramakrishna Mission Logo" style="width: 60px; height: 60px; display: block;" crossorigin="anonymous" />
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #f97316;">
+          <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+            <img src="/pics/icon.png" alt="Ramakrishna Mission Logo" style="width: 80px; height: 80px; display: block;" crossorigin="anonymous" />
           </div>
-          <p style="font-size: 14px; color: #666; margin: 0 0 10px 0; font-family: Arial, sans-serif;">The Ramakrishna Centre of South Africa - Johannesburg</p>
-          <h1 style="font-size: 26px; color: #1a1a1a; margin: 0 0 8px 0; font-weight: bold; font-family: Georgia, serif;">
+          <p style="font-size: 16px; color: #666; margin: 0 0 12px 0; font-family: Arial, sans-serif;">The Ramakrishna Centre of South Africa - Johannesburg</p>
+          <h1 style="font-size: 36px; color: #1a1a1a; margin: 0 0 12px 0; font-weight: bold; font-family: Georgia, serif;">
             ${lessonTitle}
           </h1>
-          ${topicName ? `<p style="font-size: 13px; color: #f97316; margin: 0 0 8px 0; font-weight: 500; font-family: Arial, sans-serif;">${topicName}</p>` : ''}
-          <p style="font-size: 13px; color: #666; margin: 0; font-family: Arial, sans-serif;">${lessonDescription}</p>
+          ${topicName ? `<p style="font-size: 16px; color: #f97316; margin: 0 0 10px 0; font-weight: 500; font-family: Arial, sans-serif;">${topicName}</p>` : ''}
+          <p style="font-size: 16px; color: #666; margin: 0; font-family: Arial, sans-serif;">${lessonDescription}</p>
         </div>
       `;
       pdfContent.appendChild(header);
@@ -237,24 +240,26 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       pdfContent.appendChild(footer);
 
       // Generate PDF with improved settings
-	      const opt = {
-	        margin: [12, 12, 18, 12], // top, left, bottom, right in mm
+      const opt = {
+        margin: [15, 15, 20, 15], // top, left, bottom, right in mm
         filename: `${lessonTitle.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}.pdf`,
-        image: { type: 'jpeg', quality: 0.95 },
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
           scale: 2,
           useCORS: true,
           letterRendering: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
-          logging: false
+          logging: false,
+          width: 800,
+          windowWidth: 800
         },
         jsPDF: {
           unit: 'mm',
           format: 'a4',
           orientation: 'portrait',
           compress: true
-	        },
+        },
 	        // Use both CSS-aware and legacy algorithms so page-break hints are respected
 	        // and try to avoid splitting table rows, list items, and paragraphs across pages
 	        pagebreak: {
