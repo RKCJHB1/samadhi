@@ -312,7 +312,7 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       const pdfInstance = html2pdf().set(opt).from(contentToPrint);
 
       if (action === 'preview') {
-        await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
+        const pdfDataUriString = await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
           const totalPages = pdf.internal.getNumberOfPages();
           const pageWidth = pdf.internal.pageSize.getWidth();
           const pageHeight = pdf.internal.pageSize.getHeight();
@@ -324,8 +324,8 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
             const textWidth = pdf.getTextWidth(pageText);
             pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
           }
+          return pdf.output('datauristring');
         });
-        const pdfDataUriString = await pdfInstance.outputPdf('datauristring');
         setPdfDataUri(pdfDataUriString);
       } else {
         await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
