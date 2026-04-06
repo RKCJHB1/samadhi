@@ -223,11 +223,14 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Add quiz section if available
       if (quiz && quiz.questions && quiz.questions.length > 0) {
         const quizSection = document.createElement('div');
-        quizSection.style.cssText = 'margin-top: 40px; padding-top: 20px; border-top: 2px solid #f97316; page-break-before: always;';
+        // Removed page-break-before: always to let it naturally flow after the lesson content without large empty gaps.
+        quizSection.style.cssText = 'margin-top: 40px; padding-top: 20px; border-top: 2px solid #f97316;';
 
         const quizTitle = document.createElement('h2');
         quizTitle.textContent = 'Knowledge Check - Quiz Questions & Answers';
-        quizTitle.style.cssText = 'font-size: 22px; font-weight: bold; margin: 0 0 20px 0; color: #1a1a1a; font-family: Georgia, serif;';
+        // Add an avoid-break class to ensure the title doesn't get orphaned at the bottom of a page
+        quizTitle.className = 'avoid-break';
+        quizTitle.style.cssText = 'font-size: 22px; font-weight: bold; margin: 0 0 20px 0; color: #1a1a1a; font-family: Georgia, serif; page-break-after: avoid; break-after: avoid-page;';
         quizSection.appendChild(quizTitle);
 
         quiz.questions.forEach((question: any, index: number) => {
