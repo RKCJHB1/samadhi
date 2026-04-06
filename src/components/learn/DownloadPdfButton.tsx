@@ -162,7 +162,20 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
         const level = parseInt(heading.tagName[1]);
         const sizes = { 1: '28px', 2: '24px', 3: '20px', 4: '18px', 5: '16px', 6: '14px' };
         const margins = { 1: '24px 0 12px 0', 2: '20px 0 10px 0', 3: '16px 0 8px 0', 4: '12px 0 6px 0', 5: '10px 0 4px 0', 6: '8px 0 4px 0' };
-        heading.style.cssText = `font-size: ${sizes[level as keyof typeof sizes]}; font-weight: bold; margin: ${margins[level as keyof typeof margins]}; color: #1a1a1a; font-family: Georgia, serif; page-break-after: avoid;`;
+        heading.style.cssText = `font-size: ${sizes[level as keyof typeof sizes]}; font-weight: bold; margin: ${margins[level as keyof typeof margins]}; color: #1a1a1a; font-family: Georgia, serif; page-break-after: avoid; break-after: avoid-page;`;
+
+        // Wrap heading and its next sibling in an avoid-break container to keep them together on the same page
+        const nextNode = heading.nextElementSibling;
+        const parent = heading.parentNode as HTMLElement | null;
+        if (nextNode && parent && !parent.classList?.contains('heading-wrapper')) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'heading-wrapper avoid-break';
+          wrapper.style.pageBreakInside = 'avoid';
+          wrapper.style.breakInside = 'avoid-page';
+          parent.insertBefore(wrapper, heading);
+          wrapper.appendChild(heading);
+          wrapper.appendChild(nextNode);
+        }
       });
 
       // Style paragraphs and lists
@@ -173,7 +186,9 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
 	          'margin: 8px 0',
 	          'line-height: 1.6',
 	          'color: #1a1a1a',
-	          'font-family: Georgia, serif'
+	          'font-family: Georgia, serif',
+              'page-break-inside: avoid',
+              'break-inside: avoid-page'
 	        ].join('; ');
       });
 
