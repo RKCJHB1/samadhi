@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Download, Loader2, Save } from 'lucide-react';
+import { Download, Loader2, Save, FileText, Edit3, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface DownloadPdfButtonProps {
   lessonTitle: string;
@@ -35,11 +37,17 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewHtml, setPreviewHtml] = useState('');
   const previewRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState('edit');
+  const [pageSize, setPageSize] = useState('a4');
+  const [pdfDataUri, setPdfDataUri] = useState('');
+  const [isPreviewGenerating, setIsPreviewGenerating] = useState(false);
 
   const handleOpenPreview = async () => {
     if (!contentRef.current || isGenerating) return;
 
     setIsGenerating(true);
+    setActiveTab('edit');
+    setPdfDataUri('');
 
     try {
       // Dynamically import html2pdf to reduce initial bundle size
@@ -268,19 +276,15 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
     }
   };
 
-  const handleConfirmDownload = async () => {
-    if (!previewRef.current || isGenerating) return;
-
-    setIsGenerating(true);
+  const generatePdfWithSettings = async (action: 'preview' | 'download', formatSize: string) => {
+    if (!previewRef.current) return;
 
     try {
-      // Dynamically import html2pdf to reduce initial bundle size
       const html2pdf = (await import('html2pdf.js')).default;
       const contentToPrint = previewRef.current.firstElementChild as HTMLElement;
 
-      // Generate PDF with improved settings
       const opt = {
-        margin: [15, 15, 20, 15], // top, left, bottom, right in mm
+        margin: [15, 15, 20, 15],
         filename: `${lessonTitle.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
@@ -295,43 +299,79 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
         },
         jsPDF: {
           unit: 'mm',
-          format: 'a4',
+          format: formatSize,
           orientation: 'portrait',
           compress: true
         },
-        // Use both CSS-aware and legacy algorithms so page-break hints are respected
-        // and try to avoid splitting table rows, list items, and paragraphs across pages
         pagebreak: {
           mode: ['css', 'legacy'],
           avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3', '.avoid-break']
         }
       };
 
-      // Generate PDF and add page numbers
       const pdfInstance = html2pdf().set(opt).from(contentToPrint);
 
-      await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
-        const totalPages = pdf.internal.getNumberOfPages();
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-
-        for (let i = 1; i <= totalPages; i++) {
-          pdf.setPage(i);
-          pdf.setFontSize(9);
-          pdf.setTextColor(150, 150, 150);
-          const pageText = `Page ${i} of ${totalPages}`;
-          const textWidth = pdf.getTextWidth(pageText);
-          pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
-        }
-      }).save();
-
-      setIsPreviewOpen(false);
+      if (action === 'preview') {
+        await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
+          const totalPages = pdf.internal.getNumberOfPages();
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i);
+            pdf.setFontSize(9);
+            pdf.setTextColor(150, 150, 150);
+            const pageText = `Page ${i} of ${totalPages}`;
+            const textWidth = pdf.getTextWidth(pageText);
+            pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
+          }
+        });
+        const pdfDataUriString = await pdfInstance.outputPdf('datauristring');
+        setPdfDataUri(pdfDataUriString);
+      } else {
+        await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
+          const totalPages = pdf.internal.getNumberOfPages();
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i);
+            pdf.setFontSize(9);
+            pdf.setTextColor(150, 150, 150);
+            const pageText = `Page ${i} of ${totalPages}`;
+            const textWidth = pdf.getTextWidth(pageText);
+            pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
+          }
+        }).save();
+        setIsPreviewOpen(false);
+      }
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error('Error with PDF:', error);
       alert('Sorry, there was an error generating the PDF. Please try again.');
-    } finally {
-      setIsGenerating(false);
     }
+  };
+
+  const handleTabChange = async (val: string) => {
+    setActiveTab(val);
+    if (val === 'preview') {
+      setIsPreviewGenerating(true);
+      await generatePdfWithSettings('preview', pageSize);
+      setIsPreviewGenerating(false);
+    }
+  };
+
+  const handlePageSizeChange = async (val: string) => {
+    setPageSize(val);
+    if (activeTab === 'preview') {
+      setIsPreviewGenerating(true);
+      await generatePdfWithSettings('preview', val);
+      setIsPreviewGenerating(false);
+    }
+  };
+
+  const handleConfirmDownload = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
+    await generatePdfWithSettings('download', pageSize);
+    setIsGenerating(false);
   };
 
   return (
@@ -360,30 +400,78 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       </Button>
 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] flex flex-col p-0">
-          <DialogHeader className="p-6 pb-2">
-            <DialogTitle>Preview & Edit Document</DialogTitle>
-            <p className="text-sm text-gray-500 mt-2">
-              You can click directly inside the document below to edit text, delete lines, or fix spacing before generating the final PDF.
-            </p>
+        <DialogContent className="max-w-5xl w-[95vw] max-h-[90vh] flex flex-col p-0">
+          <DialogHeader className="p-6 pb-2 border-b">
+            <div className="flex justify-between items-center">
+              <div>
+                <DialogTitle>Preview & Edit Document</DialogTitle>
+                <p className="text-sm text-gray-500 mt-2">
+                  Edit the document layout directly or preview the final PDF format.
+                </p>
+              </div>
+              <div className="flex items-center space-x-2 mr-6">
+                <span className="text-sm text-gray-600 font-medium">Page Size:</span>
+                <Select value={pageSize} onValueChange={handlePageSizeChange}>
+                  <SelectTrigger className="w-[120px] h-8 text-sm">
+                    <SelectValue placeholder="Page Size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="a4">A4</SelectItem>
+                    <SelectItem value="letter">US Letter</SelectItem>
+                    <SelectItem value="legal">Legal</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </DialogHeader>
 
-          <div className="flex-1 overflow-y-auto bg-gray-100 p-4 border-y">
-            <div
-              ref={previewRef}
-              className="mx-auto shadow-md"
-              style={{ width: '800px', maxWidth: '100%', minHeight: '100%' }}
-            >
-              <div
-                className="bg-white min-h-full outline-none"
-                contentEditable={true}
-                suppressContentEditableWarning={true}
-                dangerouslySetInnerHTML={{ __html: previewHtml }}
-              />
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
+            <div className="px-6 pt-2 bg-gray-50/50">
+              <TabsList className="grid w-[400px] grid-cols-2">
+                <TabsTrigger value="edit" className="flex items-center gap-2">
+                  <Edit3 className="w-4 h-4" />
+                  Edit HTML Layout
+                </TabsTrigger>
+                <TabsTrigger value="preview" className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Preview PDF Pages
+                </TabsTrigger>
+              </TabsList>
             </div>
-          </div>
 
-          <DialogFooter className="p-4 bg-white">
+            <TabsContent value="edit" className="flex-1 overflow-y-auto bg-gray-100 p-4 m-0 data-[state=active]:flex flex-col">
+              <div
+                ref={previewRef}
+                className="mx-auto shadow-md"
+                style={{ width: '800px', maxWidth: '100%', minHeight: '100%' }}
+              >
+                <div
+                  className="bg-white min-h-full outline-none"
+                  contentEditable={true}
+                  suppressContentEditableWarning={true}
+                  dangerouslySetInnerHTML={{ __html: previewHtml }}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="preview" className="flex-1 overflow-hidden m-0 bg-gray-100 data-[state=active]:flex flex-col relative">
+              {isPreviewGenerating ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100/80 backdrop-blur-sm z-10">
+                  <Loader2 className="w-8 h-8 animate-spin text-indian-saffron mb-4" />
+                  <p className="text-gray-600 font-medium">Generating PDF Preview...</p>
+                </div>
+              ) : null}
+              {pdfDataUri && (
+                <iframe
+                  src={pdfDataUri}
+                  className="w-full h-full border-none"
+                  title="PDF Preview"
+                />
+              )}
+            </TabsContent>
+          </Tabs>
+
+          <DialogFooter className="p-4 bg-white border-t">
             <Button variant="outline" onClick={() => setIsPreviewOpen(false)} disabled={isGenerating}>
               Cancel
             </Button>
