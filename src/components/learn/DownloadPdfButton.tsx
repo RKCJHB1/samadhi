@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { Download, Loader2 } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Download, Loader2, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 interface DownloadPdfButtonProps {
   lessonTitle: string;
@@ -247,6 +254,27 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       `;
       pdfContent.appendChild(footer);
 
+      // ... Set state and open preview
+      setPreviewHtml(pdfContent.outerHTML);
+      setIsPreviewOpen(true);
+    } catch (error) {
+      console.error('Error generating preview:', error);
+      alert('Sorry, there was an error generating the preview. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleConfirmDownload = async () => {
+    if (!previewRef.current || isGenerating) return;
+
+    setIsGenerating(true);
+
+    try {
+      // Dynamically import html2pdf to reduce initial bundle size
+      const html2pdf = (await import('html2pdf.js')).default;
+      const contentToPrint = previewRef.current.firstElementChild as HTMLElement;
+
       // Generate PDF with improved settings
       const opt = {
         margin: [15, 15, 20, 15], // top, left, bottom, right in mm
@@ -268,16 +296,16 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
           orientation: 'portrait',
           compress: true
         },
-	        // Use both CSS-aware and legacy algorithms so page-break hints are respected
-	        // and try to avoid splitting table rows, list items, and paragraphs across pages
-	        pagebreak: {
-	          mode: ['css', 'legacy'],
-	          avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3', '.avoid-break']
-	        }
+        // Use both CSS-aware and legacy algorithms so page-break hints are respected
+        // and try to avoid splitting table rows, list items, and paragraphs across pages
+        pagebreak: {
+          mode: ['css', 'legacy'],
+          avoid: ['tr', 'li', 'p', 'blockquote', 'img', 'h1', 'h2', 'h3', '.avoid-break']
+        }
       };
 
       // Generate PDF and add page numbers
-      const pdfInstance = html2pdf().set(opt).from(pdfContent);
+      const pdfInstance = html2pdf().set(opt).from(contentToPrint);
 
       await pdfInstance.toPdf().get('pdf').then((pdf: any) => {
         const totalPages = pdf.internal.getNumberOfPages();
@@ -293,6 +321,8 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
           pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
         }
       }).save();
+
+      setIsPreviewOpen(false);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Sorry, there was an error generating the PDF. Please try again.');
@@ -302,28 +332,66 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   };
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={handleDownload}
-      disabled={isGenerating}
-      className={cn(
-        'gap-2 text-gray-600 hover:text-indian-saffron hover:border-indian-saffron',
-        className
-      )}
-    >
-      {isGenerating ? (
-        <>
-          <Loader2 className="w-4 h-4 animate-spin" />
-          <span className="hidden sm:inline">Generating...</span>
-        </>
-      ) : (
-        <>
-          <Download className="w-4 h-4" />
-          <span className="hidden sm:inline">Download PDF</span>
-        </>
-      )}
-    </Button>
+    <>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleOpenPreview}
+        disabled={isGenerating}
+        className={cn(
+          'gap-2 text-gray-600 hover:text-indian-saffron hover:border-indian-saffron',
+          className
+        )}
+      >
+        {isGenerating ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="hidden sm:inline">Preparing...</span>
+          </>
+        ) : (
+          <>
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Download PDF</span>
+          </>
+        )}
+      </Button>
+
+      <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] flex flex-col p-0">
+          <DialogHeader className="p-6 pb-2">
+            <DialogTitle>Preview & Edit Document</DialogTitle>
+            <p className="text-sm text-gray-500 mt-2">
+              You can click directly inside the document below to edit text, delete lines, or fix spacing before generating the final PDF.
+            </p>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto bg-gray-100 p-4 border-y">
+            <div
+              ref={previewRef}
+              className="mx-auto shadow-md"
+              style={{ width: '800px', maxWidth: '100%', minHeight: '100%' }}
+            >
+              <div
+                className="bg-white min-h-full outline-none"
+                contentEditable={true}
+                suppressContentEditableWarning={true}
+                dangerouslySetInnerHTML={{ __html: previewHtml }}
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="p-4 bg-white">
+            <Button variant="outline" onClick={() => setIsPreviewOpen(false)} disabled={isGenerating}>
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmDownload} disabled={isGenerating} className="bg-indian-saffron text-white hover:bg-indian-saffron/90">
+              {isGenerating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+              Save as PDF
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
