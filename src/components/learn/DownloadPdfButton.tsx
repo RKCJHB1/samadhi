@@ -11,6 +11,7 @@ interface DownloadPdfButtonProps {
   topicId?: string;
   lessonId?: string;
   className?: string;
+  quiz?: any;
 }
 
 const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
@@ -20,7 +21,8 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
   topicName,
   topicId,
   lessonId,
-  className
+  className,
+  quiz
 }) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -33,14 +35,13 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Dynamically import html2pdf to reduce initial bundle size
       const html2pdf = (await import('html2pdf.js')).default;
 
-      // Create a wrapper div for the PDF content with border
+      // Create a wrapper div for the PDF content
       const pdfContent = document.createElement('div');
-      pdfContent.style.padding = '20px 35px 35px 35px';
+      pdfContent.style.padding = '15px 25px 25px 25px';
       pdfContent.style.fontFamily = 'Georgia, serif';
       pdfContent.style.backgroundColor = '#ffffff';
       pdfContent.style.color = '#1a1a1a';
-      pdfContent.style.border = '2px solid #e5e5e5';
-      pdfContent.style.borderRadius = '4px';
+      pdfContent.style.lineHeight = '1.6';
 
       // Build lesson URL for linking
       const baseUrl = 'https://www.ramakrishna-johannesburg.org.za';
@@ -49,26 +50,26 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       // Add header with logo and branding
       const header = document.createElement('div');
       header.innerHTML = `
-        <div style="text-align: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f97316;">
-          <div style="display: flex; justify-content: center; margin-bottom: 5px;">
-            <img src="/pics/icon.png" alt="Ramakrishna Mission Logo" style="width: 65px; height: 65px; display: block;" crossorigin="anonymous" />
+        <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f97316;">
+          <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+            <img src="/pics/icon.png" alt="Ramakrishna Mission Logo" style="width: 60px; height: 60px; display: block;" crossorigin="anonymous" />
           </div>
-          <p style="font-size: 15px; color: #666; margin: 0 0 12px 0;">The Ramakrishna Centre of South Africa - Johannesburg</p>
-          <h1 style="font-size: 28px; color: #1a1a1a; margin: 0 0 10px 0; font-weight: bold;">
-            <a href="${lessonUrl}" style="color: #1a1a1a; text-decoration: none;">${lessonTitle}</a>
+          <p style="font-size: 14px; color: #666; margin: 0 0 10px 0; font-family: Arial, sans-serif;">The Ramakrishna Centre of South Africa - Johannesburg</p>
+          <h1 style="font-size: 26px; color: #1a1a1a; margin: 0 0 8px 0; font-weight: bold; font-family: Georgia, serif;">
+            ${lessonTitle}
           </h1>
-          ${topicName ? `<p style="font-size: 14px; color: #f97316; margin: 0 0 10px 0; font-weight: 500;">${topicName}</p>` : ''}
-          <p style="font-size: 14px; color: #666; margin: 0;">${lessonDescription}</p>
+          ${topicName ? `<p style="font-size: 13px; color: #f97316; margin: 0 0 8px 0; font-weight: 500; font-family: Arial, sans-serif;">${topicName}</p>` : ''}
+          <p style="font-size: 13px; color: #666; margin: 0; font-family: Arial, sans-serif;">${lessonDescription}</p>
         </div>
       `;
       pdfContent.appendChild(header);
 
       // Clone the lesson content
       const contentClone = contentRef.current.cloneNode(true) as HTMLElement;
-      
+
       // Remove elements that shouldn't be in PDF
       const elementsToRemove = contentClone.querySelectorAll(
-        'iframe, video, .quiz-section, [data-pdf-exclude], button, .table-of-contents'
+        'iframe, video, .quiz-section, [data-pdf-exclude], button, .table-of-contents, script, style'
       );
       elementsToRemove.forEach(el => el.remove());
 
@@ -78,44 +79,156 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
         const videoId = container.getAttribute('data-youtube-id');
         if (videoId) {
           const link = document.createElement('p');
-          link.style.cssText = 'background: #fef3c7; padding: 12px; border-radius: 8px; margin: 16px 0;';
+          link.style.cssText = 'background: #fef3c7; padding: 10px; border-radius: 4px; margin: 12px 0; font-family: Arial, sans-serif; font-size: 12px;';
           link.innerHTML = `📺 <strong>Watch video:</strong> <a href="https://youtube.com/watch?v=${videoId}" style="color: #f97316;">https://youtube.com/watch?v=${videoId}</a>`;
           container.replaceWith(link);
         }
       });
 
-      // Style adjustments for PDF
-      contentClone.style.cssText = 'font-size: 12pt; line-height: 1.6;';
+      // Clean up all Tailwind classes and inline styles that might cause issues
+      const allElements = contentClone.querySelectorAll('*');
+      allElements.forEach(el => {
+        // Map common Tailwind classes to inline styles before stripping them
+        const htmlEl = el as HTMLElement;
+        const className = htmlEl.className || '';
+        if (typeof className === 'string') {
+          if (className.includes('text-center')) htmlEl.style.textAlign = 'center';
+          if (className.includes('italic')) htmlEl.style.fontStyle = 'italic';
+          if (className.includes('font-bold') || className.includes('font-semibold')) htmlEl.style.fontWeight = 'bold';
+          if (className.includes('mx-auto')) {
+            htmlEl.style.marginLeft = 'auto';
+            htmlEl.style.marginRight = 'auto';
+          }
+          if (className.includes('mb-')) htmlEl.style.marginBottom = '16px';
+          if (className.includes('mt-')) htmlEl.style.marginTop = '16px';
+        }
 
-      // Make headings link back to the lesson page
-      const headings = contentClone.querySelectorAll('h1, h2, h3');
-      headings.forEach(heading => {
-        const headingText = heading.textContent || '';
-        const headingId = heading.id || headingText.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const headingUrl = `${lessonUrl}#${headingId}`;
-        heading.innerHTML = `<a href="${headingUrl}" style="color: inherit; text-decoration: none;">${headingText}</a>`;
+        // Remove all classes
+        htmlEl.className = '';
+
+        // Reset problematic styles
+        const style = htmlEl.getAttribute('style') || '';
+        if (style) {
+          // Keep only essential styles, remove display/flex/grid that might cause gaps
+          const essentialStyles = style
+            .split(';')
+            .filter(s => {
+              const prop = s.split(':')[0]?.trim().toLowerCase();
+              // Remove problematic CSS properties
+              const problematicProps = ['display', 'flex', 'grid', 'position', 'float', 'transform', 'opacity', 'visibility', 'clip'];
+              return !problematicProps.some(p => prop?.includes(p));
+            })
+            .join(';');
+          if (essentialStyles.trim()) {
+            htmlEl.setAttribute('style', essentialStyles);
+          } else {
+            htmlEl.removeAttribute('style');
+          }
+        }
       });
 
-      // Make sure images are reasonably sized with padding above
+      // Style headings for PDF
+      const headings = contentClone.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      headings.forEach((heading, index) => {
+        const level = parseInt(heading.tagName[1]);
+        const sizes = { 1: '28px', 2: '24px', 3: '20px', 4: '18px', 5: '16px', 6: '14px' };
+        const margins = { 1: '24px 0 12px 0', 2: '20px 0 10px 0', 3: '16px 0 8px 0', 4: '12px 0 6px 0', 5: '10px 0 4px 0', 6: '8px 0 4px 0' };
+        heading.style.cssText = `font-size: ${sizes[level as keyof typeof sizes]}; font-weight: bold; margin: ${margins[level as keyof typeof margins]}; color: #1a1a1a; font-family: Georgia, serif; page-break-after: avoid;`;
+      });
+
+      // Style paragraphs and lists
+      const paragraphs = contentClone.querySelectorAll('p, li');
+      paragraphs.forEach(p => {
+	        p.style.cssText = [
+	          'font-size: 14px',
+	          'margin: 8px 0',
+	          'line-height: 1.6',
+	          'color: #1a1a1a',
+	          'font-family: Georgia, serif'
+	        ].join('; ');
+      });
+
+      // Style images - ensure they don't cause gaps
       const images = contentClone.querySelectorAll('img');
       images.forEach(img => {
-        img.style.maxWidth = '50%';
-        img.style.height = 'auto';
-        img.style.display = 'block';
-        img.style.margin = '25px auto 10px auto';
+        img.style.cssText = 'max-width: 100%; height: auto; display: block; margin: 16px auto; border-radius: 6px; page-break-inside: avoid;';
+      });
+
+      // Style blockquotes
+      const blockquotes = contentClone.querySelectorAll('blockquote');
+      blockquotes.forEach(bq => {
+	        bq.style.cssText = [
+	          'border-left: 4px solid #f97316',
+	          'padding: 10px 16px',
+	          'margin: 12px 0',
+	          'background-color: #fef3c7',
+	          'font-style: italic',
+	          'font-size: 14px',
+	          'color: #1a1a1a',
+	          'font-family: Georgia, serif',
+	          // Keep blockquotes from being split awkwardly
+	          'page-break-inside: avoid',
+	          'break-inside: avoid-page'
+	        ].join('; ');
+      });
+
+      // Style lists
+      const lists = contentClone.querySelectorAll('ul, ol');
+      lists.forEach(list => {
+	        list.style.cssText = [
+	          'margin: 8px 0 8px 24px',
+	          'padding: 0'
+	        ].join('; ');
       });
 
       pdfContent.appendChild(contentClone);
 
+      // Add quiz section if available
+      if (quiz && quiz.questions && quiz.questions.length > 0) {
+        const quizSection = document.createElement('div');
+        quizSection.style.cssText = 'margin-top: 40px; padding-top: 20px; border-top: 2px solid #f97316; page-break-before: always;';
+
+        const quizTitle = document.createElement('h2');
+        quizTitle.textContent = 'Knowledge Check - Quiz Questions & Answers';
+        quizTitle.style.cssText = 'font-size: 22px; font-weight: bold; margin: 0 0 20px 0; color: #1a1a1a; font-family: Georgia, serif;';
+        quizSection.appendChild(quizTitle);
+
+        quiz.questions.forEach((question: any, index: number) => {
+          const questionDiv = document.createElement('div');
+          questionDiv.style.cssText = 'margin-bottom: 20px; page-break-inside: avoid;';
+
+          const questionNum = document.createElement('p');
+          questionNum.style.cssText = 'font-size: 14px; font-weight: bold; margin: 0 0 8px 0; color: #1a1a1a; font-family: Georgia, serif;';
+          questionNum.textContent = `Q${index + 1}: ${question.question}`;
+          questionDiv.appendChild(questionNum);
+
+          const answersList = document.createElement('ul');
+          answersList.style.cssText = 'margin: 6px 0 6px 24px; padding: 0; list-style-type: lower-alpha;';
+
+          question.answers.forEach((answer: string, answerIndex: number) => {
+            const answerItem = document.createElement('li');
+            const isCorrect = answerIndex === question.correctAnswer;
+            answerItem.style.cssText = `font-size: 14px; margin: 4px 0; color: ${isCorrect ? '#16a34a' : '#1a1a1a'}; font-family: Georgia, serif; ${isCorrect ? 'font-weight: bold;' : ''}`;
+            answerItem.textContent = `${answer}${isCorrect ? ' ✓ (Correct Answer)' : ''}`;
+            answersList.appendChild(answerItem);
+          });
+
+          questionDiv.appendChild(answersList);
+          quizSection.appendChild(questionDiv);
+        });
+
+        pdfContent.appendChild(quizSection);
+      }
+
       // Add footer with promotional note
       const footer = document.createElement('div');
       footer.innerHTML = `
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #f97316; text-align: center;">
-          <div style="background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); padding: 20px; border-radius: 8px;">
-            <p style="margin: 0; font-size: 13px; color: #c2410c; font-weight: 600;">
+        <div style="margin-top: 30px; padding-top: 15px; border-top: 2px solid #f97316; text-align: center;">
+          <div style="background: #fff7ed; padding: 15px; border-radius: 4px;">
+            <p style="margin: 0; font-size: 12px; color: #c2410c; font-weight: 600; font-family: Arial, sans-serif;">
               📚 Want more lessons, quizzes, games & spiritual resources?
             </p>
-            <p style="margin: 8px 0 0 0; font-size: 14px; color: #1a1a1a;">
+            <p style="margin: 6px 0 0 0; font-size: 12px; color: #1a1a1a; font-family: Arial, sans-serif;">
               Visit us at <strong style="color: #f97316;">www.ramakrishna-johannesburg.org.za</strong>
             </p>
           </div>
@@ -123,22 +236,31 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
       `;
       pdfContent.appendChild(footer);
 
-      // Generate PDF with page numbers
-      const opt = {
-        margin: [10, 10, 15, 10], // Extra bottom margin for page numbers
+      // Generate PDF with improved settings
+	      const opt = {
+	        margin: [12, 12, 18, 12], // top, left, bottom, right in mm
         filename: `${lessonTitle.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 0.95 },
         html2canvas: {
           scale: 2,
           useCORS: true,
-          letterRendering: true
+          letterRendering: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false
         },
         jsPDF: {
           unit: 'mm',
           format: 'a4',
-          orientation: 'portrait'
-        },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+          orientation: 'portrait',
+          compress: true
+	        },
+	        // Use both CSS-aware and legacy algorithms so page-break hints are respected
+	        // and try to avoid splitting table rows, list items, and paragraphs across pages
+	        pagebreak: {
+	          mode: ['css', 'legacy'],
+	          avoid: ['tr', 'li', 'p', 'blockquote']
+	        }
       };
 
       // Generate PDF and add page numbers
@@ -151,11 +273,11 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
 
         for (let i = 1; i <= totalPages; i++) {
           pdf.setPage(i);
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setTextColor(150, 150, 150);
           const pageText = `Page ${i} of ${totalPages}`;
           const textWidth = pdf.getTextWidth(pageText);
-          pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 7);
+          pdf.text(pageText, (pageWidth - textWidth) / 2, pageHeight - 8);
         }
       }).save();
     } catch (error) {
