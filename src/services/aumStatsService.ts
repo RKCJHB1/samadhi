@@ -76,14 +76,28 @@ export async function getAumStats(): Promise<AumStats | null> {
  * Uses Supabase's RPC (Stored Procedures) for atomic updates
  * Falls back to client-side calculation if needed
  */
-export async function recordChant(userId: string, country?: string): Promise<AumStats | null> {
+export async function recordChant(userId: string, chantCount: number = 1, country?: string): Promise<AumStats | null> {
   try {
+    // Try the atomic RPC first for perfect concurrency
+    const { error: rpcError } = await supabaseClient.rpc('increment_aum_chants', {
+      increment_by: chantCount,
+      p_user_id: userId,
+      p_country: country || 'Local'
+    });
+
+    if (!rpcError) {
+      // RPC succeeded! Stats will update via realtime subscription
+      return null;
+    }
+
+    console.warn('[AumStats] RPC failed (schema might not be updated), falling back to manual update:', rpcError);
+
     // Step 1: Log the chant (for analytics)
     const { error: logError } = await supabaseClient
       .from('user_chants_log')
       .insert([{
         user_id: userId,
-        chant_count: 1,
+        chant_count: chantCount,
         country: country || null,
       }]);
 
@@ -107,20 +121,20 @@ export async function recordChant(userId: string, country?: string): Promise<Aum
     // Step 3: Calculate new stats
     const userChants = currentData.user_chants || {};
     const userCurrentChants = userChants[userId] || 0;
-    const newUserChants = userCurrentChants + 1;
-    
+    const newUserChants = userCurrentChants + chantCount;
+
     const countries = currentData.countries || {};
     const countryKey = country || 'Local';
     const countryCurrentCount = countries[countryKey] || 0;
 
     // Update tracking objects
     userChants[userId] = newUserChants;
-    countries[countryKey] = countryCurrentCount + 1;
+    countries[countryKey] = countryCurrentCount + chantCount;
 
     const wasNewUser = !((currentData.user_chants || {})[userId]);
     const wasNewCountry = !((currentData.countries || {})[countryKey]);
 
-    const newGlobalChants = currentData.global_chants + 1;
+    const newGlobalChants = currentData.global_chants + chantCount;
     const newUniqueUsers = currentData.unique_users + (wasNewUser ? 1 : 0);
     const newUniqueCountries = currentData.unique_countries + (wasNewCountry ? 1 : 0);
     const newRecordChants = Math.max(currentData.record_chants, newUserChants);
@@ -193,10 +207,10 @@ async function initializeStats(): Promise<void> {
  * Useful for live stats dashboard
  */
 export function subscribeToAumStats(callback: (stats: AumStats) => void) {
-  const subscription = supabaseClient
-    .from('aum_stats')
-    .on('UPDATE', payload => {
-      const data = payload.new;
+  const channel = supabaseClient
+    .channel('public:aum_stats')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aum_stats' }, payload => {
+      const data = payload.new as any;
       callback({
         globalChants: data.global_chants,
         recordChants: data.record_chants,
@@ -209,6 +223,6 @@ export function subscribeToAumStats(callback: (stats: AumStats) => void) {
 
   // Return unsubscribe function
   return () => {
-    supabaseClient.removeSubscription(subscription);
+    supabaseClient.removeChannel(channel);
   };
 }

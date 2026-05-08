@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import PageLayout from '../../components/layout/PageLayout';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
-import { getAumStats, recordChant } from '../../services/aumStatsService';
+import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
 
 const getTodayString = () => {
   const today = new Date();
@@ -101,6 +101,10 @@ const AumChanterPage = () => {
   const [autoChantRemaining, setAutoChantRemaining] = useState<number>(0);
   const autoChantIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Batching chant logic
+  const pendingChantsRef = useRef(0);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Backend stats - will be fetched from Digital Ocean server
   const [globalChants, setGlobalChants] = useState<number>(0);
   const [recordChants, setRecordChants] = useState<number>(0);
@@ -176,45 +180,43 @@ const AumChanterPage = () => {
     }
   }, [availableChants, selectedChantId]);
 
-  // Fetch stats from backend
+  // Fetch initial stats and subscribe to real-time updates
   useEffect(() => {
-    const fetchStats = async () => {
+    let unsubscribe: (() => void) | undefined;
+
+    const initializeStats = async () => {
       try {
-        // Fetch stats from Supabase instead of backend
         const stats = await getAumStats();
         if (stats) {
-          const nextStats = {
-            globalChants: stats.globalChants || 0,
-            recordChants: stats.recordChants || 0,
-            avgChantsPerUser: stats.avgChantsPerUser || 0,
-            uniqueUsers: stats.uniqueUsers || 0,
-            uniqueCountries: stats.uniqueCountries || 0,
-          };
-
-          const statsChanged = Object.entries(nextStats).some(([key, value]) => {
-            return statsRef.current[key as keyof typeof nextStats] !== value;
-          });
-
-          if (statsChanged) {
-            statsRef.current = nextStats;
-            setGlobalChants(nextStats.globalChants);
-            setRecordChants(nextStats.recordChants);
-            setAvgChantsPerUser(nextStats.avgChantsPerUser);
-            setUniqueUsers(nextStats.uniqueUsers);
-            setUniqueCountries(nextStats.uniqueCountries);
-          }
+          setGlobalChants(stats.globalChants || 0);
+          setRecordChants(stats.recordChants || 0);
+          setAvgChantsPerUser(stats.avgChantsPerUser || 0);
+          setUniqueUsers(stats.uniqueUsers || 0);
+          setUniqueCountries(stats.uniqueCountries || 0);
         }
       } catch (error) {
-        console.error("Failed to fetch Aum stats:", error);
+        console.error("Failed to fetch initial Aum stats:", error);
       } finally {
         setStatsLoading(false);
       }
     };
 
-    fetchStats();
-    // Refresh stats every 1 second
-    const interval = setInterval(fetchStats, 1000);
-    return () => clearInterval(interval);
+    initializeStats();
+
+    // Subscribe to real-time updates from Supabase
+    unsubscribe = subscribeToAumStats((newStats) => {
+      setGlobalChants(newStats.globalChants || 0);
+      setRecordChants(newStats.recordChants || 0);
+      setAvgChantsPerUser(newStats.avgChantsPerUser || 0);
+      setUniqueUsers(newStats.uniqueUsers || 0);
+      setUniqueCountries(newStats.uniqueCountries || 0);
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   // Save local data to localStorage
@@ -309,7 +311,7 @@ const AumChanterPage = () => {
       return newHistory;
     });
 
-    // Send chant to Supabase
+    // Send chant to Supabase (Batched)
     const userId = localStorage.getItem('userId') || `user-${Date.now()}`;
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', userId);
@@ -318,9 +320,21 @@ const AumChanterPage = () => {
     // Get country from browser (or use Cloudflare header server-side if needed)
     const country = (navigator as any).geolocation ? 'Unknown' : undefined;
 
-    recordChant(userId, country).catch(err =>
-      console.error('Failed to record chant in Supabase:', err)
-    );
+    pendingChantsRef.current += 1;
+
+    // Clear existing timer
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+
+    // Set a new timer to flush chants after 2 seconds of inactivity
+    debounceTimerRef.current = setTimeout(() => {
+      const chantsToRecord = pendingChantsRef.current;
+      if (chantsToRecord > 0) {
+        pendingChantsRef.current = 0; // reset
+        recordChant(userId, chantsToRecord, country).catch(err =>
+          console.error('Failed to record chant in Supabase:', err)
+        );
+      }
+    }, 2000);
 
     setIsChanted(true);
     setTimeout(() => setIsChanted(false), 150);
