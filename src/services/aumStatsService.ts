@@ -117,8 +117,8 @@ export async function recordChant(userId: string, country?: string): Promise<Aum
     userChants[userId] = newUserChants;
     countries[countryKey] = countryCurrentCount + 1;
 
-    const wasNewUser = !(userId in currentData.user_chants || {});
-    const wasNewCountry = !(countryKey in currentData.countries || {});
+    const wasNewUser = !((currentData.user_chants || {})[userId]);
+    const wasNewCountry = !((currentData.countries || {})[countryKey]);
 
     const newGlobalChants = currentData.global_chants + 1;
     const newUniqueUsers = currentData.unique_users + (wasNewUser ? 1 : 0);
