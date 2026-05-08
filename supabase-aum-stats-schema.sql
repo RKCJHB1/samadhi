@@ -142,3 +142,20 @@ BEGIN
   VALUES (p_user_id, increment_by, p_country);
 END;
 $$;
+
+-- =========================================================================
+-- Enable Realtime for aum_stats
+-- This is required for the WebSocket subscription to work
+-- =========================================================================
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND tablename = 'aum_stats'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE aum_stats;
+  END IF;
+END
+$$;
