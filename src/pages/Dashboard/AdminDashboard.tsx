@@ -8,6 +8,7 @@ import { Users, Settings, BookOpen, ChevronDown } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AdminNav from '@/components/admin/AdminNav';
 
 const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,8 +32,9 @@ const AdminDashboard = () => {
 
   return (
     <PageLayout title="Admin Dashboard">
+      <AdminNav />
       <div className="min-h-screen w-full bg-gradient-to-br from-indian-cream to-white p-4 sm:p-8">
-        <div className="container max-w-6xl mx-auto"> 
+        <div className="container max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>

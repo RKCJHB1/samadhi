@@ -61,6 +61,7 @@ import SubmitQuestionPage from "./pages/Learn/SubmitQuestionPage";
 import LearnPage from "./pages/Learn/LearnPage";
 import LearnUnveilPage from "./pages/Learn/LearnUnveilPage";
 import GamesPage from "./pages/Learn/GamesPage";
+import AumChanterPage from "./pages/Learn/AumChanterPage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 import { lazy, Suspense } from "react";
 
@@ -115,6 +116,13 @@ import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 
 // Import Admin pages
 import MantraAdminPage from "./pages/Admin/MantraAdminPage";
+import ContentManagementPage from "./pages/Admin/ContentManagementPage";
+import VerseManagementPage from "./pages/Admin/VerseManagementPage";
+import BulkVerseImport from "./pages/Admin/BulkVerseImport";
+import ModeratorManagementPage from "./pages/Admin/ModeratorManagementPage";
+import ModeratorDashboardPage from "./pages/Admin/ModeratorDashboardPage";
+import AdminLoginPage from "./pages/Auth/AdminLoginPage";
+import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
 
 // Lazy load Gallery pages (image-heavy)
 const GalleryPage = lazy(() => import("./pages/Gallery/GalleryPage"));
@@ -194,6 +202,7 @@ const App = () => (
 
               <Route path="/learn/submit" element={<SubmitQuestionPage />} />
               <Route path="/learn/games" element={<GamesPage />} />
+              <Route path="/learn/games/aum-chanter" element={<AumChanterPage />} />
               <Route path="/learn/games/guess-picture" element={<Suspense fallback={<PageLoader />}><GuessThePicturePage /></Suspense>} />
               <Route path="/learn/games/wordle" element={<Suspense fallback={<PageLoader />}><MastersWordsGamePage /></Suspense>} />
               <Route path="/learn/games/quotes" element={<Suspense fallback={<PageLoader />}><QuotesPage /></Suspense>} />
@@ -240,21 +249,69 @@ const App = () => (
             <Route path="/auth/signup" element={<SupabaseSignupPage />} />
             <Route path="/moderation/translations" element={<TranslationsModerationPage />} />
 
-            {/* Admin Routes - Development only */}
+            {/* Admin Routes - Now available in production */}
+            {/* Admin Login - No protection needed */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+
+            {/* Protected Admin Routes - Super Admin */}
+            <Route path="/admin" element={
+              <AdminProtectedRoute requiredRole="super_admin">
+                <AdminDashboard />
+              </AdminProtectedRoute>
+            } />
+            <Route path="/admin/moderators" element={
+              <AdminProtectedRoute requiredRole="super_admin">
+                <ModeratorManagementPage />
+              </AdminProtectedRoute>
+            } />
+            <Route path="/admin/content" element={
+              <AdminProtectedRoute requiredRole="super_admin">
+                <ContentManagementPage />
+              </AdminProtectedRoute>
+            } />
+            <Route path="/admin/verses" element={
+              <AdminProtectedRoute requiredRole="super_admin">
+                <VerseManagementPage />
+              </AdminProtectedRoute>
+            } />
+            <Route path="/admin/bulk-import" element={
+              <AdminProtectedRoute requiredRole="super_admin">
+                <BulkVerseImport />
+              </AdminProtectedRoute>
+            } />
+
+            {/* Protected Admin Routes - Moderator */}
+            <Route path="/admin/my-assignments" element={
+              <AdminProtectedRoute requiredRole="moderator">
+                <ModeratorDashboardPage />
+              </AdminProtectedRoute>
+            } />
+
+            {/* Shared Routes - Both roles can access - Dev only */}
             {import.meta.env.DEV && (
-              <>
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/mantras" element={<MantraAdminPage />} />
-              </>
+              <Route path="/admin/mantras" element={
+                <AdminProtectedRoute>
+                  <MantraAdminPage />
+                </AdminProtectedRoute>
+              } />
             )}
 
-            {/* Dashboard Routes */}
-            {/* Removed ProtectedRoute for testing */}
-            <Route path="/dashboard/student" element={<StudentDashboard />} />
-            {/* Removed ProtectedRoute for testing */}
-            <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-            {/* Removed ProtectedRoute for testing */}
-            <Route path="/dashboard/admin" element={<AdminDashboard />} />
+            {/* Dashboard Routes - Protected */}
+            <Route path="/dashboard/student" element={
+              <ProtectedRoute>
+                <StudentDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/teacher" element={
+              <ProtectedRoute>
+                <TeacherDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/admin" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
 
             {/* Donation Routes */}
             <Route path="/donate" element={<DonatePage />} />

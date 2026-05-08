@@ -3,7 +3,6 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-const { createClient } = require('@libsql/client');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,176 +27,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Initialize Turso database
-let db = null;
-if (process.env.TURSO_CONNECTION_URL && process.env.TURSO_AUTH_TOKEN) {
-  db = createClient({
-    url: process.env.TURSO_CONNECTION_URL,
-    authToken: process.env.TURSO_AUTH_TOKEN,
-  });
-}
+// NOTE: Aum Chanter stats now use Supabase directly (frontend calls Supabase)
+// This backend server is now deprecated and can be removed
+// Keeping it here for reference only - no functional code needed
 
-// In-memory storage (synced to Turso every second)
-let stats = {
-  globalChants: 0,
-  recordChants: 0,
-  avgChantsPerUser: 0,
-  uniqueUsers: 0,
-  uniqueCountries: 0,
-  userChants: {}, // Track chants per user
-  countries: {} // Track unique countries
-};
-
-// Initialize database and load stats from Turso
-async function initializeDatabase() {
-  console.log('🔧 Initializing database...');
-  console.log('DB configured:', !!db);
-
-  if (!db) {
-    console.log('⚠️  Turso not configured - using in-memory storage only');
-    return;
-  }
-
-  try {
-    console.log('📝 Creating table if not exists...');
-    // Create table if it doesn't exist (with countries support)
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS aum_stats (
-        id INTEGER PRIMARY KEY,
-        globalChants INTEGER DEFAULT 0,
-        recordChants INTEGER DEFAULT 0,
-        avgChantsPerUser REAL DEFAULT 0,
-        uniqueUsers INTEGER DEFAULT 0,
-        uniqueCountries INTEGER DEFAULT 0,
-        userChants TEXT DEFAULT '{}',
-        countries TEXT DEFAULT '{}'
-      )
-    `);
-    console.log('✅ Table created/verified');
-
-    // Add countries columns if they don't exist (for existing databases)
-    try {
-      await db.execute('ALTER TABLE aum_stats ADD COLUMN uniqueCountries INTEGER DEFAULT 0');
-      await db.execute('ALTER TABLE aum_stats ADD COLUMN countries TEXT DEFAULT \'{}\'');
-      console.log('✅ Added countries columns');
-    } catch (e) {
-      // Columns already exist, ignore
-    }
-
-    // Load existing stats from Turso
-    console.log('📖 Loading stats from Turso...');
-    const result = await db.execute('SELECT * FROM aum_stats WHERE id = 1');
-    console.log('Query result:', result);
-
-    if (result.rows && result.rows.length > 0) {
-      const row = result.rows[0];
-      stats = {
-        globalChants: row.globalChants || 0,
-        recordChants: row.recordChants || 0,
-        avgChantsPerUser: row.avgChantsPerUser || 0,
-        uniqueUsers: row.uniqueUsers || 0,
-        uniqueCountries: row.uniqueCountries || 0,
-        userChants: JSON.parse(row.userChants || '{}'),
-        countries: JSON.parse(row.countries || '{}')
-      };
-      console.log('✅ Loaded stats from Turso:', stats);
-    } else {
-      // Initialize new record
-      console.log('📝 Initializing new record in Turso...');
-      await db.execute(
-        'INSERT INTO aum_stats (id, globalChants, recordChants, avgChantsPerUser, uniqueUsers, uniqueCountries, userChants, countries) VALUES (1, 0, 0, 0, 0, 0, ?, ?)',
-        ['{}', '{}']
-      );
-      console.log('✅ Initialized new stats in Turso');
-    }
-  } catch (error) {
-    console.error('❌ Database initialization error:', error.message);
-    console.error('Full error:', error);
-  }
-}
-
-// Sync stats to Turso every second
-async function syncStatsToTurso() {
-  if (!db) {
-    if (!IS_PRODUCTION) console.log('⚠️  Turso not configured - skipping sync');
-    return;
-  }
-
-  try {
-    const userChantsJson = JSON.stringify(stats.userChants);
-    const countriesJson = JSON.stringify(stats.countries);
-
-    if (!IS_PRODUCTION) {
-      console.log('📤 Syncing to Turso:', {
-        globalChants: stats.globalChants,
-        uniqueUsers: stats.uniqueUsers,
-        uniqueCountries: stats.uniqueCountries
-      });
-    }
-
-    await db.execute({
-      sql: 'UPDATE aum_stats SET globalChants = ?, recordChants = ?, avgChantsPerUser = ?, uniqueUsers = ?, uniqueCountries = ?, userChants = ?, countries = ? WHERE id = 1',
-      args: [
-        stats.globalChants,
-        stats.recordChants,
-        stats.avgChantsPerUser,
-        stats.uniqueUsers,
-        stats.uniqueCountries,
-        userChantsJson,
-        countriesJson
-      ]
-    });
-  } catch (error) {
-    console.error('❌ Error syncing to Turso:', error.message);
-  }
-}
-
-// GET endpoint - fetch stats
-app.get('/api/aum-stats', (req, res) => {
-  res.json(stats);
-});
-
-// POST endpoint - record a chant
-app.post('/api/aum-chant', (req, res) => {
-  const { userId } = req.body;
-
-  if (!userId) {
-    return res.status(400).json({ error: 'userId required' });
-  }
-
-  // Get country from Cloudflare header (production) or fallback for dev
-  // Cloudflare adds CF-IPCountry header automatically
-  const country = req.headers['cf-ipcountry'] || 'Local';
-
-  // Increment global chants
-  stats.globalChants += 1;
-
-  // Track user chants
-  if (!stats.userChants[userId]) {
-    stats.userChants[userId] = 0;
-    stats.uniqueUsers += 1;
-  }
-  stats.userChants[userId] += 1;
-
-  // Track countries
-  if (!stats.countries[country]) {
-    stats.countries[country] = 0;
-    stats.uniqueCountries += 1;
-  }
-  stats.countries[country] += 1;
-
-  // Update record if needed
-  if (stats.userChants[userId] > stats.recordChants) {
-    stats.recordChants = stats.userChants[userId];
-  }
-
-  // Calculate average
-  if (stats.uniqueUsers > 0) {
-    stats.avgChantsPerUser = stats.globalChants / stats.uniqueUsers;
-  }
-
-  res.json({ success: true, stats });
-});
+// NOTE: Aum Chanter endpoints have been removed
+// Stats are now handled directly by Supabase frontend calls
 
 // Health check
 app.get('/health', (req, res) => {
@@ -265,16 +100,9 @@ if (!IS_PRODUCTION) {
 }
 
 // Start server
-async function startServer() {
-  await initializeDatabase();
-
-  // Sync to Turso every 1 second
-  setInterval(syncStatsToTurso, 1000);
-
-  app.listen(PORT, () => {
-    console.log(`✅ Aum Chanter backend running on port ${PORT}`);
-  });
-}
-
-startServer();
+app.listen(PORT, () => {
+  console.log(`⚠️  Legacy Aum Chanter backend running on port ${PORT}`);
+  console.log('⚠️  This backend is deprecated - Aum Chanter now uses Supabase directly');
+  console.log('✅ Mantra config endpoints still available for development');
+});
 

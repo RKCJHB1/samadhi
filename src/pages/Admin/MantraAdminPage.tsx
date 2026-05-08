@@ -1,104 +1,42 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Save, Download, Upload, RotateCcw, ChevronUp, ChevronDown, Minus, ChevronsUp, Check } from 'lucide-react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Play, Pause, Save, Download, Upload, RotateCcw, ChevronUp, ChevronDown, Minus, ChevronsUp, Check, AlertCircle, Eye, EyeOff, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import SyncedAudioPlayer from '@/components/audio/SyncedAudioPlayer';
 import {
   TimedSyllable,
   SvaraType,
-  gayatriMantraSyllables,
-  sahaNavatuMantraSyllables,
 } from '@/data/mantraTimings';
+import { ADMIN_MANTRAS } from '@/data/adminMantras';
 import {
   MantraConfig,
   saveMantraConfig,
   getMantraConfig,
+  deleteMantraConfig,
   exportMantraConfigs,
   importMantraConfigs,
   svaraInfo,
 } from '@/utils/mantraStorage';
-
-// Helper to create placeholder syllables from transliteration
-const createPlaceholderSyllables = (transliteration: string): TimedSyllable[] => {
-  const words = transliteration.split(/\s+/);
-  let time = 0;
-  return words.map(word => {
-    const syl: TimedSyllable = { text: word + ' ', startTime: time, endTime: time + 0.5, svara: 'neutral' };
-    time += 0.5;
-    return syl;
-  });
-};
-
-// Available mantras with their default data
-const availableMantras = [
-  {
-    id: 'gayatri',
-    name: 'Gayatri Mantra',
-    audioSrc: '/audio/gayatri.mp3',
-    defaultSyllables: gayatriMantraSyllables,
-    transliteration: 'Oṃ bhūr bhuvaḥ svaḥ tat savitur vareṇyaṃ bhargo devasya dhīmahi dhiyo yo naḥ pracodayāt',
-  },
-  {
-    id: 'saha-navavatu',
-    name: 'Saha Navavatu',
-    audioSrc: '/audio/sahana.mp3',
-    defaultSyllables: sahaNavatuMantraSyllables,
-    transliteration: 'Oṃ saha nāvavatu saha nau bhunaktu saha vīryaṃ karavāvahai tejasvināvadhītamastu mā vidviṣāvahai oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'ganapati-prarthana',
-    name: 'Ganapati Prarthana',
-    audioSrc: '/audio/ganapati.MP3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ gaṇānāṃ tvā gaṇapatiṃ havāmahe kaviṃ kavīnāmupamaśravastamam jyeṣṭharājaṃ brahmaṇāṃ brahmaṇaspata ā naḥ śṛṇvannūtibhissīda sādanam mahāgaṇapataye namaḥ'),
-    transliteration: 'Oṃ gaṇānāṃ tvā gaṇapatiṃ havāmahe kaviṃ kavīnāmupamaśravastamam jyeṣṭharājaṃ brahmaṇāṃ brahmaṇaspata ā naḥ śṛṇvannūtibhissīda sādanam mahāgaṇapataye namaḥ',
-  },
-  {
-    id: 'sham-no-mitrah',
-    name: 'Sham No Mitrah',
-    audioSrc: '/audio/shannomitra.mp3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ śaṃ no mitraḥ śaṃ varuṇaḥ śaṃ no bhavatvaryamā śaṃ na indro bṛhaspatiḥ śaṃ no viṣṇururukramaḥ namo brahmaṇe namaste vāyo tvameva pratyakṣaṃ brahmāsi oṃ śāntiḥ śāntiḥ śāntiḥ'),
-    transliteration: 'Oṃ śaṃ no mitraḥ śaṃ varuṇaḥ śaṃ no bhavatvaryamā śaṃ na indro bṛhaspatiḥ śaṃ no viṣṇururukramaḥ namo brahmaṇe namaste vāyo tvameva pratyakṣaṃ brahmāsi oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'bhadram-karnebhih',
-    name: 'Bhadram Karnebhih',
-    audioSrc: '/audio/bhadramkarNebhi.mp3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ bhadraṃ karṇebhiḥ śṛṇuyāma devāḥ bhadraṃ paśyemākṣabhiryajatrāḥ sthirairaṅgaistuṣṭuvāṃsastanūbhiḥ vyaśema devahitaṃ yadāyuḥ svasti na indro vṛddhaśravāḥ oṃ śāntiḥ śāntiḥ śāntiḥ'),
-    transliteration: 'Oṃ bhadraṃ karṇebhiḥ śṛṇuyāma devāḥ bhadraṃ paśyemākṣabhiryajatrāḥ sthirairaṅgaistuṣṭuvāṃsastanūbhiḥ vyaśema devahitaṃ yadāyuḥ svasti na indro vṛddhaśravāḥ oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'namo-brahmane',
-    name: 'Namo Brahmane',
-    audioSrc: '/audio/namobrahmaNe.mp3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ namo brahmaṇe namo astvagnaye namaḥ pṛthivyai nama oṣadhībhyaḥ namo vāce namo vācaspataye namo viṣṇave bṛhate karomi oṃ śāntiḥ śāntiḥ śāntiḥ'),
-    transliteration: 'Oṃ namo brahmaṇe namo astvagnaye namaḥ pṛthivyai nama oṣadhībhyaḥ namo vāce namo vācaspataye namo viṣṇave bṛhate karomi oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'yaschandasam',
-    name: 'Yaschandasam',
-    audioSrc: '/audio/yashcchandasAm.mp3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ yaśchandasāmṛṣabho viśvarūpaḥ chandobhyo adhyamṛtāthsambabhūva sa mendro medhayā spṛṇotu amṛtasya deva dhāraṇo bhūyāsam oṃ śāntiḥ śāntiḥ śāntiḥ'),
-    transliteration: 'Oṃ yaśchandasāmṛṣabho viśvarūpaḥ chandobhyo adhyamṛtāthsambabhūva sa mendro medhayā spṛṇotu amṛtasya deva dhāraṇo bhūyāsam oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'vang-me-manasi',
-    name: 'Vang Me Manasi',
-    audioSrc: '/audio/vAngmemanasi.MP3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ vāṅ me manasi pratiṣṭhitā mano me vāci pratiṣṭhitam āvirāvīrma edhi vedasya ma āṇīsthaḥ śrutaṃ me mā prahāsīḥ oṃ śāntiḥ śāntiḥ śāntiḥ'),
-    transliteration: 'Oṃ vāṅ me manasi pratiṣṭhitā mano me vāci pratiṣṭhitam āvirāvīrma edhi vedasya ma āṇīsthaḥ śrutaṃ me mā prahāsīḥ oṃ śāntiḥ śāntiḥ śāntiḥ',
-  },
-  {
-    id: 'durga-suktam',
-    name: 'Durga Suktam',
-    audioSrc: '/audio/durgAsUktam.mp3',
-    defaultSyllables: createPlaceholderSyllables('Oṃ jātavedase sunavāma somam arātīyato nidahāti vedaḥ sa naḥ parṣadati durgāṇi viśvā nāveva sindhuṃ duritātyagniḥ'),
-    transliteration: 'Oṃ jātavedase sunavāma somam arātīyato nidahāti vedaḥ sa naḥ parṣadati durgāṇi viśvā nāveva sindhuṃ duritātyagniḥ',
-  },
-];
+import AdminNav from '@/components/admin/AdminNav';
+import { getCurrentSession, isSuperAdmin } from '@/services/adminAuth';
+import { adminStorage } from '@/services/adminStorage';
+import { MantraAssignment } from '@/types/adminTypes';
 
 const MantraAdminPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [selectedMantraId, setSelectedMantraId] = useState<string>('gayatri');
   const [syllables, setSyllables] = useState<TimedSyllable[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -106,29 +44,78 @@ const MantraAdminPage: React.FC = () => {
   const [duration, setDuration] = useState(0);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  
+  const [myAssignments, setMyAssignments] = useState<MantraAssignment[]>([]);
+  const [isLoadingAssignments, setIsLoadingAssignments] = useState(false);
+  const [showValidationDialog, setShowValidationDialog] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const highlightIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const selectedMantra = availableMantras.find(m => m.id === selectedMantraId)!;
+  const session = getCurrentSession();
+  const isAdmin = isSuperAdmin();
+
+  // Filter mantras based on role
+  const filteredMantras = isAdmin
+    ? ADMIN_MANTRAS
+    : ADMIN_MANTRAS.filter(m => myAssignments.some(a => a.mantraId === m.id));
+
+  const selectedMantra = ADMIN_MANTRAS.find(m => m.id === selectedMantraId);
+
+  // Load assignments for moderators
+  useEffect(() => {
+    const loadAssignments = async () => {
+      if (!isAdmin && session) {
+        try {
+          const assignments = await adminStorage.getAssignmentsByModerator(session.userId);
+          setMyAssignments(assignments);
+
+          // Check for mantra param in URL (from moderator dashboard)
+          const mantraParam = searchParams.get('mantra');
+          if (mantraParam && assignments.some(a => a.mantraId === mantraParam)) {
+            setSelectedMantraId(mantraParam);
+          } else if (assignments.length > 0) {
+            setSelectedMantraId(assignments[0].mantraId);
+          }
+        } catch (error) {
+          console.error('Failed to load assignments:', error);
+        }
+      }
+    };
+    loadAssignments();
+  }, [isAdmin, session]);
 
   // Load mantra data when selection changes
   useEffect(() => {
+    if (!selectedMantraId || !selectedMantra) return;
+
     const saved = getMantraConfig(selectedMantraId);
-    if (saved) {
+
+    // Check if saved config has empty syllables or Devanagari text
+    const hasValidSavedSyllables = saved &&
+      saved.syllables &&
+      saved.syllables.length > 0 &&
+      !containsDevanagari(saved.syllables.map(s => s.text));
+
+    if (hasValidSavedSyllables) {
       setSyllables(saved.syllables);
       setIsConfirmed(saved.confirmed);
     } else {
       // Use default syllables
       setSyllables(selectedMantra.defaultSyllables.map(s => ({ ...s, svara: s.svara || 'neutral' })));
       setIsConfirmed(false);
+
+      // If there was a saved config with invalid data, delete it
+      if (saved) {
+        deleteMantraConfig(selectedMantraId);
+      }
     }
     // Reset audio state
     setCurrentTime(0);
     setActiveIndex(-1);
     setIsPlaying(false);
-  }, [selectedMantraId, selectedMantra.defaultSyllables]);
+  }, [selectedMantraId, selectedMantra]);
 
   // Audio event handlers
   const handleLoadedMetadata = () => {
@@ -214,10 +201,111 @@ const MantraAdminPage: React.FC = () => {
     setIsConfirmed(false);
   };
 
+  const containsDevanagari = (tokens: string[]) => /[\u0900-\u097F]/.test(tokens.join(''));
+
+  const getTransliterationSyllablesForSave = (): string[] | undefined => {
+    if (!selectedMantraId || !selectedMantra) return undefined;
+
+    // 1) Prefer existing saved transliteration syllables (if aligned + non-Devanagari)
+    const existing = getMantraConfig(selectedMantraId);
+    const existingTokens = existing?.transliterationSyllables;
+    if (existingTokens && existingTokens.length === syllables.length && !containsDevanagari(existingTokens)) {
+      return existingTokens;
+    }
+
+    // 2) Fall back to catalog-provided transliteration syllables (if aligned)
+    const catalogTokens = selectedMantra.transliterationSyllables;
+    if (catalogTokens && catalogTokens.length === syllables.length && !containsDevanagari(catalogTokens)) {
+      return catalogTokens;
+    }
+
+    // 3) For placeholder syllables, syllable.text is already romanized. Use that if it's non-Devanagari.
+    const syllableTokens = syllables.map((s) => s.text);
+    if (syllableTokens.length === syllables.length && !containsDevanagari(syllableTokens)) {
+      return syllableTokens;
+    }
+
+    // Otherwise omit transliterationSyllables to avoid saving Devanagari as transliteration.
+    return undefined;
+  };
+
+  // ─── Health-check validation ───────────────────────────────────────
+  interface ValidationIssue {
+    type: 'error' | 'warning';
+    message: string;
+  }
+
+  const validationResults = useMemo(() => {
+    if (!selectedMantra || syllables.length === 0) return { errors: [] as ValidationIssue[], warnings: [] as ValidationIssue[], isValid: true };
+
+    const errors: ValidationIssue[] = [];
+    const warnings: ValidationIssue[] = [];
+
+    // 1) Placeholder / zero-duration timings
+    const placeholderCount = syllables.filter(s => s.startTime === s.endTime || (s.endTime - s.startTime) < 0.01).length;
+    if (placeholderCount === syllables.length) {
+      errors.push({ type: 'error', message: 'All syllables have zero duration — timings have not been set.' });
+    } else if (placeholderCount > 0) {
+      warnings.push({ type: 'warning', message: `${placeholderCount} syllable(s) have zero or near-zero duration.` });
+    }
+
+    // 2) Negative durations
+    const negativeCount = syllables.filter(s => s.endTime < s.startTime).length;
+    if (negativeCount > 0) {
+      errors.push({ type: 'error', message: `${negativeCount} syllable(s) have endTime before startTime.` });
+    }
+
+    // 3) Overlapping time ranges
+    const sorted = [...syllables].sort((a, b) => a.startTime - b.startTime);
+    let overlapCount = 0;
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i].startTime < sorted[i - 1].endTime - 0.01) {
+        overlapCount++;
+      }
+    }
+    if (overlapCount > 0) {
+      warnings.push({ type: 'warning', message: `${overlapCount} pair(s) of syllables have overlapping time ranges.` });
+    }
+
+    // 4) Large gaps (> 2s) between consecutive syllables
+    let gapCount = 0;
+    for (let i = 1; i < sorted.length; i++) {
+      const gap = sorted[i].startTime - sorted[i - 1].endTime;
+      if (gap > 2) gapCount++;
+    }
+    if (gapCount > 0) {
+      warnings.push({ type: 'warning', message: `${gapCount} gap(s) larger than 2 seconds between consecutive syllables.` });
+    }
+
+    // 5) Transliteration syllable count mismatch
+    const catalogTokens = selectedMantra.transliterationSyllables;
+    if (catalogTokens && catalogTokens.length > 0 && catalogTokens.length !== syllables.length) {
+      errors.push({ type: 'error', message: `Transliteration syllable count (${catalogTokens.length}) does not match timing syllable count (${syllables.length}).` });
+    }
+
+    // 6) Devanagari leaking into transliteration syllables
+    const translitTokens = getTransliterationSyllablesForSave();
+    if (translitTokens && containsDevanagari(translitTokens)) {
+      errors.push({ type: 'error', message: 'Transliteration syllables contain Devanagari characters — they should be romanized.' });
+    }
+    if (!translitTokens && catalogTokens && catalogTokens.length > 0) {
+      warnings.push({ type: 'warning', message: 'No valid transliteration syllables could be resolved. Follow Along may show Devanagari.' });
+    }
+
+    // 7) Syllables extending beyond audio duration
+    if (duration > 0) {
+      const lastEnd = Math.max(...syllables.map(s => s.endTime));
+      if (lastEnd > duration + 0.5) {
+        warnings.push({ type: 'warning', message: `Last syllable ends at ${lastEnd.toFixed(2)}s but audio is only ${duration.toFixed(2)}s long.` });
+      }
+    }
+
+    return { errors, warnings, isValid: errors.length === 0 };
+  }, [syllables, selectedMantra, duration]);
+
   // Save configuration
   const handleSave = async () => {
-    // Extract transliteration syllables from the timed syllables
-    const transliterationSyllables = syllables.map(s => s.text);
+    const transliterationSyllables = getTransliterationSyllablesForSave();
 
     const config: MantraConfig = {
       id: selectedMantraId,
@@ -233,11 +321,19 @@ const MantraAdminPage: React.FC = () => {
     toast.success(`${selectedMantra.name} configuration saved to file!`);
   };
 
-  // Confirm configuration
-  const handleConfirm = async () => {
+  // Confirm configuration — runs health check first
+  const handleConfirmClick = () => {
+    if (!validationResults.isValid || validationResults.warnings.length > 0) {
+      setShowValidationDialog(true);
+    } else {
+      doConfirm();
+    }
+  };
+
+  const doConfirm = async () => {
+    setShowValidationDialog(false);
     setIsConfirmed(true);
-    // Extract transliteration syllables from the timed syllables
-    const transliterationSyllables = syllables.map(s => s.text);
+    const transliterationSyllables = getTransliterationSyllablesForSave();
 
     const config: MantraConfig = {
       id: selectedMantraId,
@@ -308,44 +404,112 @@ const MantraAdminPage: React.FC = () => {
 
   const formatTime = (t: number) => t.toFixed(2) + 's';
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-heading font-bold mb-6">Mantra Configuration Admin</h1>
+  // Show loading state
+  if (isLoadingAssignments) {
+    return (
+      <>
+        <AdminNav />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indian-saffron"></div>
+        </div>
+      </>
+    );
+  }
 
-        {/* Top Controls */}
-        <Card className="mb-6">
+  // Show message if moderator has no assignments
+  if (!isAdmin && filteredMantras.length === 0) {
+    return (
+      <>
+        <AdminNav />
+        <div className="min-h-screen bg-gray-50 p-6">
+          <div className="max-w-2xl mx-auto">
+            <Card>
+              <CardContent className="py-12 text-center">
+                <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">No Mantras Assigned</h2>
+                <p className="text-gray-500">
+                  You don't have any mantras assigned to you yet.
+                </p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Contact the Super Admin to get mantras assigned.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Show message if no mantra selected
+  if (!selectedMantra) {
+    return (
+      <>
+        <AdminNav />
+        <div className="min-h-screen bg-gray-50 p-6">
+          <div className="max-w-2xl mx-auto">
+            <Card>
+              <CardContent className="py-12 text-center">
+                <p className="text-gray-500">Please select a mantra to edit.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <AdminNav />
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-heading font-bold mb-6">
+            Mantra Configuration {!isAdmin && <span className="text-lg font-normal text-gray-500">(Moderator View)</span>}
+          </h1>
+
+          {/* Top Controls */}
+          <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Select Mantra</span>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleExport}>
-                  <Download className="w-4 h-4 mr-1" /> Export All
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
-                  <Upload className="w-4 h-4 mr-1" /> Import
-                </Button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".json"
-                  className="hidden"
-                  onChange={handleImport}
-                />
-              </div>
+              <span>Select Mantra {!isAdmin && `(${filteredMantras.length} assigned)`}</span>
+              {isAdmin && (
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={handleExport}>
+                    <Download className="w-4 h-4 mr-1" /> Export All
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="w-4 h-4 mr-1" /> Import
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    className="hidden"
+                    onChange={handleImport}
+                  />
+                </div>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Select value={selectedMantraId} onValueChange={setSelectedMantraId}>
-              <SelectTrigger className="w-full max-w-md">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {availableMantras.map(m => (
-                  <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-2">Available mantras: {filteredMantras.length}</p>
+              {filteredMantras.length === 0 ? (
+                <p className="text-red-600">No mantras available</p>
+              ) : (
+                <Select value={selectedMantraId} onValueChange={setSelectedMantraId}>
+                  <SelectTrigger className="w-full max-w-md">
+                    <SelectValue placeholder="Select a mantra..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredMantras.map(m => (
+                      <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
           </CardContent>
         </Card>
 
@@ -379,6 +543,10 @@ const MantraAdminPage: React.FC = () => {
                 {syllables.map((syl, idx) => {
                   const isActive = idx === activeIndex;
                   const svara = syl.svara || 'neutral';
+                  const transliterationTokens = getTransliterationSyllablesForSave();
+                  const displayText = transliterationTokens && idx < transliterationTokens.length
+                    ? transliterationTokens[idx]
+                    : syl.text;
                   return (
                     <span
                       key={idx}
@@ -392,7 +560,7 @@ const MantraAdminPage: React.FC = () => {
                       `}
                       style={isActive && svara !== 'neutral' ? { animationDuration: `${Math.max(syl.endTime - syl.startTime, 0.3)}s` } : undefined}
                     >
-                      {syl.text}
+                      {displayText}
                     </span>
                   );
                 })}
@@ -420,6 +588,62 @@ const MantraAdminPage: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* Health Check Status */}
+        <Card className="mb-6">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {validationResults.errors.length > 0 ? (
+                  <XCircle className="w-5 h-5 text-red-500" />
+                ) : validationResults.warnings.length > 0 ? (
+                  <AlertTriangle className="w-5 h-5 text-amber-500" />
+                ) : (
+                  <CheckCircle2 className="w-5 h-5 text-green-500" />
+                )}
+                <span className="font-medium">
+                  {validationResults.errors.length > 0
+                    ? 'Issues found'
+                    : validationResults.warnings.length > 0
+                    ? 'Warnings'
+                    : 'All checks passed'}
+                </span>
+                {validationResults.errors.length > 0 && (
+                  <Badge variant="destructive">{validationResults.errors.length} error{validationResults.errors.length !== 1 ? 's' : ''}</Badge>
+                )}
+                {validationResults.warnings.length > 0 && (
+                  <Badge variant="outline" className="border-amber-400 text-amber-700">{validationResults.warnings.length} warning{validationResults.warnings.length !== 1 ? 's' : ''}</Badge>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => setShowValidationDialog(true)}>
+                  <AlertCircle className="w-4 h-4 mr-1" /> View Details
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => setShowPreview(!showPreview)}>
+                  {showPreview ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
+                  {showPreview ? 'Hide Preview' : 'Live Preview'}
+                </Button>
+              </div>
+            </div>
+            {/* Inline summary of issues */}
+            {(validationResults.errors.length > 0 || validationResults.warnings.length > 0) && (
+              <div className="mt-3 space-y-1">
+                {validationResults.errors.map((e, i) => (
+                  <div key={`e-${i}`} className="flex items-center gap-2 text-sm text-red-600">
+                    <XCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>{e.message}</span>
+                  </div>
+                ))}
+                {validationResults.warnings.map((w, i) => (
+                  <div key={`w-${i}`} className="flex items-center gap-2 text-sm text-amber-600">
+                    <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>{w.message}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Syllable Editor */}
         <Card className="mb-6">
           <CardHeader>
@@ -432,7 +656,7 @@ const MantraAdminPage: React.FC = () => {
                 <Button variant="outline" size="sm" onClick={handleSave}>
                   <Save className="w-4 h-4 mr-1" /> Save Draft
                 </Button>
-                <Button size="sm" onClick={handleConfirm} className="bg-green-600 hover:bg-green-700">
+                <Button size="sm" onClick={handleConfirmClick} className="bg-green-600 hover:bg-green-700">
                   <Check className="w-4 h-4 mr-1" /> Confirm
                 </Button>
               </div>
@@ -447,7 +671,12 @@ const MantraAdminPage: React.FC = () => {
             )}
 
             <div className="space-y-2 max-h-[500px] overflow-y-auto">
-              {syllables.map((syl, idx) => (
+              {syllables.map((syl, idx) => {
+                const transliterationTokens = getTransliterationSyllablesForSave();
+                const displayText = transliterationTokens && idx < transliterationTokens.length
+                  ? transliterationTokens[idx]
+                  : syl.text;
+                return (
                 <div
                   key={idx}
                   className={`
@@ -456,7 +685,7 @@ const MantraAdminPage: React.FC = () => {
                   `}
                 >
                   <span className="w-8 text-gray-400 text-sm">#{idx + 1}</span>
-                  <span className="w-16 text-xl font-mono">{syl.text}</span>
+                  <span className="w-16 text-xl font-mono">{displayText}</span>
 
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-500">Start:</span>
@@ -506,10 +735,70 @@ const MantraAdminPage: React.FC = () => {
                     </Select>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           </CardContent>
         </Card>
+
+        {/* Live Preview Panel */}
+        {showPreview && (
+          <Card className="mb-6 border-2 border-indian-saffron/30">
+            <CardHeader className="bg-indian-cream/30">
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-indian-saffron" />
+                  Live Preview — How it will appear in the Learn page
+                </span>
+                <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
+                  <EyeOff className="w-4 h-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="p-6 md:p-8 space-y-8 bg-white rounded-b-lg">
+                {/* Transliteration (shows only when no synced Follow Along) */}
+                {selectedMantra.transliteration && syllables.length === 0 && (
+                  <div className="bg-gradient-to-br from-spiritual-50 to-white rounded-xl p-6 border border-spiritual-100">
+                    <h3 className="text-lg font-heading font-semibold text-spiritual-600 mb-3">Transliteration</h3>
+                    <p className="text-lg md:text-xl leading-relaxed text-gray-700 italic">
+                      {selectedMantra.transliteration}
+                    </p>
+                  </div>
+                )}
+
+                {/* Follow Along — SyncedAudioPlayer */}
+                {selectedMantra.audioSrc && syllables.length > 0 && (
+                  <SyncedAudioPlayer
+                    src={selectedMantra.audioSrc}
+                    title="Follow Along"
+                    syllables={syllables}
+                    originalText={selectedMantra.transliteration}
+                    transliteration={selectedMantra.transliteration}
+                    transliterationSyllables={getTransliterationSyllablesForSave()}
+                    mantraId={selectedMantra.id}
+                  />
+                )}
+
+                {/* Audio player only (no syllables) */}
+                {selectedMantra.audioSrc && syllables.length === 0 && (
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border border-blue-100">
+                    <h3 className="text-lg font-heading font-semibold text-blue-700 mb-3">Listen</h3>
+                    <audio controls className="w-full" src={selectedMantra.audioSrc} />
+                  </div>
+                )}
+
+                {/* English Meaning placeholder */}
+                <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-6 border border-green-100">
+                  <h3 className="text-lg font-heading font-semibold text-green-700 mb-3">English Meaning</h3>
+                  <p className="text-gray-600 italic leading-relaxed">
+                    (English meaning is stored in Learn page data — preview shows layout only.)
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Legend */}
         <Card>
@@ -530,8 +819,62 @@ const MantraAdminPage: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+
+      {/* Validation Dialog */}
+      <Dialog open={showValidationDialog} onOpenChange={setShowValidationDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {validationResults.isValid ? (
+                <CheckCircle2 className="w-5 h-5 text-green-500" />
+              ) : (
+                <XCircle className="w-5 h-5 text-red-500" />
+              )}
+              Health Check Results
+            </DialogTitle>
+            <DialogDescription>
+              {validationResults.isValid
+                ? 'No blocking errors found. Review any warnings below.'
+                : 'There are errors that should be fixed before confirming.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 max-h-[400px] overflow-y-auto py-2">
+            {validationResults.errors.length === 0 && validationResults.warnings.length === 0 && (
+              <div className="flex items-center gap-2 text-green-600 p-3 bg-green-50 rounded-lg">
+                <CheckCircle2 className="w-5 h-5" />
+                <span className="font-medium">All health checks passed!</span>
+              </div>
+            )}
+            {validationResults.errors.map((e, i) => (
+              <div key={`err-${i}`} className="flex items-start gap-2 p-3 bg-red-50 rounded-lg text-red-700">
+                <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <span>{e.message}</span>
+              </div>
+            ))}
+            {validationResults.warnings.map((w, i) => (
+              <div key={`warn-${i}`} className="flex items-start gap-2 p-3 bg-amber-50 rounded-lg text-amber-700">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <span>{w.message}</span>
+              </div>
+            ))}
+          </div>
+
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setShowValidationDialog(false)}>
+              Go Back & Fix
+            </Button>
+            {validationResults.isValid && (
+              <Button onClick={doConfirm} className="bg-green-600 hover:bg-green-700">
+                <Check className="w-4 h-4 mr-1" /> Confirm Anyway
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

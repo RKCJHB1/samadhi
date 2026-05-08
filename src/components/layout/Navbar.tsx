@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { navigation } from './NavbarData';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
-import UserAccountNav from '../auth/UserAccountNav';
-import { featureFlags } from '@/utils/featureFlags';
+import HinduismForChildrenLoginNav from '../auth/HinduismForChildrenLoginNav';
 import gsap from 'gsap';
 import './navbar.css';
 
@@ -114,16 +113,32 @@ const Navbar = () => {
             setActiveDropdown={setActiveDropdown}
           />
 
-          {/* User account navigation - Only show if reading section is enabled */}
-          {featureFlags.enableReadingSection && (
-            <div className="hidden md:flex items-center ml-4">
-              <UserAccountNav />
-            </div>
-          )}
+          {/* User account navigation - For Hinduism for Children access */}
+          <div className="hidden md:flex items-center ml-4">
+            <HinduismForChildrenLoginNav />
+          </div>
+
+          {/* Admin Link - Now available in production */}
+          <div className="hidden md:flex items-center ml-4">
+            <Link
+              to="/admin/login"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indian-saffron/10 text-indian-saffron hover:bg-indian-saffron hover:text-white transition-all duration-200 border border-indian-saffron/20"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="text-sm font-medium">Admin</span>
+            </Link>
+          </div>
 
           {/* Mobile menu button - Only visible on mobile */}
           <div className="md:hidden flex items-center">
-            {featureFlags.enableReadingSection && <UserAccountNav />}
+            <HinduismForChildrenLoginNav />
+            {/* Admin Link - Mobile - Now available in production */}
+            <Link
+              to="/admin/login"
+              className="flex items-center gap-1 px-3 py-2 ml-2 rounded-lg bg-indian-saffron/10 text-indian-saffron hover:bg-indian-saffron hover:text-white transition-all duration-200"
+            >
+              <Shield className="w-4 h-4" />
+            </Link>
             <button
               type="button"
               className="inline-flex items-center justify-center p-2 ml-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-spiritual-500"

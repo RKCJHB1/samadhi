@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import PageLayout from '../../components/layout/PageLayout';
-import { Card, CardContent } from '@/components/ui/card';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
+import { getAumStats, recordChant } from '../../services/aumStatsService';
 
 const getTodayString = () => {
   const today = new Date();
@@ -11,6 +11,49 @@ const getTodayString = () => {
   const day = today.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+const MALA_BEAD_COUNT = 108;
+const CHANT_AUDIO_POOL_SIZE = 4;
+const CHANT_AUDIO_MAX_POLYPHONY = 8;
+const CHANT_AUDIO_MIN_GAP_MS = 180;
+const AUTO_CHANT_PAUSE_MS = 500;
+const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
+
+type ChantOption = {
+  id: string;
+  name: string;
+  shortLabel: string;
+  symbol: string;
+  shareTag?: string;
+  imageSrc?: string;
+  audioSrc: string;
+  isAlwaysAvailable?: boolean;
+  isEnabled?: boolean;
+};
+
+const CHANT_OPTIONS: ChantOption[] = [
+  {
+    id: 'om',
+    name: 'Om',
+    shortLabel: 'Om',
+    symbol: 'ॐ',
+    shareTag: '#Om',
+    imageSrc: '/om.jpg',
+    audioSrc: '/aum.mp3',
+    isAlwaysAvailable: true,
+    isEnabled: true,
+  },
+  {
+    id: 'sri-ram',
+    name: 'Jai Sri Ram',
+    shortLabel: 'Jai Sri Ram',
+    symbol: 'राम',
+    shareTag: '#RamNavami',
+    imageSrc: '/jsr.png',
+    audioSrc: '/aum.mp3',
+    isEnabled: true,
+  },
+];
 
 const AumChanterPage = () => {
   const [history, setHistory] = useState<{ date: string; chants: number }[]>(() => {
@@ -45,14 +88,18 @@ const AumChanterPage = () => {
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
   const [isGoalModalVisible, setIsGoalModalVisible] = useState<boolean>(false);
   const [goalInputValue, setGoalInputValue] = useState<string>('');
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioPoolRef = useRef<HTMLAudioElement[]>([]);
+  const nextAudioIndexRef = useRef<number>(0);
+  const lastAudioPlayAtRef = useRef<number>(0);
+  const chantDurationMsRef = useRef<number>(AUTO_CHANT_FALLBACK_DURATION_MS);
+  const [selectedChantId, setSelectedChantId] = useState<string>('om');
 
   // Auto-chant state
   const [isAutoChantModalVisible, setIsAutoChantModalVisible] = useState<boolean>(false);
   const [autoChantInputValue, setAutoChantInputValue] = useState<string>('');
   const [isAutoChanting, setIsAutoChanting] = useState<boolean>(false);
   const [autoChantRemaining, setAutoChantRemaining] = useState<number>(0);
-  const autoChantIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const autoChantIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Backend stats - will be fetched from Digital Ocean server
   const [globalChants, setGlobalChants] = useState<number>(0);
@@ -61,50 +108,101 @@ const AumChanterPage = () => {
   const [uniqueUsers, setUniqueUsers] = useState<number>(0);
   const [uniqueCountries, setUniqueCountries] = useState<number>(0);
   const [statsLoading, setStatsLoading] = useState<boolean>(true);
+  const statsRef = useRef({
+    globalChants: 0,
+    recordChants: 0,
+    avgChantsPerUser: 0,
+    uniqueUsers: 0,
+    uniqueCountries: 0,
+  });
 
-  // Check audio element on mount
-  useEffect(() => {
-    if (audioRef.current) {
-      console.log("🎵 Audio element mounted");
-      console.log("Audio src:", audioRef.current.src);
+  const availableChants = useMemo(
+    () => CHANT_OPTIONS.filter((chant) => chant.isAlwaysAvailable || chant.isEnabled),
+    []
+  );
 
-      const handleCanPlay = () => console.log("✅ Audio can play");
-      const handleError = (e: Event) => {
-        console.error("❌ Audio error:", (e.target as HTMLAudioElement).error);
-      };
-      const handleLoadStart = () => console.log("📥 Audio loading started");
-      const handleLoadedMetadata = () => console.log("✅ Audio metadata loaded");
+  const currentChant = useMemo(
+    () => availableChants.find((chant) => chant.id === selectedChantId) ?? availableChants[0] ?? CHANT_OPTIONS[0],
+    [availableChants, selectedChantId]
+  );
 
-      audioRef.current.addEventListener('canplay', handleCanPlay);
-      audioRef.current.addEventListener('error', handleError);
-      audioRef.current.addEventListener('loadstart', handleLoadStart);
-      audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener('canplay', handleCanPlay);
-          audioRef.current.removeEventListener('error', handleError);
-          audioRef.current.removeEventListener('loadstart', handleLoadStart);
-          audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        }
-      };
-    }
+  const createChantAudio = useCallback((src: string) => {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous';
+    audio.onloadedmetadata = () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        chantDurationMsRef.current = audio.duration * 1000;
+      }
+    };
+    audio.onerror = () => {
+      console.error('❌ Audio error:', audio.error);
+    };
+    audio.load();
+    return audio;
   }, []);
+
+	  useEffect(() => {
+	  	  const previousVoices = audioPoolRef.current;
+	  
+	  	  previousVoices.forEach((audio) => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.onloadedmetadata = null;
+      audio.onerror = null;
+    });
+
+    audioPoolRef.current = Array.from(
+      { length: CHANT_AUDIO_POOL_SIZE },
+      () => createChantAudio(currentChant.audioSrc)
+    );
+    nextAudioIndexRef.current = 0;
+    lastAudioPlayAtRef.current = 0;
+    chantDurationMsRef.current = AUTO_CHANT_FALLBACK_DURATION_MS;
+
+    return () => {
+      audioPoolRef.current.forEach((audio) => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.onloadedmetadata = null;
+        audio.onerror = null;
+      });
+    };
+  }, [createChantAudio, currentChant.audioSrc]);
+
+  useEffect(() => {
+    if (!availableChants.some((chant) => chant.id === selectedChantId)) {
+      setSelectedChantId(availableChants[0]?.id ?? 'om');
+    }
+  }, [availableChants, selectedChantId]);
 
   // Fetch stats from backend
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        setStatsLoading(true);
-        const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-        const response = await fetch(`${BACKEND_URL}/api/aum-stats`);
-        if (response.ok) {
-          const data = await response.json();
-          setGlobalChants(data.globalChants || 0);
-          setRecordChants(data.recordChants || 0);
-          setAvgChantsPerUser(data.avgChantsPerUser || 0);
-          setUniqueUsers(data.uniqueUsers || 0);
-          setUniqueCountries(data.uniqueCountries || 0);
+        // Fetch stats from Supabase instead of backend
+        const stats = await getAumStats();
+        if (stats) {
+          const nextStats = {
+            globalChants: stats.globalChants || 0,
+            recordChants: stats.recordChants || 0,
+            avgChantsPerUser: stats.avgChantsPerUser || 0,
+            uniqueUsers: stats.uniqueUsers || 0,
+            uniqueCountries: stats.uniqueCountries || 0,
+          };
+
+          const statsChanged = Object.entries(nextStats).some(([key, value]) => {
+            return statsRef.current[key as keyof typeof nextStats] !== value;
+          });
+
+          if (statsChanged) {
+            statsRef.current = nextStats;
+            setGlobalChants(nextStats.globalChants);
+            setRecordChants(nextStats.recordChants);
+            setAvgChantsPerUser(nextStats.avgChantsPerUser);
+            setUniqueUsers(nextStats.uniqueUsers);
+            setUniqueCountries(nextStats.uniqueCountries);
+          }
         }
       } catch (error) {
         console.error("Failed to fetch Aum stats:", error);
@@ -133,38 +231,62 @@ const AumChanterPage = () => {
     }
   }, [history, dailyGoal]);
 
-  const playChantSound = useCallback(() => {
-    if (audioRef.current) {
-      console.log("🔊 Attempting to play audio...");
-      console.log("Audio element:", audioRef.current);
-      console.log("Audio src:", audioRef.current.src);
-      console.log("Audio readyState:", audioRef.current.readyState);
-      console.log("Audio networkState:", audioRef.current.networkState);
-
-      audioRef.current.currentTime = 0;
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log("✅ Audio playing successfully");
-          })
-          .catch(err => {
-            console.error("❌ Audio play failed:", err);
-            console.error("Error name:", err.name);
-            console.error("Error message:", err.message);
-            console.error("Audio src:", audioRef.current?.src);
-            console.error("Audio readyState:", audioRef.current?.readyState);
-            console.error("Audio networkState:", audioRef.current?.networkState);
-            console.error("Audio paused:", audioRef.current?.paused);
-          });
-      }
-    } else {
-      console.error("❌ Audio ref is null");
+  const playChantSound = useCallback((options?: { bypassThrottle?: boolean }) => {
+    const now = Date.now();
+    if (!options?.bypassThrottle && now - lastAudioPlayAtRef.current < CHANT_AUDIO_MIN_GAP_MS) {
+      return null;
     }
-  }, []);
 
-  const handleChant = useCallback(() => {
-    playChantSound();
+    const voices = audioPoolRef.current;
+    if (voices.length === 0) {
+      return null;
+    }
+
+    let selectedIndex = -1;
+    for (let i = 0; i < voices.length; i++) {
+      const voiceIndex = (nextAudioIndexRef.current + i) % voices.length;
+      const voice = voices[voiceIndex];
+      if (voice.paused || voice.ended) {
+        selectedIndex = voiceIndex;
+        break;
+      }
+    }
+
+    if (selectedIndex === -1 && voices.length < CHANT_AUDIO_MAX_POLYPHONY) {
+      const extraVoice = createChantAudio(currentChant.audioSrc);
+      voices.push(extraVoice);
+      selectedIndex = voices.length - 1;
+    }
+
+    if (selectedIndex === -1) {
+      return null;
+    }
+
+    const selectedVoice = voices[selectedIndex];
+    nextAudioIndexRef.current = (selectedIndex + 1) % voices.length;
+    lastAudioPlayAtRef.current = now;
+
+    try {
+      selectedVoice.pause();
+      selectedVoice.currentTime = 0;
+      const playPromise = selectedVoice.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.error('❌ Audio play failed:', err);
+        });
+      }
+    } catch (err) {
+      console.error('❌ Audio play failed:', err);
+      return null;
+    }
+
+    return selectedVoice;
+  }, [createChantAudio, currentChant.audioSrc]);
+
+  const handleChant = useCallback((options?: { bypassAudioThrottle?: boolean } | React.MouseEvent<HTMLDivElement>) => {
+    // Handle both direct calls and React event calls
+    const opts = options && 'bypassAudioThrottle' in options ? options : undefined;
+    const playedVoice = playChantSound({ bypassThrottle: opts?.bypassAudioThrottle });
 
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       try {
@@ -187,18 +309,18 @@ const AumChanterPage = () => {
       return newHistory;
     });
 
-    // Send chant to backend
+    // Send chant to Supabase
     const userId = localStorage.getItem('userId') || `user-${Date.now()}`;
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', userId);
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-    fetch(`${BACKEND_URL}/api/aum-chant`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId })
-    }).catch(err => console.error('Failed to record chant on backend:', err));
+    // Get country from browser (or use Cloudflare header server-side if needed)
+    const country = (navigator as any).geolocation ? 'Unknown' : undefined;
+
+    recordChant(userId, country).catch(err =>
+      console.error('Failed to record chant in Supabase:', err)
+    );
 
     setIsChanted(true);
     setTimeout(() => setIsChanted(false), 150);
@@ -206,6 +328,7 @@ const AumChanterPage = () => {
     const newId = Date.now() + Math.random();
     setChantEffects(prev => [...prev, { id: newId, active: false }]);
     setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 700);
+    return playedVoice;
   }, [playChantSound]);
 
   const handleSetGoal = () => {
@@ -231,28 +354,19 @@ const AumChanterPage = () => {
     }
 
     // Perform the chant
-    handleChant();
+    const playedVoice = handleChant({ bypassAudioThrottle: true });
     autoChantRemainingRef.current--;
     setAutoChantRemaining(autoChantRemainingRef.current);
 
-    // If more chants remaining, wait for audio to end then pause 0.5s
+    // If more chants remain, wait roughly one chant-length plus a short pause.
     if (autoChantRemainingRef.current > 0 && autoChantActiveRef.current) {
-      const audio = audioRef.current;
-      if (audio) {
-        const onEnded = () => {
-          audio.removeEventListener('ended', onEnded);
-          // Wait 0.5 seconds after audio ends, then chant again
-          autoChantIntervalRef.current = setTimeout(() => {
-            performAutoChant();
-          }, 500);
-        };
-        audio.addEventListener('ended', onEnded);
-      } else {
-        // Fallback if no audio ref
-        autoChantIntervalRef.current = setTimeout(() => {
-          performAutoChant();
-        }, 2000);
-      }
+      const audioDurationMs = playedVoice && Number.isFinite(playedVoice.duration) && playedVoice.duration > 0
+        ? playedVoice.duration * 1000
+        : chantDurationMsRef.current;
+
+      autoChantIntervalRef.current = setTimeout(() => {
+        performAutoChant();
+      }, Math.round(audioDurationMs) + AUTO_CHANT_PAUSE_MS);
     } else {
       // Done chanting
       autoChantActiveRef.current = false;
@@ -312,6 +426,9 @@ const AumChanterPage = () => {
   }, [chantEffects]);
 
   const todaysChants = history.find(entry => entry.date === getTodayString())?.chants || 0;
+  const completedMalas = Math.floor(count / MALA_BEAD_COUNT);
+  const todaysCompletedMalas = Math.floor(todaysChants / MALA_BEAD_COUNT);
+  const chantsIntoCurrentMala = count % MALA_BEAD_COUNT;
   const progressPercent = dailyGoal && dailyGoal > 0 ? Math.min((todaysChants / dailyGoal) * 100, 100) : 0;
   const goalMet = progressPercent >= 100;
 
@@ -319,8 +436,18 @@ const AumChanterPage = () => {
   const progressRingCircumference = 2 * Math.PI * progressRingRadius;
   const strokeDashoffset = progressRingCircumference * (1 - progressPercent / 100);
 
+  const shareTitle = currentChant.id === 'om'
+    ? `I've chanted ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`
+    : `I've chanted ${count.toLocaleString()} times on Aum Chanter and I'm using the ${currentChant.name} festival mode. Join the global meditation.`;
+
+  const shareDescription = currentChant.id === 'om'
+    ? 'Join the Aum Chanter meditation game and contribute to our global chanting community.'
+    : `Join the Aum Chanter meditation game and explore special festival modes like ${currentChant.name}.`;
+
+  const shareTwitterText = `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
+
   return (
-    <PageLayout title="Aum Chanter" className="no-top-padding">
+    <PageLayout title={currentChant.id === 'om' ? 'Aum Chanter' : `${currentChant.name} • Aum Chanter`} className="no-top-padding">
       <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-16 pb-6">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
           {/* Compact Stats Bar */}
@@ -370,75 +497,141 @@ const AumChanterPage = () => {
             </button>
           </div>
 
-          {/* Main Chant Button + Daily Goal */}
-          <div className="flex flex-col items-center gap-3 mt-2">
-	            <div className="relative flex items-center justify-center">
-	              {dailyGoal && (
-	                <svg
-	                  className="absolute w-[clamp(9rem,48vmin,19.2rem)] h-[clamp(9rem,48vmin,19.2rem)] -rotate-90"
-	                  viewBox="0 0 100 100"
-	                >
-	                  <circle
-	                    cx="50"
-	                    cy="50"
-	                    r={progressRingRadius}
-	                    strokeWidth="3"
-	                    className="text-spiritual-500/10"
-	                    fill="none"
-	                  />
-	                  <circle
-	                    cx="50"
-	                    cy="50"
-	                    r={progressRingRadius}
-	                    strokeWidth="3"
-	                    className={`transition-all duration-500 ease-in-out ${goalMet ? 'text-cyan-400' : 'text-spiritual-400'}`}
-	                    fill="none"
-	                    strokeLinecap="round"
-	                    strokeDasharray={progressRingCircumference}
-	                    strokeDashoffset={strokeDashoffset}
-	                    style={{ filter: goalMet ? 'drop-shadow(0 0 5px currentColor)' : 'none' }}
-	                  />
-	                </svg>
-	              )}
-	
-	              <div
-	                onClick={handleChant}
-	                className={`relative flex items-center justify-center w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] rounded-full bg-gradient-radial from-spiritual-700/20 via-spiritual-900/10 to-transparent border-2 border-spiritual-400/20 shadow-[0_0_30px_rgba(217,119,6,0.2),inset_0_0_15px_rgba(251,146,60,0.1)] cursor-pointer transition-all duration-150 ease-in-out hover:shadow-[0_0_45px_rgba(217,119,6,0.4),inset_0_0_20px_rgba(251,146,60,0.2)] hover:border-spiritual-400/40 active:scale-95 ${isChanted ? 'scale-95' : 'scale-100'}`}
-	                aria-label="Chant to increase count"
-	                role="button"
-	              >
-	                {/* Aura Effects */}
-	                {chantEffects.map(effect => (
-	                  <div
-	                    key={`aura-${effect.id}`}
-	                    className={`absolute inset-0 rounded-full border border-spiritual-400/30 shadow-[0_0_60px_rgba(217,119,6,0.5)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}
-	                  />
-	                ))}
-	
-	                <div className="relative flex items-center justify-center z-10 w-full h-full">
-	                  <img
-	                    src="/om.jpg"
-	                    alt="Om"
-	                    className="w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] object-cover rounded-full drop-shadow-[0_0_15px_rgba(253,224,71,0.4)]"
-	                  />
-	                  {chantEffects.map(effect => (
-	                    <img
-	                      key={effect.id}
-	                      src="/om.jpg"
-	                      alt=""
-	                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] object-cover rounded-full drop-shadow-[0_0_15px_rgba(253,224,71,0.4)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-70'}`}
-	                    />
-	                  ))}
-	                </div>
-	              </div>
-	            </div>
+          <div className="w-full max-w-2xl">
+            <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Available chants">
+              {availableChants.map((chant) => {
+                const isActive = chant.id === currentChant.id;
 
+                return (
+                  <button
+                    key={chant.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setSelectedChantId(chant.id)}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ${isActive
+                      ? 'border-spiritual-300/60 bg-spiritual-500/20 text-white shadow-[0_0_20px_rgba(251,191,36,0.18)]'
+                      : 'border-spiritual-400/20 bg-slate-800/50 text-spiritual-200/80 hover:border-spiritual-300/40 hover:text-white'}`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="text-base leading-none">{chant.symbol}</span>
+                      <span>{chant.shortLabel}</span>
+                      {!chant.isAlwaysAvailable && (
+                        <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200">
+                          Special
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Mala Beads Visualization */}
-          <div className="w-full flex flex-col items-center mt-4 mb-8">
-            <h3 className="text-sm sm:text-base text-spiritual-300/70 font-sans mb-4">Your Mala Progress</h3>
-            <MalaBeads litBeads={todaysChants} size="md" className="mb-4" />
+          {/* Main Chant Button + Mala */}
+          <div className="flex flex-col items-center mt-2 mb-12">
+            <div className="relative">
+              <MalaBeads
+                litBeads={count}
+                size="chant"
+                showCenterLabel={false}
+                className="z-0"
+              />
+
+              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                {dailyGoal && (
+                  <svg
+                    className="absolute w-[clamp(9rem,48vmin,19.2rem)] h-[clamp(9rem,48vmin,19.2rem)] -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r={progressRingRadius}
+                      strokeWidth="3"
+                      className="text-spiritual-500/10"
+                      fill="none"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r={progressRingRadius}
+                      strokeWidth="3"
+                      className={`transition-all duration-500 ease-in-out ${goalMet ? 'text-cyan-400' : 'text-spiritual-400'}`}
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray={progressRingCircumference}
+                      strokeDashoffset={strokeDashoffset}
+                      style={{ filter: goalMet ? 'drop-shadow(0 0 5px currentColor)' : 'none' }}
+                    />
+                  </svg>
+                )}
+
+                <div
+                  onClick={handleChant}
+                  className={`pointer-events-auto relative flex items-center justify-center w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] rounded-full bg-gradient-radial from-spiritual-700/20 via-spiritual-900/10 to-transparent border-2 border-spiritual-400/20 shadow-[0_0_30px_rgba(217,119,6,0.2),inset_0_0_15px_rgba(251,146,60,0.1)] cursor-pointer transition-all duration-150 ease-in-out hover:shadow-[0_0_45px_rgba(217,119,6,0.4),inset_0_0_20px_rgba(251,146,60,0.2)] hover:border-spiritual-400/40 active:scale-95 ${isChanted ? 'scale-95' : 'scale-100'}`}
+                  aria-label={`Chant ${currentChant.name} to increase count`}
+                  role="button"
+                >
+                  {/* Aura Effects */}
+                  {chantEffects.map(effect => (
+                    <div
+                      key={`aura-${effect.id}`}
+                      className={`absolute inset-0 rounded-full border border-spiritual-400/30 shadow-[0_0_60px_rgba(217,119,6,0.5)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}
+                    />
+                  ))}
+
+                  <div className="relative flex items-center justify-center z-10 w-full h-full">
+                    {currentChant.imageSrc ? (
+                      <div className="w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] rounded-full overflow-hidden drop-shadow-[0_0_15px_rgba(253,224,71,0.4)] flex items-center justify-center">
+                        <img
+                          src={currentChant.imageSrc}
+                          alt={currentChant.name}
+                          className={`w-full h-full object-cover ${
+                            currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
+                          }`}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] flex-col items-center justify-center rounded-full border border-white/40 bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300 shadow-[0_0_25px_rgba(251,146,60,0.35)]">
+                        <span className="text-[clamp(2.5rem,11vmin,4.75rem)] font-serif leading-none text-orange-950 drop-shadow-sm">{currentChant.symbol}</span>
+                        <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
+                      </div>
+                    )}
+                    {chantEffects.map(effect => (
+                      currentChant.imageSrc ? (
+                        <div
+                          key={effect.id}
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] rounded-full overflow-hidden drop-shadow-[0_0_15px_rgba(253,224,71,0.4)] pointer-events-none transition-all duration-700 ease-out flex items-center justify-center"
+                        >
+                          <img
+                            src={currentChant.imageSrc}
+                            alt=""
+                            className={`w-full h-full object-cover ${
+                              currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
+                            } ${effect.active ? 'scale-150 opacity-0' : 'opacity-70'}`}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          key={effect.id}
+                          aria-hidden="true"
+                          className={`absolute top-1/2 left-1/2 flex h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/40 bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300 shadow-[0_0_25px_rgba(251,146,60,0.35)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-70'}`}
+                        >
+                          <span className="text-[clamp(2.5rem,11vmin,4.75rem)] font-serif leading-none text-orange-950 drop-shadow-sm">{currentChant.symbol}</span>
+                          <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
+                        </div>
+                      )
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="mt-4 text-center text-sm text-spiritual-200/70">
+              {currentChant.id === 'om'
+                ? 'Tap the center to chant Om.'
+                : `Tap the center to chant ${currentChant.name}. Counts and stats remain shared for this first preview.`}
+            </p>
           </div>
 
           {/* Stats row: Today's progress + Secondary stats */}
@@ -446,6 +639,15 @@ const AumChanterPage = () => {
             {dailyGoal && (
               <span className="font-mono">Today: {todaysChants.toLocaleString()} / {dailyGoal.toLocaleString()}</span>
             )}
+            <span className="text-center">
+              1 mala = <span className="font-mono">{MALA_BEAD_COUNT}</span> chants • Completed malas:{' '}
+              <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span>
+              <span className="mx-2 text-spiritual-400/50">•</span>
+              Current cycle:{' '}
+              <span className="font-mono text-spiritual-200">{chantsIntoCurrentMala.toLocaleString()}</span>
+              <span className="mx-1">/</span>
+              <span className="font-mono">{MALA_BEAD_COUNT}</span>
+            </span>
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
               <span>Average Chants / User: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
               <span>Total chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
@@ -482,23 +684,15 @@ const AumChanterPage = () => {
           <div className="w-full flex justify-center mt-1">
             <SocialShareButtons
               path="/learn/games/aum-chanter"
-              title={`I've chanted 'Aum' ${count.toLocaleString()} times. Join the global meditation.`}
-              description="Join the Aum Chanter meditation game and contribute to our global chanting community."
-              twitterText={`I've chanted 'Aum' ${count.toLocaleString()} times. Join the global meditation. #Aum #Meditation`}
-              whatsappText={`I've chanted 'Aum' ${count.toLocaleString()} times. Join the global meditation.`}
+              title={shareTitle}
+              description={shareDescription}
+              twitterText={shareTwitterText}
+              whatsappText={shareTitle}
               className="justify-center"
             />
           </div>
         </div>
 	
-	        {/* Hidden Audio Element */}
-	        <audio
-	          ref={audioRef}
-	          src="/aum.mp3"
-	          preload="auto"
-	          crossOrigin="anonymous"
-	        />
-
         {/* History Modal */}
         {isHistoryVisible && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsHistoryVisible(false)}>
@@ -508,11 +702,24 @@ const AumChanterPage = () => {
                 <button onClick={() => setIsHistoryVisible(false)} className="text-spiritual-300/60 hover:text-spiritual-200 text-2xl leading-none" aria-label="Close history view">&times;</button>
               </div>
               <div className="p-4 overflow-y-auto">
+                <div className="mb-4 rounded-lg border border-spiritual-400/20 bg-slate-900/40 p-3 text-sm text-spiritual-200/80">
+                  <p className="text-xs uppercase tracking-wider text-spiritual-300/50">Mala summary</p>
+                  <p className="mt-1">1 mala = <span className="font-mono">{MALA_BEAD_COUNT}</span> chants</p>
+                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                    <span>Total malas: <span className="font-mono text-white">{completedMalas.toLocaleString()}</span></span>
+                    <span>Today's malas: <span className="font-mono text-white">{todaysCompletedMalas.toLocaleString()}</span></span>
+                  </div>
+                </div>
                 {history.length > 0 ? (
                   <ul className="space-y-3">
                     {[...history].reverse().map(entry => (
-                      <li key={entry.date} className="flex justify-between items-baseline text-white/90 font-mono text-lg">
-                        <span className="text-base text-spiritual-300/80">{entry.date}</span>
+                      <li key={entry.date} className="flex justify-between items-baseline gap-4 text-white/90 font-mono text-lg">
+                        <div>
+                          <span className="text-base text-spiritual-300/80">{entry.date}</span>
+                          <p className="text-xs font-sans text-spiritual-300/60 mt-1">
+                            Completed malas: {Math.floor(entry.chants / MALA_BEAD_COUNT).toLocaleString()}
+                          </p>
+                        </div>
                         <span>{entry.chants.toLocaleString()}</span>
                       </li>
                     ))}
@@ -562,7 +769,7 @@ const AumChanterPage = () => {
               </div>
               <div className="p-4 space-y-4">
                 <label htmlFor="auto-chant-input" className="text-spiritual-300/90 text-sm">
-                  Enter the number of times to chant Om automatically (max 1000).
+                  Enter the number of times to chant {currentChant.name} automatically (max 1000).
                 </label>
                 <input
                   id="auto-chant-input"

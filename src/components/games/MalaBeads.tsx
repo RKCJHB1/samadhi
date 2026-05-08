@@ -3,8 +3,10 @@ import React, { useMemo } from 'react';
 interface MalaBeadsProps {
   totalBeads?: number;
   litBeads: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'chant';
   className?: string;
+  showCenterLabel?: boolean;
+  showProgressText?: boolean;
 }
 
 const MalaBeads: React.FC<MalaBeadsProps> = ({
@@ -12,6 +14,8 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
   litBeads,
   size = 'md',
   className = '',
+  showCenterLabel = true,
+  showProgressText = true,
 }) => {
   // Calculate the number of beads lit (wrap around for multiple rounds)
   const currentRound = Math.floor(litBeads / totalBeads);
@@ -36,6 +40,12 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
       beadSize: 'w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5',
       radius: 180,
       mobileRadius: 120,
+    },
+    chant: {
+      containerSize: 'w-[clamp(10rem,52vmin,20rem)] h-[clamp(10rem,52vmin,20rem)]',
+      beadSize: 'w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3',
+      radius: 0,
+      mobileRadius: 0,
     },
   };
 
@@ -75,7 +85,7 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
   return (
     <div className={`relative ${config.containerSize} ${className}`}>
       {/* Round counter */}
-      {currentRound > 0 && (
+      {showCenterLabel && currentRound > 0 && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10">
           <p className="text-xs sm:text-sm text-spiritual-300/70 font-sans">Round</p>
           <p className="text-2xl sm:text-3xl font-mono text-spiritual-200 font-bold">{currentRound + 1}</p>
@@ -123,14 +133,16 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
       />
       
       {/* Progress text */}
-      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
-        <p className="text-xs sm:text-sm text-spiritual-300/60">
-          <span className="font-mono text-spiritual-200">{beadsInCurrentRound}</span>
-          <span className="mx-1">/</span>
-          <span className="font-mono">{totalBeads}</span>
-          <span className="ml-2 text-spiritual-400/60">beads</span>
-        </p>
-      </div>
+      {showProgressText && (
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
+          <p className="text-xs sm:text-sm text-spiritual-300/60">
+            <span className="font-mono text-spiritual-200">{beadsInCurrentRound}</span>
+            <span className="mx-1">/</span>
+            <span className="font-mono">{totalBeads}</span>
+            <span className="ml-2 text-spiritual-400/60">beads</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

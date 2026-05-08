@@ -8,17 +8,12 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "setup-turso": "node scripts/setup-turso.js",
-    "test-turso": "node scripts/test-turso-connection.js",
-    "clear-turso": "node scripts/clear-turso-data.js",
-    "upload-blocks": "node scripts/upload-blocks-to-turso.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@google/genai": "^1.35.0",
     "@hookform/resolvers": "^3.9.0",
-    "@libsql/client": "^0.15.9",
     "@marsidev/react-turnstile": "^1.1.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",

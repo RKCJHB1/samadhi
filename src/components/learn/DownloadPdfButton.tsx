@@ -522,7 +522,13 @@ const DownloadPdfButton: React.FC<DownloadPdfButtonProps> = ({
                 style={{ width: '800px', maxWidth: '100%', minHeight: '100%' }}
               >
                 <div
-                  className="bg-white min-h-full outline-none"
+                  className="bg-white min-h-full outline-none text-gray-900 font-serif"
+                  style={{
+                    padding: '40px',
+                    lineHeight: '1.6',
+                    fontSize: '14px',
+                    fontFamily: 'Georgia, serif'
+                  }}
                   contentEditable={true}
                   suppressContentEditableWarning={true}
                   dangerouslySetInnerHTML={{ __html: previewHtml }}

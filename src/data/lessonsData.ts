@@ -9834,16 +9834,16 @@ export const lessonsData: LessonGroup[] = [
 	    	      <h2>Some Facts about the Bhagavad Gita</h2>
 	    	      <p>The <strong>Bhagavad Gita</strong>, often simply called the <strong>Gita</strong>, is one of the most important scriptures in Hinduism. The Sanskrit word <em>gita</em> means "song". Because this song is sung by <strong>Sri Krishna</strong>, the God Incarnate (<em>Bhagavan</em>), it is called the <strong>Bhagavad Gita</strong> – the Song of God.</p>
 	    	      <p>There are many other Gita-s such as <em>Hamsa Gita</em>, <em>Avadhuta Gita</em>, and <em>Ashtavakra Gita</em>, but when people simply say "the Gita", they almost always mean the <strong>Bhagavad Gita</strong>.</p>
-	    	      
+
 	    	      <h3>Structure of the Gita</h3>
 	    	      <p>The Gita has about <strong>700 verses</strong>, divided into <strong>18 chapters</strong>. It forms part of the epic <strong>Mahabharata</strong> (specifically in <em>Bhishma Parva</em>, Chapters 25 to 42).</p>
 	    	      <p>Every chapter of the Gita is regarded as a <strong>Yoga</strong> – a way to self-perfection – and has its own name such as <em>Jnana Yoga</em>, <em>Karma Yoga</em>, <em>Bhakti Yoga</em> and so on. These names are traditionally mentioned at the end of each chapter.</p>
-	    	      
+
 	    	      <h3>Main Characters and Setting</h3>
 	    	      <p>The Gita is presented as a dialogue between <strong>Arjuna</strong> and <strong>Sri Krishna</strong>. Arjuna was one of the five Pandava brothers who had been deprived of their right to rule the kingdom and were persecuted by their cousins, the Kauravas.</p>
 	    	      <p>After all negotiations and peaceful alternatives failed, the Pandavas were forced to prepare for a war against the Kauravas. The teachings of the Gita are given <strong>on the battlefield of Kurukshetra</strong> just before this war begins.</p>
 	    	      <p>In the Mahabharata, Arjuna is addressed by many names such as <em>Partha</em>, <em>Pandava</em>, <em>Bharata</em>, <em>Mahabaho</em>, and <em>Kaunteya</em>.</p>
-	    	      
+
 	    	      <h3>Important Terms in the Gita</h3>
 	    	      <p>As Sri Krishna, the God Incarnate, counsels Arjuna, he often uses the personal pronouns <strong>"I"</strong> and <strong>"Me"</strong>. In the Gita, these refer not to an ordinary human being but to <strong>God</strong> or the <strong>Ultimate Reality</strong>.</p>
 	    	      <p>The Gita also carefully distinguishes between <strong>self</strong> and <strong>Self</strong>:</p>
@@ -9851,20 +9851,20 @@ export const lessonsData: LessonGroup[] = [
 	    	        <li><strong>self</strong> (with a small "s") refers to the body, mind or ego – our changing personality.</li>
 	    	        <li><strong>Self</strong> or <strong>Atman</strong> (with a capital "S") refers to the deepest core of our being – our inner divinity.</li>
 	    	      </ul>
-	    	      
+
 	    	      <h3>How the Gita Begins</h3>
 	    	      <p>The Gita begins with <strong>Dhritarashtra</strong>, the blind king and father of the Kauravas, asking his companion <strong>Sanjaya</strong> to describe what is happening on the battlefield of Kurukshetra. Sanjaya has been gifted with divine sight so that he can see and narrate the events of the war.</p>
 	    	      <p>Sanjaya first describes how <strong>Duryodhana</strong>, the eldest Kaurava, approaches the royal teacher <strong>Dronacharya</strong> and lists the great warriors standing on both sides. Then both armies blow their conches loudly, announcing that the battle is about to begin.</p>
-	    	      
+
 	    	      <h3>Arjuna's Crisis and Krishna's Guidance</h3>
 	    	      <p>At Arjuna's request, Sri Krishna – acting as his charioteer – drives the chariot and stations it between the two armies. Arjuna sees his beloved grandsire <strong>Bhishma</strong>, his teacher <strong>Drona</strong>, friends and relatives on both sides. He sinks in horror and sorrow at the thought of having to fight them.</p>
 	    	      <p>Arjuna becomes nervous and confused. He argues that fighting such a war will lead to terrible consequences – destruction of families, collapse of society, and loss of dharma. Overwhelmed by grief and tension, he puts down his famous <em>Gandiva</em> bow and sits down on the chariot, asking Krishna to tell him what will truly lead to good.</p>
 	    	      <p>In the dialogue that follows, Sri Krishna gently but firmly corrects Arjuna. He reminds him of his duty (<em>svadharma</em>) as a warrior and the righteousness of the war. He draws Arjuna's attention to his inherent strength and wisdom that come from his divine core – the <strong>Atman</strong> within.</p>
-	    	      
+
 	    	      <h3>Kurukshetra: Place and Symbol</h3>
 	    	      <p>The war is believed to have been fought in <strong>Kurukshetra</strong>, a town in the modern state of Haryana, about 120 km from New Delhi. Even today, there are many places in Kurukshetra connected with incidents from the Mahabharata war.</p>
 	    	      <p>Symbolically, Kurukshetra represents the <strong>battlefield of life</strong>. The Pandavas stand for the forces of good, while the Kauravas stand for the forces of evil born of an impure, undisciplined and indiscriminate mind. The inner battle between these forces takes place in every human heart.</p>
-	    	      
+
 	    	      <h3>What Does the Gita Teach?</h3>
 	    	      <p>The Gita deals with many important issues, including:</p>
 	    	      <ul>
@@ -10028,6 +10028,304 @@ export const lessonsData: LessonGroup[] = [
 	    	          ],
 	    	          correctAnswer: 1
 	    	        }
+	  	      ]
+	  	    }
+	  	  },
+	  	  {
+	  	    id: 'divinity-real-nature-1',
+	  	    title: 'Divinity is your Real Nature Lesson 1',
+	  	    description: 'Discover the eternal, indestructible nature of your true Self as taught in the Bhagavad Gita.',
+	  	    content: `
+	  	      <h2>Divinity is your Real Nature</h2>
+	  	      <p>In the Bhagavad Gita, Lord Krishna reveals a profound truth to Arjuna on the battlefield of Kurukshetra: our true nature is divine, eternal, and indestructible. This lesson explores two powerful verses (shlokas) from Chapter 2 that describe the incredible nature of the Self (Atman).</p>
+
+	  	      <h3>The Indestructible Self (Verse 2.23)</h3>
+	  	      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+	  	        <p class="font-medium text-lg text-center mb-2">Nainaṃ chindanti śastrāṇi nainaṃ dahati pāvakaḥ |<br/>na c’ainaṃ kledayanty āpo na śoṣayati mārutaḥ ||</p>
+	  	        <p class="text-center italic">Him [the Self] the weapons cleave not; Him the fire burns not; Him the waters wet not; Him the wind dries not. (2.23)</p>
+	  	      </div>
+	  	      <p>Imagine something so powerful and pure that nothing in the physical world can harm it. Krishna is telling Arjuna that the physical body may experience changes, but the true Self inside us cannot be cut by weapons, burned by fire, made wet by water, or dried by the wind.</p>
+	  	      <p>Swami Vivekananda, a great spiritual teacher, beautifully explained this idea. He reminded us of our true, grand identity:</p>
+	  	      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+	  	        "'Children of immortal bliss'—what a sweet, what a hopeful name! Allow me to call you, brethren, by that sweet name—heirs of immortal bliss... Ye are the Children of God, the sharers of immortal bliss, holy and perfect beings..." —Swami Vivekananda (CW, 1:11)
+	  	      </blockquote>
+
+	  	      <h3>The Eternal Nature of the Soul (Verse 2.24)</h3>
+	  	      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+	  	        <p class="font-medium text-lg text-center mb-2">Acchedyo’ yam adāhyo’ yam akledyo’ śoṣya eva ca |<br/>nityaḥ sarvagataḥ sthāṇuḥ acalo’ yaṃ sanātanaḥ ||</p>
+	  	        <p class="text-center italic">He cannot be cut or burnt. He can neither be wetted nor dried. Eternal, all-pervading, immovable and motionless, He is the same forever. (2.24)</p>
+	  	      </div>
+	  	      <p>This verse reinforces the previous one. Not only is the Self protected from physical elements, but it is also eternal (Sanatana) and all-pervading. It never changes, moves, or dies. It has always existed and will always exist.</p>
+	  	      <p>Think about the things around us—everything changes. Our clothes wear out, gadgets break, and even stars eventually die. But the Soul is different. Swami Vivekananda elaborates on this:</p>
+	  	      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+	  	        "The Soul is not composed of any materials. It is unity indivisible. Therefore it must be indestructible. For the same reasons it must also be without any beginning. So the soul is without any beginning and end." —Swami Vivekananda (CW, 2:248)
+	  	      </blockquote>
+
+	  	      <h3>What Does This Mean for You?</h3>
+	  	      <p>For a high school student, life can sometimes feel overwhelming with academic pressures, social challenges, and anxieties about the future. However, understanding these verses can bring immense strength and fearlessness.</p>
+	  	      <ul>
+	  	        <li><strong>You are stronger than your challenges:</strong> The real "You" cannot be harmed by failure, rejection, or harsh words.</li>
+	  	        <li><strong>Infinite Potential:</strong> Because you are a "child of immortal bliss" and a perfect being at your core, you have boundless potential within you.</li>
+	  	        <li><strong>Fearlessness:</strong> Knowing that your true nature is eternal and indestructible helps remove the deepest fears, allowing you to act with courage and conviction, just as Arjuna was advised to do.</li>
+	  	      </ul>
+	  	    `,
+	  	    quiz: {
+	  	      questions: [
+	  	        {
+	  	          question: 'In verse 2.23 of the Bhagavad Gita, what is said to be unable to cleave (cut) the Self?',
+	  	          answers: [
+	  	            'Weapons',
+	  	            'Fire',
+	  	            'Water',
+	  	            'Wind'
+	  	          ],
+	  	          correctAnswer: 0
+	  	        },
+	  	        {
+	  	          question: 'According to verse 2.23, what cannot burn the true Self?',
+	  	          answers: [
+	  	            'The Sun',
+	  	            'Fire',
+	  	            'Acid',
+	  	            'Weapons'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'How does Swami Vivekananda refer to us in his beautiful quote?',
+	  	          answers: [
+	  	            'Children of sorrow',
+	  	            'Children of the world',
+	  	            'Children of immortal bliss',
+	  	            'Children of time'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'Verse 2.24 describes the Self as "Sanatana", which means:',
+	  	          answers: [
+	  	            'Temporary',
+	  	            'Eternal',
+	  	            'Changing',
+	  	            'Beautiful'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'According to Swami Vivekananda, why is the soul indestructible?',
+	  	          answers: [
+	  	            'Because it is protected by magic',
+	  	            'Because it is not composed of any materials and is an indivisible unity',
+	  	            'Because it is made of diamond',
+	  	            'Because God gave it a shield'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'What effect does water have on the true Self (Atman) according to verse 2.23?',
+	  	          answers: [
+	  	            'It drowns it',
+	  	            'It cleanses it',
+	  	            'It cannot wet it',
+	  	            'It dissolves it'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'The Bhagavad Gita states that the Self is "sarvagataḥ". What does this mean?',
+	  	          answers: [
+	  	            'It is localized in the heart',
+	  	            'It is all-pervading (everywhere)',
+	  	            'It only exists in holy places',
+	  	            'It only exists in humans'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'According to Swami Vivekananda\'s teachings quoted in the lesson, the soul is without:',
+	  	          answers: [
+	  	            'Any beginning and end',
+	  	            'Any joy',
+	  	            'Any purpose',
+	  	            'Any knowledge'
+	  	          ],
+	  	          correctAnswer: 0
+	  	        },
+	  	        {
+	  	          question: 'How can understanding these verses help a high school student?',
+	  	          answers: [
+	  	            'It helps them win arguments',
+	  	            'It brings inner strength, fearlessness, and the realization of infinite potential',
+	  	            'It allows them to skip studying',
+	  	            'It makes them physically immune to fire'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'Who was Lord Krishna speaking to when he shared these profound truths about the Self?',
+	  	          answers: [
+	  	            'Duryodhana',
+	  	            'Swami Vivekananda',
+	  	            'Arjuna',
+	  	            'Sanjaya'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'What is the main message of these two verses (2.23 and 2.24) combined?',
+	  	          answers: [
+	  	            'The physical body is the most important thing',
+	  	            'Our true nature is eternal, indestructible, and divine',
+	  	            'We should avoid physical elements like fire and water',
+	  	            'The world is an illusion'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        }
+	  	      ]
+	  	    }
+	  	  },
+	  	  {
+	  	    id: 'divinity-real-nature-2',
+	  	    title: 'Divinity is your Real Nature Lesson 2',
+	  	    description: 'Explore the fearless and changeless nature of the Self, comparing physical death to merely changing clothes.',
+	  	    content: `
+	  	      <h2>Divinity is your Real Nature (Part 2)</h2>
+	  	      <p>Following up on the profound truths of the Self (Atman) revealed in the Bhagavad Gita, we now dive into two more incredibly empowering verses from Chapter 2. These verses help us understand the concept of death, change, and ultimate fearlessness.</p>
+
+	  	      <h3>Changing Garments (Verse 2.22)</h3>
+	  	      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+	  	        <p class="font-medium text-lg text-center mb-2">Vāsāṃsi jīrṇāni yathā vihāya navāni gṛhṇāti naro’ parāṇi |<br/>tathā śarīrāṇi vihāya jīrṇāny- anyāni saṃyāti navāni dehī ||</p>
+	  	        <p class="text-center italic">Just as a man gives up old garments and puts on new ones, so the embodied self abandons decrepit bodies and assumes new ones. (2.22)</p>
+	  	      </div>
+	  	      <p>One of the biggest fears humanity faces is the fear of death. Here, Lord Krishna gives a very simple, everyday example to remove this fear. When our clothes become old, torn, or simply no longer fit, we discard them and wear new ones. We don't cry over the old clothes because we know we are not the clothes themselves.</p>
+	  	      <p>In the same way, the body is just a "garment" for the soul (the true Self). When the body becomes old, diseased, or reaches the end of its journey, the soul simply drops it and takes on a new one. The real "You" never dies.</p>
+	  	      <p>Swami Vivekananda brings immense power to this idea:</p>
+	  	      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+	  	        "There is nothing in the universe that can change [the Changeless]. Though this body has its beginning and end, the dweller in the body is infinite and without end. . .Knowing this, stand up and fight! Not one step back, that is the idea. . .Fight it out, whatever comes. Let the stars move from the sphere! Let the whole world stand against us! Death means only a change of garment." —Swami Vivekananda (CW, 1:461)
+	  	      </blockquote>
+
+	  	      <h3>The Unslayable Spirit (Verse 2.30)</h3>
+	  	      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+	  	        <p class="font-medium text-lg text-center mb-2">Dehī nityam avadhyo’ yaṃ dehe sarvasya Bhārata |<br/>tasmāt sarvāṇi bhūtāni na tvaṃ śocitum arhasi ||</p>
+	  	        <p class="text-center italic">At no time can the Spirit embodied in all beings be slain. Therefore there is no reason for you to grieve for any one. (2.30)</p>
+	  	      </div>
+	  	      <p>Krishna concludes his core teaching on the immortality of the soul with this powerful statement. He calls Arjuna "Bhārata" (descendant of Bharata) and tells him that the Spirit (Dehi) dwelling in the bodies of all beings can never be killed. Because of this absolute truth, there is no logical reason to grieve for anyone's physical passing.</p>
+	  	      <p>This doesn't mean we become heartless, but rather we develop a deeper understanding that transcends physical loss. We realize the eternal connection we share in the realm of the Spirit.</p>
+	  	      <p>Swami Vivekananda translates this realization into a call for fearless action rooted in truth and love:</p>
+	  	      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+	  	        "None will be able to resist truth and love and sincerity. Are you sincere? Unselfish even unto death? And loving? Then fear not, not even death. Onward, my lads!" —Swami Vivekananda (CW, 5:43)
+	  	      </blockquote>
+
+	  	      <h3>What Does This Mean for You Today?</h3>
+	  	      <p>For high school students dealing with constant changes, uncertainties about the future, and the pressure to succeed, these teachings are an anchor:</p>
+	  	      <ul>
+	  	        <li><strong>Embrace Change:</strong> Just as the soul changes bodies, you will change schools, friends, and circumstances. Don't fear the transition; it's a natural part of growth.</li>
+	  	        <li><strong>Unshakable Core:</strong> When faced with failure or criticism, remember that your core Self is untouched. Your worth is not tied to your grades or social status (your temporary "garments").</li>
+	  	        <li><strong>Fearless Sincerity:</strong> Armed with the knowledge of your immortal nature, you can afford to be completely sincere, loving, and unselfish, as Swami Vivekananda encourages. You have nothing real to lose.</li>
+	  	      </ul>
+	  	    `,
+	  	    quiz: {
+	  	      questions: [
+	  	        {
+	  	          question: 'In verse 2.22, what everyday action does Lord Krishna use as a metaphor for the soul leaving a body?',
+	  	          answers: [
+	  	            'A snake shedding its skin',
+	  	            'A man giving up old garments and putting on new ones',
+	  	            'A river flowing into the ocean',
+	  	            'A bird flying out of a cage'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'According to verse 2.22, what does the embodied self (soul) do when a body becomes decrepit?',
+	  	          answers: [
+	  	            'It ceases to exist',
+	  	            'It sleeps forever',
+	  	            'It abandons the old body and assumes a new one',
+	  	            'It stays in the old body forever'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'How does Swami Vivekananda describe death based on his understanding of these verses?',
+	  	          answers: [
+	  	            'The absolute end of existence',
+	  	            'A terrifying punishment',
+	  	            'Only a change of garment',
+	  	            'An eternal slumber'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'According to verse 2.30, why does Lord Krishna say there is no reason to grieve for anyone?',
+	  	          answers: [
+	  	            'Because everyone is bad anyway',
+	  	            'Because the Spirit embodied in all beings can never be slain (killed)',
+	  	            'Because crying shows weakness on a battlefield',
+	  	            'Because grief makes you sick'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'What does the Sanskrit word "Dehi" refer to in these verses?',
+	  	          answers: [
+	  	            'The physical body',
+	  	            'The mind and ego',
+	  	            'The embodied Spirit or true Self',
+	  	            'The weapons used in battle'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'In Swami Vivekananda\'s quote "None will be able to resist...", what three qualities does he mention?',
+	  	          answers: [
+	  	            'Wealth, power, and fame',
+	  	            'Truth, love, and sincerity',
+	  	            'Anger, fear, and hatred',
+	  	            'Intelligence, beauty, and strength'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'Swami Vivekananda urges us to be unselfish even unto what point?',
+	  	          answers: [
+	  	            'Until we get tired',
+	  	            'Until people stop thanking us',
+	  	            'Even unto death',
+	  	            'Until we are wealthy'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'What name does Lord Krishna use to address Arjuna in verse 2.30?',
+	  	          answers: [
+	  	            'Partha',
+	  	            'Kaunteya',
+	  	            'Bhārata',
+	  	            'Madhusudana'
+	  	          ],
+	  	          correctAnswer: 2
+	  	        },
+	  	        {
+	  	          question: 'How can the "changing garments" metaphor help a high school student?',
+	  	          answers: [
+	  	            'It teaches them about fashion',
+	  	            'It helps them see that changing circumstances (like schools or friend groups) are natural and not to be feared',
+	  	            'It tells them they need a new wardrobe',
+	  	            'It proves they shouldn\'t care about their appearance'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        },
+	  	        {
+	  	          question: 'According to the lesson, knowing you have an immortal nature allows you to be what?',
+	  	          answers: [
+	  	            'Reckless and dangerous',
+	  	            'Fearlessly sincere, loving, and unselfish',
+	  	            'Arrogant and prideful',
+	  	            'Lazy because nothing matters'
+	  	          ],
+	  	          correctAnswer: 1
+	  	        }
 	  	      ]
 	  	    }
 	  	  }

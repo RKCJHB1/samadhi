@@ -5,6 +5,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Upload, Download, Copy, ExternalLink } from 'lucide-react';
 import { importFromCSV, generateVerseCode, PUBLIC_DOMAIN_SOURCES } from '../../utils/verseImporter';
+import AdminNav from '@/components/admin/AdminNav';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const BulkVerseImport = () => {
   const [csvInput, setCsvInput] = useState('');
@@ -77,9 +85,11 @@ const BulkVerseImport = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <h1 className="text-3xl font-heading font-bold mb-8">Bulk Verse Import Tool</h1>
+    <>
+      <AdminNav />
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <h1 className="text-3xl font-heading font-bold mb-8">Bulk Verse Import Tool</h1>
         
         {/* Public Domain Sources */}
         <Card>
@@ -126,14 +136,15 @@ const BulkVerseImport = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Select Text:</label>
-                <select 
-                  value={selectedText} 
-                  onChange={(e) => setSelectedText(e.target.value as any)}
-                  className="w-full p-2 border rounded"
-                >
-                  <option value="bhagavad-gita">Bhagavad Gita</option>
-                  <option value="devi-mahatmyam">Devi Mahatmyam</option>
-                </select>
+	                <Select value={selectedText} onValueChange={(value) => setSelectedText(value as any)}>
+	                  <SelectTrigger className="w-full">
+	                    <SelectValue placeholder="Select text" />
+	                  </SelectTrigger>
+	                  <SelectContent>
+	                    <SelectItem value="bhagavad-gita">Bhagavad Gita</SelectItem>
+	                    <SelectItem value="devi-mahatmyam">Devi Mahatmyam</SelectItem>
+	                  </SelectContent>
+	                </Select>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Chapter:</label>
@@ -231,8 +242,9 @@ const BulkVerseImport = () => {
             </CardContent>
           </Card>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

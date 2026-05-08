@@ -129,7 +129,7 @@ const SupabaseLoginPage: React.FC = () => {
     <Layout title="Login">
       <div className="w-full bg-gradient-to-br from-indian-cream to-white py-12">
         <div className="container mx-auto px-4 max-w-md">
-          <h1 className="text-2xl font-heading font-semibold mb-4">Login to Submit Translations</h1>
+          <h1 className="text-2xl font-heading font-semibold mb-4">Login to Your Account</h1>
           <div className="space-y-3">
             <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             {error && <div className="text-sm text-red-600">{error}</div>}

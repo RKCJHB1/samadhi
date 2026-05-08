@@ -77,7 +77,7 @@ const ServicesPage = () => {
                     <h3 className="text-xl font-heading font-semibold mb-2">{link.name}</h3>
                     <p className="text-gray-600 mb-2">
                       {link.name === "Satsangs" && "Join our regular spiritual gatherings which include the chanting of prayers, meditation, and a discourse on Vedantic Philosophy and Principles. The Sub-Centre also celebrates all major hindu festivals."}
-                      {link.name === "Hinduism for Children" && "Educational programs designed to teach Hindu values and philosophy to children."}
+                      {link.name === "Hinduism for Children" && "Interactive lessons, games, mantras, and Sunday classes teaching Hindu values, philosophy, and culture to children."}
                       {link.name === "Upcoming Events" && "Celebrations of major religious festivals and other special programmes extending our service activities (seminars/workshops etc)."}
                       {link.name === "Nutrition Programme and Community Outreach" && "Our initiatives to serve the community through nutrition programs and various welfare activities."}
                     </p>

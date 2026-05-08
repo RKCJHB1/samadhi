@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@libsql/client';
+import { createClient } from '@supabase/supabase-js';
 
 export interface Block {
   block_id: number;
@@ -41,72 +41,103 @@ export function useBlockData(): BlockData {
       setIsLoading(true);
       setError(null);
 
-      // Get database credentials from environment
-      const databaseUrl = import.meta.env.VITE_TURSO_DATABASE_URL;
-      const authToken = import.meta.env.VITE_TURSO_AUTH_TOKEN;
+      // Try to fetch from Supabase if blocks table exists
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-      if (!databaseUrl || !authToken) {
-        throw new Error('Database credentials not found. Please check your environment variables.');
+      if (!supabaseUrl || !supabaseKey) {
+        console.warn('Supabase not configured, using demo blocks data');
+        loadDemoBlocks();
+        return;
       }
 
-      // Create Turso client
-      const client = createClient({
-        url: databaseUrl,
-        authToken: authToken,
-      });
+      const supabase = createClient(supabaseUrl, supabaseKey);
 
-      console.log('Fetching block data from Turso...');
+      console.log('Attempting to fetch block data from Supabase...');
 
-      // Fetch all blocks data
-      const result = await client.execute(`
-        SELECT 
-          block_id, 
-          pos_x, 
-          pos_y, 
-          pos_z, 
-          status, 
-          owner_name, 
-          purchase_date, 
-          custom_message
-        FROM blocks 
-        ORDER BY block_id
-        LIMIT 900000
-      `);
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('blocks')
+          .select('block_id, pos_x, pos_y, pos_z, status, owner_name, purchase_date, custom_message')
+          .order('block_id')
+          .limit(900000);
 
-      console.log(`Fetched ${result.rows.length} blocks from database`);
-
-      // Process the data
-      const blocksData: Block[] = result.rows.map((row: any, index: number) => ({
-        block_id: row.block_id as number,
-        pos_x: row.pos_x as number,
-        pos_y: row.pos_y as number,
-        pos_z: row.pos_z as number,
-        // Mark first 100,000 blocks as sold for animation demo
-        status: index < 100000 ? 'sold' : 'available',
-        owner_name: index < 100000 ? `Demo Owner ${index + 1}` : (row.owner_name as string || undefined),
-        purchase_date: index < 100000 ? '2024-01-01' : (row.purchase_date as string || undefined),
-        custom_message: index < 100000 ? 'Demo purchase for animation' : (row.custom_message as string || undefined),
-      }));
-
-      // Create set of sold block IDs for fast lookup
-      const soldBlockIds = new Set<number>();
-      blocksData.forEach(block => {
-        if (block.status === 'sold') {
-          soldBlockIds.add(block.block_id);
+        if (fetchError) {
+          console.warn('Blocks table not found in Supabase, using demo data:', fetchError);
+          loadDemoBlocks();
+          return;
         }
-      });
 
-      setBlocks(blocksData);
-      setSoldBlocks(soldBlockIds);
+        if (!data || data.length === 0) {
+          console.warn('No blocks found, using demo data');
+          loadDemoBlocks();
+          return;
+        }
 
-      console.log(`Processed ${blocksData.length} blocks, ${soldBlockIds.size} sold`);
+        console.log(`Fetched ${data.length} blocks from Supabase`);
+
+        // Process the data
+        const blocksData: Block[] = data.map((row: any, index: number) => ({
+          block_id: row.block_id as number,
+          pos_x: row.pos_x as number,
+          pos_y: row.pos_y as number,
+          pos_z: row.pos_z as number,
+          status: row.status as 'available' | 'sold',
+          owner_name: row.owner_name as string || undefined,
+          purchase_date: row.purchase_date as string || undefined,
+          custom_message: row.custom_message as string || undefined,
+        }));
+
+        // Create set of sold block IDs for fast lookup
+        const soldBlockIds = new Set<number>();
+        blocksData.forEach(block => {
+          if (block.status === 'sold') {
+            soldBlockIds.add(block.block_id);
+          }
+        });
+
+        setBlocks(blocksData);
+        setSoldBlocks(soldBlockIds);
+
+        console.log(`Processed ${blocksData.length} blocks, ${soldBlockIds.size} sold`);
+
+      } catch (err) {
+        console.warn('Error fetching from Supabase, using demo data:', err);
+        loadDemoBlocks();
+      }
 
     } catch (err) {
-      console.error('Error fetching block data:', err);
+      console.error('Error in fetchBlockData:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch block data');
+      loadDemoBlocks();
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const loadDemoBlocks = () => {
+    // Generate demo blocks data for visualization
+    const demoBlocks: Block[] = Array.from({ length: 100 }, (_, i) => ({
+      block_id: i + 1,
+      pos_x: Math.random() * 100,
+      pos_y: Math.random() * 100,
+      pos_z: Math.random() * 100,
+      status: i < 50 ? 'sold' : 'available',
+      owner_name: i < 50 ? `Demo Owner ${i + 1}` : undefined,
+      purchase_date: i < 50 ? '2024-01-01' : undefined,
+      custom_message: i < 50 ? 'Demo purchase' : undefined,
+    }));
+
+    const soldBlockIds = new Set<number>();
+    demoBlocks.forEach(block => {
+      if (block.status === 'sold') {
+        soldBlockIds.add(block.block_id);
+      }
+    });
+
+    setBlocks(demoBlocks);
+    setSoldBlocks(soldBlockIds);
+    console.log('Loaded demo blocks for visualization');
   };
 
   // Calculate statistics
