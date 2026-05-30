@@ -576,16 +576,18 @@ export default function OnThisDay() {
         currentY += 25; // Add some breathing room below the text
         const availableHeight = 880 - currentY;
 
-        if (availableHeight > 100) {
-          const imgUrl = currentSlide.src.startsWith('http')
-            ? currentSlide.src
-            : window.location.origin + currentSlide.src;
+        if (availableHeight > 50) {
+          let imgUrl = currentSlide.src;
+
+          if (imgUrl.startsWith('/')) {
+             imgUrl = window.location.origin + imgUrl;
+          }
 
           const img = await new Promise<HTMLImageElement>((resolve, reject) => {
             const image = new Image();
             image.crossOrigin = "anonymous";
             image.onload = () => resolve(image);
-            image.onerror = (e) => reject(e);
+            image.onerror = (e) => reject(new Error(`Failed to load image: ${imgUrl}`));
             image.src = imgUrl;
           });
 
