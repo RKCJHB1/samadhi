@@ -63,6 +63,16 @@ const isFutureDateInYear = (monthName: string, day: number) => {
   return false;
 };
 
+const isBeforeLaunchDate = (monthName: string, day: number) => {
+  const targetMonthIdx = MONTH_DEFS.findIndex(m => m.name === monthName);
+  const launchMonthIdx = 4; // May
+  const launchDayVal = 31;
+
+  if (targetMonthIdx < launchMonthIdx) return true;
+  if (targetMonthIdx === launchMonthIdx && day < launchDayVal) return true;
+  return false;
+};
+
 interface HistoryEvent {
   id?: string;
   date: string;
@@ -102,16 +112,22 @@ export default function OnThisDay() {
 
           if (mIndex >= 0 && mIndex < 12 && !isNaN(dPart) && dPart >= 1 && dPart <= MONTH_DEFS[mIndex].days) {
             const mName = MONTH_DEFS[mIndex].name;
-            if (!isFutureDateInYear(mName, dPart)) {
-              return { month: mName, day: dPart };
-            } else {
+            if (isFutureDateInYear(mName, dPart)) {
               return { month: currentMonthName, day: currentDayVal };
+            } else if (isBeforeLaunchDate(mName, dPart)) {
+              return { month: "May", day: 31 }; // Launch date fallback
+            } else {
+              return { month: mName, day: dPart };
             }
           }
         }
       }
     } catch (e) {
       console.warn("Could not parse initial date from URL:", e);
+    }
+
+    if (isBeforeLaunchDate(currentMonthName, currentDayVal)) {
+      return { month: "May", day: 31 };
     }
 
     return { month: currentMonthName, day: currentDayVal };
@@ -238,6 +254,14 @@ export default function OnThisDay() {
     : 1;
   const isNextDisabled = isFutureDateInYear(nextMonthName, nextDayNum);
 
+  const prevMonthName = selectedDay > 1
+    ? selectedMonth
+    : MONTH_DEFS[(getMonthIndex(selectedMonth) - 1 + 12) % 12].name;
+  const prevDayNum = selectedDay > 1
+    ? selectedDay - 1
+    : MONTH_DEFS[(getMonthIndex(selectedMonth) - 1 + 12) % 12].days;
+  const isPrevDisabled = isBeforeLaunchDate(prevMonthName, prevDayNum);
+
   // Synchronous Fetch (now purely static without API)
   useEffect(() => {
     let active = true;
@@ -333,15 +357,23 @@ export default function OnThisDay() {
   // Precise navigation triggers (wraps around calendar months perfectly!)
   const handlePrevDay = () => {
     const currentMonthIdx = getMonthIndex(selectedMonth);
+    let prevDay = selectedDay;
+    let prevMonth = selectedMonth;
+
     if (selectedDay > 1) {
-      setSelectedDay(selectedDay - 1);
+      prevDay = selectedDay - 1;
     } else {
       // Go to previous month
       const prevMonthIdx = (currentMonthIdx - 1 + 12) % 12;
       const prevMonthDef = MONTH_DEFS[prevMonthIdx];
-      setSelectedMonth(prevMonthDef.name);
-      setSelectedDay(prevMonthDef.days);
+      prevMonth = prevMonthDef.name;
+      prevDay = prevMonthDef.days;
     }
+
+    if (isBeforeLaunchDate(prevMonth, prevDay)) return;
+
+    setSelectedMonth(prevMonth);
+    setSelectedDay(prevDay);
   };
 
   const handleNextDay = () => {
@@ -1010,12 +1042,18 @@ export default function OnThisDay() {
           
           {/* Interactive Date Navigation Row */}
           <div className="flex items-center justify-between w-full">
-            <button 
+            <button
               onClick={handlePrevDay}
-              className="p-1 px-1.5 text-stone-600 hover:bg-[#FAF9F6] active:scale-95 border border-[#EAE7E0]/60 rounded-lg transition-all duration-200 cursor-pointer"
+              disabled={isPrevDisabled}
+              className={`p-1 px-1.5 border border-[#EAE7E0]/60 rounded-lg transition-all duration-200 ${
+                isPrevDisabled
+                  ? "opacity-30 cursor-not-allowed bg-transparent text-stone-300"
+                  : "text-stone-600 hover:bg-[#FAF9F6] active:scale-95 cursor-pointer"
+              }`}
               aria-label="Previous day"
+              title={isPrevDisabled ? "Dates before May 31st are not available" : "Previous day"}
             >
-              <ArrowLeft className="w-3.0 h-3.0 text-[#E26D5C]" />
+              <ArrowLeft className={`w-3.0 h-3.0 ${isPrevDisabled ? 'text-stone-400' : 'text-[#E26D5C]'}`} />
             </button>
 
             <div 
@@ -1465,14 +1503,17 @@ export default function OnThisDay() {
                   <div className="grid grid-cols-3 gap-1.5">
                     {MONTH_DEFS.map((monthDef) => {
                       const isMonthFuture = isFutureDateInYear(monthDef.name, 1);
+                      const isMonthPast = isBeforeLaunchDate(monthDef.name, monthDef.days);
+                      const isDisabled = isMonthFuture || isMonthPast;
+
                       return (
                         <button
                           key={monthDef.name}
-                          onClick={() => !isMonthFuture && setSelectedMonth(monthDef.name)}
-                          disabled={isMonthFuture}
-                          title={isMonthFuture ? "Future months are not yet available" : undefined}
+                          onClick={() => !isDisabled && setSelectedMonth(monthDef.name)}
+                          disabled={isDisabled}
+                          title={isMonthFuture ? "Future months are not yet available" : isMonthPast ? "Dates before May 31st are not available" : undefined}
                           className={`py-1.5 px-2 text-xs font-bold rounded-md border text-center transition-all ${
-                            isMonthFuture
+                            isDisabled
                               ? 'opacity-30 cursor-not-allowed bg-stone-50 border-stone-100 text-stone-400'
                               : selectedMonth === monthDef.name
                                 ? 'bg-[#E26D5C] text-white border-[#E26D5C] cursor-pointer'
@@ -1497,14 +1538,17 @@ export default function OnThisDay() {
                       (_, i) => i + 1
                     ).map((d) => {
                       const isDayFuture = isFutureDateInYear(selectedMonth, d);
+                      const isDayPast = isBeforeLaunchDate(selectedMonth, d);
+                      const isDisabled = isDayFuture || isDayPast;
+
                       return (
                         <button
                           key={d}
-                          onClick={() => !isDayFuture && setSelectedDay(d)}
-                          disabled={isDayFuture}
-                          title={isDayFuture ? "Future dates are not yet available" : undefined}
+                          onClick={() => !isDisabled && setSelectedDay(d)}
+                          disabled={isDisabled}
+                          title={isDayFuture ? "Future dates are not yet available" : isDayPast ? "Dates before May 31st are not available" : undefined}
                           className={`aspect-square text-xs font-bold rounded-md flex items-center justify-center transition-all ${
-                            isDayFuture
+                            isDisabled
                               ? 'opacity-30 cursor-not-allowed bg-stone-50 text-stone-400'
                               : selectedDay === d
                                 ? 'bg-[#E26D5C] text-white cursor-pointer'
