@@ -13,6 +13,18 @@ export interface OnThisDayEvent {
 
 export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   {
+    date: "May 31",
+    monthNumeric: 4,
+    dayNumeric: 31,
+    year: 1897,
+    headline: "Swami Vivekananda Establishes the Ramakrishna Mission in Calcutta",
+    narrativeParagraph1: "After returning triumphantly from the West, Swami Vivekananda convened a historic meeting at the house of Balaram Bose on May 1, 1897, to establish the Ramakrishna Mission. By the end of May, the organization's foundational principles and methods of working had taken definitive shape.",
+    narrativeParagraph2: "Swamiji envisioned a machinery that would bring his Master's teachings into practical application. The twin ideals of the Mission—'For one's own liberation, and for the welfare of the world'—became the guiding force for monastic members and householder devotees alike, transforming traditional monasticism into a dynamic engine for social and spiritual upliftment.",
+    quote: "The national ideals of India are renunciation and service. Intensify her in those channels, and the rest will take care of itself.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "A quiet moment of reflection near the Ganges, capturing the spirit of dedication to humanity."
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
