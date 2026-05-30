@@ -46,6 +46,23 @@ const MONTH_DEFS = [
   { name: "December", days: 31 }
 ];
 
+const getSASTTime = () => {
+  const today = new Date();
+  const utcTime = today.getTime() + (today.getTimezoneOffset() * 60000);
+  return new Date(utcTime + (2 * 3600000)); // UTC+2
+};
+
+const isFutureDateInYear = (monthName: string, day: number) => {
+  const saDate = getSASTTime();
+  const currentMonthIdx = saDate.getMonth();
+  const currentDayVal = saDate.getDate();
+  const targetMonthIdx = MONTH_DEFS.findIndex(m => m.name === monthName);
+
+  if (targetMonthIdx > currentMonthIdx) return true;
+  if (targetMonthIdx === currentMonthIdx && day > currentDayVal) return true;
+  return false;
+};
+
 interface HistoryEvent {
   id?: string;
   date: string;
@@ -65,6 +82,10 @@ interface HistoryEvent {
 export default function OnThisDay() {
   // Read date from URL search parameters if available, else default to current date in South Africa Standard Time (UTC+2)
   const getInitialDate = () => {
+    const saDate = getSASTTime();
+    const currentMonthName = MONTH_DEFS[saDate.getMonth()].name;
+    const currentDayVal = saDate.getDate();
+
     try {
       const params = new URLSearchParams(window.location.search);
       const urlDateStr = params.get("date"); // formats: "May-31" or "05-31"
@@ -73,14 +94,19 @@ export default function OnThisDay() {
         if (parts.length === 2) {
           const mPart = parts[0].trim();
           const dPart = parseInt(parts[1], 10);
-          
+
           // Match month name or number
           const mIndex = isNaN(Number(mPart))
             ? MONTH_DEFS.findIndex(m => m.name.toLowerCase().startsWith(mPart.toLowerCase()))
             : parseInt(mPart, 10) - 1;
 
           if (mIndex >= 0 && mIndex < 12 && !isNaN(dPart) && dPart >= 1 && dPart <= MONTH_DEFS[mIndex].days) {
-            return { month: MONTH_DEFS[mIndex].name, day: dPart };
+            const mName = MONTH_DEFS[mIndex].name;
+            if (!isFutureDateInYear(mName, dPart)) {
+              return { month: mName, day: dPart };
+            } else {
+              return { month: currentMonthName, day: currentDayVal };
+            }
           }
         }
       }
@@ -88,12 +114,6 @@ export default function OnThisDay() {
       console.warn("Could not parse initial date from URL:", e);
     }
 
-    // Default to current date in South Africa Standard Time (UTC+2)
-    const today = new Date();
-    const utcTime = today.getTime() + (today.getTimezoneOffset() * 60000);
-    const saDate = new Date(utcTime + (2 * 120 * 30000)); // UTC+2 hours
-    const currentMonthName = MONTH_DEFS[saDate.getMonth()].name;
-    const currentDayVal = saDate.getDate();
     return { month: currentMonthName, day: currentDayVal };
   };
 
@@ -143,12 +163,6 @@ export default function OnThisDay() {
 
 
   // CMS logic removed
-
-  const getSASTTime = () => {
-    const today = new Date();
-    const utcTime = today.getTime() + (today.getTimezoneOffset() * 60000);
-    return new Date(utcTime + (2 * 3600000)); // UTC+2
-  };
 
   // Clock ticking effect
   useEffect(() => {
@@ -214,6 +228,15 @@ export default function OnThisDay() {
   const getMonthIndex = (monthName: string) => {
     return MONTH_DEFS.findIndex(m => m.name === monthName);
   };
+
+  const currentMonthDef = MONTH_DEFS[getMonthIndex(selectedMonth)];
+  const nextMonthName = selectedDay < (currentMonthDef?.days || 31)
+    ? selectedMonth
+    : MONTH_DEFS[(getMonthIndex(selectedMonth) + 1) % 12].name;
+  const nextDayNum = selectedDay < (currentMonthDef?.days || 31)
+    ? selectedDay + 1
+    : 1;
+  const isNextDisabled = isFutureDateInYear(nextMonthName, nextDayNum);
 
   // Synchronous Fetch (now purely static without API)
   useEffect(() => {
@@ -324,16 +347,23 @@ export default function OnThisDay() {
   const handleNextDay = () => {
     const currentMonthIdx = getMonthIndex(selectedMonth);
     const currentMonthDef = MONTH_DEFS[currentMonthIdx];
-    
+
+    let nextDay = selectedDay;
+    let nextMonth = selectedMonth;
+
     if (selectedDay < currentMonthDef.days) {
-      setSelectedDay(selectedDay + 1);
+      nextDay = selectedDay + 1;
     } else {
       // Go to next month
       const nextMonthIdx = (currentMonthIdx + 1) % 12;
-      const nextMonthDef = MONTH_DEFS[nextMonthIdx];
-      setSelectedMonth(nextMonthDef.name);
-      setSelectedDay(1);
+      nextMonth = MONTH_DEFS[nextMonthIdx].name;
+      nextDay = 1;
     }
+
+    if (isFutureDateInYear(nextMonth, nextDay)) return;
+
+    setSelectedMonth(nextMonth);
+    setSelectedDay(nextDay);
   };
 
   // Copy shareable link to clipboard
@@ -1001,12 +1031,18 @@ export default function OnThisDay() {
               </span>
             </div>
 
-            <button 
+            <button
               onClick={handleNextDay}
-              className="p-1 px-1.5 text-stone-600 hover:bg-[#FAF9F6] active:scale-95 border border-[#EAE7E0]/60 rounded-lg transition-all duration-200 cursor-pointer"
+              disabled={isNextDisabled}
+              className={`p-1 px-1.5 border border-[#EAE7E0]/60 rounded-lg transition-all duration-200 ${
+                isNextDisabled
+                  ? "opacity-30 cursor-not-allowed bg-transparent text-stone-300"
+                  : "text-stone-600 hover:bg-[#FAF9F6] active:scale-95 cursor-pointer"
+              }`}
               aria-label="Next day"
+              title={isNextDisabled ? "Future dates are not yet available" : "Next day"}
             >
-              <ArrowRight className="w-3.0 h-3.0 text-[#E26D5C]" />
+              <ArrowRight className={`w-3.0 h-3.0 ${isNextDisabled ? 'text-stone-400' : 'text-[#E26D5C]'}`} />
             </button>
           </div>
 
@@ -1427,19 +1463,26 @@ export default function OnThisDay() {
                     1. Select Month
                   </label>
                   <div className="grid grid-cols-3 gap-1.5">
-                    {MONTH_DEFS.map((monthDef) => (
-                      <button
-                        key={monthDef.name}
-                        onClick={() => setSelectedMonth(monthDef.name)}
-                        className={`py-1.5 px-2 text-xs font-bold rounded-md border text-center transition-all cursor-pointer ${
-                          selectedMonth === monthDef.name 
-                            ? 'bg-[#E26D5C] text-white border-[#E26D5C]' 
-                            : 'bg-white border-[#EAE7E0] text-[#5C564E] hover:bg-[#FAF9F6]'
-                        }`}
-                      >
-                        {monthDef.name.slice(0, 3)}
-                      </button>
-                    ))}
+                    {MONTH_DEFS.map((monthDef) => {
+                      const isMonthFuture = isFutureDateInYear(monthDef.name, 1);
+                      return (
+                        <button
+                          key={monthDef.name}
+                          onClick={() => !isMonthFuture && setSelectedMonth(monthDef.name)}
+                          disabled={isMonthFuture}
+                          title={isMonthFuture ? "Future months are not yet available" : undefined}
+                          className={`py-1.5 px-2 text-xs font-bold rounded-md border text-center transition-all ${
+                            isMonthFuture
+                              ? 'opacity-30 cursor-not-allowed bg-stone-50 border-stone-100 text-stone-400'
+                              : selectedMonth === monthDef.name
+                                ? 'bg-[#E26D5C] text-white border-[#E26D5C] cursor-pointer'
+                                : 'bg-white border-[#EAE7E0] text-[#5C564E] hover:bg-[#FAF9F6] cursor-pointer'
+                          }`}
+                        >
+                          {monthDef.name.slice(0, 3)}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -1450,21 +1493,28 @@ export default function OnThisDay() {
                   </label>
                   <div className="grid grid-cols-7 gap-1 max-h-[160px] overflow-y-auto border border-[#EAE7E0] rounded-lg p-2.5 bg-white">
                     {Array.from(
-                      { length: MONTH_DEFS[getMonthIndex(selectedMonth)].days }, 
+                      { length: MONTH_DEFS[getMonthIndex(selectedMonth)].days },
                       (_, i) => i + 1
-                    ).map((d) => (
-                      <button
-                        key={d}
-                        onClick={() => setSelectedDay(d)}
-                        className={`aspect-square text-xs font-bold rounded-md flex items-center justify-center transition-all cursor-pointer ${
-                          selectedDay === d 
-                            ? 'bg-[#E26D5C] text-white' 
-                            : 'hover:bg-[#FAF9F6] text-[#5C564E]'
-                        }`}
-                      >
-                        {d}
-                      </button>
-                    ))}
+                    ).map((d) => {
+                      const isDayFuture = isFutureDateInYear(selectedMonth, d);
+                      return (
+                        <button
+                          key={d}
+                          onClick={() => !isDayFuture && setSelectedDay(d)}
+                          disabled={isDayFuture}
+                          title={isDayFuture ? "Future dates are not yet available" : undefined}
+                          className={`aspect-square text-xs font-bold rounded-md flex items-center justify-center transition-all ${
+                            isDayFuture
+                              ? 'opacity-30 cursor-not-allowed bg-stone-50 text-stone-400'
+                              : selectedDay === d
+                                ? 'bg-[#E26D5C] text-white cursor-pointer'
+                                : 'hover:bg-[#FAF9F6] text-[#5C564E] cursor-pointer'
+                          }`}
+                        >
+                          {d}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
