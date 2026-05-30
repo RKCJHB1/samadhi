@@ -952,7 +952,7 @@ export default function OnThisDay() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-8 md:py-12 flex flex-col items-center justify-between font-sans antialiased max-w-6xl mx-auto text-[#3D3A35]">
+    <div className="min-h-screen px-4 pt-24 pb-8 md:pt-32 md:pb-12 flex flex-col items-center justify-between font-sans antialiased max-w-6xl mx-auto text-[#3D3A35]">
       
       {/* Elegantly Polished Universal Header Section */}
       <header className="relative overflow-hidden w-full mb-8 border border-[#EAE7E0] bg-gradient-to-br from-white via-white to-[#FAF8F5] rounded-3xl p-6 md:p-8 shadow-sm flex flex-col lg:flex-row gap-6 lg:items-center lg:justify-between" id="header_section">
