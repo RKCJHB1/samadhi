@@ -416,22 +416,30 @@ export default function OnThisDay() {
 
   // Canvas Helper for wrapping text
   const wrapTextOnCanvas = (ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] => {
-    const words = text.split(" ");
     const lines: string[] = [];
-    let currentLine = "";
+    const explicitLines = text.split('\n');
 
-    for (let n = 0; n < words.length; n++) {
-      const testLine = currentLine + words[n] + " ";
-      const metrics = ctx.measureText(testLine);
-      const testWidth = metrics.width;
-      if (testWidth > maxWidth && n > 0) {
-        lines.push(currentLine.trim());
-        currentLine = words[n] + " ";
-      } else {
-        currentLine = testLine;
+    for (const explicitLine of explicitLines) {
+      if (explicitLine.trim() === '') {
+        lines.push(''); // Keep empty lines for paragraph spacing
+        continue;
       }
+      const words = explicitLine.split(" ");
+      let currentLine = "";
+
+      for (let n = 0; n < words.length; n++) {
+        const testLine = currentLine + words[n] + " ";
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+          lines.push(currentLine.trim());
+          currentLine = words[n] + " ";
+        } else {
+          currentLine = testLine;
+        }
+      }
+      lines.push(currentLine.trim());
     }
-    lines.push(currentLine.trim());
     return lines;
   };
 
@@ -522,7 +530,7 @@ export default function OnThisDay() {
       ctx.font = "20px Georgia, serif";
       
       const maxNarrativeY = 860;
-      const fullNarrative = `${eventData.narrativeParagraph1 || ""} ${eventData.narrativeParagraph2 || ""}`;
+      const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
       const wrappedLines = wrapTextOnCanvas(ctx, fullNarrative, 860);
       
       const narrativeLineHeight = 32;
