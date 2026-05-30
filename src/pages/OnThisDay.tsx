@@ -1430,14 +1430,16 @@ export default function OnThisDay() {
                 </div>
 
                 {/* 2-Paragraph Historical Narrative with Editorial Polish */}
-                <div className="space-y-4 text-[15px] md:text-base text-[#5C564E] font-sans leading-relaxed text-left mt-2">
-                  <p className="text-[#3D3A35] text-base md:text-lg font-serif leading-relaxed">
+                <div className="space-y-4 text-base md:text-lg text-[#3D3A35] font-serif leading-relaxed text-left mt-2">
+                  <p>
                     {eventData?.narrativeParagraph1}
                   </p>
-                  
-                  <p className="text-[#5C564E]">
-                    {eventData?.narrativeParagraph2}
-                  </p>
+
+                  {eventData?.narrativeParagraph2 && (
+                    <p>
+                      {eventData.narrativeParagraph2}
+                    </p>
+                  )}
                 </div>
 
               </motion.div>
