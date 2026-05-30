@@ -10,6 +10,7 @@ export interface OnThisDayEvent {
   quoteAuthor: string;
   imageCaption: string;
   customImage?: string;
+  customImages?: string[];
 }
 
 export const PRELOADED_EVENTS: OnThisDayEvent[] = [
@@ -23,7 +24,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "The inauguration took place on the auspicious day of Snana Yatra and marked a monumental moment in spiritual history. Around this time, Sri Ramakrishna arrived at the temple, eventually becoming its head priest and transforming the site into a legendary epicenter of the 19th-century Bengal Renaissance and mystic devotion.",
     quote: "Mother is the ultimate reality. If you weep for Her with a pure heart, She will surely reveal Herself to you.",
     quoteAuthor: "Sri Ramakrishna",
-    imageCaption: "The iconic Dakshineswar Kali Temple along the Hooghly River, radiating spiritual devotion."
+    imageCaption: "The iconic Dakshineswar Kali Temple along the Hooghly River, radiating spiritual devotion.",
+    customImages: ["/images/on-this-day/Dakshineshwar1.png", "/images/on-this-day/Dakshineshwar2.png"]
   },
   {
     date: "May 31",

@@ -223,15 +223,27 @@ export default function OnThisDay() {
       }
     ];
 
-    if (eventData && eventData.customImage) {
-      return [
-        {
+    if (eventData) {
+      const customSlides: typeof defaultSlides = [];
+      if (eventData.customImages && eventData.customImages.length > 0) {
+        eventData.customImages.forEach(imgUrl => {
+          customSlides.push({
+            src: imgUrl,
+            captionHeading: eventData.headline || "Chronicled Milestone",
+            defaultCaption: eventData.imageCaption || "Historical picture uploaded for this chronicle."
+          });
+        });
+      } else if (eventData.customImage) {
+        customSlides.push({
           src: eventData.customImage,
           captionHeading: eventData.headline || "Chronicled Milestone",
           defaultCaption: eventData.imageCaption || "Historical picture uploaded for this chronicle."
-        },
-        ...defaultSlides
-      ];
+        });
+      }
+
+      if (customSlides.length > 0) {
+        return [...customSlides, ...defaultSlides];
+      }
     }
     return defaultSlides;
   };
