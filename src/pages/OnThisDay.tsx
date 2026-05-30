@@ -506,7 +506,7 @@ export default function OnThisDay() {
       ctx.font = "bold 13px monospace";
       ctx.letterSpacing = "4px";
       ctx.textAlign = "left";
-      ctx.fillText("DAILY CONTEMPLATIVE REFLECTION", quoteBoxX + 45, quoteBoxY + 44);
+      ctx.fillText("DAILY REFLECTION", quoteBoxX + 45, quoteBoxY + 44);
 
       // Quote text
       ctx.fillStyle = "#4A453E";
@@ -617,7 +617,7 @@ export default function OnThisDay() {
     if (!eventData) return;
     try {
       const shareUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
-      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${eventData.headline}*\n\n"${eventData.narrativeParagraph1}"\n\n"${eventData.narrativeParagraph2}"\n\n🕊️ *Contemplative Quote*:\n_"${eventData.quote}"_\n— *${eventData.quoteAuthor}*\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
+      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${eventData.headline}*\n\n"${eventData.narrativeParagraph1}"\n\n"${eventData.narrativeParagraph2}"\n\n🕊️ *Quote*:\n_"${eventData.quote}"_\n— *${eventData.quoteAuthor}*\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
       
       navigator.clipboard.writeText(textToCopy);
       setCopiedTextPanel(true);
@@ -833,7 +833,7 @@ export default function OnThisDay() {
       <!-- Quote Box -->
       <div class="bg-[#F2EFE9] border-l-4 border-[#E26D5C] rounded-r-xl p-5 md:p-6 mt-6 relative overflow-hidden" id="quote-box">
         <span class="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
-        <h4 class="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY CONTEMPLATIVE REFLECTION</h4>
+        <h4 class="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY REFLECTION</h4>
         <blockquote class="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed" id="display-quote">
           &ldquo;\${events[0]?.quote || ""}&rdquo;
         </blockquote>
@@ -961,22 +961,14 @@ export default function OnThisDay() {
         
         {/* Left Info Column */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-5 text-center md:text-left max-w-2xl">
-          {/* Logo container with radial glow & golden ring details */}
-          <div className="relative group shrink-0">
-            <div className="absolute inset-0 bg-[#E26D5C]/20 rounded-full blur-lg opacity-80 group-hover:opacity-100 transition-opacity"></div>
-            <div className="relative w-14 h-14 bg-gradient-to-b from-[#E26D5C] to-[#d55e4d] rounded-full flex items-center justify-center text-white shadow-md border-2 border-white ring-4 ring-[#EAE7E0]/50 transition-transform duration-350 group-hover:scale-105">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-sm"><path d="M2 10s3-3 3-8"/><path d="M22 10s-3-3-3-8"/><path d="M5 10c0 4.4 3.6 8 8 8s8-3.6 8-8"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
-            </div>
-          </div>
-          
           <div className="flex flex-col space-y-2">
             <h1 className="text-xl md:text-2xl font-serif text-[#2D2A26] font-medium tracking-tight leading-tight">
               On This Day in <span className="italic text-[#E26D5C] font-semibold">Ramakrishna Order History</span>
             </h1>
-            
+
             <div className="space-y-2">
               <p className="text-xs sm:text-sm text-[#7C7267] font-sans font-normal leading-relaxed">
-                This contemplative archive is a daily chronicle mapping the spiritual legacy of the Ramakrishna Movement. Spanning spiritual origins and over 125 years since Swami Vivekananda's return from the West, it brings authentic milestones, temple installations, and global reflections straight from the archives.
+                This archive is a daily chronicle mapping the spiritual legacy of the Ramakrishna Movement. Spanning spiritual origins and over 125 years since Swami Vivekananda's return from the West, it brings authentic milestones, temple installations, and global reflections straight from the archives.
               </p>
             </div>
           </div>
@@ -984,7 +976,7 @@ export default function OnThisDay() {
 
         {/* Right Corner: Exceptionally Compact Date Selector Widget */}
         <div className="shrink-0 w-full lg:w-64 bg-white border border-[#EAE7E0] shadow-xs rounded-xl px-4 py-2.5 flex flex-col items-center" id="date_widget">
-          <span className="text-[8px] tracking-[0.15em] font-mono text-[#A89F91] uppercase font-bold mb-1 select-none text-center">CONTEMPLATIVE DATE</span>
+          <span className="text-[8px] tracking-[0.15em] font-mono text-[#A89F91] uppercase font-bold mb-1 select-none text-center">DATE</span>
           
           {/* Interactive Date Navigation Row */}
           <div className="flex items-center justify-between w-full">
@@ -1383,7 +1375,7 @@ export default function OnThisDay() {
                   {/* Subtle design element */}
                   <span className="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
                   
-                  <h4 className="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY CONTEMPLATIVE REFLECTION</h4>
+                  <h4 className="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY REFLECTION</h4>
                   
                   <blockquote className="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed">
                     &ldquo;{eventData?.quote}&rdquo;
