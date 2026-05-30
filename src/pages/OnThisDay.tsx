@@ -541,10 +541,10 @@ export default function OnThisDay() {
       ctx.fillStyle = "#5C564E";
       ctx.font = "20px Georgia, serif";
       
-      const maxNarrativeY = 860;
+      const maxNarrativeY = 660;
       const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
       const wrappedLines = wrapTextOnCanvas(ctx, fullNarrative, 860);
-      
+
       const narrativeLineHeight = 32;
       for (let i = 0; i < wrappedLines.length; i++) {
         if (currentY + narrativeLineHeight > maxNarrativeY) {
@@ -555,6 +555,51 @@ export default function OnThisDay() {
         }
         ctx.fillText(wrappedLines[i], 540, currentY);
         currentY += narrativeLineHeight;
+      }
+
+      // 6.5 Draw the accompanying historical picture to beautifully fill the space!
+      try {
+        currentY += 25; // Add some breathing room below the text
+        const availableHeight = 880 - currentY;
+
+        if (availableHeight > 100) {
+          const imgUrl = currentSlide.src.startsWith('http')
+            ? currentSlide.src
+            : window.location.origin + currentSlide.src;
+
+          const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+            const image = new Image();
+            image.crossOrigin = "anonymous";
+            image.onload = () => resolve(image);
+            image.onerror = (e) => reject(e);
+            image.src = imgUrl;
+          });
+
+          // Calculate dimensions to maintain aspect ratio and fit within boundaries
+          const imgRatio = img.width / img.height;
+          let drawWidth = 860;
+          let drawHeight = drawWidth / imgRatio;
+
+          // If the image is too tall for the remaining space, scale it down
+          if (drawHeight > availableHeight) {
+            drawHeight = availableHeight;
+            drawWidth = drawHeight * imgRatio;
+          }
+
+          const drawX = 540 - (drawWidth / 2);
+
+          // Draw image with rounded corners
+          ctx.save();
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(drawX, currentY, drawWidth, drawHeight, 16);
+            ctx.clip();
+          }
+          ctx.drawImage(img, drawX, currentY, drawWidth, drawHeight);
+          ctx.restore();
+        }
+      } catch (err) {
+        console.warn("Could not draw historical image on canvas:", err);
       }
 
       // 7. Dynamic scan-to-read QR Code Integration!
