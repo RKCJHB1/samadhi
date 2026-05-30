@@ -113,24 +113,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      // Removed: const user = await api.auth.login(email, password);
-      // Removed: setUser(user);
+      const mod = await import('@/services/translationsSupabase');
+      const sb = mod.getSupabase();
+      if (!sb) throw new Error("Database connection not initialized");
 
-      // Removed: // Load profile
-      // Removed: const userProfile = await api.profile.get(user.id);
-      // Removed: setProfile(userProfile);
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
-      // Removed: // Check admin role
-      // Removed: const hasAdminRole = await api.roles.check('admin');
-      // Removed: setIsAdmin(hasAdminRole);
+      if (error) throw error;
+      if (!data.user) throw new Error("No user returned");
 
-      // Removed: // Check moderator role
-      // Removed: const hasModeratorRole = await api.roles.check('moderator');
-      // Removed: setIsModerator(hasModeratorRole);
+      const current = data.user;
+      const userEmail = (current.email || '').toLowerCase();
+      const adminEmailOverride = userEmail === 'viprananda@rkmm.org';
+      setUser({ id: current.id, email: current.email ?? '' });
 
-      // Removed: // Placeholder: Check teacher role (adjust based on your API)
-      // Removed: const hasTeacherRole = await api.roles.check('teacher');
-      // Removed: setIsTeacher(hasTeacherRole);
+      const prof = await mod.getProfile(current.id);
+      const role = (prof?.role as any) || (adminEmailOverride ? 'admin' : undefined);
+      setProfile({ id: prof?.id || current.id, first_name: prof?.first_name ?? null, last_name: prof?.last_name ?? null, avatar_url: prof?.avatar_url ?? null, username: prof?.username ?? null, role });
+      setIsAdmin(role === 'admin');
+      setIsModerator(role === 'moderator' || role === 'admin');
+      setIsTeacher(role === 'teacher');
 
       toast({
         title: "Welcome back!",
@@ -154,16 +156,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (email: string, password: string, userData: { firstName?: string; lastName?: string; languageProficiency?: Array<{ code: string; level: 'Beginner'|'Fluent'|'Native/Academic' }> }) => {
     try {
       setLoading(true);
-      // Removed: const user = await api.auth.register(email, password, {
-        // Removed: firstName: userData.firstName,
-        // Removed: lastName: userData.lastName,
-      // Removed: });
+      const mod = await import('@/services/translationsSupabase');
+      const sb = mod.getSupabase();
+      if (!sb) throw new Error("Database connection not initialized");
 
-      // Removed: setUser(user);
+      const { data, error } = await sb.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: userData.firstName,
+            last_name: userData.lastName,
+          }
+        }
+      });
 
-      // Removed: // Load profile
-      // Removed: const userProfile = await api.profile.get(user.id);
-      // Removed: setProfile(userProfile);
+      if (error) throw error;
+
+      if (data.user) {
+        await mod.upsertProfile({
+          id: data.user.id,
+          email: data.user.email ?? null,
+          first_name: userData.firstName ?? null,
+          last_name: userData.lastName ?? null,
+          role: 'user'
+        });
+      }
 
       // By default, new users are not admins or teachers
       setIsAdmin(false);

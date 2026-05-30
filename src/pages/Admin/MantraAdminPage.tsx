@@ -31,7 +31,7 @@ import {
   svaraInfo,
 } from '@/utils/mantraStorage';
 import AdminNav from '@/components/admin/AdminNav';
-import { getCurrentSession, isSuperAdmin } from '@/services/adminAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { adminStorage } from '@/services/adminStorage';
 import { MantraAssignment } from '@/types/adminTypes';
 
@@ -53,8 +53,7 @@ const MantraAdminPage: React.FC = () => {
   const highlightIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const session = getCurrentSession();
-  const isAdmin = isSuperAdmin();
+  const { user, profile, isAdmin } = useAuth();
 
   // Filter mantras based on role
   const filteredMantras = isAdmin
@@ -66,9 +65,9 @@ const MantraAdminPage: React.FC = () => {
   // Load assignments for moderators
   useEffect(() => {
     const loadAssignments = async () => {
-      if (!isAdmin && session) {
+      if (!isAdmin && user) {
         try {
-          const assignments = await adminStorage.getAssignmentsByModerator(session.userId);
+          const assignments = await adminStorage.getAssignmentsByModerator(user.id);
           setMyAssignments(assignments);
 
           // Check for mantra param in URL (from moderator dashboard)
@@ -84,7 +83,7 @@ const MantraAdminPage: React.FC = () => {
       }
     };
     loadAssignments();
-  }, [isAdmin, session]);
+  }, [isAdmin, user]);
 
   // Load mantra data when selection changes
   useEffect(() => {

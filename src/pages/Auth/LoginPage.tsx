@@ -17,18 +17,29 @@ const LoginPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, user, isAdmin, isTeacher } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  
+
   const from = location.state?.from?.pathname || '/';
 
   React.useEffect(() => {
     if (user) {
-      navigate(from, { replace: true });
+      // If we are just logging in without a specific destination, go to the right dashboard
+      if (from === '/' || from === '/login' || from === '/auth/login' || from === '/admin/login') {
+        if (isAdmin) {
+          navigate('/dashboard/admin', { replace: true });
+        } else if (isTeacher) {
+          navigate('/dashboard/teacher', { replace: true });
+        } else {
+          navigate('/dashboard/student', { replace: true });
+        }
+      } else {
+        navigate(from, { replace: true });
+      }
     }
-  }, [user, navigate, from]);
+  }, [user, isAdmin, isTeacher, navigate, from]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

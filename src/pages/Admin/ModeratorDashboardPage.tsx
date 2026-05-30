@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { adminStorage } from '@/services/adminStorage';
-import { getCurrentSession } from '@/services/adminAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { MantraAssignment, statusInfo, AssignmentStatus } from '@/types/adminTypes';
 
 const ModeratorDashboardPage: React.FC = () => {
@@ -37,18 +37,20 @@ const ModeratorDashboardPage: React.FC = () => {
   const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
   const [submitAssignmentId, setSubmitAssignmentId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const session = getCurrentSession();
+  const { user, profile } = useAuth();
 
   useEffect(() => {
-    loadAssignments();
-  }, []);
+    if (user) {
+      loadAssignments();
+    }
+  }, [user]);
 
   const loadAssignments = async () => {
-    if (!session) return;
-    
+    if (!user) return;
+
     setIsLoading(true);
     try {
-      const myAssignments = await adminStorage.getAssignmentsByModerator(session.userId);
+      const myAssignments = await adminStorage.getAssignmentsByModerator(user.id);
       setAssignments(myAssignments);
     } catch (error) {
       toast.error('Failed to load assignments');
@@ -133,7 +135,7 @@ const ModeratorDashboardPage: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600">
-              Signed in as <span className="font-medium text-gray-900">{session?.userName}</span> (Moderator)
+              Signed in as <span className="font-medium text-gray-900">{profile?.username || profile?.first_name || user?.email}</span> (Moderator)
             </CardContent>
           </Card>
 

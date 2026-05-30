@@ -2,18 +2,17 @@
  * Admin Protected Route Component
  * Protects admin routes by checking authentication status
  * Supports role-based access control
- * Development only
  */
 
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { getCurrentSession, logout } from '@/services/adminAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/types/adminTypes';
 
 interface AdminProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: UserRole; // If specified, only this role can access
-  allowedRoles?: UserRole[]; // If specified, any of these roles can access
+  requiredRole?: UserRole | string; // If specified, only this role can access
+  allowedRoles?: (UserRole | string)[]; // If specified, any of these roles can access
 }
 
 export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({
@@ -21,33 +20,35 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({
   requiredRole,
   allowedRoles
 }) => {
+  const { user, profile, isLoading, signOut } = useAuth();
   const [authState, setAuthState] = useState<'loading' | 'authenticated' | 'unauthorized' | 'forbidden'>('loading');
 
   useEffect(() => {
-    const checkAuth = () => {
-      const session = getCurrentSession();
+    if (isLoading) {
+      setAuthState('loading');
+      return;
+    }
 
-      if (!session) {
-        setAuthState('unauthorized');
-        return;
-      }
+    if (!user || !profile) {
+      setAuthState('unauthorized');
+      return;
+    }
 
-      // Check role requirements
-      if (requiredRole && session.role !== requiredRole) {
-        setAuthState('forbidden');
-        return;
-      }
+    const role = profile.role || 'user';
 
-      if (allowedRoles && !allowedRoles.includes(session.role)) {
-        setAuthState('forbidden');
-        return;
-      }
+    // Check role requirements
+    if (requiredRole && role !== requiredRole) {
+      setAuthState('forbidden');
+      return;
+    }
 
-      setAuthState('authenticated');
-    };
+    if (allowedRoles && !allowedRoles.includes(role)) {
+      setAuthState('forbidden');
+      return;
+    }
 
-    checkAuth();
-  }, [requiredRole, allowedRoles]);
+    setAuthState('authenticated');
+  }, [user, profile, isLoading, requiredRole, allowedRoles]);
 
   // Show loading while checking authentication
   if (authState === 'loading') {
@@ -63,7 +64,7 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({
 
   // Redirect to login if not authenticated
   if (authState === 'unauthorized') {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // Show forbidden message if role doesn't match
@@ -76,8 +77,8 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({
           <p className="text-gray-600 mb-4">You don't have permission to access this page.</p>
           <button
             onClick={() => {
-              logout();
-              window.location.href = '/admin/login';
+              signOut();
+              window.location.href = '/login';
             }}
             className="px-4 py-2 bg-indian-saffron text-white rounded hover:bg-indian-saffron/90"
           >

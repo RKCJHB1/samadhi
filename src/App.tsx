@@ -63,6 +63,7 @@ import LearnUnveilPage from "./pages/Learn/LearnUnveilPage";
 import GamesPage from "./pages/Learn/GamesPage";
 import AumChanterPage from "./pages/Learn/AumChanterPage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
+import OnThisDay from "./pages/OnThisDay";
 import { lazy, Suspense } from "react";
 
 // Loading fallback component
@@ -95,8 +96,6 @@ import ReadLanguagesPage from "./pages/Learn/ReadLanguagesPage";
 import ReadLanguageStatsPage from "./pages/Learn/ReadLanguageStatsPage";
 import RequestLanguagePage from "./pages/Learn/RequestLanguagePage";
 import ProfilePage from "./pages/User/ProfilePage";
-import SupabaseLoginPage from "./pages/Auth/SupabaseLoginPage";
-import SupabaseSignupPage from "./pages/Auth/SupabaseSignupPage";
 import TranslationsModerationPage from "./pages/Moderation/TranslationsModerationPage";
 
 
@@ -121,7 +120,6 @@ import VerseManagementPage from "./pages/Admin/VerseManagementPage";
 import BulkVerseImport from "./pages/Admin/BulkVerseImport";
 import ModeratorManagementPage from "./pages/Admin/ModeratorManagementPage";
 import ModeratorDashboardPage from "./pages/Admin/ModeratorDashboardPage";
-import AdminLoginPage from "./pages/Auth/AdminLoginPage";
 import AdminProtectedRoute from "./components/auth/AdminProtectedRoute";
 
 // Lazy load Gallery pages (image-heavy)
@@ -154,6 +152,7 @@ const App = () => (
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<Index />} />
+            <Route path="/on-this-day" element={<OnThisDay />} />
 
             {/* About Section */}
             <Route path="/about" element={<AboutPage />}>
@@ -244,14 +243,14 @@ const App = () => (
             } />
 
             {/* Supabase Auth and Moderation */}
-            <Route path="/auth" element={<Navigate to="/auth/login" replace />} />
-            <Route path="/auth/login" element={<SupabaseLoginPage />} />
-            <Route path="/auth/signup" element={<SupabaseSignupPage />} />
+            <Route path="/auth" element={<Navigate to="/login" replace />} />
+            <Route path="/auth/login" element={<Navigate to="/login" replace />} />
+            <Route path="/auth/signup" element={<Navigate to="/login" replace />} />
             <Route path="/moderation/translations" element={<TranslationsModerationPage />} />
 
             {/* Admin Routes - Now available in production */}
-            {/* Admin Login - No protection needed */}
-            <Route path="/admin/login" element={<AdminLoginPage />} />
+            {/* Admin Login - Redirect to unified login */}
+            <Route path="/admin/login" element={<Navigate to="/login" replace />} />
 
             {/* Protected Admin Routes - Super Admin */}
             <Route path="/admin" element={

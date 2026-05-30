@@ -17,17 +17,16 @@ import {
   Shield,
   Users
 } from 'lucide-react';
-import { getCurrentSession, logout, isSuperAdmin } from '@/services/adminAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const AdminNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const session = getCurrentSession();
-  const isAdmin = isSuperAdmin();
+  const { user, profile, isAdmin, signOut } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/login');
   };
 
   // Super Admin sees all navigation

@@ -348,15 +348,6 @@ CREATE POLICY "Admin manage language_hidden" ON public.language_hidden
 
 -- ========== READING PROGRESS ==========
 
--- Allow admins to fully manage reading_progress (cleanup for removed languages)
-DROP POLICY IF EXISTS "Admin manage reading progress" ON public.reading_progress;
-CREATE POLICY "Admin manage reading progress" ON public.reading_progress
-  FOR ALL USING (
-    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
-  ) WITH CHECK (
-    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
-  );
-
 create table if not exists public.reading_progress (
   user_id uuid not null references auth.users(id) on delete cascade,
   lecture_id text not null,
@@ -371,6 +362,15 @@ create index if not exists idx_reading_progress_lecture on public.reading_progre
 create index if not exists idx_reading_progress_user_lecture on public.reading_progress (user_id, lecture_id);
 
 alter table public.reading_progress enable row level security;
+
+-- Allow admins to fully manage reading_progress (cleanup for removed languages)
+DROP POLICY IF EXISTS "Admin manage reading progress" ON public.reading_progress;
+CREATE POLICY "Admin manage reading progress" ON public.reading_progress
+  FOR ALL USING (
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
+  ) WITH CHECK (
+    exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role in ('moderator','admin'))
+  );
 DROP POLICY IF EXISTS "User read own progress" ON public.reading_progress;
 CREATE POLICY "User read own progress" ON public.reading_progress FOR SELECT USING (user_id = (select auth.uid()));
 DROP POLICY IF EXISTS "User upsert own progress" ON public.reading_progress;
