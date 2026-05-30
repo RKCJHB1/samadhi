@@ -521,7 +521,7 @@ export default function OnThisDay() {
       ctx.fillStyle = "#5C564E";
       ctx.font = "20px Georgia, serif";
       
-      const maxNarrativeY = 620; 
+      const maxNarrativeY = 860;
       const fullNarrative = `${eventData.narrativeParagraph1 || ""} ${eventData.narrativeParagraph2 || ""}`;
       const wrappedLines = wrapTextOnCanvas(ctx, fullNarrative, 860);
       
@@ -537,51 +537,7 @@ export default function OnThisDay() {
         currentY += narrativeLineHeight;
       }
 
-      // 7. Dynamic Blockquotes Container (Bottom section `#F2EFE9` card box)
-      const quoteBoxY = 660;
-      const quoteBoxHeight = 230;
-      const quoteBoxX = 90;
-      const quoteBoxWidth = 900;
-
-      // Fill light warm base background for citations
-      ctx.fillStyle = "#F2EFE9";
-      ctx.beginPath();
-      if (ctx.roundRect) {
-        ctx.roundRect(quoteBoxX, quoteBoxY, quoteBoxWidth, quoteBoxHeight, 14);
-      } else {
-        ctx.rect(quoteBoxX, quoteBoxY, quoteBoxWidth, quoteBoxHeight);
-      }
-      ctx.fill();
-
-      // Deep terracotta Left Accent thick line
-      ctx.fillStyle = "#E26D5C";
-      ctx.fillRect(quoteBoxX, quoteBoxY, 8, quoteBoxHeight);
-
-      // Faded background large quote sign illustration
-      ctx.fillStyle = "rgba(226, 109, 92, 0.08)";
-      ctx.font = "italic 160px Georgia, serif";
-      ctx.textAlign = "right";
-      ctx.fillText("“", quoteBoxX + quoteBoxWidth - 60, quoteBoxY + 120);
-
-      // Quote text
-      ctx.fillStyle = "#4A453E";
-      ctx.font = "italic 21px Georgia, serif";
-      ctx.textAlign = "left";
-      const quoteLines = wrapTextOnCanvas(ctx, `"${eventData.quote || ""}"`, 800);
-      let quoteY = quoteBoxY + 50;
-      
-      for (let i = 0; i < Math.min(quoteLines.length, 4); i++) {
-        ctx.fillText(quoteLines[i], quoteBoxX + 45, quoteY);
-        quoteY += 30;
-      }
-
-      // Quote author
-      ctx.fillStyle = "#8E8679";
-      ctx.font = "bold 15px sans-serif";
-      ctx.textAlign = "right";
-      ctx.fillText(`— ${eventData.quoteAuthor || "Spiritual Master"}`, quoteBoxX + quoteBoxWidth - 45, quoteBoxY + quoteBoxHeight - 25);
-
-      // 8. Dynamic scan-to-read QR Code Integration!
+      // 7. Dynamic scan-to-read QR Code Integration!
       const targetUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
       
       try {
@@ -673,7 +629,7 @@ export default function OnThisDay() {
     if (!eventData) return;
     try {
       const shareUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
-      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${eventData.headline}*\n\n"${eventData.narrativeParagraph1}"\n\n"${eventData.narrativeParagraph2}"\n\n🕊️ *Quote*:\n_"${eventData.quote}"_\n— *${eventData.quoteAuthor}*\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
+      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${eventData.headline}*\n\n"${eventData.narrativeParagraph1}"\n\n"${eventData.narrativeParagraph2}"\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
       
       navigator.clipboard.writeText(textToCopy);
       setCopiedTextPanel(true);
@@ -861,7 +817,7 @@ export default function OnThisDay() {
       </div>
     </div>
 
-    <!-- Right: Text Content & Quote -->
+    <!-- Right: Text Content -->
     <div class="lg:col-span-7 w-full flex flex-col bg-white border border-[#EAE7E0] shadow-sm rounded-2xl p-6 md:p-8" id="right-panel">
       
       <!-- Year and Headline Header -->
@@ -884,17 +840,6 @@ export default function OnThisDay() {
         <p id="p2">
           \${events[0]?.narrativeParagraph2 || ""}
         </p>
-      </div>
-
-      <!-- Quote Box -->
-      <div class="bg-[#F2EFE9] border-l-4 border-[#E26D5C] rounded-r-xl p-5 md:p-6 mt-6 relative overflow-hidden" id="quote-box">
-        <span class="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
-        <blockquote class="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed" id="display-quote">
-          &ldquo;\${events[0]?.quote || ""}&rdquo;
-        </blockquote>
-        <cite class="block text-xs md:text-sm font-sans font-medium text-[#8E8679] mt-3 text-right" id="display-author">
-          — \${events[0]?.quoteAuthor || ""}
-        </cite>
       </div>
 
     </div>
@@ -949,9 +894,7 @@ export default function OnThisDay() {
       const event = events[index];
       document.getElementById("display-year").textContent = event.year;
       document.getElementById("display-headline").textContent = event.headline;
-      document.getElementById("display-quote").innerHTML = "&ldquo;" + event.quote + "&rdquo;";
-      document.getElementById("display-author").textContent = "— " + event.quoteAuthor;
-      
+
       // We set the text content
       const docP1 = document.getElementById("p1");
       const docP2 = document.getElementById("p2");
@@ -1203,7 +1146,7 @@ export default function OnThisDay() {
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-200 shadow-3xs' 
                           : 'bg-[#FDFBF7] text-[#5C564E] hover:bg-[#F5F2EB] border-[#EAE7E0] hover:border-[#D6D2C4]'
                       }`}
-                      title="Copy full beautifully formatted narrative text with headline and quotes to paste on WhatsApp or Facebook"
+                      title="Copy full beautifully formatted narrative text with headline to paste on WhatsApp or Facebook"
                     >
                       {copiedTextPanel ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#E26D5C]" />}
                       <span>{copiedTextPanel ? "Narrative Draft Copied!" : "Copy Full Formatted Story Post"}</span>
@@ -1241,7 +1184,7 @@ export default function OnThisDay() {
                       )}
                     </div>
                     <p className="text-[10px] text-[#A89F91] mt-1.5 text-center font-sans tracking-tight max-w-xs font-normal leading-relaxed">
-                      Generates a gorgeous high-contrast spiritual card showing chronicle titles, daily quotes, and historical year timestamps.
+                      Generates a gorgeous high-contrast spiritual card showing chronicle titles and historical year timestamps.
                     </p>
                   </div>
                 </motion.div>
@@ -1432,23 +1375,6 @@ export default function OnThisDay() {
                   <p className="text-[#5C564E]">
                     {eventData?.narrativeParagraph2}
                   </p>
-                </div>
-
-                {/* Highlighted Daily Quote / Reflection Box */}
-                <div 
-                  className="bg-[#F2EFE9] border-l-4 border-[#E26D5C] rounded-r-xl p-5 md:p-6 mt-6 shadow-xs relative overflow-hidden" 
-                  id="quote_box"
-                >
-                  {/* Subtle design element */}
-                  <span className="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
-
-                  <blockquote className="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed">
-                    &ldquo;{eventData?.quote}&rdquo;
-                  </blockquote>
-                  
-                  <cite className="block text-xs md:text-sm font-sans font-medium text-[#8E8679] mt-3 text-right">
-                    — {eventData?.quoteAuthor}
-                  </cite>
                 </div>
 
               </motion.div>
