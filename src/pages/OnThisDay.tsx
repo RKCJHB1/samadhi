@@ -574,7 +574,7 @@ export default function OnThisDay() {
       // 6.5 Draw the accompanying historical picture to beautifully fill the space!
       try {
         currentY += 25; // Add some breathing room below the text
-        const availableHeight = 880 - currentY;
+        const availableHeight = 970 - currentY;
 
         if (availableHeight > 50) {
           let imgUrl = currentSlide.src;
@@ -618,35 +618,8 @@ export default function OnThisDay() {
         console.warn("Could not draw historical image on canvas:", err);
       }
 
-      // 7. Dynamic scan-to-read QR Code Integration!
-      const targetUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
-      
-      try {
-        const qrSize = 75;
-        const qrX = 540 - (qrSize / 2);
-        const qrY = 905;
-        
-        const qrImg = await new Promise<HTMLImageElement>((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = () => resolve(img);
-          img.onerror = (e) => reject(e);
-          img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=2D2A26&bgcolor=FAF9F6&data=${encodeURIComponent(targetUrl)}`;
-        });
-        
-        ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
-        
-        // Scan subtext
-        ctx.fillStyle = "#A89F91";
-        ctx.font = "9px monospace";
-        ctx.letterSpacing = "1.5px";
-        ctx.textAlign = "center";
-        ctx.fillText("SCAN GRAPHIC TO READ ONLINE", 540, 998);
-      } catch (qrErr) {
-        console.warn("QR Code render skipped or bypassed:", qrErr);
-      }
-
       // 9. Footer Credit watermark
+      const targetUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
       ctx.fillStyle = "#A89F91";
       ctx.font = "12px monospace";
       ctx.letterSpacing = "1px";
