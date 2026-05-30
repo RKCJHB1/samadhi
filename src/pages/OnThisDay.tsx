@@ -53,6 +53,13 @@ const getSASTTime = () => {
 };
 
 const isFutureDateInYear = (monthName: string, day: number) => {
+  try {
+    if (new URLSearchParams(window.location.search).get('preview') === 'true') {
+      return false;
+    }
+  } catch (e) {
+    // ignore
+  }
   const saDate = getSASTTime();
   const currentMonthIdx = saDate.getMonth();
   const currentDayVal = saDate.getDate();
@@ -64,6 +71,13 @@ const isFutureDateInYear = (monthName: string, day: number) => {
 };
 
 const isBeforeLaunchDate = (monthName: string, day: number) => {
+  try {
+    if (new URLSearchParams(window.location.search).get('preview') === 'true') {
+      return false;
+    }
+  } catch (e) {
+    // ignore
+  }
   const targetMonthIdx = MONTH_DEFS.findIndex(m => m.name === monthName);
   const launchMonthIdx = 4; // May
   const launchDayVal = 31;
