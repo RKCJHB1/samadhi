@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import { navigation } from './NavbarData';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
-import HinduismForChildrenLoginNav from '../auth/HinduismForChildrenLoginNav';
 import gsap from 'gsap';
 import './navbar.css';
 
@@ -113,31 +112,26 @@ const Navbar = () => {
             setActiveDropdown={setActiveDropdown}
           />
 
-          {/* User account navigation - For Hinduism for Children access */}
-          <div className="hidden md:flex items-center ml-4">
-            <HinduismForChildrenLoginNav />
-          </div>
-
-          {/* Admin Link - Now available in production */}
+          {/* On this Day Link */}
           <div className="hidden md:flex items-center ml-4">
             <Link
-              to="/admin/login"
+              to="/on-this-day"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indian-saffron/10 text-indian-saffron hover:bg-indian-saffron hover:text-white transition-all duration-200 border border-indian-saffron/20"
             >
-              <Shield className="w-4 h-4" />
-              <span className="text-sm font-medium">Admin</span>
+              <Calendar className="w-4 h-4" />
+              <span className="text-sm font-medium">On this Day</span>
             </Link>
           </div>
 
           {/* Mobile menu button - Only visible on mobile */}
           <div className="md:hidden flex items-center">
-            <HinduismForChildrenLoginNav />
-            {/* Admin Link - Mobile - Now available in production */}
+            {/* On this Day Link - Mobile */}
             <Link
-              to="/admin/login"
+              to="/on-this-day"
               className="flex items-center gap-1 px-3 py-2 ml-2 rounded-lg bg-indian-saffron/10 text-indian-saffron hover:bg-indian-saffron hover:text-white transition-all duration-200"
             >
-              <Shield className="w-4 h-4" />
+              <Calendar className="w-4 h-4" />
+              <span className="text-xs font-medium">On this Day</span>
             </Link>
             <button
               type="button"
