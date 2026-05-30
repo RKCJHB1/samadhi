@@ -577,15 +577,15 @@ export default function OnThisDay() {
         const availableHeight = 970 - currentY;
 
         if (availableHeight > 50) {
-          let imgUrl = currentSlide.src;
-
-          if (imgUrl.startsWith('/')) {
-             imgUrl = window.location.origin + imgUrl;
-          }
+          const imgUrl = currentSlide.src;
+          const isExternal = imgUrl.startsWith('http') && !imgUrl.includes(window.location.hostname);
 
           const img = await new Promise<HTMLImageElement>((resolve, reject) => {
             const image = new Image();
-            image.crossOrigin = "anonymous";
+            // Only require CORS for external images. Local images fail with crossOrigin="anonymous" on dev server
+            if (isExternal) {
+              image.crossOrigin = "anonymous";
+            }
             image.onload = () => resolve(image);
             image.onerror = (e) => reject(new Error(`Failed to load image: ${imgUrl}`));
             image.src = imgUrl;
