@@ -1491,11 +1491,8 @@ export default function OnThisDay() {
       </AnimatePresence>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-[#EAE7E0] mt-12 pt-6 pb-2 text-center text-[10px] text-[#A89F91] font-mono tracking-[0.2em] font-bold flex flex-col md:flex-row justify-between items-center gap-4" id="footer_section">
+      <footer className="w-full border-t border-[#EAE7E0] mt-12 pt-6 pb-6 text-center text-[10px] text-[#A89F91] font-mono tracking-[0.2em] font-bold flex flex-col md:flex-row justify-center items-center gap-4" id="footer_section">
         <p>RAMAKRISHNA ORDER HISTORY PROJECT</p>
-        <p className="normal-case tracking-normal font-sans text-xs font-light text-[#8E8679]">
-          Made for Viprananda (rkmm.org) • Powered by Gemini AI Studio Build Chimes.
-        </p>
       </footer>
 
     </div>
