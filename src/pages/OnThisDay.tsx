@@ -555,7 +555,7 @@ export default function OnThisDay() {
       ctx.fillStyle = "#5C564E";
       ctx.font = "20px Georgia, serif";
       
-      const maxNarrativeY = 660;
+      const maxNarrativeY = 850; // Increased to prevent cutting off the text
       const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
       const wrappedLines = wrapTextOnCanvas(ctx, fullNarrative, 860);
 
