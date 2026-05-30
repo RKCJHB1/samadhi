@@ -587,7 +587,7 @@ export default function OnThisDay() {
               const blob = await response.blob();
               const objectUrl = URL.createObjectURL(blob);
 
-              const image = new Image();
+              const image = new window.Image();
               image.onload = () => {
                 resolve(image);
               };
@@ -759,7 +759,7 @@ export default function OnThisDay() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>On This Day - Ramakrishna Order History</title>
+  <title>On This Day - History of the Ramakrishna Movement</title>
   <!-- Beautiful Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <!-- Tailwind CSS v3 via CDN -->
@@ -804,7 +804,7 @@ export default function OnThisDay() {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-3 3-8"/><path d="M22 10s-3-3-3-8"/><path d="M5 10c0 4.4 3.6 8 8 8s8-3.6 8-8"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
       </div>
       <div class="text-left">
-        <h1 class="text-xl md:text-2xl font-serif text-[#2D2A26] font-medium tracking-tight">On This Day in <span class="italic text-[#E26D5C]">Ramakrishna Order History</span></h1>
+        <h1 class="text-xl md:text-2xl font-serif text-[#2D2A26] font-medium tracking-tight">On This Day in the History of the <span class="italic text-[#E26D5C]">Ramakrishna Movement</span></h1>
         <p class="text-xs text-[#8E8679] font-light mt-0.5">Offline self-contained single-page edition</p>
       </div>
     </div>
@@ -1024,7 +1024,7 @@ export default function OnThisDay() {
         <div className="flex flex-col md:flex-row items-center md:items-start gap-5 text-center md:text-left max-w-2xl">
           <div className="flex flex-col space-y-2">
             <h1 className="text-xl md:text-2xl font-serif text-[#2D2A26] font-medium tracking-tight leading-tight">
-              On This Day in <span className="italic text-[#E26D5C] font-semibold">Ramakrishna Order History</span>
+              On This Day in the History of the <span className="italic text-[#E26D5C] font-semibold">Ramakrishna Movement</span>
             </h1>
 
             <div className="space-y-2">
