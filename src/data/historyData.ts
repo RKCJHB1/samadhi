@@ -9,6 +9,7 @@ export interface OnThisDayEvent {
   quote: string;
   quoteAuthor: string;
   imageCaption: string;
+  customImage?: string;
 }
 
 export const PRELOADED_EVENTS: OnThisDayEvent[] = [
@@ -16,13 +17,25 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     date: "May 31",
     monthNumeric: 4,
     dayNumeric: 31,
-    year: 1897,
-    headline: "Swami Vivekananda Establishes the Ramakrishna Mission in Calcutta",
-    narrativeParagraph1: "After returning triumphantly from the West, Swami Vivekananda convened a historic meeting at the house of Balaram Bose on May 1, 1897, to establish the Ramakrishna Mission. By the end of May, the organization's foundational principles and methods of working had taken definitive shape.",
-    narrativeParagraph2: "Swamiji envisioned a machinery that would bring his Master's teachings into practical application. The twin ideals of the Mission—'For one's own liberation, and for the welfare of the world'—became the guiding force for monastic members and householder devotees alike, transforming traditional monasticism into a dynamic engine for social and spiritual upliftment.",
-    quote: "The national ideals of India are renunciation and service. Intensify her in those channels, and the rest will take care of itself.",
+    year: 1855,
+    headline: "The Inauguration of Dakshineswar Kali Temple",
+    narrativeParagraph1: "On May 31, 1855, the iconic Dakshineswar Kali Temple, situated on the eastern bank of the Hooghly River near Kolkata, was formally inaugurated. Built by the philanthropic zamindar Rani Rashmoni, the grand temple complex was dedicated to Goddess Bhavatarini, an aspect of Kali.",
+    narrativeParagraph2: "The inauguration took place on the auspicious day of Snana Yatra and marked a monumental moment in spiritual history. Around this time, Sri Ramakrishna arrived at the temple, eventually becoming its head priest and transforming the site into a legendary epicenter of the 19th-century Bengal Renaissance and mystic devotion.",
+    quote: "Mother is the ultimate reality. If you weep for Her with a pure heart, She will surely reveal Herself to you.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "The iconic Dakshineswar Kali Temple along the Hooghly River, radiating spiritual devotion."
+  },
+  {
+    date: "May 31",
+    monthNumeric: 4,
+    dayNumeric: 31,
+    year: 1893,
+    headline: "Swami Vivekananda Sets Sail for America",
+    narrativeParagraph1: "Swami Vivekananda set sail for America on May 31, 1893. On this historic day, Swamiji boarded the ship S.S. Peninsular at the Bombay port, embarking on a transformative journey across the oceans.",
+    narrativeParagraph2: "Traveling via Asia and Canada, he was bound for the United States to represent Hinduism at the Parliament of the World's Religions in Chicago. His eventual speech there in September would catapult Indian spirituality into the global consciousness.",
+    quote: "I have a message to the West as Buddha had a message to the East.",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "A quiet moment of reflection near the Ganges, capturing the spirit of dedication to humanity."
+    imageCaption: "A vast ship navigating across the open ocean, carrying a message of universal harmony."
   },
   {
     date: "January 1",
