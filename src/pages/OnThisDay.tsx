@@ -563,18 +563,12 @@ export default function OnThisDay() {
       ctx.textAlign = "right";
       ctx.fillText("“", quoteBoxX + quoteBoxWidth - 60, quoteBoxY + 120);
 
-      // Quote Title
-      ctx.fillStyle = "#E26D5C";
-      ctx.font = "bold 13px monospace";
-      ctx.letterSpacing = "4px";
-      ctx.textAlign = "left";
-      ctx.fillText("DAILY REFLECTION", quoteBoxX + 45, quoteBoxY + 44);
-
       // Quote text
       ctx.fillStyle = "#4A453E";
       ctx.font = "italic 21px Georgia, serif";
+      ctx.textAlign = "left";
       const quoteLines = wrapTextOnCanvas(ctx, `"${eventData.quote || ""}"`, 800);
-      let quoteY = quoteBoxY + 85;
+      let quoteY = quoteBoxY + 50;
       
       for (let i = 0; i < Math.min(quoteLines.length, 4); i++) {
         ctx.fillText(quoteLines[i], quoteBoxX + 45, quoteY);
@@ -895,7 +889,6 @@ export default function OnThisDay() {
       <!-- Quote Box -->
       <div class="bg-[#F2EFE9] border-l-4 border-[#E26D5C] rounded-r-xl p-5 md:p-6 mt-6 relative overflow-hidden" id="quote-box">
         <span class="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
-        <h4 class="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY REFLECTION</h4>
         <blockquote class="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed" id="display-quote">
           &ldquo;\${events[0]?.quote || ""}&rdquo;
         </blockquote>
@@ -1448,9 +1441,7 @@ export default function OnThisDay() {
                 >
                   {/* Subtle design element */}
                   <span className="absolute right-4 top-2 text-6xl text-[#E26D5C]/10 font-serif pointer-events-none select-none">“</span>
-                  
-                  <h4 className="text-[10px] font-mono tracking-[0.2em] text-[#E26D5C] uppercase mb-2 font-bold">DAILY REFLECTION</h4>
-                  
+
                   <blockquote className="text-[15px] md:text-[17px] font-serif italic text-[#4A453E] leading-relaxed">
                     &ldquo;{eventData?.quote}&rdquo;
                   </blockquote>
