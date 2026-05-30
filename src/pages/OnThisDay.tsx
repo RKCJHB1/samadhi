@@ -578,17 +578,26 @@ export default function OnThisDay() {
 
         if (availableHeight > 50) {
           const imgUrl = currentSlide.src;
-          const isExternal = imgUrl.startsWith('http') && !imgUrl.includes(window.location.hostname);
 
-          const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-            const image = new Image();
-            // Only require CORS for external images. Local images fail with crossOrigin="anonymous" on dev server
-            if (isExternal) {
-              image.crossOrigin = "anonymous";
+          const img = await new Promise<HTMLImageElement>(async (resolve, reject) => {
+            try {
+              // Fetch image as blob to completely bypass canvas CORS/tainting issues
+              const response = await fetch(imgUrl);
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              const blob = await response.blob();
+              const objectUrl = URL.createObjectURL(blob);
+
+              const image = new Image();
+              image.onload = () => {
+                resolve(image);
+              };
+              image.onerror = (e) => {
+                reject(new Error(`Failed to decode image: ${imgUrl}`));
+              };
+              image.src = objectUrl;
+            } catch (err) {
+              reject(err);
             }
-            image.onload = () => resolve(image);
-            image.onerror = (e) => reject(new Error(`Failed to load image: ${imgUrl}`));
-            image.src = imgUrl;
           });
 
           // Calculate dimensions to maintain aspect ratio and fit within boundaries

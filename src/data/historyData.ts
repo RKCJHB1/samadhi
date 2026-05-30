@@ -37,7 +37,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "Traveling via Asia and Canada, he was bound for the United States to represent Hinduism at the Parliament of the World's Religions in Chicago. His eventual speech there in September would catapult Indian spirituality into the global consciousness.",
     quote: "I have a message to the West as Buddha had a message to the East.",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "A vast ship navigating across the open ocean, carrying a message of universal harmony."
+    imageCaption: "A vast ship navigating across the open ocean, carrying a message of universal harmony.",
+    customImages: ["/images/on-this-day/swamiji1.png", "/images/on-this-day/swamiji2.png"]
   },
   {
     date: "January 1",
