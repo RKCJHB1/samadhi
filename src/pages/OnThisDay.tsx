@@ -966,7 +966,7 @@ export default function OnThisDay() {
 
             <div className="space-y-2">
               <p className="text-xs sm:text-sm text-[#7C7267] font-sans font-normal leading-relaxed">
-                This archive is a daily chronicle mapping the spiritual legacy of the Ramakrishna Movement. Spanning spiritual origins and over 125 years since Swami Vivekananda's return from the West, it brings authentic milestones, temple installations, and global reflections straight from the archives.
+                Discover how today is woven into the spiritual legacy of the Ramakrishna Movement. From its earliest roots to over 125 years since Swami Vivekananda’s return from the West, this daily chronicle brings you the authentic milestones that happened on this very day in some years past.
               </p>
             </div>
           </div>
