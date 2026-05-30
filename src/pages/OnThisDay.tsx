@@ -242,7 +242,7 @@ export default function OnThisDay() {
       }
 
       if (customSlides.length > 0) {
-        return [...customSlides, ...defaultSlides];
+        return customSlides;
       }
     }
     return defaultSlides;
