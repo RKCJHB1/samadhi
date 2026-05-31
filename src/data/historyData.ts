@@ -54,6 +54,18 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/1stJuneSwamiji1.png", "/images/on-this-day/1stJuneSwamiji2.png"]
   },
   {
+    date: "June 1",
+    monthNumeric: 5,
+    dayNumeric: 1,
+    year: 1915,
+    headline: "Swami Turiyananda on Divine Protection",
+    narrativeParagraph1: "On June 1, 1915, a profound spiritual dialogue was recorded between Swami Turiyananda, a direct disciple of Sri Ramakrishna, and a devotee. When asked why the Lord had suppressed a period of continuous spiritual ecstasy in his life, the Swami offered a beautiful, culturally rich explanation.",
+    narrativeParagraph2: "He likened the divine intervention to a loving mother who puts a black mark on her beautiful child's cheek to ward off the evil eye, suggesting that the Lord hid his ecstatic state simply to protect him from the envy of the world and allow his work to continue quietly.",
+    quote: "The Lord's hand is always extended in protection over his children. Sometimes the greatest grace is hidden from the eyes of the world.",
+    quoteAuthor: "Swami Turiyananda",
+    imageCaption: "A serene portrait reflecting the gentle wisdom and compassionate grace of a direct disciple of Sri Ramakrishna."
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
