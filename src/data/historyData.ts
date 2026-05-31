@@ -41,6 +41,18 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/swamiji1.png", "/images/on-this-day/swamiji2.png"]
   },
   {
+    date: "June 1",
+    monthNumeric: 5,
+    dayNumeric: 1,
+    year: 1897,
+    headline: "Swami Vivekananda's Sanskrit Letter from Almora",
+    narrativeParagraph1: "On June 1, 1897, while recuperating in the serene hills of Almora, Swami Vivekananda wrote a significant Sanskrit letter to his disciple, Swami Shuddhananda. Beyond sharing personal updates and tender care for his fellow monks, Swamiji provided a masterful exposition on the true essence of the Vedas.",
+    narrativeParagraph2: "Using the metaphor of a vast flood, he emphasized that just as a thirsty person seeks only drinkable water from a deluge, a true spiritual aspirant must bypass ritualistic complexities and focus entirely on the ultimate core of the scriptures: achieving direct spiritual illumination through the knowledge of Brahman.",
+    quote: "The essence of the Vedas is the knowledge of Brahman. All rituals and ceremonies are but the waves on the ocean of Truth.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Misty mountain peaks of Almora shrouded in serene spirituality, where sacred wisdom was imparted."
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
