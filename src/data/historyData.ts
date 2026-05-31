@@ -50,7 +50,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "Using the metaphor of a vast flood, he emphasized that just as a thirsty person seeks only drinkable water from a deluge, a true spiritual aspirant must bypass ritualistic complexities and focus entirely on the ultimate core of the scriptures: achieving direct spiritual illumination through the knowledge of Brahman.",
     quote: "The essence of the Vedas is the knowledge of Brahman. All rituals and ceremonies are but the waves on the ocean of Truth.",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "Misty mountain peaks of Almora shrouded in serene spirituality, where sacred wisdom was imparted."
+    imageCaption: "Misty mountain peaks of Almora shrouded in serene spirituality, where sacred wisdom was imparted.",
+    customImages: ["/images/on-this-day/1stJuneSwamiji1.png", "/images/on-this-day/1stJuneSwamiji2.png"]
   },
   {
     date: "January 1",
