@@ -63,7 +63,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "He likened the divine intervention to a loving mother who puts a black mark on her beautiful child's cheek to ward off the evil eye, suggesting that the Lord hid his ecstatic state simply to protect him from the envy of the world and allow his work to continue quietly.",
     quote: "The Lord's hand is always extended in protection over his children. Sometimes the greatest grace is hidden from the eyes of the world.",
     quoteAuthor: "Swami Turiyananda",
-    imageCaption: "A serene portrait reflecting the gentle wisdom and compassionate grace of a direct disciple of Sri Ramakrishna."
+    imageCaption: "A serene portrait reflecting the gentle wisdom and compassionate grace of a direct disciple of Sri Ramakrishna.",
+    customImages: ["/images/on-this-day/1stJuneTuriya.png"]
   },
   {
     date: "January 1",
