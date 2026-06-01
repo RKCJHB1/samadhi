@@ -80,6 +80,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/2ndJuneGoodwin.png"]
   },
   {
+    date: "June 2",
+    monthNumeric: 5,
+    dayNumeric: 2,
+    year: 1910,
+    headline: "The Seeds of the Ramakrishna Movement in Brazil",
+    narrativeParagraph1: "An extraordinary, independent thread of the Ramakrishna Movement traces back to this date with the birth of Mr. Arlindo Correa da Silva in Paraíba, Brazil. Decades later, in the 1950s, Arlindo experienced vivid, unprompted spiritual visions of Sri Ramakrishna and Swami Brahmananda, despite having almost no prior exposure to Indian philosophy.",
+    narrativeParagraph2: "Guided by these mystical encounters, he began a dedicated service for impoverished children and legally registered the \"Missão Ramakrishna\" in Belo Horizonte in 1959—years before Belur Math officially sent monastics to South America. Today, his life's work stands as a profound testament to the global, unseen reach of Ramakrishna’s spiritual legacy.",
+    quote: "The grace of God is like a wind that is always blowing. You have only to unfurl your sails.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "A testament to the global and mystical reach of the Ramakrishna Movement's spiritual legacy in South America.",
+    customImages: ["/images/on-this-day/2ndJuneArlindo2.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
