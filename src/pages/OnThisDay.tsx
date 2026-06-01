@@ -1290,7 +1290,7 @@ export default function OnThisDay() {
               {/* Display Images with dynamic source resolving */}
               <AnimatePresence mode="wait">
                 <motion.img
-                  key={slideshowIndex}
+                  key={`${activeEventIndex}-${slideshowIndex}`}
                   src={currentSlide?.src}
                   alt={currentSlide?.captionHeading}
                   referrerPolicy="no-referrer"
