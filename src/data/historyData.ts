@@ -67,6 +67,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/1stJuneTuriya.png"]
   },
   {
+    date: "June 2",
+    monthNumeric: 5,
+    dayNumeric: 2,
+    year: 1898,
+    headline: "The Passing of J.J. Goodwin",
+    narrativeParagraph1: "On June 2, 1898, Josiah John Goodwin, the faithful disciple and stenographer of Swami Vivekananda, passed away at age 27. Goodwin’s brilliant shorthand was instrumental in recording Swamiji's lectures.",
+    narrativeParagraph2: "Acknowledging this priceless legacy in a moving condolence letter to Goodwin's mother, Swamiji wrote, \"The debt of gratitude I owe him can never be repaid, and those who think they have been helped by any thought of mine ought to know that almost every word of it was published through the untiring and most unselfish exertions of Mr. Goodwin.\" Swamiji further immortalized his loyal companion in the poignant poem, \"Requiescat in pace.\"",
+    quote: "The debt of gratitude I owe him can never be repaid, and those who think they have been helped by any thought of mine ought to know that almost every word of it was published through the untiring and most unselfish exertions of Mr. Goodwin.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Josiah John Goodwin, the devoted disciple and stenographer whose untiring service preserved Swami Vivekananda's teachings for posterity.",
+    customImages: ["/images/on-this-day/2ndJuneGoodwin.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
