@@ -394,7 +394,7 @@ export default function OnThisDay() {
   useEffect(() => {
     if (!isAutoPlaying) return;
     const interval = setInterval(() => {
-      setSlideshowIndex((prev) => (prev + 1) % slideshowImages.length);
+      setSlideshowIndex((prev) => prev + 1);
     }, 8000);
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
@@ -1314,7 +1314,7 @@ export default function OnThisDay() {
                   setIsAutoPlaying(false);
                   setSlideshowIndex(prev => (prev - 1 + slideshowImages.length) % slideshowImages.length);
                 }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity md:opacity-0 opacity-100 group-hover:opacity-100 cursor-pointer"
                 aria-label="Previous slide"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -1325,7 +1325,7 @@ export default function OnThisDay() {
                   setIsAutoPlaying(false);
                   setSlideshowIndex(prev => (prev + 1) % slideshowImages.length);
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity md:opacity-0 opacity-100 group-hover:opacity-100 cursor-pointer"
                 aria-label="Next slide"
               >
                 <ChevronRight className="w-4 h-4" />
