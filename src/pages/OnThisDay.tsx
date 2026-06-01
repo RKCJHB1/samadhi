@@ -265,7 +265,7 @@ export default function OnThisDay() {
   };
 
   const slideshowImages = getSlideshowImages();
-  const safeSlideshowIndex = slideshowIndex % slideshowImages.length;
+  const safeSlideshowIndex = ((slideshowIndex % slideshowImages.length) + slideshowImages.length) % slideshowImages.length;
   const currentSlide = slideshowImages[safeSlideshowIndex] || slideshowImages[0];
 
   // Map month name to index
@@ -1289,9 +1289,9 @@ export default function OnThisDay() {
               
               {/* Display Images with dynamic source resolving */}
               <AnimatePresence mode="wait">
-                <motion.img 
-                  key={safeSlideshowIndex}
-                  src={currentSlide?.src} 
+                <motion.img
+                  key={slideshowIndex}
+                  src={currentSlide?.src}
                   alt={currentSlide?.captionHeading}
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 w-full h-full object-cover"
@@ -1309,10 +1309,10 @@ export default function OnThisDay() {
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E26D5C] w-1/3 z-10" />
 
               {/* Slideshow Manual Arrow Controls */}
-              <button 
+              <button
                 onClick={() => {
                   setIsAutoPlaying(false);
-                  setSlideshowIndex(prev => (prev - 1 + slideshowImages.length) % slideshowImages.length);
+                  setSlideshowIndex(prev => prev - 1);
                 }}
                 className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity md:opacity-0 opacity-100 group-hover:opacity-100 cursor-pointer"
                 aria-label="Previous slide"
@@ -1320,10 +1320,10 @@ export default function OnThisDay() {
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <button 
+              <button
                 onClick={() => {
                   setIsAutoPlaying(false);
-                  setSlideshowIndex(prev => (prev + 1) % slideshowImages.length);
+                  setSlideshowIndex(prev => prev + 1);
                 }}
                 className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-xs transition-opacity md:opacity-0 opacity-100 group-hover:opacity-100 cursor-pointer"
                 aria-label="Next slide"
@@ -1340,11 +1340,14 @@ export default function OnThisDay() {
 
               <div className="absolute bottom-3 right-4 flex space-x-1.5 items-center z-10">
                 {slideshowImages.map((_, idx) => (
-                  <button 
+                  <button
                     key={idx}
                     onClick={() => {
                       setIsAutoPlaying(false);
-                      setSlideshowIndex(idx);
+                      setSlideshowIndex(prev => {
+                        const currentSafe = ((prev % slideshowImages.length) + slideshowImages.length) % slideshowImages.length;
+                        return prev + (idx - currentSafe);
+                      });
                     }}
                     className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
                       idx === safeSlideshowIndex ? 'bg-[#E26D5C] w-3.5' : 'bg-white/60 hover:bg-white'
