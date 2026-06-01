@@ -98,6 +98,7 @@ interface HistoryEvent {
   quoteAuthor: string;
   imageCaption: string;
   customImage?: string;
+  customImages?: string[];
   isAiGenerated?: boolean;
   isFallback?: boolean;
   isQuotaExceeded?: boolean;
