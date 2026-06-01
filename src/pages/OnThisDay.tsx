@@ -304,7 +304,19 @@ export default function OnThisDay() {
       );
 
       if (localMatches.length > 0) {
-        setEventsList(localMatches);
+        const convertedEvents: HistoryEvent[] = localMatches.map(event => ({
+          date: event.date,
+          year: String(event.year),
+          headline: event.headline,
+          narrativeParagraph1: event.narrativeParagraph1,
+          narrativeParagraph2: event.narrativeParagraph2,
+          quote: event.quote,
+          quoteAuthor: event.quoteAuthor,
+          imageCaption: event.imageCaption,
+          customImage: event.customImage,
+          customImages: event.customImages
+        }));
+        setEventsList(convertedEvents);
       } else {
         // Fallback for days with no events
         const dailyThemes = [
