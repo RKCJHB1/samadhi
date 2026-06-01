@@ -238,28 +238,31 @@ export default function OnThisDay() {
       }
     ];
 
-    if (eventData) {
-      const customSlides: typeof defaultSlides = [];
-      if (eventData.customImages && eventData.customImages.length > 0) {
-        eventData.customImages.forEach(imgUrl => {
+    const customSlides: typeof defaultSlides = [];
+
+    // Aggregate all custom images for the entire day across all events
+    eventsList.forEach(evt => {
+      if (evt.customImages && evt.customImages.length > 0) {
+        evt.customImages.forEach(imgUrl => {
           customSlides.push({
             src: imgUrl,
-            captionHeading: eventData.headline || "Chronicled Milestone",
-            defaultCaption: eventData.imageCaption || "Historical picture uploaded for this chronicle."
+            captionHeading: evt.headline || "Chronicled Milestone",
+            defaultCaption: evt.imageCaption || "Historical picture uploaded for this chronicle."
           });
         });
-      } else if (eventData.customImage) {
+      } else if (evt.customImage) {
         customSlides.push({
-          src: eventData.customImage,
-          captionHeading: eventData.headline || "Chronicled Milestone",
-          defaultCaption: eventData.imageCaption || "Historical picture uploaded for this chronicle."
+          src: evt.customImage,
+          captionHeading: evt.headline || "Chronicled Milestone",
+          defaultCaption: evt.imageCaption || "Historical picture uploaded for this chronicle."
         });
       }
+    });
 
-      if (customSlides.length > 0) {
-        return customSlides;
-      }
+    if (customSlides.length > 0) {
+      return customSlides;
     }
+
     return defaultSlides;
   };
 
