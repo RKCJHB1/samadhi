@@ -384,6 +384,11 @@ export default function OnThisDay() {
     };
   }, [selectedMonth, selectedDay]);
 
+  // Reset slideshow when switching between multiple events on same day
+  useEffect(() => {
+    setSlideshowIndex(0);
+  }, [activeEventIndex]);
+
   // Slideshow AutoPlay Timer
   useEffect(() => {
     if (!isAutoPlaying) return;
