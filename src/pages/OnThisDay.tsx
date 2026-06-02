@@ -181,6 +181,55 @@ export default function OnThisDay() {
       }
     }
   }, []);
+
+  // Update Document Title and Meta Tags for SEO dynamically
+  useEffect(() => {
+    const title = eventData
+      ? `On This Day (${selectedMonth} ${selectedDay}): ${eventData.headline} - Ramakrishna Movement`
+      : `On This Day (${selectedMonth} ${selectedDay}) - Ramakrishna Movement History`;
+
+    const description = eventData
+      ? `Chronicle of ${eventData.year || "History"}: ${eventData.narrativeParagraph1?.substring(0, 150)}...`
+      : "Discover how today is woven into the legacy of the Ramakrishna Movement. From its earliest roots to over 125 years since Swami Vivekananda's return from the West, this daily chronicle brings you the milestones that happened on this very day in some years past.";
+
+    // Update main browser tab title
+    document.title = title;
+
+    // Helper to safely update or create a meta tag
+    const setMetaTag = (nameOrProperty: 'name' | 'property', key: string, value: string) => {
+      let element = document.querySelector(`meta[${nameOrProperty}="${key}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(nameOrProperty, key);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', value);
+    };
+
+    // Standard SEO Tags
+    setMetaTag('name', 'description', description);
+
+    // Open Graph (Facebook, LinkedIn, iMessage, etc.)
+    setMetaTag('property', 'og:type', 'website');
+    setMetaTag('property', 'og:title', title);
+    setMetaTag('property', 'og:description', description);
+    setMetaTag('property', 'og:url', window.location.href);
+
+    // Dynamic sharing image resolution
+    const imageToUse = eventData?.customImage || eventData?.customImages?.[0] || belurMathImg;
+    const fullImageUrl = imageToUse.startsWith('http')
+      ? imageToUse
+      : `https://ramakrishna-johannesburg.org.za${imageToUse}`;
+
+    setMetaTag('property', 'og:image', fullImageUrl);
+
+    // Twitter / X Cards
+    setMetaTag('name', 'twitter:card', 'summary_large_image');
+    setMetaTag('name', 'twitter:title', title);
+    setMetaTag('name', 'twitter:description', description);
+    setMetaTag('name', 'twitter:image', fullImageUrl);
+
+  }, [eventData, selectedMonth, selectedDay]);
   
   // Media slideshow states
   const [slideshowIndex, setSlideshowIndex] = useState<number>(0);

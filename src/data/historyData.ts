@@ -93,6 +93,18 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/2ndJuneArlindo2.png"]
   },
   {
+    date: "June 3",
+    monthNumeric: 5,
+    dayNumeric: 3,
+    year: 1901,
+    headline: "Proposal for a Grand Tour",
+    narrativeParagraph1: "On June 3, 1901, Swami Vivekananda wrote an affectionate letter from Belur Math to his brother disciple, Swami Ramakrishnananda, who was feeling anxious over a troubling dream.",
+    narrativeParagraph2: "After lightheartedly teasing him that the nightmare was just the result of \"indigestion\" and warmly reassuring him of his love, Swamiji proposed: \"After you have taken a month's rest here, you and I together will make a grand tour via Gujarat, Bombay, Poona, Hyderabad, Mysore to Madras. Would not that be grand?\"",
+    quote: "After you have taken a month's rest here, you and I together will make a grand tour via Gujarat, Bombay, Poona, Hyderabad, Mysore to Madras. Would not that be grand?",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Belur Math, from where Swami Vivekananda wrote his affectionate letter envisioning a grand spiritual tour across India."
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
