@@ -102,7 +102,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "After lightheartedly teasing him that the nightmare was just the result of \"indigestion\" and warmly reassuring him of his love, Swamiji proposed: \"After you have taken a month's rest here, you and I together will make a grand tour via Gujarat, Bombay, Poona, Hyderabad, Mysore to Madras. Would not that be grand?\"",
     quote: "After you have taken a month's rest here, you and I together will make a grand tour via Gujarat, Bombay, Poona, Hyderabad, Mysore to Madras. Would not that be grand?",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "Belur Math, from where Swami Vivekananda wrote his affectionate letter envisioning a grand spiritual tour across India."
+    imageCaption: "Belur Math, from where Swami Vivekananda wrote his affectionate letter envisioning a grand spiritual tour across India.",
+    customImages: ["/images/on-this-day/3rdJuneLetter.png"]
   },
   {
     date: "January 1",
