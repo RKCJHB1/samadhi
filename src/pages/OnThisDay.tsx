@@ -1048,7 +1048,10 @@ export default function OnThisDay() {
 
             <div className="space-y-2">
               <p className="text-xs sm:text-sm text-[#7C7267] font-sans font-normal leading-relaxed">
-                Discover how today is woven into the spiritual legacy of the Ramakrishna Movement. From its earliest roots to over 125 years since Swami Vivekananda’s return from the West, this daily chronicle brings you the authentic milestones that happened on this very day in some years past.
+                Discover how today is woven into the legacy of the Ramakrishna Movement. From its earliest roots to over 125 years since Swami Vivekananda’s return from the West, this daily chronicle brings you the milestones that happened on this very day in some years past.
+              </p>
+              <p className="text-xs sm:text-sm text-[#7C7267] font-sans font-normal leading-relaxed">
+                (Launched on 31 May 2026)
               </p>
             </div>
           </div>
