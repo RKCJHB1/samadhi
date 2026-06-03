@@ -112,7 +112,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     year: 1932,
     headline: "The Mahasamadhi of \"M.\"",
     narrativeParagraph1: "On June 4, 1932, Mahendranath Gupta, the revered householder disciple of Sri Ramakrishna known to the world as \"M.\" entered mahasamadhi. M. was the recorder of The Gospel of Sri Ramakrishna. He spent decades meticulously documenting the Master's daily conversations and ecstatic trances, preserving the exact atmosphere of Dakshineswar as a priceless spiritual treasure for future generations.",
-    narrativeParagraph2: "On June 4, 1932, M. left his body in full consciousness, uttering \"Mother, Gurudeva, take me up in your arms\". His monumental work, The Gospel of Sri Ramakrishna, stands as one of the most authentic and beloved spiritual texts of modern times, capturing the living presence of a realized Master in his interactions with disciples and devotees.",
+    narrativeParagraph2: "On June 4, 1932, M. left his body in full consciousness, uttering \"Mother, Gurudeva, take me up in your arms\".",
     quote: "Mother, Gurudeva, take me up in your arms",
     quoteAuthor: "M. (Mahendranath Gupta)",
     imageCaption: "M., the devoted disciple and faithful recorder whose meticulous documentation preserved the words and wisdom of Sri Ramakrishna.",
