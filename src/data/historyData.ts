@@ -132,6 +132,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/5thJuneShodashi.png"]
   },
   {
+    date: "June 6",
+    monthNumeric: 5,
+    dayNumeric: 6,
+    year: 1895,
+    headline: "Arrival at the White Birch Lodge",
+    narrativeParagraph1: "On the morning of June 6, 1895, at 8:00 AM, Swami Vivekananda and his companions—including Francis Leggett and Josephine MacLeod—boarded the Grand Trunk Railway train from Portland, Maine. The scenic route carried Swamiji into the remote White Mountains of New Hampshire. Arriving via train and a brief rowboat ride across Lake Christine, the party reached Leggett's rustic wilderness retreat, White Birch Lodge, at 1:00 PM.",
+    narrativeParagraph2: "To commemorate the start of this 12-day retreat, Swamiji famously signed the cabin's guest logbook with his typical humour: \"Swami Vivekananda, India, Heathen Hindu.\"",
+    quote: "Swami Vivekananda, India, Heathen Hindu",
+    quoteAuthor: "Swami Vivekananda (cabin guest logbook entry)",
+    imageCaption: "The serene White Birch Lodge nestled in the White Mountains of New Hampshire, where Swami Vivekananda spent a transformative 12-day retreat.",
+    customImages: ["/images/on-this-day/6thJuneHindu.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
