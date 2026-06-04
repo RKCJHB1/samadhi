@@ -119,6 +119,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/4thJuneM.png"]
   },
   {
+    date: "June 5",
+    monthNumeric: 5,
+    dayNumeric: 5,
+    year: 1872,
+    headline: "The Shodashi Puja",
+    narrativeParagraph1: "On June 5, 1872, during the auspicious night of the Phalaharini Kali Puja, Sri Ramakrishna performed the Shodashi Puja, formally worshipping his consort, Sri Sarada Devi, as the Divine Mother of the Universe. Seating her upon a decorated pedestal in his room at Dakshineswar, the Master offered flowers and incense before entering into deep samadhi alongside her.",
+    narrativeParagraph2: "Afterwards, he placed his rosary and the entire fruits of his lifetime of spiritual practices at her holy feet in absolute surrender. This profound ritual awakened Holy Mother's universal motherhood and established her as the bedrock of the future Ramakrishna Order.",
+    quote: "The Divine Mother is the energy of all existence. Through her grace, the universe manifests and sustains itself.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "The sacred Shodashi Puja, where Sri Ramakrishna worshipped Holy Mother Sri Sarada Devi as the Divine Mother of the Universe.",
+    customImages: ["/images/on-this-day/5thJuneShodashi.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
