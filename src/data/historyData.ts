@@ -145,6 +145,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/6thJuneHindu.png"]
   },
   {
+    date: "June 7",
+    monthNumeric: 5,
+    dayNumeric: 7,
+    year: 1896,
+    headline: "A Manifesto of Divine Realization",
+    narrativeParagraph1: "On June 7, 1896, while in London, Swami Vivekananda penned an extraordinary letter to Miss Margaret Noble (who would later become Sister Nivedita). In this historic correspondence, Swamiji crystallized his core spiritual mission into a definitive manifesto that remains a cornerstone of the Ramakrishna Movement's philosophy.",
+    narrativeParagraph2: "\"My ideal indeed can be put into a few words and that is: to preach unto mankind their divinity, and how to make it manifest in every movement of life… Bold words and bolder deeds are what we want. Awake, awake, great ones! The world is burning with misery. Can you sleep?\"",
+    quote: "My ideal indeed can be put into a few words and that is: to preach unto mankind their divinity, and how to make it manifest in every movement of life… Bold words and bolder deeds are what we want. Awake, awake, great ones! The world is burning with misery. Can you sleep?",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Sister Nivedita, the devoted disciple who received Swami Vivekananda's letter crystallizing his spiritual mission for humanity.",
+    customImages: ["/images/on-this-day/7thJuneSN.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
