@@ -158,6 +158,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/7thJuneSN.png"]
   },
   {
+    date: "June 8",
+    monthNumeric: 5,
+    dayNumeric: 8,
+    year: 1913,
+    headline: "The Master as All Deities",
+    narrativeParagraph1: "On June 8, 1913, the devotee Surendranath Bhaumick shared a dilemma with the Holy Mother. While worshipping his Chosen Goddess through Sri Ramakrishna's image, he felt conflicted concluding his Japa with the feminine phrase, tvat prasadat maheshvari (\"O Great-Goddess, through Thy grace\").",
+    narrativeParagraph2: "The Holy Mother smiled and beautifully dissolved his anxiety: \"Don't worry, my child. Our Master alone is Maheshvara (Supreme God) and Maheshvari (Supreme Goddess) as well. He alone is the embodiment of all Deities. He alone is the embodiment of all mystic syllables. One can worship through him all Gods and Goddesses. You can address him as Maheshvara as well as Maheshvari.\"",
+    quote: "Our Master alone is Maheshvara (Supreme God) and Maheshvari (Supreme Goddess) as well. He alone is the embodiment of all Deities.",
+    quoteAuthor: "Holy Mother Sri Sarada Devi",
+    imageCaption: "Holy Mother Sri Sarada Devi, whose compassionate wisdom unified all paths and all deities in the realization of Sri Ramakrishna.",
+    customImages: ["/images/on-this-day/8thJuneMM.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
