@@ -171,6 +171,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/8thJuneMM.png"]
   },
   {
+    date: "June 9",
+    monthNumeric: 5,
+    dayNumeric: 9,
+    year: 1974,
+    headline: "The Seeds of Vedanta in Australia",
+    narrativeParagraph1: "On June 9, 1974, a landmark event for the Ramakrishna Movement in Australia took place in Sydney. Swami Ranganathananda (later the 13th President of the Order) delivered the inaugural address at the very first meeting of the Ramakrishna Vedanta Society of New South Wales.",
+    narrativeParagraph2: "Held at the home of pioneer Mrs. Vilma Spencer, Swami Ranganathananda declared that Vedanta was not there to add \"one more religion\" to Australia, but to offer a comprehensive philosophy seamlessly integrating daily life with spiritual practice. This historic gathering laid the direct foundation for the permanent Sri Sarada Math and Ramakrishna Order branches in Australia.",
+    quote: "Vedanta is not one more religion, but a philosophy that seamlessly integrates daily life with spiritual practice.",
+    quoteAuthor: "Swami Ranganathananda",
+    imageCaption: "Swami Ranganathananda, whose vision brought the profound teachings of Vedanta to Australia and established the Ramakrishna Movement there.",
+    customImages: ["/images/on-this-day/9thJuneAus.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
