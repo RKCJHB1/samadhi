@@ -197,6 +197,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/10thJuneRadhu.png"]
   },
   {
+    date: "June 11",
+    monthNumeric: 5,
+    dayNumeric: 11,
+    year: 1913,
+    headline: "Sarada Devi on the Satya Yuga",
+    narrativeParagraph1: "On June 11, 1913, while staying at Jayrambati, Sarada Devi said: 'Satya Yuga has begun since the birth of the Master. Many luminaries have accompanied him. Jewels among men come along with the Incarnation for the sake of His mission.'",
+    narrativeParagraph2: "These profound words, spoken in the serenity of her birthplace, reflect the Holy Mother's deep understanding of Sri Ramakrishna's divine mission and the gathering of spiritual luminaries around him.",
+    quote: "Satya Yuga has begun since the birth of the Master. Many luminaries have accompanied him. Jewels among men come along with the Incarnation for the sake of His mission.",
+    quoteAuthor: "Sarada Devi",
+    imageCaption: "Sarada Devi, the Holy Mother, whose words at Jayrambati revealed the profound significance of Sri Ramakrishna's incarnation.",
+    customImages: ["/images/on-this-day/11thJuneSatya.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
