@@ -210,6 +210,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/11thJuneSatya.png"]
   },
   {
+    date: "June 12",
+    monthNumeric: 5,
+    dayNumeric: 12,
+    year: 1916,
+    headline: "Swami Turiyananda's Letter from Almora",
+    narrativeParagraph1: "On June 12, 1916, while staying in the serene hills of Almora, Swami Turiyananda penned a letter to Swami Prajnananda offering timeless counsel on anchoring the mind in the divine amidst worldly chaos.",
+    narrativeParagraph2: "He wrote: 'One should learn how to be united with God; and through practice, when it becomes one's second nature, one attains the goal. Then one perceives the presence of the Lord within and without, and consequently the changing circumstances of the world cannot perturb one anymore. It is not that disturbing elements do not arise, they do; but they come and go away without having any effect.'",
+    quote: "One should learn how to be united with God; and through practice, when it becomes one's second nature, one attains the goal. Then one perceives the presence of the Lord within and without, and consequently the changing circumstances of the world cannot perturb one anymore. It is not that disturbing elements do not arise, they do; but they come and go away without having any effect.",
+    quoteAuthor: "Swami Turiyananda",
+    imageCaption: "Swami Turiyananda, whose letter from the serene hills of Almora offered timeless counsel on anchoring the mind in God.",
+    customImages: ["/images/on-this-day/12thJuneTuri.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
