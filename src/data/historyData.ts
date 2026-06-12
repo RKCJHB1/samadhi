@@ -223,6 +223,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/12thJuneTuri.png"]
   },
   {
+    date: "June 13",
+    monthNumeric: 5,
+    dayNumeric: 13,
+    year: 1885,
+    headline: "Sri Ramakrishna on Divine Incarnation",
+    narrativeParagraph1: "On Saturday, June 13, 1885, the Master began to talk about the Divine Incarnation. Turning to M., he asked, 'Do you know why God incarnates Himself as a man?'",
+    narrativeParagraph2: "Sri Ramakrishna answered: 'It is because through a human body one can hear His words. He sports through it. He tastes divine bliss through a human body.'",
+    quote: "It is because through a human body one can hear His words. He sports through it. He tastes divine bliss through a human body.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna, explaining the mystery of Divine Incarnation through the human form.",
+    customImages: ["/images/on-this-day/13thJuneINC.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
