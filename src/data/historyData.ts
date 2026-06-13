@@ -236,6 +236,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/13thJuneINC.png"]
   },
   {
+    date: "June 14",
+    monthNumeric: 5,
+    dayNumeric: 14,
+    year: 1898,
+    headline: "Swami Vivekananda Enters Punjab on His Way to Kashmir",
+    narrativeParagraph1: "On 14 June 1898, Swami Vivekananda and his party entered Punjab while traveling toward Kashmir. Passing through Ludhiana and Lahore, he spoke enthusiastically about the history, spirituality, and culture of Punjab, a region for which he had a deep affection. The journey led eventually into Kashmir, where some of the most memorable events of his life—including his visits to Amarnath and Kṣīr Bhavānī—would occur.",
+    narrativeParagraph2: "During this journey he discussed the Vedas, Indian history, Gandhāra art, and the spiritual heritage of India with his disciples.",
+    quote: "Shankaracharya had caught the rhythm of the Vedas, the national cadence. Indeed I always imagine that he had some vision such as mine when he was young, and recovered the ancient music that way. Anyway, his whole life's work is nothing but that, the throbbing of the beauty of the Vedas and Upanishads.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda entering Punjab on his journey to Kashmir, where he would later visit the sacred shrines of Amarnath and Kṣīr Bhavānī.",
+    customImages: ["/images/on-this-day/14thJuneKashmir.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
