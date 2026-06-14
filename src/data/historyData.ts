@@ -249,6 +249,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/14thJuneKashmir.png"]
   },
   {
+    date: "June 15",
+    monthNumeric: 5,
+    dayNumeric: 15,
+    year: 1884,
+    headline: "Sri Ramakrishna Discourses on Divine Love at Kankurgachi",
+    narrativeParagraph1: "On 15 June 1884, Sri Ramakrishna attended a grand religious festival at the garden house of his devoted householder disciple, Surendranath Mitra, in Kankurgachi, Kolkata. Surendranath was a deeply dedicated follower who later stepped forward to finance a large portion of the Master's rent and medical expenses at the Cossipore Garden House during his final months of illness. During this festive gathering, the Master spoke passionately about prema (ecstatic, divine love), using Radha as the ultimate symbol of spiritual intoxication.",
+    narrativeParagraph2: "He emphasized that genuine yearning for God transcends all external dogmas or forms of belief, saying: 'Ah! If anyone has but a particle of such prema! What yearning! What love! Radha possessed not only one hundred per cent of divine love, but one hundred and twenty-five per cent. This is what it means to be intoxicated with ecstatic love of God. The sum and substance of the whole matter is that a man must love God, must be restless for Him. It doesn't matter whether you believe in God with form or in God without form. You may or may not believe that God incarnates Himself as man. But you will realize Him if you have that yearning. Then He Himself will let you know what He is like. If you must be mad, why should you be mad for the things of the world? If you must be mad, be mad for God alone.'",
+    quote: "Ah! If anyone has but a particle of such prema! What yearning! What love! Radha possessed not only one hundred per cent of divine love, but one hundred and twenty-five per cent. This is what it means to be intoxicated with ecstatic love of God. The sum and substance of the whole matter is that a man must love God, must be restless for Him. It doesn't matter whether you believe in God with form or in God without form. You may or may not believe that God incarnates Himself as man. But you will realize Him if you have that yearning. Then He Himself will let you know what He is like. If you must be mad, why should you be mad for the things of the world? If you must be mad, be mad for God alone.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Kankurgachi, discoursing on ecstatic divine love (prema) and the intoxicating devotion of Radha.",
+    customImages: ["/images/on-this-day/15thJuneSuren.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
