@@ -267,7 +267,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 16,
     year: 1962,
     headline: "Mahasamadhi of Swami Vishuddhananda",
-    narrativeParagraph1: "Today marks the Mahasamadhi of Swami Vishuddhananda, the revered eighth President of the Ramakrishna Math and Ramakrishna Mission. Born Jitendranath Rai in 1882, he was a blessed direct disciple of the Holy Mother, Sri Sarada Devi.",
+    narrativeParagraph1: "On 16th June 1962, the Mahasamadhi of Swami Vishuddhananda took place. He was the revered eighth President of the Ramakrishna Math and Ramakrishna Mission. Born Jitendranath Rai in 1882, he was a blessed direct disciple of the Holy Mother, Sri Sarada Devi.",
     narrativeParagraph2: "Though his tenure as President was brief, his deep spirituality and decades of dedicated service left an indelible mark on the order. He breathed his last in Belur Math, Howrah, leaving behind a legacy of profound devotion.",
     quote: "Learn to make the world your own. No one is a stranger, my child.",
     quoteAuthor: "Holy Mother Sri Sarada Devi",
