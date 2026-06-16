@@ -275,6 +275,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/16thJuneswvi.png"]
   },
   {
+    date: "June 17",
+    monthNumeric: 5,
+    dayNumeric: 17,
+    year: 1883,
+    headline: "Sri Ramakrishna on the Householder's Path at Dakshineswar",
+    narrativeParagraph1: "On this afternoon, Sri Ramakrishna illuminated the householder's path, affirming, 'Why shouldn't one be able to attain spirituality, living the life of a householder? But it is extremely difficult.' Citing King Janaka and the 'room of soot,' he warned of worldly perils but urged devotees to conquer karma through bold, unwavering faith.",
+    narrativeParagraph2: "Singing ecstatic hymns, he beautifully reassured the gathering that 'love of God is the one essential thing,' and a surrendered soul is as safe as a kitten in its mother's care.",
+    quote: "Why shouldn't one be able to attain spirituality, living the life of a householder? But it is extremely difficult.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Dakshineswar, illuminating the path of the householder with the example of King Janaka and the assurance of divine love.",
+    customImages: ["/images/on-this-day/17thJuneJanaka.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
