@@ -288,6 +288,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/17thJuneJanaka.png"]
   },
   {
+    date: "June 18",
+    monthNumeric: 5,
+    dayNumeric: 18,
+    year: 1883,
+    headline: "Sri Ramakrishna at the Festival of Flattened Rice",
+    narrativeParagraph1: "On 18th June 1883, Sri Ramakrishna attended the festival of flattened rice at Panihati, participating in ecstatic kirtan in the devotional gathering. The festival commemorates Nityananda Prabhu's instruction to Raghunath Das to serve devotees with a special rice preparation.",
+    narrativeParagraph2: "After the kirtan, He spoke at Mani Sen's residence on the essence of spiritual life. He said, 'The Divine Mother has revealed to me the essence of the Vedanta. It is that Brahman alone is real and the world illusory.' He then explained that the essence of the Gita is found by repeating the word ten times until it reverses to sound like 'tagi' (renunciation), and said, 'O man, renounce everything and practise spiritual discipline for the realization of God.'",
+    quote: "The Divine Mother has revealed to me the essence of the Vedanta. It is that Brahman alone is real and the world illusory.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at the Panihati festival of flattened rice, commemorating the devotional tradition of Nityananda Prabhu.",
+    customImages: ["/images/on-this-day/18thJunePani.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
