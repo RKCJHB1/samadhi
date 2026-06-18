@@ -301,6 +301,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/18thJunePani.png"]
   },
   {
+    date: "June 19",
+    monthNumeric: 5,
+    dayNumeric: 19,
+    year: 1912,
+    headline: "Holy Mother on Japa and Meditation",
+    narrativeParagraph1: "On June 19, 1912, the Holy Mother gave some wonderful advice to a disciple struggling with a restless mind during meditation. She gently counselled them not to force the mind to meditate if it wanders toward daily activities.",
+    narrativeParagraph2: "Instead, she urged the practice of Japa, reassuring them that 'Japa leads to perfection.'",
+    quote: "Japa leads to perfection.",
+    quoteAuthor: "Holy Mother Sri Sarada Devi",
+    imageCaption: "Sri Sarada Devi, the Holy Mother, whose gentle counsel on Japa and meditation continues to guide seekers.",
+    customImages: ["/images/on-this-day/19thJuneHM.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
