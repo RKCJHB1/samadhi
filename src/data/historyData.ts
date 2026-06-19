@@ -314,6 +314,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/19thJuneHM.png"]
   },
   {
+    date: "June 20",
+    monthNumeric: 5,
+    dayNumeric: 20,
+    year: 1899,
+    headline: "Swami Vivekananda Departs for His Second Journey to the West",
+    narrativeParagraph1: "On June 20, 1899, Swami Vivekananda left Calcutta aboard the steamship Golconda for his second journey to the West. He was accompanied by Swami Turiyananda and Sister Nivedita. Earlier that day, Holy Mother Sri Sarada Devi lovingly entertained the departing party and the monks with a meal before their departure.",
+    narrativeParagraph2: "In the afternoon, Swamiji proceeded to Princep Ghat and boarded the vessel that would carry him to Europe and America, where he would continue spreading the message of Vedanta and practical spirituality.",
+    quote: "Arise, awake, and stop not till the goal is reached.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda departing from Calcutta aboard the steamship Golconda for his second journey to the West, accompanied by Swami Turiyananda and Sister Nivedita.",
+    customImages: ["/images/on-this-day/20thJuneShip.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
