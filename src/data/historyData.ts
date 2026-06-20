@@ -327,6 +327,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/20thJuneShip.png"]
   },
   {
+    date: "June 21",
+    monthNumeric: 5,
+    dayNumeric: 21,
+    year: 1896,
+    headline: "Swami Vivekananda Delivers 'The Real and the Apparent Man' in London",
+    narrativeParagraph1: "On June 21, 1896, on a Sunday afternoon, Swami Vivekananda delivered his celebrated lecture, 'The Real and the Apparent Man,' at the Royal Institute of Painters in Water Colours, 191 Piccadilly, London. The discourse, recorded in shorthand by J. J. Goodwin, presented the Vedantic teaching that the true nature of man is the eternal, divine, and unchanging Ātman, while the body and mind belong to the realm of appearance.",
+    narrativeParagraph2: "First issued as a pamphlet, the lecture was later included in Jnana-Yoga, where it became one of the classic expositions of Vivekananda's Advaita Vedanta.",
+    quote: "The real man is the Ātman, the immortal, the unchanging, the eternal.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering his celebrated lecture 'The Real and the Apparent Man' at the Royal Institute of Painters in Water Colours, 191 Piccadilly, London, in 1896.",
+    customImages: ["/images/on-this-day/21stJuneWater.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
