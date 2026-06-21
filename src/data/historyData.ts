@@ -340,6 +340,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/21stJuneWater.png"]
   },
   {
+    date: "June 22",
+    monthNumeric: 5,
+    dayNumeric: 22,
+    year: 1895,
+    headline: "A Seed That Would Become a Tree",
+    narrativeParagraph1: "On June 22, 1895, Swami Vivekananda wrote from New York to his disciple Singaravelu Mudaliar ('Kidi'), expressing his unwavering confidence in the future of his mission: 'I am not given to failures, and here I have planted a seed, and it is going to become a tree, and it must.'",
+    narrativeParagraph2: "At a time when the Vedanta movement in the West was still in its infancy, these words reflected Swamiji's deep conviction that enduring work requires patience, perseverance, and faith. More than a century later, they continue to inspire those who seek to build something lasting in service of a higher ideal.",
+    quote: "I am not given to failures, and here I have planted a seed, and it is going to become a tree, and it must.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from New York to his disciple Singaravelu Mudaliar ('Kidi'), expressing his unwavering confidence in the future of his mission.",
+    customImages: ["/images/on-this-day/22ndJuneKidi.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
