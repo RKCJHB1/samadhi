@@ -358,7 +358,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 23,
     year: 1894,
     headline: "Swami Vivekananda's Letter to the Maharaja of Mysore",
-    narrativeParagraph1: "On June 23, 1894, writing from Chicago to the Maharaja of Mysore, Swami Vivekananda appealed for the uplift of India's 'suffering millions' who were 'sunk in ignorance.' He wrote: 'This life is short, the vanities of the world are transient, but they alone live who live for others, the rest are more dead than alive.'",
+    narrativeParagraph1: "On June 23, 1894, writing from Chicago to the Maharaja of Mysore, Swami Vivekananda appealed for the uplift of India's suffering millions who were sunk in ignorance. He wrote: 'This life is short, the vanities of the world are transient, but they alone live who live for others, the rest are more dead than alive.'",
     narrativeParagraph2: "A timeless reminder that true greatness lies in selfless service.",
     quote: "This life is short, the vanities of the world are transient, but they alone live who live for others, the rest are more dead than alive.",
     quoteAuthor: "Swami Vivekananda",
