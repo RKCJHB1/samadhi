@@ -371,7 +371,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 24,
     year: 1895,
     headline: "The Supreme Path of Devotion",
-    narrativeParagraph1: "On this day in 1895, during his stay at Thousand Island Park, Swami Vivekananda delivered a teaching recorded in Inspired Talks, later compiled in Volume 7 of his Complete Works. Drawing from the Narada Bhakti Sutras, he emphasized the supremacy of pure devotion, expressing the ideal of unconditional love for the Divine.",
+    narrativeParagraph1: "On 24th June 1895, during his stay at Thousand Island Park, Swami Vivekananda delivered a teaching recorded in Inspired Talks, later compiled in Volume 7 of his Complete Works. Drawing from the Narada Bhakti Sutras, he emphasized the supremacy of pure devotion, expressing the ideal of unconditional love for the Divine.",
     narrativeParagraph2: "He taught: 'Love is higher than work, than Yoga, than knowledge… Let nothing stand between God and your love for Him.' This teaching reflects the intimate Bhakti emphasis of his summer discourses in America.",
     quote: "Love is higher than work, than Yoga, than knowledge… Let nothing stand between God and your love for Him.",
     quoteAuthor: "Swami Vivekananda",
