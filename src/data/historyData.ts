@@ -379,6 +379,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/24thJune.png"]
   },
   {
+    date: "June 25",
+    monthNumeric: 5,
+    dayNumeric: 25,
+    year: 1926,
+    headline: "A Centenary of Universal Service",
+    narrativeParagraph1: "Exactly 100 years ago today, on June 25, 1926, seventeen-year-old Shankaran Kutty left his home in Kerala to join the Ramakrishna Order. Later known as Swami Ranganathananda, the 13th President of the Ramakrishna Math and Ramakrishna Mission, his life was transformed as a youth by The Gospel of Sri Ramakrishna. Setting out for the Mysore ashrama, this single step a century ago began a legendary monastic career that masterfully bridged a modern scientific temper with Vedantic spirituality, inspiring millions worldwide.",
+    narrativeParagraph2: "Swami Ranganathananda's journey from a young Kerala boy to one of the most revered Presidents of the Ramakrishna Order exemplifies the transformative power of Sri Ramakrishna's teachings. His centenary reminds us that a single step taken in faith can illuminate the path for generations to come.",
+    quote: "Spiritual awakening is the true beginning of real life. Pray for selfless devotion and pure love for the Divine.",
+    quoteAuthor: "Swami Ranganathananda",
+    imageCaption: "Young Shankaran Kutty, who would become Swami Ranganathananda, embarking on his journey to the Ramakrishna Order in 1926.",
+    customImages: ["/images/on-this-day/25thJuneRan.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
