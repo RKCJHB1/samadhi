@@ -1337,7 +1337,7 @@ export default function OnThisDay() {
 
           {/* Media Section: Stunning Physical Mount Slideshow Container */}
           <div className="bg-white rounded-2xl p-5 border border-[#EAE7E0] shadow-sm flex flex-col" id="media_slideshow">
-            <div className="relative overflow-hidden rounded-xl aspect-[16/9] w-full bg-[#EAE7E0] border-8 border-white shadow-lg group">
+            <div className="relative overflow-hidden rounded-xl w-full bg-[#EAE7E0] border-8 border-white shadow-lg group">
               
               {/* Display Images with dynamic source resolving */}
               <AnimatePresence mode="wait">
@@ -1346,8 +1346,8 @@ export default function OnThisDay() {
                   src={currentSlide?.src}
                   alt={currentSlide?.captionHeading}
                   referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  initial={{ opacity: 0, scale: 1.03 }}
+                  className="w-full h-auto object-contain"
+                  initial={{ opacity: 0, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8, ease: "easeInOut" }}
