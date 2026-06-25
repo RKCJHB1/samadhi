@@ -396,7 +396,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     monthNumeric: 5,
     dayNumeric: 26,
     year: 1895,
-    headline: "Be Like a Lily: The Power of Thought",
+    headline: "June 26, 1895 — Thousand Island Park, NY",
     narrativeParagraph1: "On this day, Swami Vivekananda urged his disciples to transcend the \"puny 'I',\" declaring that the ego \"must be obliterated.\" He emphasized the power of thought, reminding them, \"We are what our thoughts have made us; so take care of what you think.\" Speaking of purity and spiritual growth, he offered a memorable image: \"Be like a lily—stay in one place and expand your petals; and the bees will come of themselves.\"",
     narrativeParagraph2: "At Thousand Island Park, New York, Swamiji taught that true spiritual growth arises from within, through the cultivation of pure thoughts and the surrender of the ego. Just as the lily draws bees through its natural fragrance alone, the soul attracts divine grace through its own inner stillness and purity, without the need to chase or grasp.",
     quote: "Be like a lily—stay in one place and expand your petals; and the bees will come of themselves.",
