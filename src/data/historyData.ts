@@ -405,6 +405,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/26thJune.png"]
   },
   {
+    date: "June 27",
+    monthNumeric: 5,
+    dayNumeric: 27,
+    year: 1915,
+    headline: "27th June 1915 — Almora",
+    narrativeParagraph1: "In a conversation recorded on this day, Mahapurush Maharaj recalled the unique way Sri Ramakrishna awakened spiritual life. \"Sri Ramakrishna did not initiate disciples like an ordinary guru. He used to awaken our spiritual consciousness. He would draw something on the tongue and one would immediately have some ecstatic experience.\" This treasured reminiscence reminds us that the Master's transforming power lay not merely in instruction, but in the direct awakening of the soul.",
+    narrativeParagraph2: "Mahapurush Maharaj, a direct disciple of Sri Ramakrishna, carried this living memory of the Master's unique grace. In Almora, his words preserved for us a glimpse of the Great Master's direct, transformative touch that awakened the inner consciousness of his devotees, transcending all conventional forms of initiation.",
+    quote: "Sri Ramakrishna did not initiate disciples like an ordinary guru. He used to awaken our spiritual consciousness. He would draw something on the tongue and one would immediately have some ecstatic experience.",
+    quoteAuthor: "Mahapurush Maharaj",
+    imageCaption: "Mahapurush Maharaj reflecting on the unique, transformative grace of Sri Ramakrishna, who awakened spiritual consciousness through direct touch rather than conventional initiation.",
+    customImages: ["/images/on-this-day/27thJune.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
