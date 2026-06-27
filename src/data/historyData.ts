@@ -418,6 +418,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/27thJune.png"]
   },
   {
+    date: "June 28",
+    monthNumeric: 5,
+    dayNumeric: 28,
+    year: 1922,
+    headline: "28th June 1922 – Belur Math",
+    narrativeParagraph1: "On this day, Swami Shivananda, the second President of the Ramakrishna Math and Mission, wrote to a disciple from Belur Math, urging: \"Repeat the name of Sri Ramakrishna. That name uplifts the fallen.\" He further advised meditation, worship, study of the Master's life, holy company, and service to all beings. Preserved in For Seekers of God, the letter reminds spiritual aspirants that steady japa and devotion bear fruit through faithful practice rather than fluctuating emotions.",
+    narrativeParagraph2: "Swami Shivananda, affectionately known as Mahapurush Maharaj, embodied the steadfast devotion and practical wisdom of the Ramakrishna Order. His letter from Belur Math on this day offers a timeless roadmap for seekers: name, meditation, worship, study, holy company, and service. These six pillars, faithfully practiced, transform the restless mind into a vessel of divine grace.",
+    quote: "Repeat the name of Sri Ramakrishna. That name uplifts the fallen.",
+    quoteAuthor: "Swami Shivananda (Mahapurush Maharaj)",
+    imageCaption: "Swami Shivananda (Mahapurush Maharaj), the second President of the Ramakrishna Math and Mission, writing from Belur Math with words of encouragement and guidance for a disciple.",
+    customImages: ["/images/on-this-day/28thJune.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
