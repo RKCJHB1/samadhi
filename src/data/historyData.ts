@@ -431,6 +431,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/28thJune.png"]
   },
   {
+    date: "June 29",
+    monthNumeric: 5,
+    dayNumeric: 29,
+    year: 1895,
+    headline: "29th June 1895 – Thousand Island Park",
+    narrativeParagraph1: "On this day, Swami Vivekananda came \"with a Gita in his hand\" to one of his celebrated morning classes at Thousand Island Park, and expounded the Bhagavad Gītā as the drama of the soul's inner struggle. Interpreting Kurukshetra as the battlefield of human life, he urged work without attachment and concluded with the stirring reminder: \"In thine own heart day and night is singing that Eternal Music—Sachchidānanda, soham, soham—Existence-Knowledge-Bliss Absolute, I am He, I am He.\"",
+    narrativeParagraph2: "At Thousand Island Park, Swami Vivekananda revealed the Bhagavad Gītā not as a distant scripture but as a living mirror of every seeker's inner conflict. Kurukshetra is our own daily life, and the battle is fought between our lower and higher natures. His teaching of work without attachment, offered from the depth of his own realisation, remains a beacon for all who seek to transform life into a sacred offering.",
+    quote: "In thine own heart day and night is singing that Eternal Music—Sachchidānanda, soham, soham—Existence-Knowledge-Bliss Absolute, I am He, I am He.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, holding the Bhagavad Gītā and expounding its eternal teaching of work without attachment and the soul's inner struggle.",
+    customImages: ["/images/on-this-day/29thJune.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
