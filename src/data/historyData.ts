@@ -444,6 +444,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/29thJune.png"]
   },
   {
+    date: "June 30",
+    monthNumeric: 5,
+    dayNumeric: 30,
+    year: 1884,
+    headline: "30th June 1884 – Dakshineswar",
+    narrativeParagraph1: "On this day, Sri Ramakrishna met the renowned scholar Pandit Shashadhar at Dakshineswar, urging him to unite scriptural learning with sincere devotion and direct spiritual practice. Using the allegory of the Wish-fulfilling Tree (Kalpataru), the Master explained: \"God is the Kalpataru. You will certainly get whatever you ask of Him. But you must pray standing near the Kalpataru... God knows our inner feeling. A man gets the fulfilment of the desire he cherishes while practising sadhana.\"",
+    narrativeParagraph2: "Sri Ramakrishna's teaching to Pandit Shashadhar reveals the profound truth that scholarship alone is insufficient without the nearness of sincere devotion and the earnest practice of spiritual discipline. The Kalpataru stands at the centre of our own heart, and the Master's grace is ever ready to grant whatever we truly seek, provided we approach with purity of intention and unwavering faith.",
+    quote: "God is the Kalpataru. You will certainly get whatever you ask of Him. But you must pray standing near the Kalpataru... God knows our inner feeling. A man gets the fulfilment of the desire he cherishes while practising sadhana.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Dakshineswar, explaining the allegory of the Kalpataru to Pandit Shashadhar and urging the union of scriptural learning with sincere devotion.",
+    customImages: ["/images/on-this-day/30thJune.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
