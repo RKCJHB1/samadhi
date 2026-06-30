@@ -457,6 +457,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/30thJune.png"]
   },
   {
+    date: "July 1",
+    monthNumeric: 6,
+    dayNumeric: 1,
+    year: 1895,
+    headline: "July 1, 1895 – Thousand Island Park",
+    narrativeParagraph1: "On this day, during his intimate summer retreat at Thousand Island Park, Swami Vivekananda devoted much of his morning class to the life of Sri Ramakrishna, while also speaking of the spiritual greatness of Holy Mother Sarada Devi. Recorded by Miss S. E. Waldo in Inspired Talks, he described the Master's extraordinary renunciation and his direct realization of Truth. He concluded with the powerful declaration: \"Ramakrishna came to teach the religion of today, constructive, not destructive. He had to go afresh to Nature to ask for facts, and he got scientific religion which never says 'believe', but 'see'; 'I see, and you too can see.'\"",
+    narrativeParagraph2: "At Thousand Island Park, Swami Vivekananda revealed Sri Ramakrishna not as a figure of blind faith, but as the founder of a scientific religion rooted in direct experience. The Master's religion was constructive, built upon the solid foundation of nature's own facts, inviting every seeker to verify Truth through their own inner vision rather than mere belief.",
+    quote: "Ramakrishna came to teach the religion of today, constructive, not destructive. He had to go afresh to Nature to ask for facts, and he got scientific religion which never says 'believe', but 'see'; 'I see, and you too can see.'",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, describing Sri Ramakrishna's extraordinary renunciation and his scientific religion of direct seeing and verification.",
+    customImages: ["/images/on-this-day/1stjuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
