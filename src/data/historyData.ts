@@ -470,6 +470,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/1stjuly.png"]
   },
   {
+    date: "July 2",
+    monthNumeric: 6,
+    dayNumeric: 2,
+    year: 1902,
+    headline: "2nd July 1902 – Swami Vivekananda's Prophecy",
+    narrativeParagraph1: "Two days before his Mahāsamādhi, on July 2, 1902, Swami Vivekananda observed the Ekādaśī fast at Belur Math. Despite fasting himself, he lovingly insisted on personally serving Sister Nivedita her morning meal.",
+    narrativeParagraph2: "Later that day, while walking on the monastery grounds, he made his immortal prophecy: \"The spiritual power that has arisen in this place will last for fifteen hundred years. This will become a great university. I do not imagine it; I see it.\"",
+    quote: "The spiritual power that has arisen in this place will last for fifteen hundred years. This will become a great university. I do not imagine it; I see it.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda, who made his immortal prophecy about Belur Math two days before his Mahāsamādhi.",
+    customImages: ["/images/on-this-day/2ndJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
