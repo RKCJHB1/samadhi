@@ -483,6 +483,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/2ndJuly.png"]
   },
   {
+    date: "July 3",
+    monthNumeric: 6,
+    dayNumeric: 3,
+    year: 1884,
+    headline: "3rd July 1884 – Sri Ramakrishna’s Return Chariot Festival",
+    narrativeParagraph1: "Sri Ramakrishna joined the Return Chariot Festival (Ulto Rath) at the Calcutta home of his beloved disciple Balaram Bose. He taught the assembled devotees that all religions and spiritual paths lead to the same Sat‑Cit‑Ānanda.",
+    narrativeParagraph2: "He then led an ecstatic kīrtan and joyfully helped pull the small household chariot along the verandah. Immersed in divine ecstasy, he manifested the devotional mood of Sri Chaitanya Mahaprabhu.",
+    quote: "All religions and spiritual paths lead to the same Sat‑Cit‑Ānanda.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at the Return Chariot Festival, embodying the ecstatic devotion of Sri Chaitanya Mahaprabhu.",
+    customImages: ["/images/on-this-day/3rdJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
