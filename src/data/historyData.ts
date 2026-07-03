@@ -592,7 +592,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     quoteAuthor: "Holy Mother Sri Sarada Devi",
     imageCaption: "Peaceful waters of the river Ganges flowing by Belur Math beneath a terracotta dawn sky."
   },
-  {
+
     date: "July 4",
     monthNumeric: 6,
     dayNumeric: 4,
