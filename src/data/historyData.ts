@@ -496,6 +496,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/3rdJuly.png"]
   },
   {
+    date: "July 4",
+    monthNumeric: 6,
+    dayNumeric: 4,
+    year: 1902,
+    headline: "4th July 1902 – Swami Vivekananda’s Mahāsamādhi",
+    narrativeParagraph1: "Swami Vivekananda enters Mahāsamādhi at Belur Math, spending his final afternoon meditating, teaching Sanskrit, and walking beside the Ganges before peacefully passing into Mahāsamādhi.",
+    narrativeParagraph2: "His departure beautifully fulfilled his immortal promise to humanity:\n\"It may be that I shall find it good to get outside of my body—to cast it off like a worn-out garment. But I shall not cease to work! I shall inspire men everywhere, until the world shall know that it is one with God.\"",
+    quote: "It may be that I shall find it good to get outside of my body—to cast it off like a worn-out garment. But I shall not cease to work! I shall inspire men everywhere, until the world shall know that it is one with God.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda in his final moments at Belur Math, embodying his unwavering dedication to service.",
+    customImages: ["/images/on-this-day/4thJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
