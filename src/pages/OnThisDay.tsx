@@ -987,20 +987,29 @@ export default function OnThisDay() {
   <script>
     // Embedded JSON data for state management
     const events = ${JSON.stringify(currentDayEvents)};
-    const pictures = [
-      {
-        url: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=800",
-        caption: "Sunset over the serene temples, welcoming spiritual illumination."
-      },
-      {
-        url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
-        caption: "Calm water of the sacred river reflections at twilight."
-      },
-      {
-        url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
-        caption: "Silent dawn mist carrying peace to seekers of Truth."
-      }
-    ];
+    // Determine slideshow pictures: use customImages if available, otherwise fallback to default Unsplash images
+    let pictures = [];
+    if (events[0] && events[0].customImages && events[0].customImages.length) {
+      pictures = events[0].customImages.map((url) => ({
+        url: url.startsWith('/') ? \`https://ramakrishna-johannesburg.org.za\${url}\` : url,
+        caption: events[0].imageCaption || "Historical picture for this entry."
+      }));
+    } else {
+      pictures = [
+        {
+          url: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=800",
+          caption: "Sunset over the serene temples, welcoming spiritual illumination."
+        },
+        {
+          url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
+          caption: "Calm water of the sacred river reflections at twilight."
+        },
+        {
+          url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
+          caption: "Silent dawn mist carrying peace to seekers of Truth."
+        }
+      ];
+    }
 
     let currentEventIdx = 0;
     let currentSlideIdx = 0;
