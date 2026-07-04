@@ -49,13 +49,15 @@ const TopicDetail: React.FC<TopicDetailProps> = ({ topicId }) => {
         {topicMetadata && topicMetadata.image && (
           <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
             <div className="h-64 md:h-80 bg-gradient-to-r from-spiritual-500/20 to-indian-saffron/20">
-              <img
-                src={topicMetadata.image}
-                alt={topicData.topicName}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+              <a href={topicMetadata.image} download>
+                <img
+                  src={topicMetadata.image}
+                  alt={topicData.topicName}
+                  className="w-full h-full object-cover"
+                />
+              </a>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white pointer-events-none">
                 <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">{topicData.topicName}</h1>
                 <p className="text-xl opacity-90">
                   {topicMetadata.description || `Explore ${topicData.lessons.length} comprehensive lessons in ${topicData.topicName.toLowerCase()}`}
