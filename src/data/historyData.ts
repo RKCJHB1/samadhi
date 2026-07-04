@@ -593,17 +593,6 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     imageCaption: "Peaceful waters of the river Ganges flowing by Belur Math beneath a terracotta dawn sky."
   },
 
-    date: "July 4",
-    monthNumeric: 6,
-    dayNumeric: 4,
-    year: 1902,
-    headline: "Mahasamadhi of Swami Vivekananda",
-    narrativeParagraph1: "On the evening of July 4, 1902, Swami Vivekananda entered into final Mahasamadhi in his room at Belur Math, Ganges-side. Earlier that day, he had meditated for three hours in the shrine, taught Sanskrit grammar to Brahmacharins, and walked alongside the Ganges, pointing out the site chosen for his cremation. At nine in the evening, he quietly withdrew into absolute meditation and left his mortal body.",
-    narrativeParagraph2: "Swamiji had lived a brief but intensely concentrated life of 39 years, fulfilling his mission of delivering the pristine truths of Vedanta to India and the West. His departure left a massive vacuum, but his fiery words and dynamic spirit continue to ignite hearts across generations, guiding seekers along the path of spiritual freedom.",
-    quote: "It may be that I shall find it good to get out of my body, to cast it off like a worn-out garment. But I shall not cease to work. I shall inspire men everywhere.",
-    quoteAuthor: "Swami Vivekananda",
-    imageCaption: "The quiet river Ganges flowing past Swami Vivekananda's memorial temple under an evening twilight sky."
-  },
   {
     date: "August 16",
     monthNumeric: 7,
