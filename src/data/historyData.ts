@@ -509,6 +509,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/4thJuly.png"]
   },
   {
+  date: "July 5",
+  monthNumeric: 6,
+  dayNumeric: 5,
+  year: 1901,
+  headline: "July 5, 1901 – Swami Vivekananda’s Letter to Mary Hale",
+  narrativeParagraph1: "Swami Vivekananda writes a poignant letter from Belur Math to his close American friend, Mary Hale, then in Venice. Reflecting on his health, his affection for his friends, and his philosophical outlook, he also explains the symbolism of the emblem he had designed for the Ramakrishna Order:",
+  narrativeParagraph2: "\"The wavy waters in the picture are symbolic of Karma; the lotus, of Bhakti; the rising sun, of Jnâna; the encircling serpent is indicative of Yoga and the awakened Kuṇḍalinî Śakti, while the swan in the picture stands for the Paramâtman. Therefore, the ideal of the picture is that by the union of Karma, Jnâna, Bhakti and Yoga, the vision of the Paramâtman is obtained.\"",
+  quote: "",
+  quoteAuthor: "",
+  imageCaption: "Swami Vivekananda’s emblem description and his heartfelt letter to Mary Hale.",
+  customImages: ["/images/on-this-day/5thJuly.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
