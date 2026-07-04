@@ -1340,27 +1340,32 @@ export default function OnThisDay() {
             <div className="relative overflow-hidden rounded-xl w-full bg-[#EAE7E0] border-8 border-white shadow-lg group">
               
               {/* Display Images with dynamic source resolving */}
-<a href={currentSlide?.src} download={`on_this_day_${selectedMonth.toLowerCase()}_${selectedDay}.png`} className="block">
-  <AnimatePresence mode="wait">
-    <motion.img
-      key={`${activeEventIndex}-${slideshowIndex}`}
-      src={currentSlide?.src}
-      alt={currentSlide?.captionHeading}
-      referrerPolicy="no-referrer"
-      className="w-full h-auto object-contain"
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
-    />
-  </AnimatePresence>
-</a>
+<AnimatePresence mode="wait">
+  <motion.img
+    key={`${activeEventIndex}-${slideshowIndex}`}
+    src={currentSlide?.src}
+    alt={currentSlide?.captionHeading}
+    referrerPolicy="no-referrer"
+    className="w-full h-auto object-contain"
+    initial={{ opacity: 0, scale: 0.97 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.8, ease: "easeInOut" }}
+    onClick={() => {
+      const link = document.createElement('a');
+      link.href = currentSlide?.src || '';
+      link.download = `on_this_day_${selectedMonth.toLowerCase()}_${selectedDay}.png`;
+      link.click();
+    }}
+    style={{ cursor: 'pointer' }}
+  />
+</AnimatePresence>
 
               {/* Tint overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-85" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-85 pointer-events-none" />
 
               {/* Natural Tones bottom bar indicator */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E26D5C] w-1/3 z-10" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E26D5C] w-1/3 z-10 pointer-events-none" />
 
               {/* Slideshow Manual Arrow Controls */}
               <button
