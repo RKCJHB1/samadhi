@@ -987,15 +987,16 @@ export default function OnThisDay() {
   <script>
     // Embedded JSON data for state management
     const events = ${JSON.stringify(currentDayEvents)};
-    // Determine slideshow pictures: use customImages if available, otherwise fallback to default Unsplash images
-    let pictures = [];
-    if (events[0] && events[0].customImages && events[0].customImages.length) {
-      pictures = events[0].customImages.map((url) => ({
-        url: url.startsWith('/') ? \`https://ramakrishna-johannesburg.org.za\${url}\` : url,
-        caption: events[0].imageCaption || "Historical picture for this entry."
-      }));
-    } else {
-      pictures = [
+    // Helper to get slideshow pictures for a given event
+    function getPicturesForEvent(evt) {
+      if (evt && evt.customImages && evt.customImages.length) {
+        return evt.customImages.map((url) => ({
+          url: url.startsWith('/') ? \`https://ramakrishna-johannesburg.org.za\${url}\` : url,
+          caption: evt.imageCaption || "Historical picture for this entry."
+        }));
+      }
+      // fallback Unsplash images
+      return [
         {
           url: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=800",
           caption: "Sunset over the serene temples, welcoming spiritual illumination."
@@ -1010,6 +1011,8 @@ export default function OnThisDay() {
         }
       ];
     }
+    // Initialise slideshow pictures for the first event (or empty fallback)
+    let pictures = getPicturesForEvent(events[0] || {});
 
     let currentEventIdx = 0;
     let currentSlideIdx = 0;

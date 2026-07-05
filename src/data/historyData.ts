@@ -522,6 +522,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/5thJuly.png"]
 },
 {
+  date: "July 6",
+  monthNumeric: 6,
+  dayNumeric: 6,
+  year: 1895,
+  headline: "July 6, 1895 — Swami Vivekananda Receives Sister Christine",
+  narrativeParagraph1: "On July 6, 1895, Christina Greenstidel (later known as Sister Christine) and her friend Mary Funke arrived at Thousand Island Park, New York, after travelling hundreds of miles through the rain to meet Swami Vivekananda. Reflecting the profound reverence they felt, Mary Funke later recalled telling him that they had come to him just as they would have gone to Jesus had He been living on earth.",
+  narrativeParagraph2: "Sister Christine went on to become one of Swamiji's closest Western disciples, making a lasting contribution alongside Sister Nivedita to the cause of women's education in India.",
+  quote: "",
+  quoteAuthor: "",
+  imageCaption: "Sister Christine, one of Swami Vivekananda's closest Western disciples, who dedicated her life to women's education in India.",
+  customImages: ["/images/on-this-day/6thJuly.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
