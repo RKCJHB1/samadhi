@@ -535,6 +535,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/6thJuly.png"]
 },
 {
+  date: "July 7",
+  monthNumeric: 6,
+  dayNumeric: 7,
+  year: 1895,
+  headline: "July 7, 1895 — Swami Vivekananda’s Exposition on Advaita Vedanta",
+  narrativeParagraph1: "Swami Vivekananda gives a profound exposition on Advaita Vedanta during his intimate summer retreat at Thousand Island Park. Recorded by Miss S. Ellen Waldo in Inspired Talks, he unfolds the nature of ultimate reality, teaching that true freedom dawns only when the craving for worldly enjoyment has been completely outgrown.",
+  narrativeParagraph2: "Declaring the supreme unity of consciousness, he said: \"Know that the Knower and the known are one. The Trinity—the Knower, the known, and knowing—is manifesting as this universe.\"",
+  quote: "Know that the Knower and the known are one. The Trinity—the Knower, the known, and knowing—is manifesting as this universe.",
+  quoteAuthor: "Swami Vivekananda",
+  imageCaption: "Swami Vivekananda’s inspired talks on Advaita Vedanta at Thousand Island Park.",
+  customImages: ["/images/on-this-day/7thJuly.jpg"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
