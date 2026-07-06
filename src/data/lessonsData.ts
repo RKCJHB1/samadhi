@@ -10328,7 +10328,294 @@ export const lessonsData: LessonGroup[] = [
 	  	        }
 	  	      ]
 	  	    }
-	  	  }
+	  	  },
+		  {
+		    id: 'shape-your-own-destiny-1',
+		    title: 'Shape Your Own Destiny (Part 1)',
+		    description: 'Explore how your mind can be your greatest ally or your worst enemy, and learn the keys to taking ultimate control over your own future.',
+		    content: `
+		      <p>Following up on the profound truths of our inner strength, we now dive into two incredibly empowering verses from Chapter 6 of the Bhagavad Gita. These verses help us understand the power of our thoughts, the choices we make every day, and how to unlock our ultimate potential.</p>
+
+		      <h3>Your Own Friend or Foe (Verse 6.5)</h3>
+		      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+		        <p class="font-medium text-lg text-center mb-2">उद्धरेदात्मनात्मानं नात्मानमवसादयेत् । आत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः ।।<br/>Uddhared ātmanātmānam n'ātmānam avasādayet / ātm'aiva hy ātmano bandhur atm'aiva ripur ātmanaḥ</p>
+		        <p class="text-center italic">Let a man raise himself by his Self, let him not drag himself down; for he himself is his friend, and he himself is his enemy. (6.5)</p>
+		      </div>
+		      <p><strong>The Breakdown:</strong> One of the biggest hurdles we face is self-doubt and the habit of putting ourselves down. Here, Sri Krishna gives us a direct command: pull yourself up using your own inner strength!</p>
+		      <p>Think of your mind like a smartphone. It can be an incredible tool to help you learn, connect, and grow (your friend). Or, if you let it distract you with endless scrolling and negative thoughts, it can ruin your day (your foe). You have two "selves" inside you: the higher self that wants you to succeed, and the lower self that gets lazy or discouraged. Sri Krishna reminds us that nobody else can live our lives for us—we have the power to lift ourselves up.</p>
+		      <p>Swami Vivekananda brings immense power to this idea:</p>
+		      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+		        "Pull yourself out of difficulties by yourself! Be not afraid. Save yourself by yourself! Think not how many times you fail. Never mind. Time is infinite. Go forward; assert yourself again and again, and light must come." — Swami Vivekananda (CW, 8:132, 2:403)
+		      </blockquote>
+
+		      <h3>The Mind Untamed vs. Guided (Verse 6.6)</h3>
+		      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+		        <p class="font-medium text-lg text-center mb-2">बन्धुरात्मात्मनस्तस्य येनात्मैवात्मना जितः । अनात्मनस्तु शत्रुत्वे वर्तेतात्मैव शत्रुवत् ।।<br/>Bandhur ātmā'tmanas tasya yen'ātm'aiv'ātmanā jitaḥ / anātmanas tu śatrutve vartet'ātm'aiva śatruvat</p>
+		        <p class="text-center italic">To him who has conquered his self (body and senses) by the Self, his own self is a friend; but to him who has not conquered his self, his own self acts as an enemy. (6.6)</p>
+		      </div>
+		      <p><strong>The Breakdown:</strong> Krishna explains exactly how our inner self becomes either a helper or a troublemaker. It all comes down to mastery.</p>
+		      <p>Imagine trying to ride a wild, untrained horse. If you don't hold the reins, the horse will run wild, throw you off, and drag you into danger. But if you take the time to train and guide that horse, it becomes a loyal companion that can carry you to incredible heights. Your mind is exactly like that horse. If you let every random mood, lazy impulse, or angry thought control you, your mind acts like an enemy. But when you practice self-control, your mind becomes your most powerful ally.</p>
+		      <p>Swami Vivekananda translates this reality into a stark and honest truth:</p>
+		      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+		        "The mind uncontrolled and unguided will drag us down, down, for ever—rend us, kill us; and the mind controlled and guided will save us, free us." — Swami Vivekananda (CW, 6:30)
+		      </blockquote>
+
+		      <h3>What Does This Mean for You Today?</h3>
+		      <p>For students navigating school pressures, friendships, and the everyday challenges of growing up, these teachings serve as a personal compass:</p>
+		      <ul>
+		        <li><strong>Own Your Mistakes ("Never Mind!"):</strong> When you make a mistake, fail a test, or slip up, don't let your mind bully you. Remember Swami Vivekananda’s words: "Never mind. Time is infinite." Reset, hit the restart button, and try again.</li>
+		        <li><strong>Take the Reins:</strong> Every time you choose to finish your homework before playing video games, or choose to stay calm instead of losing your temper, you are training the wild horse. You are turning your mind into your best friend.</li>
+		        <li><strong>You Are Your Own Champion:</strong> Stop waiting for external circumstances or other people to change your mood or your destiny. You have an infinite source of strength inside you right now. Stand up, dust yourself off, and guide yourself forward.</li>
+		      </ul>
+		    `,
+		    quiz: {
+		      questions: [
+		        {
+		          question: 'According to verse 6.5, who is truly responsible for raising yourself up?',
+		          answers: [
+		            'Your parents',
+		            'Your teachers',
+		            'Yourself',
+		            'Your friends'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'In the smartphone analogy, what represents your mind acting as a "friend"?',
+		          answers: [
+		            'Using it to spread negative thoughts',
+		            'Using it as a tool to learn, connect, and grow',
+		            'Letting it distract you constantly',
+		            'Checking social media all day'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'What are the two "selves" inside you that Sri Krishna mentions?',
+		          answers: [
+		            'The brave self and the cowardly self',
+		            'The rich self and the poor self',
+		            'The higher self and the lower self',
+		            'The young self and the old self'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'What does the "wild horse" analogy represent in verse 6.6?',
+		          answers: [
+		            'Your physical body',
+		            'Your family',
+		            'Your mind',
+		            'Your school'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'How does Swami Vivekananda say we should respond to failure according to the lesson?',
+		          answers: [
+		            'Give up immediately',
+		            'Blame others for your mistakes',
+		            '"Never mind. Time is infinite." Reset and try again',
+		            'Hide from your problems'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'What happens when you choose to finish homework before playing video games?',
+		          answers: [
+		            'You are being boring',
+		            'You are training the wild horse and turning your mind into your best friend',
+		            'You are wasting your time',
+		            'You are being forced by authority'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'According to the lesson, what does the uncontrolled mind do to you?',
+		          answers: [
+		            'Helps you succeed',
+		            'Makes you rich',
+		            'Drags you down and prevents you from reaching your potential',
+		            'Keeps you peaceful'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'What is the main purpose of "taking the reins" of your mind?',
+		          answers: [
+		            'To become arrogant and proud',
+		            'To control others around you',
+		            'To master your own thoughts, moods, and impulses so your mind becomes your ally',
+		            'To escape from responsibilities'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'According to the lesson, who should you rely on to change your mood and destiny?',
+		          answers: [
+		            'Your parents',
+		            'Your friends',
+		            'External circumstances',
+		            'Yourself - you have infinite strength inside you'
+		          ],
+		          correctAnswer: 3
+		        },
+		        {
+		          question: 'What does Swami Vivekananda mean by "the light must come" in his quote?',
+		          answers: [
+		            'You will eventually become wealthy',
+		            'Success, clarity, and enlightenment will come if you keep asserting yourself and moving forward',
+		            'The sun will rise tomorrow',
+		            'You will become famous'
+		          ],
+		          correctAnswer: 1
+		        }
+		      ]
+		    }
+		  },
+		  {
+		    id: 'shape-your-own-destiny-2',
+		    title: 'Shape Your Own Destiny (Part 2)',
+		    description: 'Unlock ultimate mental resilience, overcome self-doubt, and discover the power of single-minded focus and dedication through verses from Chapters 2 and 8 of the Bhagavad Gita.',
+		    content: `
+		      <p>Following up on the profound truths of our inner strength and mind mastery, we now dive into two empowering verses from Chapters 2 and 8 of the Bhagavad Gita. These verses help us unlock ultimate mental resilience, overcome paralyzing self-doubt, and discover the power of single-minded focus and dedication when facing the grand battlefield of life.</p>
+
+		      <h3>Rise Up and Fight! (Verse 2.3)</h3>
+		      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+		        <p class="font-medium text-lg text-center mb-2">क्लैब्यं मा स्म गमः पार्थ नैतत्त्वय्युपपद्यते ।<br/>क्षुद्रं हृदयदौर्बल्यं त्यक्त्वोत्तिष्ठ परन्तप ॥</p>
+		        <p class="text-center font-medium text-sm text-gray-600 mb-2">Klaibyaṁ mā sma gamaḥ Pārtha naitat tvayy upapadyate!<br/>kṣudraṁ hṛdaya-daurbalyaṁ tyaktv’ottiṣṭha parantapa //</p>
+		        <p class="text-center italic text-gray-700">O Pārtha! Yield not to unmanliness! It befits thee not. Abandoning this base faint-heartedness, rise up, O dreaded hero! (2.3)</p>
+		      </div>
+		      <p><strong>The Breakdown:</strong> One of the biggest hurdles we face is falling into a state of temporary paralysis and self-doubt when life gets incredibly difficult. Here, Sri Krishna gives Arjuna a direct, uncompromising command on the active battlefield: shake off this sudden weakness and pull yourself up! Think of a challenging exam, a critical sports match, or a sudden crisis where you feel completely overwhelmed and want to quit. Giving up might seem like an easy escape, but taking a step backward never solves the problem. Sri Krishna reminds us that weakness does not belong to our true nature. We have an inner warrior capable of rising above any faint-heartedness.</p>
+		      <p>Swami Vivekananda places tremendous importance on this verse, saying it captures the core essence of the Gita's message:</p>
+		      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+		        "If one reads this one shloka one gets all the merits of reading the entire Gita; for in this one shloka lies imbedded the whole message of the Gita. . .Stand up and fight! Not one step back, that is the idea. . . Fight it out, whatever comes. Let the stars move from the sphere! . . Thus fight! You gain nothing by becoming cowards. . . Taking a step backward, you do not avoid any misfortune." — Swami Vivekananda (CW, 4:110, 1:461)
+		      </blockquote>
+
+		      <h3>The Power of Absolute Focus (Verse 8.7)</h3>
+		      <div class="bg-spiritual-50 p-4 rounded-lg border-l-4 border-spiritual-300 my-4">
+		        <p class="font-medium text-lg text-center mb-2">तस्मात्सर्वेषु कालेषु मामनुस्मर युध्य च ।<br/>मय्यर्पितमनोबुद्धिर्मामेवैष्यस्यसंशयः ॥</p>
+		        <p class="text-center font-medium text-sm text-gray-600 mb-2">Tasmāt sarveṣu kāleṣu mām anusmara yudhya ca /<br/>mayy arpita-mano-buddhir mām ev’aiṣyasy asaṁśayaḥ //</p>
+		        <p class="text-center italic text-gray-700">Therefore fight, remembering Me [God] always. One who has dedicated his mind and understanding to Me, shall come to Me alone, undoubtedly. (8.7)</p>
+		      </div>
+		      <p><strong>The Breakdown:</strong> Lord Krishna explains exactly how to perform our absolute best without being destroyed by stress, worry, or fear of the future. It all comes down to dedication and focus. Imagine a high-performance computer or smartphone: it has a vital core operating system running silently in the background while you perform multiple tasks on the screen. Your spiritual focus should be exactly like that background process. While your hands and intellect are fully busy fighting your daily battles—studying for tests, working hard, fulfilling duties—keep your deep inner mind anchored in the Divine, in truth, and in higher values. When you dedicate your goals to a grander purpose, your anxieties vanish and victory becomes absolute certainty.</p>
+		      <p>Swami Vivekananda calls us to equip ourselves with moral purity and unselfishness to face life's battles with absolute strength:</p>
+		      <blockquote class="italic border-l-4 border-gray-300 pl-4 py-2 my-4 text-gray-700 bg-gray-50 rounded">
+		        "Truth, purity, and unselfishness—wherever these are present, there is no power below or above the sun to crush the possessor thereof. Equipped with these, one individual is able to face the whole universe in opposition." — Swami Vivekananda (CW, 4:279)
+		      </blockquote>
+
+		      <h3>What Does This Mean for You Today?</h3>
+		      <ul>
+		        <li><strong>Stand Up and Fight:</strong> When you encounter a highly intimidating subject, an intense week of school projects, or personal difficulties, do not retreat or postpone. Face it immediately. Taking a step backward will never protect you from the challenge.</li>
+		        <li><strong>Anchor Your Focus:</strong> Avoid letting random distractions or exam anxiety scatter your thoughts. Keep your mind dedicated to a higher ideal—excellence, character building, and ultimate self-improvement. Let your daily study be an offering to that ideal.</li>
+		        <li><strong>Build Uncrushable Armour:</strong> Actively practice truth, purity, and unselfishness in your everyday interactions with friends and family. These are not just sweet moral values; they form an invincible shield of mental power that enables you to stand tall against the entire universe.</li>
+		      </ul>
+		    `,
+		    quiz: {
+		      questions: [
+		        {
+		          question: 'According to verse 2.3, what directly undermines our true potential and must be abandoned?',
+		          answers: [
+		            'Hard work',
+		            'Base faint-heartedness / cowardice',
+		            'Studying late',
+		            'Silence'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'What unique value does Swami Vivekananda place on verse 2.3?',
+		          answers: [
+		            'It is only meant for ancient history',
+		            'It should only be read by elders',
+		            'In this one shloka lies imbedded the whole message of the Gita',
+		            'It is a verse about relaxation'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'According to Swami Vivekananda, what do you gain by becoming a coward?',
+		          answers: [
+		            'Safety from problems',
+		            'More friends',
+		            'Peace of mind',
+		            'Nothing'
+		          ],
+		          correctAnswer: 3
+		        },
+		        {
+		          question: 'What happens when you decide to take a step backward according to the text?',
+		          answers: [
+		            'You easily find a better shortcut',
+		            'You do not avoid any misfortune',
+		            'The problem goes away completely',
+		            'You gain extra time'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'In verse 8.7, what does Sri Krishna tell Arjuna to do simultaneously while fighting?',
+		          answers: [
+		            'Worry about the final victory',
+		            'Plan an escape route',
+		            'Remember Me [God] always',
+		            'Blame others for the crisis'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'What elements must be dedicated to the Divine to ensure ultimate success according to verse 8.7?',
+		          answers: [
+		            'Only our money and possessions',
+		            'Mind and understanding / intellect',
+		            'Our past mistakes and regrets',
+		            'Our speech and physical strength only'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'In the high-performance device analogy for verse 8.7, what does the core background process represent?',
+		          answers: [
+		            'Playing games during study hours',
+		            'Constantly checking social media notifications',
+		            'Deep inner mind remaining anchored in a higher spiritual ideal',
+		            'Ignoring duties to rest'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'Which three qualities make an individual absolutely uncrushable according to Swami Vivekananda?',
+		          answers: [
+		            'Wealth, power, and fame',
+		            'Talent, cleverness, and high grades',
+		            'Truth, purity, and unselfishness',
+		            'Strength, speed, and standard beauty'
+		          ],
+		          correctAnswer: 2
+		        },
+		        {
+		          question: 'Equipped with truth, purity, and unselfishness, what is an individual able to face?',
+		          answers: [
+		            'Only small personal trials',
+		            'The whole universe in opposition',
+		            'No real difficulties at all',
+		            'Only their close circle of friends'
+		          ],
+		          correctAnswer: 1
+		        },
+		        {
+		          question: 'What is the core, defining command shared by Swami Vivekananda for students facing life\'s pressures?',
+		          answers: [
+		            'Wait for others to assist you',
+		            'Accept defeat quietly',
+		            'Hide your fears away',
+		            'Stand up and fight! Not one step back'
+		          ],
+		          correctAnswer: 3
+		        }
+		      ]
+		    }
+		  }
 	  	]
 	  },
 	  {
