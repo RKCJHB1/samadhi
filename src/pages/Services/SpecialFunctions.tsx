@@ -40,7 +40,7 @@ const SpecialFunctions = () => {
                           <span className="inline-block mt-2 px-2 py-1 bg-indian-saffron/20 text-indian-saffron text-xs font-semibold rounded-full animate-pulse">Upcoming</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p className="font-semibold text-base text-black leading-snug">Seminar: "The Importance of Spiritual Education for Children"</p>
+                          <p className="font-semibold text-base text-black leading-snug">Seminar: The Importance of Spiritual Education for Children</p>
                           <div className="mt-2 flex flex-col gap-1.5">
                             <a href="/pics/Education Seminar August 2026.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-semibold text-sm">
                               View Invitation (PDF)
@@ -58,7 +58,7 @@ const SpecialFunctions = () => {
                             <li><strong>Paper 3:</strong> "Effective Methods for Imparting Spiritual Education to Children" by <span className="font-medium text-black">Revered Swami Viprananda</span></li>
                             <li><strong>Paper 4:</strong> "Choosing the Right Teaching Resources for Age-Appropriate Spiritual Education" by <span className="font-medium text-black">Revered Pravrajika Ishtaprana Mataji</span></li>
                           </ul>
-                          <p className="mt-3 text-sm text-gray-600">Guests to be seated by 09h45. Lunch will be served thereafter. Registration is compulsory (limited to 180 guests).</p>
+                          <p className="mt-3 text-sm text-gray-600">Guests to be seated by 09h45. Lunch will be served after the programme. Registration is compulsory (limited to 180 guests).</p>
                           <p className="mt-1.5 text-sm text-gray-600">
                             (<a href="https://www.google.com/maps/search/?api=1&query=Vodacom+World+Midrand" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
                               Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand
@@ -388,7 +388,7 @@ const SpecialFunctions = () => {
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
-                        <p className="font-semibold text-black">Seminar: "The Importance of Spiritual Education for Children"</p>
+                        <p className="font-semibold text-black">Seminar: The Importance of Spiritual Education for Children</p>
                         <div className="mt-2 flex flex-col gap-1.5">
                           <a href="/pics/Education Seminar August 2026.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-semibold text-sm">
                             View Invitation (PDF)
@@ -409,7 +409,7 @@ const SpecialFunctions = () => {
                           <li><strong>Paper 3:</strong> "Effective Methods for Imparting Spiritual Education to Children" by <span className="font-medium text-black">Revered Swami Viprananda</span></li>
                           <li><strong>Paper 4:</strong> "Choosing the Right Teaching Resources for Age-Appropriate Spiritual Education" by <span className="font-medium text-black">Revered Pravrajika Ishtaprana Mataji</span></li>
                         </ul>
-                        <p className="mt-3 text-gray-600">Guests to be seated by 09h45. Lunch will be served thereafter. Registration is compulsory (limited to 180 guests).</p>
+                        <p className="mt-3 text-gray-600">Guests to be seated by 09h45. Lunch will be served after the programme. Registration is compulsory (limited to 180 guests).</p>
                         <p className="mt-1.5 text-gray-600">
                           (<a href="https://www.google.com/maps/search/?api=1&query=Vodacom+World+Midrand" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
                             Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand
