@@ -548,6 +548,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/7thJuly.jpg"]
 },
 {
+  date: "July 8",
+  monthNumeric: 6,
+  dayNumeric: 8,
+  year: 1906,
+  headline: "July 8, 1906 — Passing of Aghoremani Devi (Gopaler Ma)",
+  narrativeParagraph1: "On July 8, 1906, Aghoremani Devi, lovingly revered as Gopaler Ma (\"the Mother of Gopala\"), passed away on the banks of the Ganga at about 84 years of age.",
+  narrativeParagraph2: "One of the foremost women householder disciples of Sri Ramakrishna, she was renowned for her extraordinary maternal devotion and her divine visions of Lord Krishna as the child Gopala. During the last years of her life, she lived in the home of Sister Nivedita, who lovingly cared for her, while she remained deeply revered by the monks and devotees of the early Ramakrishna Movement. Her life continues to stand as one of the Order's most inspiring examples of pure devotion (vātsalya-bhāva).",
+  quote: "",
+  quoteAuthor: "",
+  imageCaption: "Aghoremani Devi, lovingly known as Gopaler Ma, renowned for her supreme maternal devotion.",
+  customImages: ["/images/on-this-day/8th July.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
