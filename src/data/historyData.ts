@@ -557,8 +557,20 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   narrativeParagraph2: "One of the foremost women householder disciples of Sri Ramakrishna, she was renowned for her extraordinary maternal devotion and her divine visions of Lord Krishna as the child Gopala. During the last years of her life, she lived in the home of Sister Nivedita, who lovingly cared for her, while she remained deeply revered by the monks and devotees of the early Ramakrishna Movement. Her life continues to stand as one of the Order's most inspiring examples of pure devotion (vātsalya-bhāva).",
   quote: "",
   quoteAuthor: "",
-  imageCaption: "Aghoremani Devi, lovingly known as Gopaler Ma, renowned for her supreme maternal devotion.",
   customImages: ["/images/on-this-day/8th July.png"]
+},
+{
+  date: "July 9",
+  monthNumeric: 6,
+  dayNumeric: 9,
+  year: 1897,
+  headline: "July 9, 1897 — Famine Relief & Swami Akhandananda",
+  narrativeParagraph1: "Deeply moved by the devastating famine in Bengal, Swami Akhandananda continued his relief work in Mahula, Murshidabad, remaining among the suffering villagers and organizing food for the starving.",
+  narrativeParagraph2: "In a historic letter from Almora dated July 9, 1897, addressed to Swami Shivananda, Swami Vivekananda joyfully described this noble undertaking, rejoicing that his brother disciples were feeding the hungry amid famine and disease. This became the first organized relief work of the Ramakrishna Mission, giving practical expression to the ideal of Śiva-jñāne jīva-sevā—serving every living being as God.",
+  quote: "",
+  quoteAuthor: "",
+  imageCaption: "Swami Akhandananda leading famine relief efforts in Mahula, Murshidabad during the 1897 Bengal famine.",
+  customImages: ["/images/on-this-day/9thJuly.png"]
 },
 {
     date: "January 1",
