@@ -573,6 +573,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/9thJuly.png"]
 },
 {
+  date: "July 10",
+  monthNumeric: 6,
+  dayNumeric: 10,
+  year: 1895,
+  headline: "July 10, 1895 — The Principle of Giving",
+  narrativeParagraph1: "During his intimate summer retreat at Thousand Island Park, New York, Swami Vivekananda spoke on the ideals of freedom, renunciation, and selfless service. Urging his students to give without expectation, he declared:\n\n\"In the world take always the position of the giver. Give everything and look for no return. Give love, give help, give service, give any little thing you can, but keep out barter. Make no conditions, and none will be imposed.\"",
+  narrativeParagraph2: "This teaching remains one of Swami Vivekananda's clearest expressions of karma yoga—serving others in a spirit of complete detachment and unconditional love.",
+  quote: "In the world take always the position of the giver. Give everything and look for no return. Give love, give help, give service, give any little thing you can, but keep out barter. Make no conditions, and none will be imposed.",
+  quoteAuthor: "Swami Vivekananda",
+  imageCaption: "Swami Vivekananda explaining the ideals of karma yoga, freedom, and giving without expectation.",
+  customImages: ["/images/on-this-day/10thJuly.jpg"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
