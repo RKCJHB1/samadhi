@@ -70,6 +70,21 @@ const isFutureDateInYear = (monthName: string, day: number) => {
   return false;
 };
 
+// Converts **bold** markers in narrative text to HTML <strong><em> tags
+const formatNarrativeText = (text: string): string => {
+  if (!text) return "";
+  // Escape HTML first to prevent XSS
+  let escaped = text
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">");
+  // Convert **bold** to <strong><em>bold</em></strong> (bold & italic)
+  escaped = escaped.replace(/\*\*(.+?)\*\*/g, "<strong><em>$1</em></strong>");
+  // Convert newlines to <br/> tags
+  escaped = escaped.replace(/\n/g, "<br/>");
+  return escaped;
+};
+
 const isBeforeLaunchDate = (monthName: string, day: number) => {
   try {
     if (new URLSearchParams(window.location.search).get('preview') === 'true') {
@@ -1524,14 +1539,18 @@ export default function OnThisDay() {
 
                 {/* 2-Paragraph Historical Narrative with Editorial Polish */}
                 <div className="space-y-4 text-base md:text-lg text-[#3D3A35] font-serif leading-relaxed text-left mt-2">
-                  <p>
-                    {eventData?.narrativeParagraph1}
-                  </p>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: formatNarrativeText(eventData?.narrativeParagraph1 || "")
+                    }}
+                  />
 
                   {eventData?.narrativeParagraph2 && (
-                    <p>
-                      {eventData.narrativeParagraph2}
-                    </p>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: formatNarrativeText(eventData.narrativeParagraph2)
+                      }}
+                    />
                   )}
                 </div>
 
