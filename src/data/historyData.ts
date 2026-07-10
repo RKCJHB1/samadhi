@@ -586,6 +586,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/10thJuly.jpg"]
 },
 {
+  date: "July 11",
+  monthNumeric: 6,
+  dayNumeric: 11,
+  year: 1897,
+  headline: "July 11, 1897 — Everyone of You Must Be a Giant!",
+  narrativeParagraph1: "Writing from Almora on this day in 1897, Swami Vivekananda challenged the young monks of the Ramakrishna Order to build a movement that would transform India through education, self-reliance, and fearless initiative. Reflecting on famine relief, he warned that charity alone could never solve society's problems:\n\n\"All the wealth of the world cannot help one little Indian village if the people are not taught to help themselves. Our work should be mainly educational, both moral and intellectual.\"",
+  narrativeParagraph2: "He urged his disciples to think independently, develop original ideas, and create institutions that would endure long after his lifetime. Then, in one of his most stirring exhortations, he declared:\n\n\"I expect more from my children than from my brethren. I want each one of my children to be a hundred times greater than I could ever be. Every one of you must be a giant—must, that is my word.\"",
+  quote: "Every one of you must be a giant — must, that is my word.",
+  quoteAuthor: "Swami Vivekananda",
+  imageCaption: "Swami Vivekananda writing from Almora, urging the young monks to become giants through education, self-reliance, and fearless initiative.",
+  customImages: ["/images/on-this-day/11thJuly.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
