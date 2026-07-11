@@ -599,6 +599,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/11thJuly.png"]
 },
 {
+  date: "July 12",
+  monthNumeric: 6,
+  dayNumeric: 12,
+  year: 1895,
+  headline: "July 12, 1895 — Advaita Vedānta and Vairāgya",
+  narrativeParagraph1: "Drawing upon Ādi Śaṅkarācārya's commentaries at Thousand Island Park, Swami Vivekananda delivered a profound discourse on Advaita Vedānta and the necessity of vairāgya (renunciation). He taught that true freedom dawns only when we de-hypnotize ourselves from the illusion of matter and transcend worldly attachment.",
+  narrativeParagraph2: "This discourse reveals the spiritual foundation of his vision for the Ramakrishna Movement—uniting the highest non-dualism with seeing and serving the Divine in all. Swamiji concluded with a timeless warning:\n\n\"**With all powers comes further misery, so kill desire. Getting any desire is like putting a stick into a nest of hornets. Vairāgya is finding out that desires are but gilded balls of poison.**\"",
+  quote: "With all powers comes further misery, so kill desire. Getting any desire is like putting a stick into a nest of hornets. Vairāgya is finding out that desires are but gilded balls of poison.",
+  quoteAuthor: "Swami Vivekananda",
+  imageCaption: "Swami Vivekananda at Thousand Island Park, teaching Advaita Vedānta and the freedom of vairāgya, or renunciation.",
+  customImages: ["/images/on-this-day/12thJuly.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
