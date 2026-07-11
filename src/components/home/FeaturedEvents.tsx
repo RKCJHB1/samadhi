@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../shared/SectionHeader';
 import EventCard from '../shared/EventCard';
 import Button from '../shared/Button';
+import { EVENTS } from '../../data/eventsData';
 
-// Sample events data - currently no upcoming events
-const events = [];
+// Filter only upcoming events
+const upcomingEvents = EVENTS.filter(event => event.status === 'upcoming');
 
 const FeaturedEvents = () => {
   return (
@@ -15,18 +17,17 @@ const FeaturedEvents = () => {
           subtitle="Join us for these upcoming spiritual gatherings and educational programs"
         />
 
-        {events.length > 0 ? (
+        {upcomingEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-            {events.map((event, index) => (
+            {upcomingEvents.map((event) => (
               <EventCard
-                key={index}
+                key={event.id}
                 title={event.title}
                 date={event.date}
                 time={event.time}
                 location={event.location}
                 description={event.description}
-                // image prop removed to hide images
-                link={event.link}
+                link="/services/special-functions"
                 className="border-indian-saffron bg-gradient-to-br from-indian-cream to-white"
               />
             ))}
