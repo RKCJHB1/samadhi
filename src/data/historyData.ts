@@ -612,6 +612,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/12thJuly.png"]
 },
 {
+  date: "July 13",
+  monthNumeric: 6,
+  dayNumeric: 13,
+  year: 1863,
+  headline: "July 13, 1863 — Birth of Swami Ramakrishnananda",
+  narrativeParagraph1: "Shashi Bhushan Chakravarty, later Swami Ramakrishnananda, one of the foremost direct monastic disciples of Sri Ramakrishna, was born at 4:56 a.m. in Ichapur, Bengal. Following the Master's passing, he devoted himself to the daily worship of Sri Ramakrishna's sacred relics and to the selfless service of his brother monks at the Baranagar Math.",
+  narrativeParagraph2: "In 1897, at Swami Vivekananda's request, he journeyed to Madras (now Chennai), where he founded the Ramakrishna Math and laid the foundation for the Ramakrishna Movement throughout South India. Introducing him to the devotees of Madras before his arrival, Swami Vivekananda wrote:\n\n\"**I shall send you one who is more orthodox than your most orthodox men of the South and who is at the same time unique and unsurpassed in his worship of and meditation on God.**\"",
+  quote: "I shall send you one who is more orthodox than your most orthodox men of the South and who is at the same time unique and unsurpassed in his worship of and meditation on God.",
+  quoteAuthor: "Swami Vivekananda",
+  imageCaption: "Swami Ramakrishnananda, the beloved disciple who established the Ramakrishna Movement in South India.",
+  customImages: ["/images/on-this-day/13thJuly.png"]
+},
+{
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
