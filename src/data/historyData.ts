@@ -630,7 +630,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     monthNumeric: 6,
     dayNumeric: 14,
     year: 1871,
-    headline: "Passing of Mathur Nath Biswas",
+    headline: "July 14, 1871 — Passing of Mathur Nath Biswas",
     narrativeParagraph1: "Mathur Nath Biswas, the devoted son-in-law of Rani Rasmani and steward of Dakshineswar, passed away at 5:00 p.m. As Sri Ramakrishna's principal patron and benefactor, he steadfastly protected and supported the Master during the years of his intense spiritual practices. Blessed with the celebrated vision of Sri Ramakrishna as both Mother Kālī and Lord Śiva, Mathur fulfilled the traditional horoscope prediction that his Chosen Deity would protect and accompany him in human form.",
     narrativeParagraph2: "At the very hour of his passing at Kalighat, Sri Ramakrishna entered deep samādhi in his room. Later, he revealed: \"The companions of the Divine Mother lovingly placed him in a celestial chariot. His soul ascended to the realm of the Divine Mother.\"",
     quote: "The companions of the Divine Mother lovingly placed him in a celestial chariot. His soul ascended to the realm of the Divine Mother.",
