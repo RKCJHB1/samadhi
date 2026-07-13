@@ -557,6 +557,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   narrativeParagraph2: "One of the foremost women householder disciples of Sri Ramakrishna, she was renowned for her extraordinary maternal devotion and her divine visions of Lord Krishna as the child Gopala. During the last years of her life, she lived in the home of Sister Nivedita, who lovingly cared for her, while she remained deeply revered by the monks and devotees of the early Ramakrishna Movement. Her life continues to stand as one of the Order's most inspiring examples of pure devotion (vātsalya-bhāva).",
   quote: "",
   quoteAuthor: "",
+  imageCaption: "Aghoremani Devi (Gopaler Ma), one of the foremost women householder disciples of Sri Ramakrishna, renowned for her extraordinary maternal devotion.",
   customImages: ["/images/on-this-day/8th July.png"]
 },
 {
@@ -625,6 +626,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
   customImages: ["/images/on-this-day/13thJuly.png"]
 },
 {
+    date: "July 14",
+    monthNumeric: 6,
+    dayNumeric: 14,
+    year: 1871,
+    headline: "Passing of Mathur Nath Biswas",
+    narrativeParagraph1: "Mathur Nath Biswas, the devoted son-in-law of Rani Rasmani and steward of Dakshineswar, passed away at 5:00 p.m. As Sri Ramakrishna's principal patron and benefactor, he steadfastly protected and supported the Master during the years of his intense spiritual practices. Blessed with the celebrated vision of Sri Ramakrishna as both Mother Kālī and Lord Śiva, Mathur fulfilled the traditional horoscope prediction that his Chosen Deity would protect and accompany him in human form.",
+    narrativeParagraph2: "At the very hour of his passing at Kalighat, Sri Ramakrishna entered deep samādhi in his room. Later, he revealed: \"The companions of the Divine Mother lovingly placed him in a celestial chariot. His soul ascended to the realm of the Divine Mother.\"",
+    quote: "The companions of the Divine Mother lovingly placed him in a celestial chariot. His soul ascended to the realm of the Divine Mother.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Mathur Nath Biswas, the devoted son-in-law of Rani Rasmani and principal patron of Sri Ramakrishna at Dakshineswar.",
+    customImages: ["/images/on-this-day/14thJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
