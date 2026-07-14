@@ -639,6 +639,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/14thJuly.png"]
   },
   {
+    date: "July 15",
+    monthNumeric: 6,
+    dayNumeric: 15,
+    year: 1885,
+    headline: "Sri Ramakrishna on Ishvarakoti — The Ever-Perfect Soul",
+    narrativeParagraph1: "Before leaving Balaram Bose's house in Calcutta for Dakshineswar, Sri Ramakrishna sang in divine ecstasy and spoke intimately with the devotees gathered around him. Speaking of the young Purna Chandra Ghosh, whom he regarded as an Ishvarakoti (an ever-perfect soul), he explained that such rare souls are spiritually mature from birth and remain untouched by worldliness. Using the striking analogy of plants that bear fruit before flowers, he taught that their God-realization arises spontaneously, without depending on the gradual course of ritual and spiritual disciplines followed by most aspirants.",
+    narrativeParagraph2: "These profound words of the Master continue to inspire seekers, reminding us that divine grace can manifest in extraordinary ways, transcending the ordinary boundaries of spiritual practice. The Ishvarakotis, as Sri Ramakrishna explained, are born with their spiritual enlightenment fully blossomed, serving as luminous beacons for all who tread the path of God-realization.",
+    quote: "There are some souls who are spiritually mature from birth. They are like plants that bear fruit before flowers. Their God-realization is spontaneous, not dependent on gradual disciplines.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna singing in divine ecstasy at Balaram Bose's house, speaking of the ever-perfect souls (Ishvarakotis) who are spiritually mature from birth.",
+    customImages: ["/images/on-this-day/15thJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
