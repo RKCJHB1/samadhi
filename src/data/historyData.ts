@@ -652,6 +652,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/15thJuly.png"]
   },
   {
+    date: "July 16",
+    monthNumeric: 6,
+    dayNumeric: 16,
+    year: 1935,
+    headline: "July 16, 1935 — Re-laying the Belur Math Foundation",
+    narrativeParagraph1: "On the auspicious day of Guru Purnima, 16 July 1935, a historic milestone took place at Belur Math. Swami Vijnanananda—a direct disciple of Sri Ramakrishna and later the fourth President of the Ramakrishna Order—ceremonially re-laid the foundation stone for the new Sri Ramakrishna Temple at its final site, fulfilling the vision first conceived by Swami Vivekananda decades earlier.",
+    narrativeParagraph2: "Although the auspicious moment had been fixed for 8:15 a.m., Swami Vijnanananda emerged from the old shrine only after 8:30 a.m. When the waiting monks gently asked about the delay, he replied with deep reverence: \"What shall I do! Sri Ramakrishna did not allow me to take leave of him.\"",
+    quote: "What shall I do! Sri Ramakrishna did not allow me to take leave of him.",
+    quoteAuthor: "Swami Vijnanananda",
+    imageCaption: "Swami Vijnanananda re-laying the foundation stone for the new Sri Ramakrishna Temple at Belur Math on Guru Purnima.",
+    customImages: ["/images/on-this-day/16thJuly.png"]
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
