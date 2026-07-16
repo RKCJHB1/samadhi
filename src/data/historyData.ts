@@ -665,6 +665,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImages: ["/images/on-this-day/16thJuly.png"]
   },
   {
+    date: "July 17",
+    monthNumeric: 6,
+    dayNumeric: 17,
+    year: 1895,
+    headline: "Consciousness and the Ātman",
+    narrativeParagraph1: "Continuing his intimate summer retreat with a small circle of Western disciples at Thousand Island Park, New York, Swami Vivekananda delivered a profound discourse on the nature of consciousness and Reality. Carefully recorded by Miss S. Ellen Waldo in the historic Inspired Talks, he expounded Śaṅkarācārya's Advaita Vedānta, explaining that the distinctions perceived in the world arise through the mind and veil the indivisible Reality of the Ātman. Describing self-luminous awareness as the only true knower, he taught:",
+    narrativeParagraph2: "",
+    quote: "Existence and perception are one thing, not two things joined together... Perception is not in the mind, but perception brings mind. It is absolute, the only knower; so perception is really the Atman.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, expounding Śaṅkarācārya's Advaita Vedānta on the nature of consciousness and the Ātman.",
+    customImage: "/images/on-this-day/17thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
