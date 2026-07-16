@@ -1554,6 +1554,20 @@ export default function OnThisDay() {
                   )}
                 </div>
 
+                {/* Quote Block - Displayed when quote text exists */}
+                {eventData?.quote && (
+                  <div className="mt-6 pl-5 border-l-4 border-[#E26D5C] bg-[#FAF9F6] py-4 pr-5 rounded-r-xl">
+                    <p className="text-base md:text-lg text-[#5C564E] font-serif italic leading-relaxed">
+                      &ldquo;{eventData.quote}&rdquo;
+                    </p>
+                    {eventData?.quoteAuthor && (
+                      <p className="mt-2 text-xs font-mono text-[#A89F91] uppercase tracking-wider font-semibold">
+                        — {eventData.quoteAuthor}
+                      </p>
+                    )}
+                  </div>
+                )}
+
               </motion.div>
             )}
           </AnimatePresence>
