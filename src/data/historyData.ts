@@ -670,7 +670,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 17,
     year: 1895,
     headline: "Consciousness and the Ātman",
-    narrativeParagraph1: "Continuing his intimate summer retreat with a small circle of Western disciples at Thousand Island Park, New York, Swami Vivekananda delivered a profound discourse on the nature of consciousness and Reality. Carefully recorded by Miss S. Ellen Waldo in the historic Inspired Talks, he expounded Śaṅkarācārya's Advaita Vedānta, explaining that the distinctions perceived in the world arise through the mind and veil the indivisible Reality of the Ātman.",
+    narrativeParagraph1: "On 17th July 1895, continuing his intimate summer retreat with a small circle of Western disciples at Thousand Island Park, New York, Swami Vivekananda delivered a profound discourse on the nature of consciousness and Reality. Carefully recorded by Miss S. Ellen Waldo in the historic Inspired Talks, he expounded Śaṅkarācārya's Advaita Vedānta, explaining that the distinctions perceived in the world arise through the mind and veil the indivisible Reality of the Ātman.",
     narrativeParagraph2: "Describing self-luminous awareness as the only true knower, he declared:",
     quote: "There can be no perception without consciousness; perception has self-luminosity, which in a lesser degree is called consciousness. Not one act of perception can be unconscious; in fact, consciousness is the nature of perception.",
     quoteAuthor: "Swami Vivekananda",
