@@ -678,6 +678,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/17thJuly.png"
   },
   {
+    date: "July 18",
+    monthNumeric: 6,
+    dayNumeric: 18,
+    year: 1895,
+    headline: "The Multiplicity of Souls vs. Ultimate Oneness",
+    narrativeParagraph1: "Continuing his intimate summer classes with a small circle of Western disciples at Thousand Island Park, New York, Swami Vivekananda examined the classical Sāṅkhya philosophy in relation to the non-dualism of Advaita Vedānta. He explained that while Sāṅkhya distinguishes the Puruṣa (the witnessing Self) from matter, it teaches that there are many separate Puruṣas. Advaita, however, maintains that pure Consciousness is indivisible and therefore the Witness cannot ultimately exist as many separate selves, but is One.",
+    narrativeParagraph2: "",
+    quote: "The Sankhyas say that consciousness is a compound, and beyond that, the last analysis gives us the Purusha, Witness, but that there are many Purushas—each of us is one. Advaita, on the contrary, affirms that Purushas can be only One...",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, examining the classical Sāṅkhya philosophy in relation to the non-dualism of Advaita Vedānta.",
+    customImage: "/images/on-this-day/18thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
