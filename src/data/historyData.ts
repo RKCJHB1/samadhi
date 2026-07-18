@@ -691,6 +691,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/18thJuly.png"
   },
   {
+    date: "July 19",
+    monthNumeric: 6,
+    dayNumeric: 19,
+    year: 1903,
+    headline: "July 19, 1903: Swami Ramakrishnananda's Arrival in Bengaluru",
+    narrativeParagraph1: "On this day, Swami Ramakrishnananda (Shashi Maharaj) arrived at Bangalore Cantonment Railway Station at 6:00 a.m., where he was greeted by about 4,000 citizens in a grand procession accompanied by 53 bhajan parties. During his twenty-day visit, his inspiring lectures profoundly influenced the spiritual life of the city and helped pave the way for the establishment of the Ramakrishna Math in Bengaluru.",
+    narrativeParagraph2: "In his Reply to the Address of Welcome, he reminded the modern world of its misplaced priorities, declaring:",
+    quote: "We regard the existence of the universe before us as the only reality, and a millionth part of that reality we never ascribe to God... But He is the only real Entity behind all this unreal existence.",
+    quoteAuthor: "Swami Ramakrishnananda",
+    imageCaption: "Swami Ramakrishnananda (Shashi Maharaj), whose arrival in Bengaluru in 1903 was greeted by thousands in a grand procession, paving the way for the Ramakrishna Math in the city.",
+    customImage: "/images/on-this-day/19thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
