@@ -704,6 +704,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/19thJuly.png"
   },
   {
+    date: "July 20",
+    monthNumeric: 6,
+    dayNumeric: 20,
+    year: 1895,
+    headline: "July 20, 1895: Becoming a Dynamo of Spirituality",
+    narrativeParagraph1: "During the summer of 1895, Swami Vivekananda withdrew with a small circle of Western disciples to a quiet cottage overlooking the St. Lawrence River at Thousand Island Park, New York. There he conducted intimate daily classes on Vedanta and Yoga, many of which were preserved in Inspired Talks. In the July 20 entry of Inspired Talks, he emphasized that true spiritual power arises not from constant activity or discussion, but from inner silence, meditation, and concentrated awareness.",
+    narrativeParagraph2: "Swamiji taught that constantly talking about spirituality dissipates inner strength, whereas silent meditation builds spiritual power. He reminded his students that genuine service flows from inner fullness rather than personal need, and explained that concentrated attention is the essential means of spiritual realization.",
+    quote: "Accumulate power in silence and become a dynamo of spirituality... Do not spend your energy in talking, but meditate in silence; and do not let the rush of the outside world disturb you.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, teaching his disciples the power of sacred silence and the dynamo of inner spiritual strength.",
+    customImage: "/images/on-this-day/20thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
