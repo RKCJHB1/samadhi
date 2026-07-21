@@ -736,7 +736,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     year: 1925,
     headline: "Birth of Swami Nischalananda",
     narrativeParagraph1: "Swami Nischalananda (born Dhanagopal Naidoo) was born on July 22, 1925, in Paradise, Newcastle, KwaZulu-Natal. He became the visionary founder of the Ramakrishna Centre of South Africa in 1942. In 1948, he traveled to India to take monastic vows, returning in 1953. Amid the harsh realities of colonial oppression and apartheid, he ignited a profound spiritual renaissance across the nation and surrounding countries by offering free medical clinics, nutrition programs, and educational outreach across all racial lines.",
-    narrativeParagraph2: "His life of selfless service was a direct fulfillment of Swami Vivekananda's famous mandate: 'This life is short, the vanities of the world are transient, but they alone live who live for others; the rest are more dead than alive.'",
+    narrativeParagraph2: "His life of selfless service was a direct fulfillment of Swami Vivekananda's famous saying: 'This life is short, the vanities of the world are transient, but they alone live who live for others; the rest are more dead than alive.'",
     quote: "This life is short, the vanities of the world are transient, but they alone live who live for others; the rest are more dead than alive.",
     quoteAuthor: "Swami Vivekananda",
     imageCaption: "Swami Nischalananda, the visionary founder of the Ramakrishna Centre of South Africa, whose life of selfless service brought spiritual renaissance to the nation.",
