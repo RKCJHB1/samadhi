@@ -723,11 +723,24 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     year: 1920,
     headline: "The Mahasamadhi of Sri Sarada Devi",
     narrativeParagraph1: "On this day, the world remembers the Mahasamadhi of Sri Sarada Devi, affectionately revered by millions as the Holy Mother (Sri Sri Maa). As the spiritual consort and counterpart of Sri Ramakrishna Paramahamsa, her life was a supreme testament to unconditional love, profound humility, and boundless spiritual grace.",
-    narrativeParagraph2: "Date & Time: 21 July 1920, at approximately 1:30 a.m. (during the night of 20–21 July). Location: Udbodhan House (Mayer Bari), Bagbazar, Calcutta (now Kolkata), India. Age: 66 years. Cause: Prolonged illness and severe physical debility following recurrent attacks of malaria. Surrounded by her devoted monastic and householder disciples, Holy Mother entered Mahasamadhi. Just days before her passing, she left humanity her timeless final message.",
+    narrativeParagraph2: "Date & Time: 21 July 1920, at approximately 1:30 a.m. (during the night of 20-21 July). Location: Udbodhan House (Mayer Bari), Bagbazar, Calcutta (now Kolkata), India. Age: 66 years. Cause: Prolonged illness and severe physical debility following recurrent attacks of malaria. Surrounded by her devoted monastic and householder disciples, Holy Mother entered Mahasamadhi. Just days before her passing, she left humanity her timeless final message.",
     quote: "If you want peace of mind, do not find fault with others. Rather, see your own faults. Learn to make the whole world your own. No one is a stranger, my child: this whole world is your own!",
     quoteAuthor: "Holy Mother Sri Sarada Devi",
     imageCaption: "Holy Mother Sri Sarada Devi, whose life was a supreme testament to unconditional love, profound humility, and boundless spiritual grace.",
     customImage: "/images/on-this-day/21stJuly.png"
+  },
+  {
+    date: "July 22",
+    monthNumeric: 6,
+    dayNumeric: 22,
+    year: 1925,
+    headline: "Birth of Swami Nischalananda",
+    narrativeParagraph1: "Swami Nischalananda (born Dhanagopal Naidoo) was born on July 22, 1925, in Paradise, Newcastle, KwaZulu-Natal. He became the visionary founder of the Ramakrishna Centre of South Africa in 1942. In 1948, he traveled to India to take monastic vows, returning in 1953. Amid the harsh realities of colonial oppression and apartheid, he ignited a profound spiritual renaissance across the nation and surrounding countries by offering free medical clinics, nutrition programs, and educational outreach across all racial lines.",
+    narrativeParagraph2: "His life of selfless service was a direct fulfillment of Swami Vivekananda's famous mandate: 'This life is short, the vanities of the world are transient, but they alone live who live for others; the rest are more dead than alive.'",
+    quote: "This life is short, the vanities of the world are transient, but they alone live who live for others; the rest are more dead than alive.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Nischalananda, the visionary founder of the Ramakrishna Centre of South Africa, whose life of selfless service brought spiritual renaissance to the nation.",
+    customImage: "/images/on-this-day/22ndJuly.png"
   },
   {
     date: "January 1",
