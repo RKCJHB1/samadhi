@@ -743,6 +743,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/22ndJuly.png"
   },
   {
+    date: "July 23",
+    monthNumeric: 6,
+    dayNumeric: 23,
+    year: 1895,
+    headline: "Swami Vivekananda on Māyā and the Ātman at Thousand Island Park",
+    narrativeParagraph1: "On July 23, 1895, during his spiritual retreat at Thousand Island Park, New York, Swami Vivekananda delivered a profound afternoon discourse on Māyā and the Ātman. Explaining that bondage arises through identification with the ever-changing phenomenal world, he declared: 'When we lay hold of the rope—identify ourselves with Maya—she has power over us; let go of it, be the Witness only.'",
+    narrativeParagraph2: "This teaching at Thousand Island Park encapsulated the essence of Advaita Vedanta—that the Ātman, the true Self, is ever the pure Witness untouched by the illusory power of Māyā. Swamiji's words continue to guide seekers toward the realization of their inherent freedom and divine nature.",
+    quote: "When we lay hold of the rope—identify ourselves with Maya—she has power over us; let go of it, be the Witness only.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, delivering a profound discourse on Māyā and the Ātman, urging seekers to be the Witness.",
+    customImage: "/images/on-this-day/23rdJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
