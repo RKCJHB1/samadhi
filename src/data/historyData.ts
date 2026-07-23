@@ -756,6 +756,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/23rdJuly.png"
   },
   {
+    date: "July 24",
+    monthNumeric: 6,
+    dayNumeric: 24,
+    year: 1897,
+    headline: "24th July 1897: Swami Vivekananda's Call to Fearless Service",
+    narrativeParagraph1: "On 24th July 1897, writing from Almora to his brother-disciple Swami Akhandananda—who was tirelessly serving famine victims in Bengal—Swami Vivekananda laid out a bold vision for active spiritual service. Reassuring him against fear and financial hardship, Swamiji wrote: 'Never worry about money... set your mind easy on that score.'",
+    narrativeParagraph2: "He emphasized that true spiritual devotion must extend beyond personal contemplation into permanent, fearless service to humanity. His message reminds us today that when our purpose is rooted in selfless love, courage and resources naturally follow to meet the need.",
+    quote: "Never worry about money... set your mind easy on that score.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's 24th July 1897 message from Almora inspired Swami Akhandananda's fearless famine-relief work in Bengal.",
+    customImage: "/images/on-this-day/24thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
