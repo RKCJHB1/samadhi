@@ -769,6 +769,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/24thJuly.png"
   },
   {
+    date: "July 25",
+    monthNumeric: 6,
+    dayNumeric: 25,
+    year: 1893,
+    headline: "July 25, 1893: Swami Vivekananda's Arrival in North America",
+    narrativeParagraph1: "On July 25, 1893, Swami Vivekananda arrived in Vancouver, Canada, aboard the Empress of India, setting foot on North American soil for the first time.",
+    narrativeParagraph2: "This marked the beginning of his historic mission in the West. As the first Hindu monk to present the universal message of Vedanta to a wide Western audience, he proclaimed the harmony of religions, the divinity of the soul, and the oneness of existence. His work transformed Western perceptions of India's spiritual heritage and laid the foundation for the enduring Vedanta Movement throughout North America and Europe.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda arriving in Vancouver, Canada, aboard the Empress of India on July 25, 1893, beginning his historic mission in the West.",
+    customImage: "/images/on-this-day/25thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
