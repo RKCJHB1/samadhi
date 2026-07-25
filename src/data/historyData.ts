@@ -782,6 +782,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/25thJuly.png"
   },
   {
+    date: "July 26",
+    monthNumeric: 6,
+    dayNumeric: 26,
+    year: 1895,
+    headline: "July 26, 1895: Inspired Talks — Swami Vivekananda",
+    narrativeParagraph1: "On July 26, 1895, at Thousand Island Park, New York, Swami Vivekananda expounded on the Brihadaranyaka Upanishad, as faithfully recorded by Miss S. E. Waldo. Drawing on the dialogue between Yājñavalkya and Maitreyī, he taught that love is possible only through the realization of the Atman, declaring: \"He who knows he is the Atman, he is law unto himself. He knows he is the universe and its creator.\" He concluded with the uncompromising exhortation: \"Truth must have no compromise. Teach truth and make no apology for any superstition; neither drag truth to the level of the listener.\"",
+    narrativeParagraph2: "",
+    quote: "He who knows he is the Atman, he is law unto himself. He knows he is the universe and its creator.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, expounding on the Brihadaranyaka Upanishad and the realization of the Atman.",
+    customImage: "/images/on-this-day/26thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
