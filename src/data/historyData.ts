@@ -795,6 +795,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/26thJuly.png"
   },
   {
+    date: "July 27",
+    monthNumeric: 6,
+    dayNumeric: 27,
+    year: 1932,
+    headline: "July 27: Daily Reflection",
+    narrativeParagraph1: "On this day in 1932, Swami Shivananda (Mahapurush Maharaj), a direct disciple of Sri Ramakrishna and the second President of the Ramakrishna Order, imparted profound spiritual guidance later recorded in For Seekers of God. Encouraging seekers to cultivate sincere devotion, he said: \"Weep before the Master, call on him... Just see how finely the boat glides upstream with the help of the southern breeze. The guru's blessings help one in one's spiritual endeavor.\" He concluded by reminding aspirants to perform their duties while keeping the mind steadfastly fixed at the lotus feet of the Lord—a timeless lesson on balancing worldly responsibilities with constant remembrance of God.",
+    narrativeParagraph2: "",
+    quote: "Weep before the Master, call on him... Just see how finely the boat glides upstream with the help of the southern breeze. The guru's blessings help one in one's spiritual endeavor.",
+    quoteAuthor: "Swami Shivananda (Mahapurush Maharaj)",
+    imageCaption: "Swami Shivananda (Mahapurush Maharaj), a direct disciple of Sri Ramakrishna and the second President of the Ramakrishna Order, imparting profound spiritual guidance.",
+    customImage: "/images/on-this-day/27thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
