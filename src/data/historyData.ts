@@ -813,7 +813,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 28,
     year: 1885,
     headline: "July 28: Daily Reflection — The Transforming Power of Divine Grace",
-    narrativeParagraph1: "On this day (28th July) in 1885, Sri Ramakrishna visited the home of Nanda Bose in Calcutta, as recorded in The Gospel of Sri Ramakrishna. Emphasizing the transforming power of Divine grace over past actions, the Master declared: \"The effect of karma wears away if one takes refuge in God. I prayed to the Divine Mother with flowers in my hand: 'Here, Mother, take Thy sin; here, take Thy virtue. I don't want either of these; give me only real bhakti.'\" His words remind us that sincere surrender to God frees us from the binding effects of past karma and awakens pure, selfless devotion.",
+    narrativeParagraph1: "On this day (28th July) in 1885, Sri Ramakrishna visited the home of Nanda Bose in Calcutta, as recorded in The Gospel of Sri Ramakrishna. Emphasizing the transforming power of Divine grace over past actions, the Master declared: \"The effect of karma wears away if one takes refuge in God. I prayed to the Divine Mother with flowers in my hand: 'Here, Mother, take Thy sin; here, take Thy virtue. I don't want either of these; give me only real bhakti.'\"",
     narrativeParagraph2: "",
     quote: "The effect of karma wears away if one takes refuge in God. I prayed to the Divine Mother with flowers in my hand: 'Here, Mother, take Thy sin; here, take Thy virtue. I don't want either of these; give me only real bhakti.'",
     quoteAuthor: "Sri Ramakrishna",
