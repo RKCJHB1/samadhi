@@ -821,6 +821,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/28thJuly.png"
   },
   {
+    date: "July 29",
+    monthNumeric: 6,
+    dayNumeric: 29,
+    year: 1895,
+    headline: "July 29: Daily Reflection",
+    narrativeParagraph1: "On this day (29th July) in 1895, Swami Vivekananda delivered a profound discourse at Thousand Island Park, New York, recorded by Miss S. E. Waldo in Inspired Talks. Expounding on the nature of spiritual purification, Swamiji declared: \"To identify the sun with the spots on the object-glass is the fundamental error. Know the sun, the 'I', to be ever unaffected by anything, and devote yourself to cleansing the spots.\" He reminded seekers that the essence of religion is the purification of the mind, allowing our inherently divine Ātman to shine forth, ever untouched by the impurities that veil it.",
+    narrativeParagraph2: "",
+    quote: "To identify the sun with the spots on the object-glass is the fundamental error. Know the sun, the 'I', to be ever unaffected by anything, and devote yourself to cleansing the spots.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, New York, teaching on spiritual purification and the ever-unaffected Ātman, as recorded in Inspired Talks.",
+    customImage: "/images/on-this-day/29thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
