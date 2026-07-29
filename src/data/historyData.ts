@@ -834,6 +834,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/29thJuly.png"
   },
   {
+    date: "July 30",
+    monthNumeric: 6,
+    dayNumeric: 30,
+    year: 1918,
+    headline: "July 30: Daily Reflection",
+    narrativeParagraph1: "On this day (30th July) in 1918, Swami Premananda (Baburam Maharaj), a direct disciple of Sri Ramakrishna, entered Mahasamadhi at 4:14 PM. Mourning his passing, Sri Sarada Devi remarked to Sarajubala Devi: \"Baburam was dearest to my heart. The strength, devotion, reason, and all the great virtues were embodied in him. He was the very light of the Math.\"",
+    narrativeParagraph2: "",
+    quote: "Baburam was dearest to my heart. The strength, devotion, reason, and all the great virtues were embodied in him. He was the very light of the Math.",
+    quoteAuthor: "Sri Sarada Devi",
+    imageCaption: "Swami Premananda (Baburam Maharaj), a direct disciple of Sri Ramakrishna, remembered by Holy Mother as the very light of the Math.",
+    customImage: "/images/on-this-day/30thJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
