@@ -847,6 +847,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/30thJuly.png"
   },
   {
+    date: "July 31",
+    monthNumeric: 6,
+    dayNumeric: 31,
+    year: 1918,
+    headline: "July 31: Daily Reflection",
+    narrativeParagraph1: "On this day (31 July 1918), at Udbodhan House in Kolkata, Sri Sarada Devi delivered a profound discourse on the physical body and death following the passing of Swami Premananda. Reflecting on the nature of an illumined soul, the Holy Mother declared: \"However spiritual a man may be, he must pay the tax for the use of the body to the last farthing. But the difference between a great soul and an ordinary man is this: the latter weeps while leaving the body, whereas the former laughs. Death seems to him a mere play.\"",
+    narrativeParagraph2: "",
+    quote: "However spiritual a man may be, he must pay the tax for the use of the body to the last farthing. But the difference between a great soul and an ordinary man is this: the latter weeps while leaving the body, whereas the former laughs. Death seems to him a mere play.",
+    quoteAuthor: "Sri Sarada Devi",
+    imageCaption: "Sri Sarada Devi at Udbodhan House, Kolkata, reflecting on the physical body and death after the passing of Swami Premananda.",
+    customImage: "/images/on-this-day/31stJuly.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
