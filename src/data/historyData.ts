@@ -860,6 +860,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/31stJuly.png"
   },
   {
+    date: "August 1",
+    monthNumeric: 7,
+    dayNumeric: 1,
+    year: 1901,
+    headline: "August 1: Daily Reflection",
+    narrativeParagraph1: "On this day (1st August) in 1901, Swami Abhedananda, a direct disciple of Sri Ramakrishna, was honored at a public reception in San Francisco as he began his West Coast ministry. Throughout his work in America, he proclaimed the universal message of Vedanta: \"The mission of Vedanta is to establish that oneness and bring peace, toleration and perfect harmony among the different religions, sects, creeds and denominations that exist in this world.\"",
+    narrativeParagraph2: "",
+    quote: "The mission of Vedanta is to establish that oneness and bring peace, toleration and perfect harmony among the different religions, sects, creeds and denominations that exist in this world.",
+    quoteAuthor: "Swami Abhedananda",
+    imageCaption: "Swami Abhedananda, a direct disciple of Sri Ramakrishna, honored at a public reception in San Francisco as he began his West Coast ministry.",
+    customImage: "/images/on-this-day/1stAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
