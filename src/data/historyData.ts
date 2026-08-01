@@ -873,6 +873,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/1stAugust.png"
   },
   {
+    date: "August 2",
+    monthNumeric: 7,
+    dayNumeric: 2,
+    year: 1929,
+    headline: "August 2: Daily Reflection",
+    narrativeParagraph1: "On this day (2nd August) in 1929, at Belur Math, Swami Shivananda (Mahapurush Maharaj), the second President of the Ramakrishna Order, imparted profound spiritual guidance to Swami Yatiswarananda on the power of the Divine Name. Addressing concerns about travelling on an inauspicious day, Mahapurushji declared: \"If one takes the name of the Lord and starts on a journey, one will not come to grief. By the strength of His name even evil turns into good.\"",
+    narrativeParagraph2: "",
+    quote: "If one takes the name of the Lord and starts on a journey, one will not come to grief. By the strength of His name even evil turns into good.",
+    quoteAuthor: "Swami Shivananda (Mahapurush Maharaj)",
+    imageCaption: "Swami Shivananda (Mahapurush Maharaj) at Belur Math, teaching on the power of the Divine Name.",
+    customImage: "/images/on-this-day/2ndAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
