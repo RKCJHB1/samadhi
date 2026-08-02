@@ -886,6 +886,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/2ndAugust.png"
   },
   {
+    date: "August 3",
+    monthNumeric: 7,
+    dayNumeric: 3,
+    year: 1884,
+    headline: "August 3: Daily Reflection",
+    narrativeParagraph1: "On this day, 3 August 1884, Sri Ramakrishna emphasized that the goal of spiritual life is to attain love for God rather than to become absorbed in intellectual speculation. He said: \"The important thing is somehow to develop love for God.\" Illustrating his point, he added: \"You have come to eat mangoes. Eat them. What need is there to count how many branches and leaves there are?\"",
+    narrativeParagraph2: "",
+    quote: "The important thing is somehow to develop love for God. You have come to eat mangoes. Eat them. What need is there to count how many branches and leaves there are?",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna teaching that the goal of spiritual life is love for God, not intellectual speculation.",
+    customImage: "/images/on-this-day/3rdAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
