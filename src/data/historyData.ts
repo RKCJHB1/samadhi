@@ -899,6 +899,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/3rdAugust.png"
   },
   {
+    date: "August 4",
+    monthNumeric: 7,
+    dayNumeric: 4,
+    year: 1916,
+    headline: "August 4: Daily Reflection",
+    narrativeParagraph1: "On this day, 4 August 1916, Swami Brahmananda, the first President of the Ramakrishna Order and a direct disciple of Sri Ramakrishna, laid the foundation stone for the new Sri Ramakrishna Math at Mylapore, Madras.",
+    narrativeParagraph2: "The Chennai Math has for more than 100 years served as a centre for worship, meditation, publications, education, healthcare, and social service.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Brahmananda laying the foundation stone for the new Sri Ramakrishna Math at Mylapore, Madras, on 4 August 1916.",
+    customImage: "/images/on-this-day/4thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
