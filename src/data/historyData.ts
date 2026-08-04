@@ -912,6 +912,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/4thAugust.png"
   },
   {
+    date: "August 5",
+    monthNumeric: 7,
+    dayNumeric: 5,
+    year: 1882,
+    headline: "August 5: Daily Reflection",
+    narrativeParagraph1: "On this day (5 August 1882), Sri Ramakrishna visited the residence of the renowned scholar and philanthropist Ishwar Chandra Vidyasagar in Calcutta. Greeting the \"Ocean of Learning,\" the Master joyfully remarked: \"Today I have come to the ocean.\" When Vidyasagar jokingly offered him some \"salt water,\" Sri Ramakrishna replied: \"No, why salt water? You are not the ocean of ignorance; you are the ocean of vidyā—the ocean of milk.\"",
+    narrativeParagraph2: "Through this playful exchange, Sri Ramakrishna honoured Vidyasagar's compassion and learning while gently reminding all that true wisdom reaches its fulfilment in God-realization.",
+    quote: "No, why salt water? You are not the ocean of ignorance; you are the ocean of vidyā—the ocean of milk.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna visiting Ishwar Chandra Vidyasagar in Calcutta, honouring him as the ocean of learning.",
+    customImage: "/images/on-this-day/5thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
