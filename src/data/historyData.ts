@@ -925,6 +925,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/5thAugust.png"
   },
   {
+    date: "August 6",
+    monthNumeric: 7,
+    dayNumeric: 6,
+    year: 1895,
+    headline: "August 6: The Pinnacle of Purity",
+    narrativeParagraph1: "On this day in 1895, Swami Vivekananda delivered his final discourse at Thousand Island Park, concluding the historic retreat captured in Inspired Talks. Swamiji highlighted absolute purity as the essential key to transcending dualities and realizing true freedom.",
+    narrativeParagraph2: "Swamiji reminded his disciples that once all ignorance is burned away, the soul stands revealed in its eternal, unblemished nature.",
+    quote: "In purity is no bondage. Remove the veils of ignorance by purity, then we manifest ourselves as we really are.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Thousand Island Park, teaching absolute purity as the key to true freedom.",
+    customImage: "/images/on-this-day/6thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
