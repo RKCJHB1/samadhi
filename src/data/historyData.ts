@@ -938,6 +938,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/6thAugust.png"
   },
   {
+    date: "August 7",
+    monthNumeric: 7,
+    dayNumeric: 7,
+    year: 1895,
+    headline: "August 7 – The Forest Revelation",
+    narrativeParagraph1: "On his final day at Thousand Island Park in 1895, Swami Vivekananda walked into the woods with Sister Christine and Mrs. Mary Funke. Beneath a low-branched tree, he quietly invited them to meditate, saying, \"Now we shall meditate. We shall be like Buddha under the Bo-tree.\"",
+    narrativeParagraph2: "As a thunderstorm broke overhead, Swamiji remained completely absorbed in deep meditation, oblivious to the rain—a powerful demonstration of spiritual concentration and inner stillness.",
+    quote: "Now we shall meditate. We shall be like Buddha under the Bo-tree.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda meditating in the woods at Thousand Island Park on his final day there in 1895, absorbed in stillness even as a thunderstorm broke overhead.",
+    customImage: "/images/on-this-day/7thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
