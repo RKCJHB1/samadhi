@@ -951,6 +951,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/7thAugust.png"
   },
   {
+    date: "August 8",
+    monthNumeric: 7,
+    dayNumeric: 8,
+    year: 1896,
+    headline: "August 8 – The Path of Persistence",
+    narrativeParagraph1: "On this day in 1896, Swami Vivekananda wrote to his disciple J. J. Goodwin about the immense effort required for every noble undertaking. He reminded seekers that the road to the Good is steep and difficult, filled with obstacles and setbacks.",
+    narrativeParagraph2: "Swamiji wrote: \"Great work requires great and persistent effort for a long time ... It is in the nature of things that many should fall, that troubles should come, that tremendous difficulties should arise.\"",
+    quote: "Great work requires great and persistent effort for a long time ... It is in the nature of things that many should fall, that troubles should come, that tremendous difficulties should arise.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's counsel on persistence: the steep road to the Good demands great and lasting effort through every obstacle and setback.",
+    customImage: "/images/on-this-day/8thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
