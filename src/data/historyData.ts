@@ -964,6 +964,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/8thAugust.png"
   },
   {
+    date: "August 9",
+    monthNumeric: 7,
+    dayNumeric: 9,
+    year: 1897,
+    headline: "August 9 – A New Chapter in the West",
+    narrativeParagraph1: "On August 9, 1897, Swami Abhedananda arrived in New York to continue the work of spreading Vedanta in the West. He was warmly received by Miss Mary Phillips, secretary of the Vedanta Society of New York.",
+    narrativeParagraph2: "His arrival marked a new chapter in the Vedanta movement in America. For nearly twenty-five years, he dedicated himself to teaching Vedanta throughout the West, returning to India in 1921.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Abhedananda's arrival in New York on 9 August 1897, beginning a new chapter in the Vedanta movement in the West.",
+    customImage: "/images/on-this-day/9thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
