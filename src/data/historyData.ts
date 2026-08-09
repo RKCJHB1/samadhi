@@ -977,6 +977,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/9thAugust.png"
   },
   {
+    date: "August 10",
+    monthNumeric: 7,
+    dayNumeric: 10,
+    year: 1885,
+    headline: "August 10 – Dakshineswar",
+    narrativeParagraph1: "On this day at Dakshineswar, Sri Ramakrishna showed his tender concern for the spiritual well-being of his disciples. He instructed M. (Mahendranath Gupta) to take the prasad of Lord Jagannath before eating his morning meal, reflecting the deep reverence given to sacred food in the devotional life of the time.",
+    narrativeParagraph2: "",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna at Dakshineswar, guiding M. to take the prasad of Lord Jagannath before his morning meal.",
+    customImage: "/images/on-this-day/10thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
