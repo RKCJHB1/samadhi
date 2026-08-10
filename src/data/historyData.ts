@@ -990,6 +990,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/10thAugust.png"
   },
   {
+    date: "August 11",
+    monthNumeric: 7,
+    dayNumeric: 11,
+    year: 1897,
+    headline: "August 11 — Built on Truth and Sincerity",
+    narrativeParagraph1: "On August 11, 1897, Swami Vivekananda wrote to Josephine MacLeod expressing his confidence in the enduring strength of the work he had undertaken.",
+    narrativeParagraph2: "Reassuring her that \"the work of the Mother will not suffer,\" Swamiji declared that it had been \"built and up to date maintained upon truth, sincerity, and purity,\" adding, \"Absolute sincerity has been its watchword.\"",
+    quote: "The work of the Mother will not suffer. It has been built and up to date maintained upon truth, sincerity, and purity. Absolute sincerity has been its watchword.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter to Josephine MacLeod on 11 August 1897, affirming a work built on truth, sincerity, and purity.",
+    customImage: "/images/on-this-day/11thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
