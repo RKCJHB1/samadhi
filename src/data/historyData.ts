@@ -1003,6 +1003,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/11thAugust.png"
   },
   {
+    date: "August 12",
+    monthNumeric: 7,
+    dayNumeric: 12,
+    year: 1894,
+    headline: "August 12 – “I Am He, Shivoham”",
+    narrativeParagraph1: "On August 12, 1894, Swami Vivekananda gave his final class at Greenacre in Maine, where he had been teaching Vedanta. He declared: \"I am Existence Absolute. Bliss Absolute. I am He, Shivoham.\"",
+    narrativeParagraph2: "His teachings emphasized the recognition of the Divine in all, including the ideal of seeing every woman as the Mother. The class concluded with prayers, reflecting Swamiji's vision of the underlying unity of all religions.",
+    quote: "I am Existence Absolute. Bliss Absolute. I am He, Shivoham.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's final class at Greenacre, Maine, on 12 August 1894, proclaiming the Vedantic truth: I am He, Shivoham.",
+    customImage: "/images/on-this-day/12thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
