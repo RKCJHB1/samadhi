@@ -1016,6 +1016,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/12thAugust.png"
   },
   {
+    date: "August 13",
+    monthNumeric: 7,
+    dayNumeric: 13,
+    year: 1900,
+    headline: "August 13 – “His Work He Knows”",
+    narrativeParagraph1: "On August 13, 1900, Swami Vivekananda wrote from Paris to his brother-disciple Swami Turiyananda in California, expressing deep surrender to Sri Ramakrishna: \"His work He knows, you and I are but servants and nothing else.\" He nevertheless attended to practical matters, urging that regular financial support be sent to Belur Math and sharing news of the brother-monks and concern over a possible famine in Bengal.",
+    narrativeParagraph2: "As he increasingly sought to withdraw from organizational responsibilities, he wrote with characteristic humility: \"By the grace of Mother, go on doing work, brother … but I am off! Now I am going to take a rest.\" The letter beautifully brings together service, responsibility, humility, and surrender to the Master's will.",
+    quote: "His work He knows, you and I are but servants and nothing else.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter from Paris on 13 August 1900 to Swami Turiyananda, surrendering the work to Sri Ramakrishna.",
+    customImage: "/images/on-this-day/13thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
