@@ -1029,6 +1029,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/13thAugust.png"
   },
   {
+    date: "August 14",
+    monthNumeric: 7,
+    dayNumeric: 14,
+    year: 1898,
+    headline: "August 14 — The Futility of Breaking Natural Law",
+    narrativeParagraph1: "On August 14, 1898, while staying with his Western disciples at a camp under the chennaar trees in Srinagar, Kashmir, Swami Vivekananda met a European visitor interested in Vedanta. Swamiji patiently engaged the enquirer, though Sister Nivedita felt his efforts were ultimately unsuccessful.",
+    narrativeParagraph2: "Reflecting on freedom and natural law, he remarked: \"How I wish a law could be broken. If we were really able to break a law we should be free. What you call breaking the law is really only another way of keeping it.\"",
+    quote: "How I wish a law could be broken. If we were really able to break a law we should be free. What you call breaking the law is really only another way of keeping it.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda with his Western disciples under the chennaar trees in Srinagar, Kashmir, on 14 August 1898.",
+    customImage: "/images/on-this-day/14thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
