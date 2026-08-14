@@ -1042,6 +1042,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/14thAugust.jpg"
   },
   {
+    date: "August 15",
+    monthNumeric: 7,
+    dayNumeric: 15,
+    year: 1886,
+    headline: "August 15 — The Final Night at Cossipore",
+    narrativeParagraph1: "On the night of 15 August 1886, at the Cossipore Garden House, Sri Ramakrishna, frail and nearing the end of his earthly life, comforted Holy Mother Sri Sarada Devi, assuring her that she would continue to live as she was then, and that just as Naren and the other young disciples were serving him, they would also take care of her. Earlier, he had explained the mystery of his suffering, saying, \"I have taken upon myself the miseries of the whole world.\"",
+    narrativeParagraph2: "After midnight, he gave his final instructions to Narendra (Swami Vivekananda), entrusting him with the care of the disciples. Then, at about 1:02 a.m. on 16 August, he uttered the name of his beloved Divine Mother, \"Kali,\" three times in a ringing voice and entered Mahāsamādhi.",
+    quote: "I have taken upon myself the miseries of the whole world.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "The Cossipore Garden House on the night of 15 August 1886, when Sri Ramakrishna comforted Holy Mother and later entered Mahāsamādhi.",
+    customImage: "/images/on-this-day/15th august.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
