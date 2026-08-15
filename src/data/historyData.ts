@@ -1055,6 +1055,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/15th august.jpg"
   },
   {
+    date: "August 16",
+    monthNumeric: 7,
+    dayNumeric: 16,
+    year: 1886,
+    headline: "August 16 — Sri Ramakrishna Enters Mahāsamādhi",
+    narrativeParagraph1: "On 16 August 1886 at 1:02 AM, Sri Ramakrishna entered Mahāsamādhi at the Cossipore Garden House after repeating the name of Mother Kālī three times. That afternoon, his body was cremated at the Cossipore burning ghat, and his sacred relics were carefully preserved by the young disciples.",
+    narrativeParagraph2: "Grieving deeply, Holy Mother Sri Sarada Devi was reassured by a vision of Sri Ramakrishna declaring, \"I have only moved from one room to another,\" and she continued wearing her bangles and red-bordered sari, typical of a Hindu married woman. Meanwhile, Narendra rallied the young disciples to remain united and pursue the monastic life, laying the foundation for the Ramakrishna Order.",
+    quote: "I have only moved from one room to another.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "The Cossipore Garden House on 16 August 1886, the day Sri Ramakrishna entered Mahāsamādhi.",
+    customImage: "/images/on-this-day/16thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
@@ -1137,19 +1150,6 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     quote: "In time of need, always remember that you have a Mother in me. My doors are open to everyone, forever.",
     quoteAuthor: "Holy Mother Sri Sarada Devi",
     imageCaption: "Peaceful waters of the river Ganges flowing by Belur Math beneath a terracotta dawn sky."
-  },
-
-  {
-    date: "August 16",
-    monthNumeric: 7,
-    dayNumeric: 16,
-    year: 1886,
-    headline: "The Mahasamadhi of Sri Ramakrishna Paramahamsa",
-    narrativeParagraph1: "Just after midnight on August 16, 1886, Sri Ramakrishna entered into final Mahasamadhi at the Cossipore Garden House. Suffering from throat cancer and physically emaciated, his spiritual brilliance remained absolute. In his final hours, he uttered the sacred name of 'Kali' three times, and his face lit up with a wonderful smile as he entered the state of Nirvikalpa Samadhi.",
-    narrativeParagraph2: "His passing marked the transition of his group of young householder and monastic disciples, led by young Narendra (Swami Vivekananda), into a formal brotherhood. From these silent beginnings under the Master's spiritual shade arose the global monastic community that carries his message of direct God-realization to this day.",
-    quote: "When a man has realized the Divine, he becomes silent. Let your actions speak, let your love melt all barriers.",
-    quoteAuthor: "Sri Ramakrishna",
-    imageCaption: "A glowing clay lamp radiating soft illumination into the darkness, a symbol of eternal presence."
   },
   {
     date: "September 11",
