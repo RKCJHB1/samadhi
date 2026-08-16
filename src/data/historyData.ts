@@ -1068,6 +1068,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/16thAugust.jpg"
   },
   {
+    date: "August 17",
+    monthNumeric: 7,
+    dayNumeric: 17,
+    year: 1889,
+    headline: "August 17 — Universal Respect for Householders and Monks",
+    narrativeParagraph1: "Writing from the early Baranagore Monastery to the scholar Pramadadas Mitra, Swami Vivekananda (then Swami Vividishananda) established that true spiritual nobility belongs equally to monastics and householders.",
+    narrativeParagraph2: "He emphasized that genuine holiness transcends external status, declaring: \"I make no distinction as to householder or Sannyāsin... my head shall bend low in reverence wherever I see greatness, broadness of heart, and holiness.\" This letter laid a core foundation for the Ramakrishna Movement's inclusive view of spiritual work.",
+    quote: "I make no distinction as to householder or Sannyāsin... my head shall bend low in reverence wherever I see greatness, broadness of heart, and holiness.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter of 17 August 1889 from Baranagore Monastery to Pramadadas Mitra, affirming equal reverence for householders and monks.",
+    customImage: "/images/on-this-day/17thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
