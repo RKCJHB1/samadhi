@@ -1086,7 +1086,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 18,
     year: 1883,
     headline: "August 18 — The Purpose of Human Life",
-    narrativeParagraph1: "At Balaram Bose's house in Calcutta, Sri Ramakrishna spoke to the devotees about the purpose of a Divine Incarnation and the goal of spiritual life. Comparing an Incarnation to one who reaches the roof and then descends by the stairs so that others may follow, he emphasized the path of devotion and freedom from desire.",
+    narrativeParagraph1: "On 18th August 1883, at Balaram Bose's house in Calcutta, Sri Ramakrishna spoke to the devotees about the purpose of a Divine Incarnation and the goal of spiritual life. Comparing an Incarnation to one who reaches the roof and then descends by the stairs so that others may follow, he emphasized the path of devotion and freedom from desire.",
     narrativeParagraph2: "He contrasted merely describing the \"garden\" with actually seeking its Master, declaring: \"The only purpose of life is to realize God.\"",
     quote: "The only purpose of life is to realize God.",
     quoteAuthor: "Sri Ramakrishna",
