@@ -1094,6 +1094,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/18thAugust.jpeg"
   },
   {
+    date: "August 19",
+    monthNumeric: 7,
+    dayNumeric: 19,
+    year: 1927,
+    headline: "August 19 — Mahasamadhi of Swami Saradananda",
+    narrativeParagraph1: "Today commemorates the 1927 passing of Swami Saradananda, a direct disciple of Sri Ramakrishna and the first General Secretary of the Ramakrishna Math and Mission. He entered Mahasamadhi at Udbodhan House, Kolkata, on Janmashtami, August 19, 1927.",
+    narrativeParagraph2: "A pillar of quiet strength, he was the author of Sri Ramakrishna, the Great Master and devoted his life to serving Holy Mother Sri Sarada Devi and guiding spiritual seekers with unwavering composure and surrender.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Saradananda, first General Secretary of the Ramakrishna Math and Mission, who entered Mahasamadhi at Udbodhan House, Kolkata, on 19 August 1927.",
+    customImage: "/images/on-this-day/19thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
