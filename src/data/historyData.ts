@@ -1107,6 +1107,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/19thAugust.png"
   },
   {
+    date: "August 20",
+    monthNumeric: 7,
+    dayNumeric: 20,
+    year: 1888,
+    headline: "August 20 — The Bond of the Gurubhais",
+    narrativeParagraph1: "On 20th August 1888, while living as a wandering monk at Vrindavan, Swami Vivekananda learned that his brother-disciple Swami Akhandananda was expected to return there later that month. The letter notes that he had twice travelled as far as Tibet and Bhutan, and describes the deep joy and emotion surrounding the reunion of the brother-disciples. Swami Vivekananda wrote that he was \"in great happiness\" and \"felt overwhelmed and wept.\"",
+    narrativeParagraph2: "Though he had intended to proceed to Hardwar, he added: \"So in the hope of meeting him, I postpone my going to Hardwar for some days.\" The letter offers a touching glimpse of the deep affection that bound Sri Ramakrishna's young monastic disciples together, even amid their austere lives of wandering and renunciation.",
+    quote: "So in the hope of meeting him, I postpone my going to Hardwar for some days.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter of 20 August 1888 from Vrindavan, postponing his journey to Hardwar in the hope of meeting Swami Akhandananda.",
+    customImage: "/images/on-this-day/20thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
