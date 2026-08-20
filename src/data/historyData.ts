@@ -1120,6 +1120,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/20thAugust.jpg"
   },
   {
+    date: "August 21",
+    monthNumeric: 7,
+    dayNumeric: 21,
+    year: 1911,
+    headline: "August 21 — Mahasamadhi of Swami Ramakrishnananda",
+    narrativeParagraph1: "On this day, 21 August 1911, Swami Ramakrishnananda (Shashi Maharaj), a direct monastic disciple of Sri Ramakrishna, entered Mahasamadhi in Calcutta. Renowned for his unparalleled guru-bhakti, he played a vital role in sustaining the early Baranagar Math through the daily worship of Sri Ramakrishna and devoted service to his brother-disciples.",
+    narrativeParagraph2: "At the request of Swami Vivekananda, he went to Madras and became the pioneer of the Ramakrishna movement in South India, laying the foundations of what became Ramakrishna Math, Madras. A living embodiment of self-surrender and sevā, his life remains a shining example of devotion expressed through dedicated service.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Ramakrishnananda (Shashi Maharaj), pioneer of the Ramakrishna movement in South India, who entered Mahasamadhi in Calcutta on 21 August 1911.",
+    customImage: "/images/on-this-day/21stAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
