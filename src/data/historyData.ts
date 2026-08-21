@@ -1133,6 +1133,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/21stAugust.png"
   },
   {
+    date: "August 22",
+    monthNumeric: 7,
+    dayNumeric: 22,
+    year: 1892,
+    headline: "August 22 — Swami Vivekananda Honours the Noble and Kind",
+    narrativeParagraph1: "On 22nd August 1892, while staying in Bombay during his years as a wandering monk, Swami Vivekananda wrote to Haridas Viharidas Desai, the Dewan of Junagadh, expressing his deep gratitude for Desai's kindness and friendship. Reflecting on the value of noble character, Swamiji paid tribute to those rare souls whose goodness enriches humanity.",
+    narrativeParagraph2: "\"The world really is enriched by men, high-souled, noble-minded, and kind, like you.\"",
+    quote: "The world really is enriched by men, high-souled, noble-minded, and kind, like you.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter of 22 August 1892 from Bombay to Haridas Viharidas Desai, honouring noble character and kindness.",
+    customImage: "/images/on-this-day/22ndAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
