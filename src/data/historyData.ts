@@ -1146,6 +1146,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/22ndAugust.png"
   },
   {
+    date: "August 23",
+    monthNumeric: 7,
+    dayNumeric: 23,
+    year: 1894,
+    headline: "August 23 — Swami Vivekananda on Fame and the One Reality",
+    narrativeParagraph1: "On 23 August 1894, Swami Vivekananda wrote from Annisquam to Mrs. G. W. Hale, affectionately addressed as \"Mother.\" Wearied by the demands of public life, he reflected: \"Every ounce of fame can only be bought at the cost of a pound of peace and holiness.\"",
+    narrativeParagraph2: "In a mood of profound spiritual surrender, he wrote, \"It is bosh and nonsense—to do good or do bad or do fuzz. We do nothing.\" Turning his mind to the Absolute, he declared: \"He is, He is. Only He is. None else is. He is… He in me, I in Him.\"",
+    quote: "Every ounce of fame can only be bought at the cost of a pound of peace and holiness.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda's letter of 23 August 1894 from Annisquam to Mrs. G. W. Hale, on fame, surrender, and the One Reality.",
+    customImage: "/images/on-this-day/23rdAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
