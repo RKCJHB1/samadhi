@@ -1159,6 +1159,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/23rdAugust.jpg"
   },
   {
+    date: "August 24",
+    monthNumeric: 7,
+    dayNumeric: 24,
+    year: 1891,
+    headline: "August 24 — Swami Vivekananda and Raja Ajit Singh in Khetri",
+    narrativeParagraph1: "During his wandering days as a Parivrājaka, Swami Vivekananda was staying in Khetri, where he had formed a deep friendship with Raja Ajit Singh. The Khetri Waqyat Register records that on the evening of 24 August 1891, the Raja went to meet Swamiji, and they remained together in conversation until about 8:00 p.m.",
+    narrativeParagraph2: "This simple entry offers a glimpse of the remarkable friendship between the wandering monk and the enlightened ruler who would become one of Swamiji's most devoted supporters.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda and Raja Ajit Singh of Khetri, whose evening meeting on 24 August 1891 is recorded in the Khetri Waqyat Register.",
+    customImage: "/images/on-this-day/24thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
