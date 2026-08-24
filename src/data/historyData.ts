@@ -1177,11 +1177,11 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 25,
     year: 1900,
     headline: "August 25 — “Now I Am Free”",
-    narrativeParagraph1: "On 25th August 1900, from Paris, Swami Vivekananda wrote to Sister Nivedita after finally laying down the burden of leadership he had carried for years. Having placed the responsibilities of the Ramakrishna Math and Mission in the hands of his brother disciples, he relinquished all position and authority.",
+    narrativeParagraph1: "On 25th August 1900, from Paris, Swami Vivekananda wrote to Sister Nivedita after finally laying down the responsibility of leadership he had carried for years. Having placed the responsibilities of the Ramakrishna Math and Mission in the hands of his brother disciples, he relinquished all position and authority.",
     narrativeParagraph2: "With a sense of deep relief, he wrote: \"Now I am free, as I have kept no power or authority or position for me in the work.\" For the great leader, true freedom lay not in holding power, but in being able to renounce it.",
     quote: "Now I am free, as I have kept no power or authority or position for me in the work.",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "Swami Vivekananda's letter of 25 August 1900 from Paris to Sister Nivedita, after laying down the burden of leadership.",
+    imageCaption: "Swami Vivekananda's letter of 25 August 1900 from Paris to Sister Nivedita, after laying down the responsibility of leadership.",
     customImage: "/images/on-this-day/25thAugust.png"
   },
   {
