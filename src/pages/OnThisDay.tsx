@@ -1538,7 +1538,7 @@ export default function OnThisDay() {
                 </div>
 
                 {/* 2-Paragraph Historical Narrative with Editorial Polish */}
-                <div className="space-y-4 text-base md:text-lg text-[#3D3A35] font-serif leading-relaxed text-left mt-2">
+                <div className="space-y-4 text-base md:text-lg text-[#3D3A35] font-serif leading-relaxed text-justify mt-2">
                   <p
                     dangerouslySetInnerHTML={{
                       __html: formatNarrativeText(eventData?.narrativeParagraph1 || "")
