@@ -1185,6 +1185,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/25thAugust.png"
   },
   {
+    date: "August 26",
+    monthNumeric: 7,
+    dayNumeric: 26,
+    year: 1959,
+    headline: "August 26 — Sri Sarada Math Attains Independence",
+    narrativeParagraph1: "On 26th August 1959, Sri Sarada Math attained independent status through a landmark Deed of Trust (No. 4109 of 1959), by which its sannyasinis became its Trustees and assumed responsibility for the administration of the Order. Founded at Dakshineswar on December 2, 1954, the Math had until then been under the guidance of the Trustees of the Ramakrishna Math.",
+    narrativeParagraph2: "This historic step fulfilled Swami Vivekananda's vision of a monastic Order for women, independently administered by women themselves. Thus, Sri Sarada Math entered a new chapter, carrying forward the spiritual ideals of Sri Ramakrishna, Holy Mother Sri Sarada Devi, and Swami Vivekananda.",
+    quote: "Women must be put in a position to solve their own problems in their own way. No one can or ought to do this for them.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "The Deed of Trust of 26 August 1959, by which Sri Sarada Math attained independent status under its sannyasini Trustees.",
+    customImage: "/images/on-this-day/26thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
