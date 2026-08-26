@@ -1198,6 +1198,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/26thAugust.png"
   },
   {
+    date: "August 27",
+    monthNumeric: 7,
+    dayNumeric: 27,
+    year: 1885,
+    headline: "August 27 — Sri Ramakrishna's Unceasing Spiritual Ministry",
+    narrativeParagraph1: "On 27th August 1885, at Dakshineswar around five in the afternoon, Sri Ramakrishna sat in his room with M. and a few devotees while suffering from the early stages of his severe throat illness. Disregarding his ailment, he continued receiving seekers, including Pundit Shyamapada of Antpur, while devotees discussed his care with Dr. Madhu.",
+    narrativeParagraph2: "The day highlighted Sri Ramakrishna's unceasing spiritual ministry, maintaining his divine joy and guiding seekers even as physical challenges began to mount.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna at Dakshineswar on 27 August 1885, receiving seekers and continuing his spiritual ministry despite illness.",
+    customImage: "/images/on-this-day/27thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
