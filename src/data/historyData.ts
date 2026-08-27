@@ -1211,6 +1211,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/27thAugust.jpg"
   },
   {
+    date: "August 28",
+    monthNumeric: 7,
+    dayNumeric: 28,
+    year: 1828,
+    headline: "August 28 — Birth of Swami Advaitananda",
+    narrativeParagraph1: "On 28th August 1828, Gopal Chandra Ghosh, later Swami Advaitananda, affectionately known as \"Buro Gopal,\" was born. The oldest of Sri Ramakrishna's direct disciples, he was revered for his simplicity, steadfast devotion, and practical wisdom.",
+    narrativeParagraph2: "In the early days at Belur Math, despite his advanced age, he took an active interest in the practical work of establishing the new monastery and personally helped in its construction and development, embodying the ideal of humble and selfless service.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Advaitananda, affectionately known as Buro Gopal, in the early days of Belur Math, helping in the construction of the new monastery.",
+    customImage: "/images/on-this-day/28thAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
