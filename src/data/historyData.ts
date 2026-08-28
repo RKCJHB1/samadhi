@@ -1224,6 +1224,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/28thAugust.png"
   },
   {
+    date: "August 29",
+    monthNumeric: 7,
+    dayNumeric: 29,
+    year: 1893,
+    headline: "August 29 — Swami Vivekananda Addresses the Thought and Work Club in Salem",
+    narrativeParagraph1: "On 29th August 1893, The Salem Evening News reported on Swami Vivekananda's informal address before the Thought and Work Club at Wesley Chapel in Salem, Massachusetts. Speaking on \"India: Her Religion and Customs,\" he drew attention to the severe poverty of India's masses and declared that what they needed was not more religion but \"practicality.\"",
+    narrativeParagraph2: "He criticized missionary efforts for doing little to improve the people's industrial condition, arguing instead for practical and industrial education. He also explained his own mission as one of organizing monks for industrial purposes, so that they could help educate and uplift the impoverished, while describing caste as a social division rather than a religious institution.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda addressing the Thought and Work Club at Wesley Chapel in Salem, Massachusetts, on 29 August 1893.",
+    customImage: "/images/on-this-day/29thAugust.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
