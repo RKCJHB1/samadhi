@@ -1237,6 +1237,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/29thAugust.jpg"
   },
   {
+    date: "August 30",
+    monthNumeric: 7,
+    dayNumeric: 30,
+    year: 1886,
+    headline: "August 30 — Holy Mother Begins Her First Pilgrimage",
+    narrativeParagraph1: "On 30th August 1886, just two weeks after Sri Ramakrishna's Mahasamadhi, Sri Sarada Devi left Calcutta on her first pilgrimage to North India, seeking relief from the profound grief of separation from the Master. She was accompanied by Golap-Ma, Lakshmi Devi, M.'s wife, and the young disciples Swami Yogananda, Swami Abhedananda, and Swami Adbhutananda.",
+    narrativeParagraph2: "The party visited Deoghar and Varanasi before proceeding to Vrindavan, where the Holy Mother would remain for many months. There, in the sacred atmosphere of Vrindavan, her grief gradually opened into a deeper spiritual experience.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Holy Mother Sri Sarada Devi, accompanied by Golap-Ma, Lakshmi Devi, M.'s wife, and young monastic disciples, beginning her first pilgrimage to North India on 30 August 1886.",
+    customImage: "/images/on-this-day/30thAugust.jpeg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
