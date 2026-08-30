@@ -1250,6 +1250,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/30thAugust.jpeg"
   },
   {
+    date: "August 31",
+    monthNumeric: 7,
+    dayNumeric: 31,
+    year: 1885,
+    headline: "August 31 — Sri Ramakrishna and Purna's Letter",
+    narrativeParagraph1: "On 31st August 1885, while suffering from his painful illness at Dakshineswar, Sri Ramakrishna remained deeply concerned with the spiritual welfare of his devotees. Two days earlier, on August 29, he had received a letter from his young disciple Purna, who wrote, \"I am feeling extremely happy. Now and then I cannot sleep at night for joy.\"",
+    narrativeParagraph2: "Deeply moved, the Master said, \"I feel thrilled to hear this,\" and asked to see the letter. He pressed it in his hand and remarked, \"Generally I cannot touch letters. But this is a good letter.\" The incident reveals the extraordinary joy Sri Ramakrishna felt at seeing spiritual awakening in his disciples.",
+    quote: "Generally I cannot touch letters. But this is a good letter.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Dakshineswar on 31 August 1885, holding the letter from his young disciple Purna and sharing his joy at the boy's spiritual awakening.",
+    customImage: "/images/on-this-day/31stAugust.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
