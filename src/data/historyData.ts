@@ -1263,6 +1263,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/31stAugust.png"
   },
   {
+    date: "September 1",
+    monthNumeric: 8,
+    dayNumeric: 1,
+    year: 1900,
+    headline: "September 1 — Swami Vivekananda in Paris",
+    narrativeParagraph1: "On 1st September 1900, while in Paris, Swami Vivekananda wrote to his brother-disciple Swami Turiyananda, asking to be freed from work connected with preaching. He had signed the trust deed and related documents, sent them to Calcutta, and retained no right or ownership for himself.",
+    narrativeParagraph2: "Longing to escape the strain of constant touring, he wished to settle quietly and devote himself to books, meditation, and repetition of the Lord's name. \"It is all Mother's will,\" he wrote; \"She knows best what She wants to have done.\"",
+    quote: "It is all Mother's will. She knows best what She wants to have done.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda in Paris on 1 September 1900, writing to Swami Turiyananda after signing the trust deed and retaining no right or ownership for himself.",
+    customImage: "/images/on-this-day/1stSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
