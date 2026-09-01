@@ -1276,6 +1276,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/1stSeptember.png"
   },
   {
+    date: "September 2",
+    monthNumeric: 8,
+    dayNumeric: 2,
+    year: 1901,
+    headline: "September 2 — Swami Vivekananda on Worry",
+    narrativeParagraph1: "On this day in 1901, from Belur Math, Swami Vivekananda wrote a warm letter to Sister Christine, reflecting on her difficulties and the anxieties of life.",
+    narrativeParagraph2: "With characteristic practicality, he remarked: \"Things will, of course, take their shape. We only make ourselves miserable by moping.\"",
+    quote: "Things will, of course, take their shape. We only make ourselves miserable by moping.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at Belur Math on 2 September 1901, writing to Sister Christine about the anxieties of life.",
+    customImage: "/images/on-this-day/2ndSeptember.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
