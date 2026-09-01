@@ -102,7 +102,7 @@ const VedantasaraPage = () => {
                   <h3>The six chapters</h3>
                   <ul>
                     <li><strong>I. Preliminaries</strong> — the student, the four means, and the need for a Guru</li>
-                    <li><strong>II. Superimposition</strong> — ignorance, the three bodies, the five sheaths, and Turīya</li>
+                    <li><strong>II. Superimposition</strong> — adhyāsa (the mistake), adhyāropa (the teaching method), the three bodies, the five sheaths, and Turīya</li>
                     <li><strong>III. The Jīva</strong> — the individual self and other accounts of its nature</li>
                     <li><strong>IV. De-superimposition</strong> — “Tat tvam asi” and the implied meaning of the mahāvākya</li>
                     <li><strong>V. The Means</strong> — śravaṇa, manana, nididhyāsana, and samādhi</li>

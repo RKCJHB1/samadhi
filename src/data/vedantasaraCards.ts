@@ -149,10 +149,18 @@ export const vedantasaraCards: VedantasaraCard[] = [
   {
     id: 'adhyasa',
     chapter: 'superimposition',
-    term: 'Adhyāsa (Adhyāropa)',
-    sanskrit: 'अध्यास / अध्यारोप',
+    term: 'Adhyāsa',
+    sanskrit: 'अध्यास',
     definition:
-      'Superimposition of the unreal upon the real through ignorance — as a snake is seen on a rope. The world and the jīva are superimposed on Brahman.',
+      'The mistake: taking the unreal for the real through ignorance — as a snake is seen on a rope. The body, the world, and the jīva are wrongly superimposed on the Self. Adhyāsa is the error itself, not a teaching method.',
+  },
+  {
+    id: 'adhyaropa',
+    chapter: 'superimposition',
+    term: 'Adhyāropa',
+    sanskrit: 'अध्यारोप',
+    definition:
+      'A pedagogical tool. The teacher provisionally attributes names, forms, and the world to Brahman so the student can follow the teaching. These attributions are later withdrawn by apavāda. Adhyāropa is not the mistake; adhyāsa is.',
   },
   {
     id: 'ajnana',
@@ -287,7 +295,7 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Apavāda',
     sanskrit: 'अपवाद',
     definition:
-      'De-superimposition: the reasoned negation of what was superimposed. When the snake is denied, the rope is revealed; when the world is negated, Brahman stands as it is.',
+      'The counterpart of adhyāropa. What was provisionally taught is taken back, so Brahman is left as it is. Adhyāropa and apavāda together are the method; adhyāsa is the mistake that knowledge removes.',
   },
   {
     id: 'tat-tvam-asi',
