@@ -1289,6 +1289,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/2ndSeptember.jpg"
   },
   {
+    date: "September 3",
+    monthNumeric: 8,
+    dayNumeric: 3,
+    year: 1918,
+    headline: "September 3 — Holy Mother Recalls Life at Dakshineswar",
+    narrativeParagraph1: "On this day in 1918, at the Udbodhan House in Calcutta, Sri Sarada Devi recalled the joyful spiritual atmosphere of her life with Sri Ramakrishna at Dakshineswar. Sarala Devi **(later Pravrajika Bharatiprana)** had been reading about Sri Ramakrishna from the Kathamrita, and the Mother reflected on his teachings and personality.",
+    narrativeParagraph2: "She described him as **\"the embodiment of Bliss itself,\"** recalling that **\"all the twenty-four hours of the day were spent in devotional music, merriment, laughter, teaching and story-telling.\"** She added, **\"So far as I remember, I never saw him worried by anything.\"**",
+    quote: "So far as I remember, I never saw him worried by anything.",
+    quoteAuthor: "Holy Mother Sri Sarada Devi",
+    imageCaption: "Holy Mother Sri Sarada Devi at the Udbodhan House in Calcutta on 3 September 1918, as Sarala Devi reads from the Kathamrita and the Mother recalls the joyful spiritual atmosphere of Dakshineswar.",
+    customImage: "/images/on-this-day/3rdSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
