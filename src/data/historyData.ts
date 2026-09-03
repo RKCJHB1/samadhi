@@ -1302,6 +1302,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/3rdSeptember.png"
   },
   {
+    date: "September 4",
+    monthNumeric: 8,
+    dayNumeric: 4,
+    year: 1918,
+    headline: "September 4 — Holy Mother on Fear of Death",
+    narrativeParagraph1: "On 4th September 1918, in the evening after the Arati vesper service, Holy Mother Sri Sarada Devi was seated on her meditation carpet, counting her beads, when her sister-in-law approached her in great anxiety. She spoke of her fear of death and offered to leave all her property to Mother in a will.",
+    narrativeParagraph2: "Mother laughed and asked, **\"When are you going to die?\"** She then advised her to give up such idle and anxious thoughts, reminding her of the connection between an idle life and a troubled mind.",
+    quote: "When are you going to die?",
+    quoteAuthor: "Holy Mother Sri Sarada Devi",
+    imageCaption: "Holy Mother Sri Sarada Devi seated on her meditation carpet after evening Arati on 4 September 1918, counting her beads as her sister-in-law approaches in anxiety about death.",
+    customImage: "/images/on-this-day/4thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
