@@ -1315,6 +1315,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/4thSeptember.png"
   },
   {
+    date: "September 5",
+    monthNumeric: 8,
+    dayNumeric: 5,
+    year: 1894,
+    headline: "September 5 — Calcutta Honours Swami Vivekananda",
+    narrativeParagraph1: "A historic gathering of about 4,000 people took place at the Calcutta Town Hall under the chairmanship of Raja Peary Mohun Mookerjee to express gratitude to Swami Vivekananda for his historic work at the 1893 Parliament of Religions and for his subsequent work in America.",
+    narrativeParagraph2: "The meeting adopted resolutions praising his contribution to the cause of Hinduism and thanking the American people for their warm reception of him. In his response from the United States, Swamiji declared, **\"I am thoroughly convinced that no individual or nation can live by holding itself apart from the community of others,\"** urging India to abandon isolation and embrace the law of **\"give and take.\"**",
+    quote: "I am thoroughly convinced that no individual or nation can live by holding itself apart from the community of others.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "The Calcutta Town Hall on 5 September 1894, where about 4,000 people gathered under Raja Peary Mohun Mookerjee to honour Swami Vivekananda for his work at the Parliament of Religions and in America.",
+    customImage: "/images/on-this-day/5thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
