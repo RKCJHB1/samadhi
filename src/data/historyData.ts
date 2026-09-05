@@ -1328,6 +1328,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/5thSeptember.png"
   },
   {
+    date: "September 6",
+    monthNumeric: 8,
+    dayNumeric: 6,
+    year: 1884,
+    headline: "September 6 — Sri Ramakrishna at Adhar Sen's House",
+    narrativeParagraph1: "On 6th September 1884, Sri Ramakrishna visited Adhar Sen's house in Calcutta, where Narendra and other devotees gathered for music and spiritual conversation. As Narendra tuned the **tanpura**, a string snapped, prompting playful remarks from the Master.",
+    narrativeParagraph2: "When Narendra commented on the lack of rhythm in **kirtan**, Sri Ramakrishna affectionately replied, **\"How silly! People like it because it is so tender and full of pathos.\"** Narendra then sang, while the Master became absorbed in the devotional mood.",
+    quote: "How silly! People like it because it is so tender and full of pathos.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Adhar Sen's house in Calcutta on 6 September 1884, as Narendra tunes the tanpura among the gathered devotees.",
+    customImage: "/images/on-this-day/6thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
