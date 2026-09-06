@@ -1341,6 +1341,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/6thSeptember.png"
   },
   {
+    date: "September 7",
+    monthNumeric: 8,
+    dayNumeric: 7,
+    year: 1884,
+    headline: "September 7 — Sri Ramakrishna at Dakshineswar",
+    narrativeParagraph1: "On 7th September 1884, devotees gathered at Dakshineswar, where Shyamdas sang **kirtan** before Sri Ramakrishna. At the Master's request, Nabai Chaitanya of Konnagar then sang, and Sri Ramakrishna danced in ecstatic devotion.",
+    narrativeParagraph2: "Tārak, recently returned from Vrindavan, shared his experiences of the pilgrimage with the devotees. In this devotional atmosphere, the Master explained that the ultimate purpose of **sādhana** and chanting God's name is the realization of the true Self within.",
+    quote: "The ultimate purpose of sādhana and chanting God's name is the realization of the true Self within.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna dancing in ecstatic devotion at Dakshineswar on 7 September 1884, as devotees gather for kirtan.",
+    customImage: "/images/on-this-day/7thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
