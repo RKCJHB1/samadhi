@@ -1354,6 +1354,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/7thSeptember.png"
   },
   {
+    date: "September 8",
+    monthNumeric: 8,
+    dayNumeric: 8,
+    year: 1939,
+    headline: "September 8 — Mahāsamādhi of Swami Abhedananda",
+    narrativeParagraph1: "Swami Abhedananda (pre-monastic name **Kālī Prasād Chandra**) entered **Mahāsamādhi** on September 8, 1939, at the Ramakrishna Vedanta Math in Calcutta. He was the last surviving direct monastic disciple of Sri Ramakrishna, and left behind a remarkable spiritual and intellectual legacy after nearly 25 years of spreading Vedanta in the West.",
+    narrativeParagraph2: "A distinguished scholar, thinker, and writer, he is also remembered as the author of the beloved Sanskrit hymn to Sri Sarada Devi, **Prakṛtiṁ Paramām**. In accordance with his final wishes, his body was cremated at the historic Cossipore cremation ground.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Abhedananda, last surviving direct monastic disciple of Sri Ramakrishna and author of Prakṛtiṁ Paramām, who entered Mahāsamādhi on 8 September 1939.",
+    customImage: "/images/on-this-day/8thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
