@@ -1367,6 +1367,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/8thSeptember.png"
   },
   {
+    date: "September 9",
+    monthNumeric: 8,
+    dayNumeric: 9,
+    year: 1895,
+    headline: "September 9 — Swami Vivekananda on God and Truth",
+    narrativeParagraph1: "On this day in 1895, writing from Paris to Alasinga Perumal, Swami Vivekananda declared: **\"I do not believe in any politics. God and truth are the only politics in the world, everything else is trash.\"**",
+    narrativeParagraph2: "His words remind us not to be swayed by public opinion, criticism, or petty gossip, but to remain steadfast in what is true and spiritually meaningful.",
+    quote: "I do not believe in any politics. God and truth are the only politics in the world, everything else is trash.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Paris on 9 September 1895 to Alasinga Perumal, declaring that God and truth are the only politics in the world.",
+    customImage: "/images/on-this-day/9thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
