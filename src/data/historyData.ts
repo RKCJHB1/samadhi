@@ -1380,6 +1380,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/9thSeptember.png"
   },
   {
+    date: "September 10",
+    monthNumeric: 8,
+    dayNumeric: 10,
+    year: 1914,
+    headline: "September 10 — Swami Turiyananda on Surrender",
+    narrativeParagraph1: "On this day in 1914, Swami Turiyananda wrote from Kankhal on surrendering the sense of personal doership to God. He urged the aspirant to hold constantly the thought: **\"Within me art thou; outside me art thou. I am the machine; thou art the operator. I act according to thy bidding.\"**",
+    narrativeParagraph2: "He emphasized that this realization cannot be attained all at once: **\"Practice is necessary and through repeated practice comes success.\"** When this truth is realized, he said, **\"God will then truly be the operator of the body. This is a fact.\"**",
+    quote: "Within me art thou; outside me art thou. I am the machine; thou art the operator. I act according to thy bidding.",
+    quoteAuthor: "Swami Turiyananda",
+    imageCaption: "Swami Turiyananda writing from Kankhal on 10 September 1914 on surrendering the sense of personal doership to God.",
+    customImage: "/images/on-this-day/10thSeptember.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
