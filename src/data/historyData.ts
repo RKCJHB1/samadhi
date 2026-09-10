@@ -1393,6 +1393,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/10thSeptember.jpg"
   },
   {
+    date: "September 11",
+    monthNumeric: 8,
+    dayNumeric: 11,
+    year: 1893,
+    headline: "September 11 — Swami Vivekananda's Chicago Parliament Speech",
+    narrativeParagraph1: "On September 11, 1893, Swami Vivekananda delivered a landmark speech at the World's Parliament of Religions in Chicago. Opening with his iconic greeting, **\"Sisters and Brothers of America,\"** he captivated several thousand attendees and received a two-minute standing ovation.",
+    narrativeParagraph2: "Representing Hinduism, he championed universal tolerance and the unity of all religious paths. His powerful message introduced Indian philosophy to the Western world, establishing a historic bridge between Eastern spirituality and modern global thought.",
+    quote: "Sisters and Brothers of America",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda addressing the World's Parliament of Religions in Chicago on 11 September 1893.",
+    customImage: "/images/on-this-day/11thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
@@ -1475,18 +1488,6 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     quote: "In time of need, always remember that you have a Mother in me. My doors are open to everyone, forever.",
     quoteAuthor: "Holy Mother Sri Sarada Devi",
     imageCaption: "Peaceful waters of the river Ganges flowing by Belur Math beneath a terracotta dawn sky."
-  },
-  {
-    date: "September 11",
-    monthNumeric: 8,
-    dayNumeric: 11,
-    year: 1893,
-    headline: "Swami Vivekananda's Historic Chicago Parliament Speech",
-    narrativeParagraph1: "On this historic Monday, Swami Vivekananda spoke at the opening session of the Parliament of Religions in Chicago. Walking onto the stage representing the ancient monastic tradition of India, he addressed the massive audience with the words: 'Sisters and Brothers of America!' At these words, seven thousand people stood up and applauded for two solid minutes in an unprecedented ovation.",
-    narrativeParagraph2: "His short address focused on sectarianism and fanatical bigotry, urging humanity to overcome religious pride and embrace mutual tolerance. This speech introduced Hinduism and the universal message of Vedanta to the modern Western world, instantly making Swamiji a world figure and establishing a bridge between East and West.",
-    quote: "I fervently hope that the bell that tolled this morning in honor of this convention may be the death-knell of all fanaticism.",
-    quoteAuthor: "Swami Vivekananda",
-    imageCaption: "Sunrise over Belur Math, casting terracotta light on the dome, embodying global spiritual synthesis."
   },
   {
     date: "November 12",
