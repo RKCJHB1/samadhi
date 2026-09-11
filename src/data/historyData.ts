@@ -1406,6 +1406,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/11thSeptember.png"
   },
   {
+    date: "September 12",
+    monthNumeric: 8,
+    dayNumeric: 12,
+    year: 1896,
+    headline: "September 12 — Swami Vivekananda in Amsterdam",
+    narrativeParagraph1: "On September 12, 1896, Swami Vivekananda arrived at Amsterdam Central Station with the German philosopher Dr. Paul Deussen and Captain and Mrs. Sevier. They stayed for three days at the Victoria Hotel, during which Swamiji visited the Rijksmuseum, the Royal Palace and the Schreierstoren, and enjoyed seeing Amsterdam's famous canals.",
+    narrativeParagraph2: "At the Rijksmuseum, he encountered the works of Rembrandt, including the celebrated Night Watch. This brief visit became an early landmark in the Dutch connection with the Ramakrishna-Vivekananda movement; later, Dutch-American disciple Henry J. van Haagen helped give the final form to the emblem of the Ramakrishna Order.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda in Amsterdam on 12 September 1896, arriving with Dr. Paul Deussen and Captain and Mrs. Sevier.",
+    customImage: "/images/on-this-day/12thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
