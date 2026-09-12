@@ -430,6 +430,7 @@ body.has-progress .tap-hint {
 .reflection-card {
   position: sticky;
   top: 2rem;
+  min-width: 0;
   min-height: 590px;
   overflow: hidden;
   padding: clamp(2rem, 4vw, 3rem);
@@ -497,19 +498,27 @@ body.has-progress .tap-hint {
 }
 
 .transformation-heading {
-  display: grid;
-  grid-template-columns: auto 2rem 1fr;
-  align-items: center;
-  gap: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.5rem;
+  row-gap: 0.15rem;
+  max-width: 100%;
   color: var(--muted);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.7rem, 3.7vw, 2.75rem);
-  line-height: 1;
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+  line-height: 1.15;
 }
 
 .transformation-heading__arrow {
+  flex: 0 0 auto;
   color: var(--gold-500);
   text-align: center;
+}
+
+.transformation-heading span:not(.transformation-heading__arrow),
+.transformation-heading strong {
+  min-width: 0;
 }
 
 .transformation-heading strong {
@@ -766,7 +775,8 @@ body.has-progress .tap-hint {
   }
 
   .transformation-heading {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 0.3rem;
   }
 
