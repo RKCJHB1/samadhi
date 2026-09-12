@@ -35,64 +35,66 @@
         <p class="eyebrow">Ganesh Chaturthi · A journey of transformation</p>
         <h1 id="page-title">Help Ganesha Remove the Obstacles</h1>
         <p class="hero__intro">
-          Clear the path one obstacle at a time. Each stone reveals a positive
-          quality we can cultivate within ourselves.
+          Clear the path one obstacle at a time. With each stone you remove, you
+          walk closer to Lord Ganesha, and a positive quality is revealed.
         </p>
       </section>
 
       <section class="experience" id="experience" aria-label="Obstacle-removal experience">
         <div class="game-panel">
           <div class="path-frame" id="path-frame">
-            <img
-              class="path-image"
-              src="assets/ganesha-path.png"
-              alt="A garden path leading to a shrine of Lord Ganesha"
-              width="1122"
-              height="1402"
-            />
+            <div class="path-world" id="path-world">
+              <img
+                class="path-image"
+                src="assets/ganesha-path.png"
+                alt="A garden path leading to a shrine of Lord Ganesha"
+                width="1122"
+                height="1402"
+              />
+
+              <div class="transformation" data-id="ignorance" style="--x: 50%; --y: 35%; --scale: 0.64">
+                <button class="stone" type="button" aria-label="Remove the obstacle Ignorance">
+                  <span>Ignorance</span>
+                </button>
+                <span class="quality-marker" aria-hidden="true">Wisdom</span>
+              </div>
+
+              <div class="transformation" data-id="selfishness" style="--x: 58%; --y: 46%; --scale: 0.74">
+                <button class="stone" type="button" aria-label="Remove the obstacle Selfishness">
+                  <span>Selfishness</span>
+                </button>
+                <span class="quality-marker" aria-hidden="true">Kindness</span>
+              </div>
+
+              <div class="transformation" data-id="laziness" style="--x: 42%; --y: 58%; --scale: 0.84">
+                <button class="stone" type="button" aria-label="Remove the obstacle Laziness">
+                  <span>Laziness</span>
+                </button>
+                <span class="quality-marker" aria-hidden="true">Effort</span>
+              </div>
+
+              <div class="transformation" data-id="anger" style="--x: 60%; --y: 70%; --scale: 0.94">
+                <button class="stone" type="button" aria-label="Remove the obstacle Anger">
+                  <span>Anger</span>
+                </button>
+                <span class="quality-marker" aria-hidden="true">Peace</span>
+              </div>
+
+              <div class="transformation" data-id="fear" style="--x: 45%; --y: 83%; --scale: 1.06">
+                <button class="stone" type="button" aria-label="Remove the obstacle Fear">
+                  <span>Fear</span>
+                </button>
+                <span class="quality-marker" aria-hidden="true">Courage</span>
+              </div>
+            </div>
 
             <div class="game-progress" aria-live="polite">
               <span id="cleared-count">0</span> / 5 cleared
             </div>
 
-            <div class="transformation" data-id="ignorance" style="--x: 50%; --y: 35%; --scale: 0.64">
-              <button class="stone" type="button" aria-label="Remove the obstacle Ignorance">
-                <span>Ignorance</span>
-              </button>
-              <span class="quality-marker" aria-hidden="true">Wisdom</span>
-            </div>
-
-            <div class="transformation" data-id="selfishness" style="--x: 58%; --y: 46%; --scale: 0.74">
-              <button class="stone" type="button" aria-label="Remove the obstacle Selfishness">
-                <span>Selfishness</span>
-              </button>
-              <span class="quality-marker" aria-hidden="true">Kindness</span>
-            </div>
-
-            <div class="transformation" data-id="laziness" style="--x: 42%; --y: 58%; --scale: 0.84">
-              <button class="stone" type="button" aria-label="Remove the obstacle Laziness">
-                <span>Laziness</span>
-              </button>
-              <span class="quality-marker" aria-hidden="true">Effort</span>
-            </div>
-
-            <div class="transformation" data-id="anger" style="--x: 60%; --y: 70%; --scale: 0.94">
-              <button class="stone" type="button" aria-label="Remove the obstacle Anger">
-                <span>Anger</span>
-              </button>
-              <span class="quality-marker" aria-hidden="true">Peace</span>
-            </div>
-
-            <div class="transformation" data-id="fear" style="--x: 45%; --y: 83%; --scale: 1.06">
-              <button class="stone" type="button" aria-label="Remove the obstacle Fear">
-                <span>Fear</span>
-              </button>
-              <span class="quality-marker" aria-hidden="true">Courage</span>
-            </div>
-
             <div class="tap-hint" id="tap-hint" aria-hidden="true">
               <span class="tap-hint__spark"></span>
-              Tap a stone to begin
+              Tap the nearest stone to begin
             </div>
 
             <div class="result-toast" id="result-toast" aria-hidden="true">
@@ -107,10 +109,10 @@
         <aside class="reflection-card" aria-live="polite" aria-atomic="true">
           <div class="reflection-card__empty" id="empty-state">
             <p class="reflection-card__kicker">The path begins here</p>
-            <h2>Choose an obstacle</h2>
+            <h2>Take the first step</h2>
             <p>
-              Select any stone on the path. It will disappear and reveal a
-              positive quality in its place.
+              Tap the stone nearest to you. As each obstacle is cleared, you
+              walk closer to Lord Ganesha and a positive quality is revealed.
             </p>
             <div class="empty-state__motif" aria-hidden="true">✦</div>
           </div>
@@ -134,8 +136,8 @@
               <span id="journey-progress">0 of 5</span>
             </div>
             <ul class="journey-list" id="journey-list">
-              <li data-id="anger"><span class="journey-check">✓</span><span>Anger</span><strong>Peace</strong></li>
               <li data-id="fear"><span class="journey-check">✓</span><span>Fear</span><strong>Courage</strong></li>
+              <li data-id="anger"><span class="journey-check">✓</span><span>Anger</span><strong>Peace</strong></li>
               <li data-id="laziness"><span class="journey-check">✓</span><span>Laziness</span><strong>Effort</strong></li>
               <li data-id="selfishness"><span class="journey-check">✓</span><span>Selfishness</span><strong>Kindness</strong></li>
               <li data-id="ignorance"><span class="journey-check">✓</span><span>Ignorance</span><strong>Wisdom</strong></li>
