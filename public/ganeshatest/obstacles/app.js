@@ -44,7 +44,7 @@ const CAMERA = [
   { fx: 46, fy: 42, scale: 1.4, vy: 46 },
   { fx: 54, fy: 36, scale: 1.58, vy: 44 },
   { fx: 50, fy: 30, scale: 1.78, vy: 42 },
-  { fx: 50, fy: 19.6, scale: 2.32, vy: 34 },
+  { fx: 50, fy: 20.4, scale: 3.35, vy: 40 },
 ];
 
 const groups = [...document.querySelectorAll(".transformation")];
