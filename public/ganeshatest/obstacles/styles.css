@@ -520,9 +520,7 @@ body.has-progress .tap-hint {
   min-width: 0;
   min-height: 590px;
   overflow: hidden;
-  container-type: inline-size;
-  container-name: reflection;
-  padding: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.6rem, 3.4vw, 2.4rem);
   background:
     radial-gradient(circle at 100% 0, rgba(243, 199, 93, 0.18), transparent 15rem),
     rgba(255, 253, 247, 0.96);
@@ -588,23 +586,17 @@ body.has-progress .tap-hint {
 
 .transformation-heading {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.12rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.4rem;
+  row-gap: 0.1rem;
+  width: 100%;
   max-width: 100%;
   min-width: 0;
   color: var(--muted);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.5rem, 2.2vw, 2.35rem);
-  font-size: clamp(1.5rem, 8cqi, 2.35rem);
-  line-height: 1.12;
-}
-
-.transformation-heading__from {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  max-width: 100%;
+  font-size: 1.65rem;
+  line-height: 1.2;
 }
 
 .transformation-heading__arrow {
@@ -612,11 +604,17 @@ body.has-progress .tap-hint {
   color: var(--gold-500);
 }
 
-.transformation-heading strong {
+#current-obstacle,
+#current-quality {
+  min-width: 0;
   max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.transformation-heading strong {
+  flex: 1 0 100%;
   color: var(--maroon-900);
   font-weight: 600;
-  overflow-wrap: anywhere;
 }
 
 .reflection-card__body {
@@ -874,7 +872,7 @@ body.has-progress .tap-hint {
   }
 
   .transformation-heading {
-    font-size: clamp(1.45rem, 8vw, 1.9rem);
+    font-size: 1.45rem;
   }
 
   .transformation-heading__arrow {
