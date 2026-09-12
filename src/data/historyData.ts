@@ -1441,8 +1441,8 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     narrativeParagraph2: "The journal was devoted principally to Vedanta and the spiritual and philosophical heritage of India, and Swamiji himself contributed to and strongly supported it. Brahmavadin continued until 1914, when its legacy was carried forward by **The Vedanta Kesari**, the English monthly published by Sri Ramakrishna Math, Chennai.",
     quote: "The Brahmavadin is a jewel — it must not perish.",
     quoteAuthor: "Swami Vivekananda",
-    imageCaption: "Alasinga Perumal presenting the first issue of Brahmavadin in Madras on 14 September 1895, inspired and guided by Swami Vivekananda.",
-    customImage: "/images/on-this-day/14thSeptember.jpg"
+    imageCaption: "Alasinga Perumal presenting the first issue of Brahmavadin in Madras on 14 September 1895, before a garlanded portrait of Swami Vivekananda.",
+    customImage: "/images/on-this-day/14thSeptember.jpg?v=2"
   },
   {
     date: "January 1",
