@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An interactive Ganesh Chaturthi website concept exploring the spiritual symbolism of Lord Ganesha."
+    />
+    <meta name="theme-color" content="#fffaf0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Discover the Meaning of Ganesha</title>
+    <link rel="preload" href="assets/ganesha-symbolism.png" as="image" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#experience">Skip to the interactive experience</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="#top" aria-label="Ramakrishna Centre Johannesburg home">
+          <span class="wordmark__symbol" aria-hidden="true">ॐ</span>
+          <span>
+            <strong>Ramakrishna Centre</strong>
+            <small>Johannesburg</small>
+          </span>
+        </a>
+        <span class="concept-label">Festival feature concept</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Ganesh Chaturthi · Interactive learning</p>
+        <h1 id="page-title">Discover the Meaning of Ganesha</h1>
+        <p class="hero__intro">
+          Every part of Ganesha’s familiar form carries a spiritual teaching.
+          Select a glowing symbol to discover its meaning.
+        </p>
+      </section>
+
+      <section class="experience" id="experience" aria-label="Ganesha symbolism explorer">
+        <div class="figure-panel">
+          <div class="figure-frame">
+            <img
+              class="ganesha-image"
+              src="assets/ganesha-symbolism.png"
+              alt="A devotional illustration of Lord Ganesha seated with a modaka and Mushika"
+              width="1122"
+              height="1402"
+            />
+
+            <button
+              class="hotspot"
+              type="button"
+              data-symbol="large-ears"
+              style="--x: 25%; --y: 33%"
+              aria-label="Explore the meaning of Ganesha’s large ears"
+              aria-pressed="false"
+            >
+              <span class="hotspot__dot" aria-hidden="true"></span>
+            </button>
+            <button
+              class="hotspot"
+              type="button"
+              data-symbol="elephant-head"
+              style="--x: 50%; --y: 27%"
+              aria-label="Explore the meaning of Ganesha’s elephant head"
+              aria-pressed="false"
+            >
+              <span class="hotspot__dot" aria-hidden="true"></span>
+            </button>
+            <button
+              class="hotspot"
+              type="button"
+              data-symbol="trunk"
+              style="--x: 53%; --y: 49%"
+              aria-label="Explore the meaning of Ganesha’s trunk"
+              aria-pressed="false"
+            >
+              <span class="hotspot__dot" aria-hidden="true"></span>
+            </button>
+            <button
+              class="hotspot"
+              type="button"
+              data-symbol="modaka"
+              style="--x: 73%; --y: 55%"
+              aria-label="Explore the meaning of the modaka"
+              aria-pressed="false"
+            >
+              <span class="hotspot__dot" aria-hidden="true"></span>
+            </button>
+            <button
+              class="hotspot"
+              type="button"
+              data-symbol="mushika"
+              style="--x: 77%; --y: 82%"
+              aria-label="Explore the meaning of Mushika"
+              aria-pressed="false"
+            >
+              <span class="hotspot__dot" aria-hidden="true"></span>
+            </button>
+
+            <div class="tap-hint" aria-hidden="true">
+              <span class="tap-hint__spark"></span>
+              Tap a glowing point
+            </div>
+          </div>
+          <p class="figure-caption">
+            Five symbols · five teachings
+          </p>
+        </div>
+
+        <div class="meaning-card" id="meaning-card" aria-live="polite" aria-atomic="true">
+          <button class="meaning-card__close" id="close-card" type="button" aria-label="Close explanation">
+            <span aria-hidden="true">×</span>
+          </button>
+
+          <div class="meaning-card__empty" id="empty-state">
+            <p class="meaning-card__kicker">Begin exploring</p>
+            <h2>Choose a glowing symbol</h2>
+            <p>
+              Tap any point on the illustration. A short explanation of its
+              spiritual meaning will appear here.
+            </p>
+            <div class="empty-state__motif" aria-hidden="true">✦</div>
+          </div>
+
+          <div class="meaning-card__content" id="meaning-content" hidden>
+            <div class="meaning-card__topline">
+              <span class="symbol-number" id="symbol-number">01</span>
+              <p class="progress-label" id="progress-label">1 of 5 discovered</p>
+            </div>
+            <p class="meaning-card__kicker" id="symbol-theme">Listen deeply</p>
+            <h2 id="symbol-title">Large ears</h2>
+            <p class="meaning-card__body" id="symbol-meaning">
+              Ganesha’s large ears remind us to listen more and speak less.
+            </p>
+
+            <div class="progress-dots" id="progress-dots" aria-label="Symbol navigation"></div>
+
+            <div class="card-actions">
+              <button class="card-button card-button--secondary" id="previous-symbol" type="button">
+                <span aria-hidden="true">←</span> Previous
+              </button>
+              <button class="card-button card-button--primary" id="next-symbol" type="button">
+                Next <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="completion" id="completion" hidden>
+            <p>There is more to Ganesha than his familiar form.</p>
+            <a href="/learn" class="completion__link">Continue learning about Lord Ganesha</a>
+          </div>
+        </div>
+
+        <button class="card-backdrop" id="card-backdrop" type="button" aria-label="Close explanation"></button>
+      </section>
+
+      <noscript>
+        <p class="noscript-note">
+          This interactive feature requires JavaScript. Please enable it to explore the five symbols.
+        </p>
+      </noscript>
+    </main>
+
+    <footer class="site-footer">
+      <p>Approval prototype · Content and final website route can be updated before launch.</p>
+    </footer>
+  </body>
+</html>

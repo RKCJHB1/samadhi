@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A gentle Ganesh Chaturthi interaction about transforming obstacles into positive qualities."
+    />
+    <meta name="theme-color" content="#fffaf0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Help Ganesha Remove the Obstacles</title>
+    <link rel="preload" href="assets/ganesha-path.png" as="image" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#experience">Skip to the interactive experience</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="wordmark" href="#top" aria-label="Ramakrishna Centre Johannesburg home">
+          <span class="wordmark__symbol" aria-hidden="true">ॐ</span>
+          <span>
+            <strong>Ramakrishna Centre</strong>
+            <small>Johannesburg</small>
+          </span>
+        </a>
+        <span class="concept-label">Festival feature concept</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Ganesh Chaturthi · A journey of transformation</p>
+        <h1 id="page-title">Help Ganesha Remove the Obstacles</h1>
+        <p class="hero__intro">
+          Clear the path one obstacle at a time. Each stone reveals a positive
+          quality we can cultivate within ourselves.
+        </p>
+      </section>
+
+      <section class="experience" id="experience" aria-label="Obstacle-removal experience">
+        <div class="game-panel">
+          <div class="path-frame" id="path-frame">
+            <img
+              class="path-image"
+              src="assets/ganesha-path.png"
+              alt="A garden path leading to a shrine of Lord Ganesha"
+              width="1122"
+              height="1402"
+            />
+
+            <div class="game-progress" aria-live="polite">
+              <span id="cleared-count">0</span> / 5 cleared
+            </div>
+
+            <div class="transformation" data-id="ignorance" style="--x: 50%; --y: 35%; --scale: 0.64">
+              <button class="stone" type="button" aria-label="Remove the obstacle Ignorance">
+                <span>Ignorance</span>
+              </button>
+              <span class="quality-marker" aria-hidden="true">Wisdom</span>
+            </div>
+
+            <div class="transformation" data-id="selfishness" style="--x: 58%; --y: 46%; --scale: 0.74">
+              <button class="stone" type="button" aria-label="Remove the obstacle Selfishness">
+                <span>Selfishness</span>
+              </button>
+              <span class="quality-marker" aria-hidden="true">Kindness</span>
+            </div>
+
+            <div class="transformation" data-id="laziness" style="--x: 42%; --y: 58%; --scale: 0.84">
+              <button class="stone" type="button" aria-label="Remove the obstacle Laziness">
+                <span>Laziness</span>
+              </button>
+              <span class="quality-marker" aria-hidden="true">Effort</span>
+            </div>
+
+            <div class="transformation" data-id="anger" style="--x: 60%; --y: 70%; --scale: 0.94">
+              <button class="stone" type="button" aria-label="Remove the obstacle Anger">
+                <span>Anger</span>
+              </button>
+              <span class="quality-marker" aria-hidden="true">Peace</span>
+            </div>
+
+            <div class="transformation" data-id="fear" style="--x: 45%; --y: 83%; --scale: 1.06">
+              <button class="stone" type="button" aria-label="Remove the obstacle Fear">
+                <span>Fear</span>
+              </button>
+              <span class="quality-marker" aria-hidden="true">Courage</span>
+            </div>
+
+            <div class="tap-hint" id="tap-hint" aria-hidden="true">
+              <span class="tap-hint__spark"></span>
+              Tap a stone to begin
+            </div>
+
+            <div class="result-toast" id="result-toast" aria-hidden="true">
+              <span id="toast-obstacle">Fear</span>
+              <span aria-hidden="true">→</span>
+              <strong id="toast-quality">Courage</strong>
+            </div>
+          </div>
+          <p class="figure-caption">No score · no timer · a gentle reflective experience</p>
+        </div>
+
+        <aside class="reflection-card" aria-live="polite" aria-atomic="true">
+          <div class="reflection-card__empty" id="empty-state">
+            <p class="reflection-card__kicker">The path begins here</p>
+            <h2>Choose an obstacle</h2>
+            <p>
+              Select any stone on the path. It will disappear and reveal a
+              positive quality in its place.
+            </p>
+            <div class="empty-state__motif" aria-hidden="true">✦</div>
+          </div>
+
+          <div class="reflection-card__content" id="reflection-content" hidden>
+            <p class="reflection-card__kicker">A quality revealed</p>
+            <div class="transformation-heading">
+              <span id="current-obstacle">Fear</span>
+              <span class="transformation-heading__arrow" aria-hidden="true">→</span>
+              <strong id="current-quality">Courage</strong>
+            </div>
+            <p class="reflection-card__body" id="current-teaching">
+              Courage does not mean never feeling fear. It means taking the next
+              right step even when fear is present.
+            </p>
+          </div>
+
+          <div class="journey" aria-labelledby="journey-title">
+            <div class="journey__heading">
+              <h3 id="journey-title">Your journey</h3>
+              <span id="journey-progress">0 of 5</span>
+            </div>
+            <ul class="journey-list" id="journey-list">
+              <li data-id="anger"><span class="journey-check">✓</span><span>Anger</span><strong>Peace</strong></li>
+              <li data-id="fear"><span class="journey-check">✓</span><span>Fear</span><strong>Courage</strong></li>
+              <li data-id="laziness"><span class="journey-check">✓</span><span>Laziness</span><strong>Effort</strong></li>
+              <li data-id="selfishness"><span class="journey-check">✓</span><span>Selfishness</span><strong>Kindness</strong></li>
+              <li data-id="ignorance"><span class="journey-check">✓</span><span>Ignorance</span><strong>Wisdom</strong></li>
+            </ul>
+          </div>
+
+          <div class="completion" id="completion" hidden>
+            <p class="completion__mantra" lang="sa">ॐ गं गणपतये नमः</p>
+            <h2>The path is clear</h2>
+            <p>May Lord Ganesha guide us from obstacles towards wisdom.</p>
+            <a href="/learn" class="completion__link">Continue learning about Lord Ganesha</a>
+          </div>
+
+          <button class="reset-button" id="reset-game" type="button" hidden>
+            Reset the experience
+          </button>
+        </aside>
+
+        <p class="sr-only" id="game-status" aria-live="assertive"></p>
+      </section>
+
+      <noscript>
+        <p class="noscript-note">
+          This interactive feature requires JavaScript. Please enable it to clear the five obstacles.
+        </p>
+      </noscript>
+    </main>
+
+    <footer class="site-footer">
+      <p>Approval prototype · Content and final website route can be updated before launch.</p>
+    </footer>
+  </body>
+</html>

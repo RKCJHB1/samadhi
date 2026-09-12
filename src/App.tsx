@@ -63,6 +63,7 @@ import LearnUnveilPage from "./pages/Learn/LearnUnveilPage";
 import GamesPage from "./pages/Learn/GamesPage";
 import AumChanterPage from "./pages/Learn/AumChanterPage";
 import VedantasaraPage from "./pages/Learn/VedantasaraPage";
+import GaneshaTestPage from "./pages/GaneshaTestPage";
 import ThankYouPage from "./pages/Donate/ThankYouPage.tsx";
 import OnThisDay from "./pages/OnThisDay";
 import { lazy, Suspense } from "react";
@@ -139,6 +140,7 @@ const queryClient = new QueryClient();
 const ConditionalNavbar: React.FC = () => {
   const location = useLocation();
   if (location.pathname.startsWith('/read')) return null;
+  if (location.pathname.startsWith('/ganeshatest')) return null;
   return <Navbar />;
 };
 
@@ -154,8 +156,9 @@ const App = () => (
             {/* Home Page */}
             <Route path="/" element={<Index />} />
             <Route path="/on-this-day" element={<OnThisDay />} />
-            {/* Unlisted test route — do not add to navigation */}
+            {/* Unlisted test routes — do not add to navigation */}
             <Route path="/vedantasara" element={<VedantasaraPage />} />
+            <Route path="/ganeshatest" element={<GaneshaTestPage />} />
 
             {/* About Section */}
             <Route path="/about" element={<AboutPage />}>
