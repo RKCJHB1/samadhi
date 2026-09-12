@@ -5,7 +5,7 @@ const EXPERIENCES = [
   {
     id: "obstacles",
     label: "Remove the Obstacles",
-    src: "/ganeshatest/obstacles/index.html?v=20260912f",
+    src: "/ganeshatest/obstacles/index.html?v=20260912g",
     title: "Help Ganesha Remove the Obstacles",
   },
   {

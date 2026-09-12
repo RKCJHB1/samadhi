@@ -50,6 +50,7 @@ const CAMERA = [
 const groups = [...document.querySelectorAll(".transformation")];
 const pathFrame = document.querySelector("#path-frame");
 const pathWorld = document.querySelector("#path-world");
+const livingPresence = document.querySelector("#living-presence");
 const clearedCount = document.querySelector("#cleared-count");
 const journeyProgress = document.querySelector("#journey-progress");
 const journeyItems = [...document.querySelectorAll("#journey-list li")];
@@ -68,6 +69,7 @@ const toastQuality = document.querySelector("#toast-quality");
 const cleared = new Set();
 let toastTimer;
 let focusTimer;
+let awakeTimer;
 
 function nextObstacleId() {
   return PATH_ORDER[cleared.size] ?? null;
@@ -143,6 +145,11 @@ function updateProgress() {
   if (finished) {
     status.textContent =
       "All five obstacles have been removed. The path is clear. May Lord Ganesha guide us from obstacles towards wisdom.";
+    window.clearTimeout(awakeTimer);
+    awakeTimer = window.setTimeout(() => {
+      pathFrame.classList.add("is-awake");
+      livingPresence?.setAttribute("aria-hidden", "false");
+    }, 1100);
   }
 }
 
@@ -196,6 +203,7 @@ function resetGame() {
   cleared.clear();
   window.clearTimeout(toastTimer);
   window.clearTimeout(focusTimer);
+  window.clearTimeout(awakeTimer);
   toast.classList.remove("is-visible");
 
   groups.forEach((group) => {
@@ -207,7 +215,8 @@ function resetGame() {
   emptyState.hidden = false;
   completion.hidden = true;
   resetButton.hidden = true;
-  pathFrame.classList.remove("is-complete");
+  pathFrame.classList.remove("is-complete", "is-awake");
+  livingPresence?.setAttribute("aria-hidden", "true");
   setCamera(0);
   status.textContent = "The obstacle-removal experience has been reset.";
   updateStoneStates();

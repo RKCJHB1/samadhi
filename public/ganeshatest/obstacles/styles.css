@@ -264,8 +264,102 @@ h1 {
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 28%, rgba(243, 199, 93, 0.28), transparent 46%);
+  background: radial-gradient(ellipse at 50% 42%, rgba(243, 199, 93, 0.22), transparent 48%);
   border-radius: inherit;
+}
+
+.living-presence {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: inherit;
+  transition: opacity 1.7s ease, visibility 1.7s;
+}
+
+.path-frame.is-awake .living-presence {
+  opacity: 1;
+  visibility: visible;
+}
+
+.living-ganesha {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 50% 46%;
+  animation: living-breathe 8s ease-in-out infinite;
+}
+
+.living-ganesha__light {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(255, 214, 120, 0.42), transparent 34%),
+    radial-gradient(ellipse at 50% 44%, rgba(255, 248, 220, 0.2), transparent 58%);
+  mix-blend-mode: screen;
+  animation: living-glow 4.6s ease-in-out infinite;
+}
+
+.living-ganesha__motes span {
+  position: absolute;
+  left: var(--mx, 50%);
+  bottom: 18%;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: rgba(255, 236, 186, 0.92);
+  box-shadow: 0 0 10px rgba(255, 214, 120, 0.95);
+  animation: living-mote 7s linear infinite;
+  animation-delay: var(--md, 0s);
+}
+
+.living-ganesha__motes span:nth-child(1) { --mx: 28%; --md: 0s; }
+.living-ganesha__motes span:nth-child(2) { --mx: 42%; --md: 1.1s; }
+.living-ganesha__motes span:nth-child(3) { --mx: 51%; --md: 2.4s; }
+.living-ganesha__motes span:nth-child(4) { --mx: 63%; --md: 0.6s; }
+.living-ganesha__motes span:nth-child(5) { --mx: 36%; --md: 3.2s; }
+.living-ganesha__motes span:nth-child(6) { --mx: 58%; --md: 4.5s; }
+.living-ganesha__motes span:nth-child(7) { --mx: 47%; --md: 5.3s; }
+.living-ganesha__motes span:nth-child(8) { --mx: 70%; --md: 2s; }
+
+@keyframes living-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.08);
+  }
+}
+
+@keyframes living-glow {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+  50% {
+    opacity: 0.86;
+  }
+}
+
+@keyframes living-mote {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.5);
+  }
+  18% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-220px) scale(1);
+  }
 }
 
 .path-image {
