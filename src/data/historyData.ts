@@ -1419,6 +1419,32 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/12thSeptember.png"
   },
   {
+    date: "September 13",
+    monthNumeric: 8,
+    dayNumeric: 13,
+    year: 1894,
+    headline: "September 13 — Swami Vivekananda in Boston",
+    narrativeParagraph1: "On September 13, 1894, while staying at the Hotel Bellevue in Boston, Swami Vivekananda wrote to his disciple Leon Landsberg about the importance of suitable clothing for his work in America. **\"I have the right, as your Guru, to advise you,\"** he wrote, **\"and I insist that you buy some clothes for yourself, as the want of them stands in the way of your doing anything in this country.\"**",
+    narrativeParagraph2: "He explained that, as Landsberg's Guru, he had both the right and the responsibility to guide him, while emphasizing the profound spiritual bond between Guru and disciple: **\"This is, you see, an actual spiritual relationship, and none of your Yankee 'tutor' business!\"** The letter offers a glimpse of Swamiji's practical concern for the effectiveness of his disciple's work, alongside his deeper understanding of the Guru-disciple relationship.",
+    quote: "This is, you see, an actual spiritual relationship, and none of your Yankee \"tutor\" business!",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at the Hotel Bellevue in Boston on 13 September 1894, writing to his disciple Leon Landsberg on suitable clothing and the Guru-disciple relationship.",
+    customImage: "/images/on-this-day/13thSeptember.jpg"
+  },
+  {
+    date: "September 14",
+    monthNumeric: 8,
+    dayNumeric: 14,
+    year: 1895,
+    headline: "September 14 — Foundation of Brahmavadin",
+    narrativeParagraph1: "On September 14, 1895, Alasinga Perumal, a devoted disciple of Swami Vivekananda, brought out the first issue of **Brahmavadin** in Madras, with the inspiration and guidance of Swami Vivekananda.",
+    narrativeParagraph2: "The journal was devoted principally to Vedanta and the spiritual and philosophical heritage of India, and Swamiji himself contributed to and strongly supported it. Brahmavadin continued until 1914, when its legacy was carried forward by **The Vedanta Kesari**, the English monthly published by Sri Ramakrishna Math, Chennai.",
+    quote: "The Brahmavadin is a jewel — it must not perish.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Alasinga Perumal presenting the first issue of Brahmavadin in Madras on 14 September 1895, inspired and guided by Swami Vivekananda.",
+    customImage: "/images/on-this-day/14thSeptember.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
