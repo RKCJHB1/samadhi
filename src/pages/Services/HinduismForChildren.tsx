@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Book, Calendar, Users, Star, BookOpen, Gamepad2, Music, Heart, CheckCircle2, Mail, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { enhancedLessonsData } from '@/data/lessonsDataNew';
+import { isDevelopment } from '@/utils/featureFlags';
 
 const HinduismForChildren = () => {
   // Dynamically compute lesson counts per topic
@@ -96,9 +97,11 @@ const HinduismForChildren = () => {
             <div className="bg-gradient-to-br from-indian-cream to-white rounded-lg p-6 shadow-sm border border-indian-saffron/20 mb-12">
               <h3 className="text-2xl font-heading font-semibold mb-2 text-center">Explore Our Online Resources</h3>
               <p className="text-gray-600 text-center mb-6">
-                Our online learning platform is live — explore lessons, games, and mantras right now!
+                {isDevelopment()
+                  ? 'Our online learning platform is live — explore lessons, games, and mantras right now!'
+                  : 'Our online learning platform is live — explore lessons and games right now!'}
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className={`grid grid-cols-1 ${isDevelopment() ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6`}>
                 {/* Lessons Card */}
                 <Link
                   to="/learn#lessons"
@@ -133,7 +136,7 @@ const HinduismForChildren = () => {
                   </span>
                 </Link>
 
-                {/* Mantras Card */}
+                {isDevelopment() && (
                 <Link
                   to="/learn#mantras"
                   className="group flex flex-col items-center text-center p-6 rounded-2xl border-2 border-indian-saffron/20 bg-white hover:border-indian-saffron hover:shadow-lg transition-all duration-300"
@@ -149,6 +152,7 @@ const HinduismForChildren = () => {
                     Explore Mantras <ArrowRight className="w-4 h-4" />
                   </span>
                 </Link>
+                )}
               </div>
             </div>
 

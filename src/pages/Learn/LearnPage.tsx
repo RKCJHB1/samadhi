@@ -17,6 +17,7 @@ import BookmarksPanel from '../../components/learn/BookmarksPanel';
 import { useLearningProgress } from '../../hooks/useLearningProgress';
 import { cn } from '@/lib/utils';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
+import { isDevelopment } from '@/utils/featureFlags';
 
 // Mantra type definition
 interface Mantra {
@@ -705,12 +706,7 @@ const LearnPage = () => {
 
 
 
-  // Check if we're in a local development environment
-  const isLocalDevelopment = () => {
-    // Check if running on localhost or 127.0.0.1
-    const hostname = window.location.hostname;
-    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('.local');
-  };
+  const showMantrasSection = isDevelopment();
 
   // Handle URL hash for direct tab navigation
   useEffect(() => {
@@ -722,11 +718,11 @@ const LearnPage = () => {
         setActiveLessonTab(hash);
       }
       // If hash matches a main tab, set it
-      else if (['lessons', 'games'].includes(hash)) {
+      else if (['lessons', 'games'].includes(hash) || (showMantrasSection && hash === 'mantras')) {
         setActiveMainTab(hash);
       }
     }
-  }, []);
+  }, [showMantrasSection]);
 
   // Update URL hash when lesson tab changes
   const handleLessonTabChange = (value: string) => {
@@ -1074,7 +1070,8 @@ const LearnPage = () => {
               totalLessons={totalLessons}
               completedLessons={progressState.completedLessons.length}
               totalGames={4}
-	              totalMantras={mantras.length}
+              totalMantras={mantras.length}
+              showMantras={showMantrasSection}
               lastLesson={lastLesson}
             />
 
@@ -1089,16 +1086,17 @@ const LearnPage = () => {
             </div>
 
 	            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-	              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md">
+	              <TabsList className={`grid w-full ${showMantrasSection ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
                 </TabsTrigger>
-	                {/* Mantras tab - visible in production, content is internally filtered to live mantras */}
+	                {showMantrasSection && (
 	                <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
 	                  <Music className="w-5 h-5 mr-2" />
 	                  Mantras
 	                </TabsTrigger>
+	                )}
 
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
@@ -1244,7 +1242,8 @@ const LearnPage = () => {
                 </Tabs>
               </TabsContent>
 
-	              {/* Mantras content */}
+	              {/* Mantras content — hidden on the public site for now */}
+	              {showMantrasSection && (
 	              <TabsContent value="mantras">
 	                <div className="space-y-8">
 	                  {import.meta.env.DEV && (
@@ -1489,6 +1488,7 @@ const LearnPage = () => {
 	                    </Tabs>
 	                  </div>
 	                </TabsContent>
+	              )}
 
 
 

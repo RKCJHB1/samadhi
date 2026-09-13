@@ -7,6 +7,7 @@ interface LearnHeroProps {
   completedLessons: number;
   totalGames?: number;
   totalMantras?: number;
+  showMantras?: boolean;
   lastLesson?: { topicId: string; lessonId: string; title?: string } | null;
 }
 
@@ -14,7 +15,8 @@ const LearnHero: React.FC<LearnHeroProps> = ({
   totalLessons,
   completedLessons,
   totalGames = 4,
-  totalMantras = 15
+  totalMantras = 15,
+  showMantras = false
 }) => {
   const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
@@ -27,7 +29,9 @@ const LearnHero: React.FC<LearnHeroProps> = ({
             Welcome to Your Learning Journey
           </h1>
           <p className="text-sm md:text-base text-gray-600">
-            Explore Hindu philosophy, culture, and spirituality through interactive lessons, games, and mantras.
+            {showMantras
+              ? 'Explore Hindu philosophy, culture, and spirituality through interactive lessons, games, and mantras.'
+              : 'Explore Hindu philosophy, culture, and spirituality through interactive lessons and games.'}
           </p>
         </div>
 
@@ -41,10 +45,12 @@ const LearnHero: React.FC<LearnHeroProps> = ({
             <Gamepad2 className="w-4 h-4 text-spiritual-500" />
             <span className="text-xs font-bold text-gray-900">{totalGames} Games</span>
           </div>
+          {showMantras && (
           <div className="flex items-center gap-1">
             <Music className="w-4 h-4 text-orange-600" />
             <span className="text-xs font-bold text-gray-900">{totalMantras}+ Mantras</span>
           </div>
+          )}
         </div>
 
         {/* Progress Bar - Minimal */}
