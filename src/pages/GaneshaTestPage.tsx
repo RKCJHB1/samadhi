@@ -6,7 +6,7 @@ const EXPERIENCES = [
     id: "obstacles",
     label: "Remove the Obstacles",
     shortLabel: "Obstacles",
-    src: "/ganeshatest/obstacles/index.html?v=20260913b",
+    src: "/ganeshatest/obstacles/index.html?v=20260913c",
     title: "Help Ganesha Remove the Obstacles",
   },
   {

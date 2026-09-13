@@ -65,6 +65,7 @@ const status = document.querySelector("#game-status");
 const toast = document.querySelector("#result-toast");
 const toastObstacle = document.querySelector("#toast-obstacle");
 const toastQuality = document.querySelector("#toast-quality");
+const completionAudio = document.querySelector("#completion-audio");
 
 const cleared = new Set();
 let toastTimer;
@@ -90,6 +91,20 @@ function setCamera(stage, { immediate = false } = {}) {
     pathWorld.getBoundingClientRect();
     pathWorld.style.transition = "";
   }
+}
+
+function playCompletionAudio() {
+  if (!completionAudio) return;
+  completionAudio.pause();
+  completionAudio.currentTime = 0;
+  const playPromise = completionAudio.play();
+  if (playPromise) playPromise.catch(() => {});
+}
+
+function stopCompletionAudio() {
+  if (!completionAudio) return;
+  completionAudio.pause();
+  completionAudio.currentTime = 0;
 }
 
 function showToast(item) {
@@ -188,6 +203,8 @@ function clearObstacle(group) {
     ? `${item.obstacle} has been transformed into ${item.quality}. You walk closer to Lord Ganesha. ${cleared.size} of ${transformations.length} obstacles cleared.`
     : `${item.obstacle} has been transformed into ${item.quality}. You arrive at the shrine of Lord Ganesha.`;
 
+  if (!remaining) playCompletionAudio();
+
   window.setTimeout(() => {
     group.classList.remove("is-clearing");
     group.classList.add("is-cleared");
@@ -204,6 +221,7 @@ function resetGame() {
   window.clearTimeout(toastTimer);
   window.clearTimeout(focusTimer);
   window.clearTimeout(awakeTimer);
+  stopCompletionAudio();
   toast.classList.remove("is-visible");
 
   groups.forEach((group) => {
