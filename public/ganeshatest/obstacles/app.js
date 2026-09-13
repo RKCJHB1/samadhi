@@ -229,6 +229,14 @@ groups.forEach((group) => {
 });
 
 resetButton.addEventListener("click", resetGame);
+
+const openMeaning = document.getElementById("open-meaning");
+openMeaning?.addEventListener("click", (event) => {
+  if (window.parent === window) return;
+  event.preventDefault();
+  window.parent.postMessage({ type: "ganesha-select-experience", id: "symbolism" }, window.location.origin);
+});
+
 setCamera(0, { immediate: true });
 updateStoneStates();
 updateProgress();

@@ -6,7 +6,7 @@ const EXPERIENCES = [
     id: "obstacles",
     label: "Remove the Obstacles",
     shortLabel: "Obstacles",
-    src: "/ganeshatest/obstacles/index.html?v=20260913a",
+    src: "/ganeshatest/obstacles/index.html?v=20260913b",
     title: "Help Ganesha Remove the Obstacles",
   },
   {
@@ -42,6 +42,20 @@ const GaneshaTestPage = () => {
   const selectExperience = (id: ExperienceId) => {
     setSearchParams(id === "obstacles" ? {} : { view: id }, { replace: true });
   };
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type !== "ganesha-select-experience") return;
+      if (event.data.id === "symbolism") {
+        setSearchParams({ view: "symbolism" }, { replace: true });
+      } else if (event.data.id === "obstacles") {
+        setSearchParams({}, { replace: true });
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [setSearchParams]);
 
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-[#fffdf7] text-[#281d19]">
