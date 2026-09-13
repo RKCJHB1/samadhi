@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const EXPERIENCES = [
   {
@@ -30,14 +30,7 @@ const GaneshaTestPage = () => {
   );
 
   useEffect(() => {
-    const robots = document.createElement("meta");
-    robots.name = "robots";
-    robots.content = "noindex, nofollow";
-    document.head.appendChild(robots);
-    document.title = `${active.title} (Test) | Ramakrishna Centre of South Africa, Johannesburg`;
-    return () => {
-      document.head.removeChild(robots);
-    };
+    document.title = `${active.title} | Ramakrishna Centre of South Africa, Johannesburg`;
   }, [active.title]);
 
   useEffect(() => {
@@ -53,11 +46,14 @@ const GaneshaTestPage = () => {
       <header className="border-b border-[#f8eacb] bg-[#fff8e7]">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#741f26]">
-              Unlisted test page — not linked from the rest of the website
-            </p>
+            <Link
+              to="/learn#festivals"
+              className="text-xs font-semibold uppercase tracking-[0.18em] text-[#741f26] hover:underline"
+            >
+              ← Festivals
+            </Link>
             <p className="text-sm text-[#6f625a]">
-              Share this URL only for review.
+              Ganesh Chaturthi
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

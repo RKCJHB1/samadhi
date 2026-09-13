@@ -4,7 +4,7 @@ import PageLayout from '../../components/layout/PageLayout';
 import SectionHeader from '../../components/shared/SectionHeader';
 import Button from '../../components/shared/Button';
 import { Link } from 'react-router-dom';
-import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2, ExternalLink, CheckCircle2, X, Expand, Play, Pause, RotateCcw, Repeat, Maximize2, Minimize2 } from 'lucide-react';
+import { BookOpen, PenTool, MessageSquare, Lightbulb, Music, Gamepad2, Calendar, ExternalLink, CheckCircle2, X, Expand, Play, Pause, RotateCcw, Repeat, Maximize2, Minimize2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { enhancedLessonsData as lessonsData } from '../../data/lessonsDataNew';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -718,7 +718,7 @@ const LearnPage = () => {
         setActiveLessonTab(hash);
       }
       // If hash matches a main tab, set it
-      else if (['lessons', 'games'].includes(hash) || (showMantrasSection && hash === 'mantras')) {
+      else if (['lessons', 'games', 'festivals'].includes(hash) || (showMantrasSection && hash === 'mantras')) {
         setActiveMainTab(hash);
       }
     }
@@ -1086,7 +1086,7 @@ const LearnPage = () => {
             </div>
 
 	            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-	              <TabsList className={`grid w-full ${showMantrasSection ? 'grid-cols-3' : 'grid-cols-2'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
+	              <TabsList className={`grid w-full ${showMantrasSection ? 'grid-cols-4' : 'grid-cols-3'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
                 <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Lessons
@@ -1101,6 +1101,10 @@ const LearnPage = () => {
                 <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
                   <Gamepad2 className="w-5 h-5 mr-2" />
                   Games
+                </TabsTrigger>
+                <TabsTrigger value="festivals" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Festivals
                 </TabsTrigger>
               </TabsList>
 
@@ -1548,6 +1552,28 @@ const LearnPage = () => {
                       </Link>
                     </Card>
 
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="festivals">
+                <div className="space-y-8">
+                  <p className="text-lg">
+                    Explore interactive experiences for Hindu festivals and sacred celebrations.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <Card className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron pop-shadow-card hover:shadow-lg transition-all duration-300">
+                      <Link to="/learn/festivals/ganesha">
+                        <CardContent className="p-6 text-center">
+                          <div className="flex items-center justify-center w-12 h-12 bg-spiritual-100 rounded-full mb-4 mx-auto">
+                            <Calendar className="w-6 h-6 text-spiritual-500" />
+                          </div>
+                          <h3 className="text-lg font-heading font-semibold mb-2">Ganesh Chaturthi</h3>
+                          <p className="text-gray-600 text-sm">Help Ganesha remove obstacles and discover the meaning of his sacred form.</p>
+                        </CardContent>
+                      </Link>
+                    </Card>
                   </div>
                 </div>
               </TabsContent>

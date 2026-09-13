@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
@@ -137,10 +137,17 @@ const BlocksPage = lazy(() => import("./pages/BlocksPage"));
 
 const queryClient = new QueryClient();
 
+const GaneshaLegacyRedirect: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const search = searchParams.toString();
+  return <Navigate to={`/learn/festivals/ganesha${search ? `?${search}` : ""}`} replace />;
+};
+
 const ConditionalNavbar: React.FC = () => {
   const location = useLocation();
   if (location.pathname.startsWith('/read')) return null;
   if (location.pathname.startsWith('/ganeshatest')) return null;
+  if (location.pathname.startsWith('/learn/festivals/')) return null;
   return <Navbar />;
 };
 
@@ -158,7 +165,7 @@ const App = () => (
             <Route path="/on-this-day" element={<OnThisDay />} />
             {/* Unlisted test routes — do not add to navigation */}
             <Route path="/vedantasara" element={<VedantasaraPage />} />
-            <Route path="/ganeshatest" element={<GaneshaTestPage />} />
+            <Route path="/ganeshatest" element={<GaneshaLegacyRedirect />} />
 
             {/* About Section */}
             <Route path="/about" element={<AboutPage />}>
@@ -200,6 +207,7 @@ const App = () => (
             {/* Learn Section */}
             <Route path="/learnunveil" element={<LearnUnveilPage />} />
             <Route path="/learn" element={<LearnPage />} />
+            <Route path="/learn/festivals/ganesha" element={<GaneshaTestPage />} />
               <Route path="/learn/lessons/:topicId/:lessonId" element={<LessonPage />} />
               <Route path="/learn/community" element={<CommunityLearningPage />} />
               <Route path="/learn/quizzes" element={<QuizPage />} />
