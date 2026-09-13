@@ -886,6 +886,14 @@ body.has-progress .tap-hint {
   letter-spacing: 0.06em;
 }
 
+html.is-embedded .site-header {
+  display: none;
+}
+
+html.is-embedded .hero {
+  padding-top: clamp(1.4rem, 4vw, 3.2rem);
+}
+
 @media (max-width: 900px) {
   .experience {
     width: min(700px, calc(100% - 1rem));

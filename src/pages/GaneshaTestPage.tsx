@@ -5,13 +5,15 @@ const EXPERIENCES = [
   {
     id: "obstacles",
     label: "Remove the Obstacles",
-    src: "/ganeshatest/obstacles/index.html?v=20260912g",
+    shortLabel: "Obstacles",
+    src: "/ganeshatest/obstacles/index.html?v=20260913a",
     title: "Help Ganesha Remove the Obstacles",
   },
   {
     id: "symbolism",
     label: "Discover the Meaning",
-    src: "/ganeshatest/symbolism/index.html",
+    shortLabel: "Meaning",
+    src: "/ganeshatest/symbolism/index.html?v=20260913a",
     title: "Discover the Meaning of Ganesha",
   },
 ] as const;
@@ -42,21 +44,21 @@ const GaneshaTestPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#fffdf7] text-[#281d19]">
-      <header className="border-b border-[#f8eacb] bg-[#fff8e7]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between">
-          <div>
+    <div className="flex h-[100dvh] flex-col overflow-hidden bg-[#fffdf7] text-[#281d19]">
+      <header className="shrink-0 border-b border-[#f8eacb] bg-[#fff8e7]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 md:gap-3 md:px-4 md:py-3">
+          <div className="min-w-0">
             <Link
               to="/learn#festivals"
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-[#741f26] hover:underline"
+              className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#741f26] hover:underline md:text-xs"
             >
               ← Festivals
             </Link>
-            <p className="text-sm text-[#6f625a]">
+            <p className="truncate text-sm text-[#6f625a]">
               Ganesh Chaturthi
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex shrink-0 gap-1.5 sm:gap-2">
             {EXPERIENCES.map((experience) => {
               const isActive = experience.id === activeId;
               return (
@@ -64,13 +66,14 @@ const GaneshaTestPage = () => {
                   key={experience.id}
                   type="button"
                   onClick={() => selectExperience(experience.id)}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`min-h-10 rounded-full border px-3 py-2 text-xs font-medium transition-colors sm:min-h-0 sm:px-4 sm:text-sm ${
                     isActive
                       ? "border-[#741f26] bg-[#741f26] text-white"
                       : "border-[#f3c75d] bg-white text-[#741f26] hover:bg-[#fffaf0]"
                   }`}
                 >
-                  {experience.label}
+                  <span className="sm:hidden">{experience.shortLabel}</span>
+                  <span className="hidden sm:inline">{experience.label}</span>
                 </button>
               );
             })}
@@ -88,7 +91,7 @@ const GaneshaTestPage = () => {
           key={active.src}
           title={active.title}
           src={active.src}
-          className="h-[calc(100vh-5.5rem)] w-full border-0 bg-[#fffdf7] md:h-[calc(100vh-4.75rem)]"
+          className="h-full w-full border-0 bg-[#fffdf7]"
           onLoad={() => setIframeReady(true)}
         />
       </main>

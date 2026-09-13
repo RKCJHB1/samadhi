@@ -1086,24 +1086,24 @@ const LearnPage = () => {
             </div>
 
 	            <Tabs value={activeMainTab} onValueChange={handleMainTabChange} className="w-full">
-	              <TabsList className={`grid w-full ${showMantrasSection ? 'grid-cols-4' : 'grid-cols-3'} mb-8 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
-                <TabsTrigger value="lessons" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                  <BookOpen className="w-5 h-5 mr-2" />
+	              <TabsList className={`grid w-full ${showMantrasSection ? 'grid-cols-4' : 'grid-cols-3'} mb-8 h-auto min-h-10 bg-gradient-to-br from-spiritual-50 to-white border border-spiritual-200 p-1 rounded-md`}>
+                <TabsTrigger value="lessons" className="h-auto px-1 py-2 text-xs sm:text-sm md:px-3 md:text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                  <BookOpen className="mr-2 hidden h-5 w-5 md:inline" />
                   Lessons
                 </TabsTrigger>
 	                {showMantrasSection && (
-	                <TabsTrigger value="mantras" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-	                  <Music className="w-5 h-5 mr-2" />
+	                <TabsTrigger value="mantras" className="h-auto px-1 py-2 text-xs sm:text-sm md:px-3 md:text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+	                  <Music className="mr-2 hidden h-5 w-5 md:inline" />
 	                  Mantras
 	                </TabsTrigger>
 	                )}
 
-                <TabsTrigger value="games" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                  <Gamepad2 className="w-5 h-5 mr-2" />
+                <TabsTrigger value="games" className="h-auto px-1 py-2 text-xs sm:text-sm md:px-3 md:text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                  <Gamepad2 className="mr-2 hidden h-5 w-5 md:inline" />
                   Games
                 </TabsTrigger>
-                <TabsTrigger value="festivals" className="text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
-                  <Calendar className="w-5 h-5 mr-2" />
+                <TabsTrigger value="festivals" className="h-auto px-1 py-2 text-xs sm:text-sm md:px-3 md:text-lg data-[state=active]:bg-gradient-to-br data-[state=active]:from-indian-cream data-[state=active]:to-white data-[state=active]:border-b-2 data-[state=active]:border-indian-saffron">
+                  <Calendar className="mr-2 hidden h-5 w-5 md:inline" />
                   Festivals
                 </TabsTrigger>
               </TabsList>
