@@ -1445,6 +1445,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/14thSeptember.jpg?v=2"
   },
   {
+    date: "September 15",
+    monthNumeric: 8,
+    dayNumeric: 15,
+    year: 1893,
+    headline: "September 15 — Swami Vivekananda's Parable of the Frog in the Well",
+    narrativeParagraph1: "On September 15, 1893, Swami Vivekananda delivered an address at the World's Parliament of Religions in Chicago on the causes of religious disagreement. In this talk, later titled **\"Why We Disagree,\"** he told the famous parable of the frog in the well.",
+    narrativeParagraph2: "A frog that had lived all its life in a well believed the well to be the whole of the world, and drove away a frog from the sea that spoke of waters far greater. Swamiji used the story to show how people can become so confined by their own experience and beliefs that they mistake their limited view for the whole truth.",
+    quote: "I am a Hindu. I am sitting in my own little well and thinking that the whole world is my little well. The Christian sits in his little well and thinks the whole world is his well. The Mohammedan sits in his little well and thinks that is the whole world.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda at the World's Parliament of Religions in Chicago on 15 September 1893, telling the parable of the frog in the well.",
+    customImage: "/images/on-this-day/15thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
