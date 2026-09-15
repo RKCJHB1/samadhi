@@ -1458,6 +1458,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/15thSeptember.png"
   },
   {
+    date: "September 16",
+    monthNumeric: 8,
+    dayNumeric: 16,
+    year: 1926,
+    headline: "September 16 — Swami Shivananda's Counsel on Life's Experiences",
+    narrativeParagraph1: "On September 16, 1926, Swami Shivananda wrote: **\"The Lord is at the helm of the affairs of this world. We have all manner of experiences in this world, but they are all for our education.\"**",
+    narrativeParagraph2: "Through life's joys and sorrows, we gradually gain wisdom, strength, and self-reliance. The lesson is to develop equanimity and learn not to be unduly disturbed by changing circumstances.",
+    quote: "The Lord is at the helm of the affairs of this world. We have all manner of experiences in this world, but they are all for our education.",
+    quoteAuthor: "Swami Shivananda",
+    imageCaption: "Swami Shivananda seated by the Ganges at Belur Math, with his counsel of 16 September 1926 that all of life's experiences are for our education.",
+    customImage: "/images/on-this-day/16thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
