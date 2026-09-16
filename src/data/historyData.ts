@@ -1471,6 +1471,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/16thSeptember.png"
   },
   {
+    date: "September 17",
+    monthNumeric: 8,
+    dayNumeric: 17,
+    year: 1896,
+    headline: "September 17 — Swami Vivekananda Clears the Deck for Vedanta",
+    narrativeParagraph1: "On September 17, 1896, Swami Vivekananda wrote from Wimbledon to Mary Hale about dedicating oneself wholeheartedly to a great ideal. Speaking from his own experience, he wrote: **“I have taken up the one idea of ‘Vedanta’ and I have ‘cleared the deck for action’.”**",
+    narrativeParagraph2: "For Vivekananda, Vedanta was not merely a philosophy to be studied, but an ideal to which his life and work were dedicated. His words remind us that a great ideal gains its power when we give ourselves to it with clarity, purpose and wholehearted action.",
+    quote: "I have taken up the one idea of ‘Vedanta’ and I have ‘cleared the deck for action’.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Wimbledon on 17 September 1896 to Mary Hale, dedicating himself wholly to the ideal of Vedanta.",
+    customImage: "/images/on-this-day/17thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
