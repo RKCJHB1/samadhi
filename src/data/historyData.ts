@@ -1484,6 +1484,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/17thSeptember.png"
   },
   {
+    date: "September 18",
+    monthNumeric: 8,
+    dayNumeric: 18,
+    year: 1913,
+    headline: "September 18 — Holy Mother on the Suffering of Human Life",
+    narrativeParagraph1: "On September 18, 1913, Holy Mother Sri Sarada Devi wrote to a devotee about the nature of human life and the search for lasting happiness. She wrote: **“There is no happiness whatever in human birth. The world is verily filled with misery.”**",
+    narrativeParagraph2: "She reminded the devotee that worldly happiness is fleeting and that true happiness lies in the grace and realization of God. Her words point beyond the temporary pleasures and sorrows of life to the deeper spiritual purpose of human birth.",
+    quote: "There is no happiness whatever in human birth. The world is verily filled with misery.",
+    quoteAuthor: "Holy Mother Sri Sarada Devi",
+    imageCaption: "Holy Mother Sri Sarada Devi writing to a devotee on 18 September 1913 on the nature of human life and the search for lasting happiness.",
+    customImage: "/images/on-this-day/18thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
