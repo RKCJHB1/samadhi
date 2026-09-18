@@ -1497,6 +1497,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/18thSeptember.png"
   },
   {
+    date: "September 19",
+    monthNumeric: 8,
+    dayNumeric: 19,
+    year: 1893,
+    headline: "September 19 — Swami Vivekananda’s Paper on Hinduism",
+    narrativeParagraph1: "On September 19, 1893, Swami Vivekananda delivered his famous **Paper on Hinduism** at the World’s Parliament of Religions in Chicago. He presented the broad spiritual vision of Hinduism and Vedanta, emphasizing the divinity of the human being and the common spiritual basis underlying the world’s religious traditions.",
+    narrativeParagraph2: "Looking towards a universal religion, he declared: **“If there is ever to be a universal religion, it must be one which will have no location in place or time … which will recognise divinity in every man and woman, and whose whole scope, whose whole force, will be centred in aiding humanity to realise its own true, divine nature.”**",
+    quote: "If there is ever to be a universal religion, it must be one which will have no location in place or time … which will recognise divinity in every man and woman, and whose whole scope, whose whole force, will be centred in aiding humanity to realise its own true, divine nature.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering his Paper on Hinduism at the World’s Parliament of Religions in Chicago on 19 September 1893.",
+    customImage: "/images/on-this-day/19thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
