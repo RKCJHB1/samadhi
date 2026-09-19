@@ -1510,6 +1510,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/19thSeptember.png"
   },
   {
+    date: "September 20",
+    monthNumeric: 8,
+    dayNumeric: 20,
+    year: 1893,
+    headline: "September 20 — Swami Vivekananda’s “Religion Not the Crying Need of India”",
+    narrativeParagraph1: "On September 20, 1893, Swami Vivekananda delivered his address, **“Religion Not the Crying Need of India,”** at the World’s Parliament of Religions in Chicago. Speaking candidly about the suffering of India’s impoverished masses, he declared that they did not need more religious teaching but food and practical help.",
+    narrativeParagraph2: "He sharply observed, **“It is an insult to a starving man to teach him metaphysics,”** and urged missionaries to address the material suffering of the people rather than simply seek to convert them. His powerful appeal placed compassion and practical service at the heart of religious responsibility.",
+    quote: "It is an insult to a starving man to teach him metaphysics.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering “Religion Not the Crying Need of India” at the World’s Parliament of Religions in Chicago on 20 September 1893.",
+    customImage: "/images/on-this-day/20thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
