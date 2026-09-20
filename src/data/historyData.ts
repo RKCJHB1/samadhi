@@ -1523,6 +1523,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/20thSeptember.png"
   },
   {
+    date: "September 21",
+    monthNumeric: 8,
+    dayNumeric: 21,
+    year: 1884,
+    headline: "September 21 — Sri Ramakrishna Visits the Star Theatre",
+    narrativeParagraph1: "On September 21, 1884, Sri Ramakrishna attended Girish Chandra Ghosh’s **Chaitanya Lila** at the Star Theatre in Calcutta. As the divine life of Sri Chaitanya was portrayed on stage, the Master was overcome with spiritual ecstasy and repeatedly entered deep **samadhi**.",
+    narrativeParagraph2: "He was particularly moved by the portrayal of Chaitanya by the young actress Binodini Dasi, whom he later blessed. The visit became an important early moment in Sri Ramakrishna’s relationship with Girish Chandra Ghosh and his later spiritual transformation.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna at the Star Theatre in Calcutta on 21 September 1884, attending Girish Chandra Ghosh’s Chaitanya Lila.",
+    customImage: "/images/on-this-day/21stSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
