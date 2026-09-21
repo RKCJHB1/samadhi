@@ -1536,6 +1536,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/21stSeptember.png"
   },
   {
+    date: "September 22",
+    monthNumeric: 8,
+    dayNumeric: 22,
+    year: 1896,
+    headline: "September 22 — Publication of Swamiji’s Swiss Alps Letter",
+    narrativeParagraph1: "On September 22, 1896, **The Indian Mirror** published an extract from a letter Swami Vivekananda had written from Lake Lucerne, Switzerland, on August 23. He described the grandeur of the Swiss Alps, comparing their scenery with that of the Himalayas while noting important differences between the two regions.",
+    narrativeParagraph2: "The report also mentioned his forthcoming visit to Germany to meet the distinguished Indologist Prof. Paul Deussen, before his return to England and eventually to India.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "The Indian Mirror of 22 September 1896 publishing Swami Vivekananda’s letter from Lake Lucerne on the Swiss Alps, with news of his forthcoming visit to Prof. Paul Deussen in Germany.",
+    customImage: "/images/on-this-day/22ndSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
