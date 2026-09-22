@@ -1549,6 +1549,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/22ndSeptember.png"
   },
   {
+    date: "September 23",
+    monthNumeric: 8,
+    dayNumeric: 23,
+    year: 1893,
+    headline: "September 23 — Swami Vivekananda’s “The Women of the East”",
+    narrativeParagraph1: "On September 23, 1893, the **Chicago Daily Inter-Ocean** published a report of Swami Vivekananda’s special address on **“The Women of the East.”** Speaking about the spiritual and religious qualities of Hindu women, he emphasized the importance of developing their intellect while preserving these deeper qualities.",
+    narrativeParagraph2: "The report attributed to him the memorable words: **“The best thermometer to the progress of a nation is its treatment of its women.”** He concluded with a vision of the Hindu woman of the future as one who would unite spiritual strength with intellectual development.",
+    quote: "The best thermometer to the progress of a nation is its treatment of its women.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda addressing “The Women of the East” at the World’s Parliament of Religions in Chicago, as reported by the Chicago Daily Inter-Ocean on 23 September 1893.",
+    customImage: "/images/on-this-day/23rdSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
