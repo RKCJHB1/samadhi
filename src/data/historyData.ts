@@ -1562,6 +1562,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/23rdSeptember.png"
   },
   {
+    date: "September 24",
+    monthNumeric: 8,
+    dayNumeric: 24,
+    year: 1930,
+    headline: "September 24 — Swami Shivananda’s Letter to Brahmachari Shankara",
+    narrativeParagraph1: "On September 24, 1930, from **Belur Math**, Swami Shivananda wrote to the young Brahmachari Shankara, later known as **Swami Ranganathananda**, offering him spiritual encouragement. He explained that spiritual progress requires one to pass through struggles and urged him to face them fearlessly.",
+    narrativeParagraph2: "He assured him that, through **Sri Ramakrishna’s grace**, he would succeed, and encouraged him to remain convinced that his work was being done for the Lord: **“You are a child of Ramakrishna. Be always conscious of it and brave the struggle.”**",
+    quote: "You are a child of Ramakrishna. Be always conscious of it and brave the struggle.",
+    quoteAuthor: "Swami Shivananda",
+    imageCaption: "Swami Shivananda’s letter of 24 September 1930 from Belur Math to Brahmachari Shankara, later Swami Ranganathananda, urging him to brave the struggle as a child of Sri Ramakrishna.",
+    customImage: "/images/on-this-day/24thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
