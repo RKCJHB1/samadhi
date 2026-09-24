@@ -1575,6 +1575,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/24thSeptember.png"
   },
   {
+    date: "September 25",
+    monthNumeric: 8,
+    dayNumeric: 25,
+    year: 1893,
+    headline: "September 25 — Swami Vivekananda’s “The Essence of the Hindu Religion”",
+    narrativeParagraph1: "On September 25, 1893, Swami Vivekananda addressed the afternoon session of the **Scientific Section** of the World’s Parliament of Religions in Chicago on **“The Essence of the Hindu Religion.”** The address formed part of a series of presentations he gave to the Scientific Section on Hinduism and Vedanta.",
+    narrativeParagraph2: "No complete text of this particular address appears to have survived, so its detailed contents cannot be reconstructed with certainty. The following day, September 26, he delivered his well-known address **“Buddhism, the Fulfilment of Hinduism,”** in which he explored the relationship between Buddhism and the Hindu tradition.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda addressing the Scientific Section of the World’s Parliament of Religions in Chicago on 25 September 1893 on “The Essence of the Hindu Religion.”",
+    customImage: "/images/on-this-day/25thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
