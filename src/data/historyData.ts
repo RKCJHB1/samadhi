@@ -1588,6 +1588,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/25thSeptember.png"
   },
   {
+    date: "September 26",
+    monthNumeric: 8,
+    dayNumeric: 26,
+    year: 1893,
+    headline: "September 26 — Swami Vivekananda’s “Buddhism, the Fulfilment of Hinduism”",
+    narrativeParagraph1: "On September 26, 1893, Swami Vivekananda delivered his landmark address, **“Buddhism, the Fulfilment of Hinduism,”** at the **World’s Parliament of Religions** in Chicago. He argued that Gautama Buddha came not to destroy the truths of the Vedas but to fulfil them, bringing their spiritual ideals to the masses through profound sympathy and compassion.",
+    narrativeParagraph2: "Emphasising the deep interdependence of the two traditions, he declared, **“Hinduism cannot live without Buddhism, nor Buddhism without Hinduism.”**",
+    quote: "Hinduism cannot live without Buddhism, nor Buddhism without Hinduism.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering “Buddhism, the Fulfilment of Hinduism” at the World’s Parliament of Religions in Chicago on 26 September 1893, with the Buddha behind him and the words “Hinduism cannot live without Buddhism, nor Buddhism without Hinduism.”",
+    customImage: "/images/on-this-day/26thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
