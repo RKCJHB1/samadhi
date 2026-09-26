@@ -1601,6 +1601,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/26thSeptember.png"
   },
   {
+    date: "September 27",
+    monthNumeric: 8,
+    dayNumeric: 27,
+    year: 1893,
+    headline: "September 27 — Swami Vivekananda’s “Address at the Final Session”",
+    narrativeParagraph1: "On September 27, 1893, Swami Vivekananda delivered his **“Address at the Final Session”** at the **World’s Parliament of Religions** in Chicago, his final address at the seventeen-day Parliament. Reflecting on the historic gathering, he declared that religious unity should not mean the destruction or triumph of one faith over another.",
+    narrativeParagraph2: "He urged mutual respect and assimilation, affirming that holiness, purity, and charity are not the exclusive possessions of any one religion. He concluded with his memorable ideal: **“Help and not Fight; Assimilation and not Destruction; Harmony and Peace and not Dissension.”**",
+    quote: "Help and not Fight; Assimilation and not Destruction; Harmony and Peace and not Dissension.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering his Address at the Final Session of the World’s Parliament of Religions in Chicago on 27 September 1893, with the words “Help and not Fight; Assimilation and not Destruction; Harmony and Peace and not Dissension.”",
+    customImage: "/images/on-this-day/27thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
