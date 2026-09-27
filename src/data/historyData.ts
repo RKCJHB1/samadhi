@@ -1614,6 +1614,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/27thSeptember.png"
   },
   {
+    date: "September 28",
+    monthNumeric: 8,
+    dayNumeric: 28,
+    year: 1793,
+    headline: "September 28 — Birth of Rani Rashmoni",
+    narrativeParagraph1: "On September 28, 1793, **Rani Rashmoni**, the devoted worshipper of Mother Kali and founder of the **Dakshineswar Kali Temple**, was born in Bengal. She established the Dakshineswar temple, which was consecrated in 1855 and became the sacred setting for much of Sri Ramakrishna’s spiritual life and sadhana.",
+    narrativeParagraph2: "Through her devotion and determination, this holy place became intimately connected with the spiritual history of Sri Ramakrishna and, later, the Ramakrishna-Vivekananda movement.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Rani Rashmoni, born on 28 September 1793, beside the Hooghly with the Dakshineswar Kali Temple she founded, consecrated in 1855 and later the setting of Sri Ramakrishna’s sadhana.",
+    customImage: "/images/on-this-day/28thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
