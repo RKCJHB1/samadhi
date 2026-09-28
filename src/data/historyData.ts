@@ -1627,6 +1627,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/28thSeptember.png"
   },
   {
+    date: "September 29",
+    monthNumeric: 8,
+    dayNumeric: 29,
+    year: 1884,
+    headline: "September 29 — Sri Ramakrishna at Dakshineswar",
+    narrativeParagraph1: "On Monday, September 29, 1884, the **Navami Puja** day of Durga Puja, Sri Ramakrishna spent the morning at Dakshineswar in an intense mood of spiritual ecstasy. When Narendra (later Swami Vivekananda) arrived, Sri Ramakrishna was filled with profound joy and repeatedly entered **samadhi**.",
+    narrativeParagraph2: "Devotional songs to the Divine Mother were sung, and Sri Ramakrishna spoke with the devotees on spiritual life and devotion.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna in ecstasy at Dakshineswar on the Navami Puja day of Durga Puja, 29 September 1884, with Narendra and the devotees singing to the Divine Mother.",
+    customImage: "/images/on-this-day/29thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
