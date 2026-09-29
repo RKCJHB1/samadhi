@@ -1640,6 +1640,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/29thSeptember.png"
   },
   {
+    date: "September 30",
+    monthNumeric: 8,
+    dayNumeric: 30,
+    year: 1898,
+    headline: "September 30 — Swami Vivekananda’s Departure for Kheer Bhawani",
+    narrativeParagraph1: "On September 30, 1898, while in Srinagar, Swami Vivekananda abruptly left alone for the shrine of **Kheer Bhawani**, instructing his companions not to follow him. He remained there for about a week, engaged in intense worship and austerities (**tapasya**).",
+    narrativeParagraph2: "Contemplating the temple’s desecration, he was distressed and resolved he would have defended the Mother even at the cost of his life. Then he heard the Divine Mother’s response: **“What if unbelievers should enter My temple and defile My image? What is that to you? Do you protect Me, or do I protect You?”** The experience deepened his surrender to the Divine Mother.",
+    quote: "What if unbelievers should enter My temple and defile My image? What is that to you? Do you protect Me, or do I protect You?",
+    quoteAuthor: "The Divine Mother",
+    imageCaption: "Swami Vivekananda at the shrine of Kheer Bhawani in Kashmir, where on 30 September 1898 he heard the Divine Mother: “Do you protect Me, or do I protect you?”",
+    customImage: "/images/on-this-day/30thSeptember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
