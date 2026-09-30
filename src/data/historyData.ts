@@ -1653,6 +1653,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/30thSeptember.png"
   },
   {
+    date: "October 1",
+    monthNumeric: 9,
+    dayNumeric: 1,
+    year: 2015,
+    headline: "October 1 — Release of the Swami Vivekananda Definitive Stamp",
+    narrativeParagraph1: "On October 1, 2015, India Post issued a ₹5 definitive postage stamp depicting Swami Vivekananda as part of its 11th Definitive Series, **“Makers of India.”** The multicolour stamp features his iconic portrait, honouring his contribution to Indian spiritual thought and his role in bringing Vedanta and Yoga to the Western world.",
+    narrativeParagraph2: "Vivekananda founded the Ramakrishna Mission and played a foundational role in the development of the modern Ramakrishna Math and Order. The stamp stands as an official postal tribute to his enduring spiritual and cultural legacy.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "India Post’s definitive stamp of Swami Vivekananda, issued on 1 October 2015 in the “Makers of India” series, with his portrait and the message of Vedanta, Yoga, universal brotherhood, and service.",
+    customImage: "/images/on-this-day/1stOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
