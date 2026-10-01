@@ -1666,6 +1666,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/1stOctober.png"
   },
   {
+    date: "October 2",
+    monthNumeric: 9,
+    dayNumeric: 2,
+    year: 1866,
+    headline: "October 2 — Birth of Swami Abhedananda",
+    narrativeParagraph1: "**Swami Abhedananda**, born Kaliprasad Chandra on October 2, 1866, was a direct monastic disciple of Sri Ramakrishna. At Swami Vivekananda’s call, he went to London in late 1896 and, in August 1897, took charge of the **Vedanta Society of New York**, where he taught and lectured for many years.",
+    narrativeParagraph2: "A gifted Sanskrit scholar and prolific author, he carried the message of Vedanta across America and Europe for nearly twenty-five years before returning to India in 1921. He then established the Ramakrishna Vedanta Society in Kolkata, which later developed into the **Ramakrishna Vedanta Math**, continuing his lifelong work of disseminating Vedantic thought.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Abhedananda, born Kaliprasad Chandra on 2 October 1866, a direct disciple of Sri Ramakrishna who lectured and wrote for the Vedanta Society of New York and later founded the Ramakrishna Vedanta Society in Kolkata.",
+    customImage: "/images/on-this-day/2ndOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
