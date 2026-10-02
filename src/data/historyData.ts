@@ -1679,6 +1679,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/2ndOctober.png"
   },
   {
+    date: "October 3",
+    monthNumeric: 9,
+    dayNumeric: 3,
+    year: 1899,
+    headline: "October 3 — Swami Vivekananda at Ridgely Manor",
+    narrativeParagraph1: "On October 3, 1899, while staying at **Ridgely Manor** in New York, Swami Vivekananda wrote affectionately to his friend **Mary Hale**, telling her, **“I am much better now and growing so every day.”**",
+    narrativeParagraph2: "He was eagerly awaiting the arrival of **Sara Chapman Bull**, whom he regarded as a true saint and said that to see her was **“a pilgrimage.”** Sister Nivedita affectionately referred to her as **“Saint Sara.”** The letter offers a glimpse of Vivekananda’s improving health and the close circle of devoted friends surrounding him at Ridgely.",
+    quote: "I am much better now and growing so every day.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing at Ridgely Manor in New York, where on 3 October 1899 he told Mary Hale he was growing better each day and awaited Sara Chapman Bull, whom Sister Nivedita called Saint Sara.",
+    customImage: "/images/on-this-day/3rdOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
