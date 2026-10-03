@@ -1692,6 +1692,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/3rdOctober.jpg"
   },
   {
+    date: "October 4",
+    monthNumeric: 9,
+    dayNumeric: 4,
+    year: 1895,
+    headline: "October 4 — Swami Vivekananda’s Letter to Swami Brahmananda",
+    narrativeParagraph1: "On October 4, 1895, from **Caversham**, England, Swami Vivekananda wrote a deeply personal letter to **Swami Brahmananda** (Rakhal). While offering practical counsel about the work and the need for trustworthy, capable workers, he also expressed his extraordinary love and loyalty toward those who had surrendered themselves to Sri Ramakrishna.",
+    narrativeParagraph2: "**“If but a thorn pricks the foot of one who has surrendered himself to Shri Ramakrishna,”** he wrote, **“it makes my bones ache.”** The letter reveals both the depth of Swamiji’s devotion to Sri Ramakrishna and his tender solidarity with his brother disciples.",
+    quote: "If but a thorn pricks the foot of one who has surrendered himself to Shri Ramakrishna, it makes my bones ache.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Caversham, England, on 4 October 1895, to Swami Brahmananda: “If but a thorn pricks the foot of one who has surrendered himself to Shri Ramakrishna, it makes my bones ache.”",
+    customImage: "/images/on-this-day/4thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
