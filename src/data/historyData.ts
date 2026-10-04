@@ -1705,6 +1705,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/4thOctober.png"
   },
   {
+    date: "October 5",
+    monthNumeric: 9,
+    dayNumeric: 5,
+    year: 1884,
+    headline: "October 5 — Sri Ramakrishna at Dakshineswar",
+    narrativeParagraph1: "On this day Sri Ramakrishna spoke with **M.** and other devotees at **Dakshineswar** on pure devotion, spiritual knowledge, and the overcoming of ego. Explaining **śuddha-bhakti**, he taught that pure devotion is motiveless: **“You want nothing, but still you love God. This is called motiveless love for God. This is pure love. Prahlāda had it.”**",
+    narrativeParagraph2: "He further emphasized the Divine presence in all beings, saying in essence that it is **Narayana** Himself who has assumed all these forms. Later, during devotional singing (**kīrtan**), Sri Ramakrishna would often enter **samādhi**, absorbed in the Divine.",
+    quote: "You want nothing, but still you love God. This is called motiveless love for God. This is pure love. Prahlāda had it.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at Dakshineswar on 5 October 1884, with M. and the devotees, absorbed in the Divine as kīrtan is sung beside him.",
+    customImage: "/images/on-this-day/5thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
