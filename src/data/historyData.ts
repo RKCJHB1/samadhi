@@ -1718,6 +1718,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/5thOctober.jpg"
   },
   {
+    date: "October 6",
+    monthNumeric: 9,
+    dayNumeric: 6,
+    year: 1898,
+    headline: "October 6 — Swami Vivekananda Returns from Kheer Bhawani",
+    narrativeParagraph1: "On October 6, 1898, Swami Vivekananda returned to **Srinagar** after spending about a week in solitude and worship at the shrine of **Kheer Bhawani**. On returning, he blessed his disciples with flowers that had been offered to the Mother and declared, **“No more ‘Hari Om!’ It is all ‘Mother’ now!”**",
+    narrativeParagraph2: "He also said, **“All my patriotism is gone. Everything is gone. Now it’s only ‘Mother, Mother!’”**",
+    quote: "All my patriotism is gone. Everything is gone. Now it’s only ‘Mother, Mother!’",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda, returned to Srinagar from Kheer Bhawani on 6 October 1898, blessing his disciples with flowers that had been offered to the Mother.",
+    customImage: "/images/on-this-day/6thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
