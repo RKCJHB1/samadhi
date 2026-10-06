@@ -1731,6 +1731,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/6thOctober.png"
   },
   {
+    date: "October 7",
+    monthNumeric: 9,
+    dayNumeric: 7,
+    year: 1911,
+    headline: "October 7 — Sister Nivedita Executes Her Last Will",
+    narrativeParagraph1: "Six days before her death in **Darjeeling**, **Sister Nivedita** executed her last will on 7 October 1911.",
+    narrativeParagraph2: "She bequeathed her possessions and writings to the trustees of **Belur Math**, directing that the funds be preserved as a permanent endowment for the education of Indian women and for the continuation of the girls’ school she had founded in **Bagbazar**.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sister Nivedita writing her last will in Darjeeling on 7 October 1911, leaving her possessions and writings to Belur Math for the education of Indian women and her Bagbazar girls’ school.",
+    customImage: "/images/on-this-day/7thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
