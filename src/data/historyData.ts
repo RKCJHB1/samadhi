@@ -1744,6 +1744,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/7thOctober.jpg"
   },
   {
+    date: "October 8",
+    monthNumeric: 9,
+    dayNumeric: 8,
+    year: 1896,
+    headline: "October 8 — Swami Vivekananda’s Call to “Make a Blaze”",
+    narrativeParagraph1: "On October 8, 1896, while staying at **Airlie Lodge** in **Wimbledon**, England, Swami Vivekananda wrote letters to two of his Western disciples, **Miss S. E. Waldo** and **Mrs. Ole Bull**. To Mrs. Bull, he emphasized the central purpose of their work: **“Our special branch is to preach Vedanta.”**",
+    narrativeParagraph2: "To Miss Waldo, he urged her to begin teaching, send notices to the class, and hold regular talks and lectures, concluding with the passionate exhortation: **“Make a blaze! Make a blaze!”**",
+    quote: "Make a blaze! Make a blaze!",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing at Airlie Lodge in Wimbledon on 8 October 1896, with letters addressed to Miss S. E. Waldo and Mrs. Ole Bull.",
+    customImage: "/images/on-this-day/8thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
