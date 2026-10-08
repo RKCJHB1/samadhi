@@ -1757,6 +1757,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/8thOctober.jpg"
   },
   {
+    date: "October 9",
+    monthNumeric: 9,
+    dayNumeric: 9,
+    year: 1899,
+    headline: "October 9 — Vivekananda’s Devotion to Sri Ramakrishna",
+    narrativeParagraph1: "On October 9, 1899, while staying at **Ridgely Manor** in New York, **Sister Nivedita** wrote to **Josephine MacLeod** about Swami Vivekananda’s profound devotion to his Master, **Sri Ramakrishna**. She recalled his unwavering trust in his Guru’s judgement, despite his own past mistakes.",
+    narrativeParagraph2: "Vivekananda expressed this surrender in memorable words: **“You see my devotion is the dog’s devotion. I have been wrong so often and he has always been right, and now I trust his judgement blindly.”** His words reveal the depth of his faith in Sri Ramakrishna.",
+    quote: "You see my devotion is the dog’s devotion. I have been wrong so often and he has always been right, and now I trust his judgement blindly.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Sri Ramakrishna blessing the kneeling Swami Vivekananda, a faithful dog beside them, as Sister Nivedita recorded at Ridgely Manor on 9 October 1899: “my devotion is the dog’s devotion.”",
+    customImage: "/images/on-this-day/9thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
