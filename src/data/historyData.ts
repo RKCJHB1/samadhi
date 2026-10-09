@@ -1770,6 +1770,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/9thOctober.jpg"
   },
   {
+    date: "October 10",
+    monthNumeric: 9,
+    dayNumeric: 10,
+    year: 1883,
+    headline: "October 10 — Sri Ramakrishna’s Teaching on Divine Love",
+    narrativeParagraph1: "On Wednesday, October 10, 1883, Sri Ramakrishna visited his householder disciple **Adhar Lal Sen** at his home in **Calcutta** during **Durga Puja**. Speaking to the devotees, he described the intimate relationship between God and the devotee.",
+    narrativeParagraph2: "**“As a devotee cannot live without God, so also God cannot live without His devotee. Then the devotee becomes the sweetness, and God its enjoyer. The devotee becomes the lotus, and God the bee.”**",
+    quote: "As a devotee cannot live without God, so also God cannot live without His devotee. Then the devotee becomes the sweetness, and God its enjoyer. The devotee becomes the lotus, and God the bee.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna teaching devotees at Adhar Lal Sen’s home in Calcutta during Durga Puja on 10 October 1883, the garlanded Goddess behind him.",
+    customImage: "/images/on-this-day/10thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
