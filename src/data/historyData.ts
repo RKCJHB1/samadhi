@@ -1783,6 +1783,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/10thOctober.png"
   },
   {
+    date: "October 11",
+    monthNumeric: 9,
+    dayNumeric: 11,
+    year: 1884,
+    headline: "October 11 — Sri Ramakrishna on Reasoning and Divine Love",
+    narrativeParagraph1: "On Saturday, October 11, 1884, Sri Ramakrishna spoke to devotees in his room at **Dakshineswar** about the limits of intellectual reasoning and the power of devotion. He declared: **“What will you achieve by mere reasoning? Be restless for God and learn to love Him.”**",
+    narrativeParagraph2: "He explained that intellectual knowledge can take one only so far, while **bhakti**—devotion—draws the seeker into an intimate relationship with God. He encouraged aspirants to cultivate a definite attitude toward the Divine, whether as servant, friend, parent, child, or beloved.",
+    quote: "What will you achieve by mere reasoning? Be restless for God and learn to love Him.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna speaking with devotees in his room at Dakshineswar on 11 October 1884, the temple beside the river beyond the window.",
+    customImage: "/images/on-this-day/11thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
