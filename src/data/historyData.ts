@@ -1796,6 +1796,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/11thOctober.png"
   },
   {
+    date: "October 12",
+    monthNumeric: 9,
+    dayNumeric: 12,
+    year: 1897,
+    headline: "October 12 — Swami Vivekananda’s Directives to Swami Brahmananda",
+    narrativeParagraph1: "On October 12, 1897, writing from **Murree**, Swami Vivekananda sent **Swami Brahmananda** (Rakhal) detailed instructions for the administration of the **Ramakrishna Math**. He directed that acknowledgements of donations be issued in duplicate, donors’ names and addresses recorded, and accounts kept **“accurate to the last pie”** and subsequently published.",
+    narrativeParagraph2: "He also instructed Brahmananda to register a will, under legal advice, providing for the succession to the Math’s property should both he and Swamiji die. These directives reflect Swamiji’s insistence on transparency, accountability, and responsible administration in the developing monastic order.",
+    quote: "accurate to the last pie",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Murree on 12 October 1897, sending Swami Brahmananda instructions for the accounts and succession of the Ramakrishna Math.",
+    customImage: "/images/on-this-day/12thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
