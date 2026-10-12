@@ -1809,6 +1809,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/12thOctober.jpg"
   },
   {
+    date: "October 13",
+    monthNumeric: 9,
+    dayNumeric: 13,
+    year: 1911,
+    headline: "October 13 — Passing of Sister Nivedita",
+    narrativeParagraph1: "**Sister Nivedita** (Margaret Elizabeth Noble), the devoted disciple of Swami Vivekananda, died at **Roy Villa** in **Darjeeling** on October 13, 1911. She dedicated her life to women’s education, India’s cultural revival, national awakening, and service. Her final words are remembered as: **“The frail boat is sinking, but I shall yet see the sunrise.”**",
+    narrativeParagraph2: "In her will, she left her property and the income and copyright from her writings to the trustees of **Belur Math**, to support the education of Indian women. Her memorial bears the inscription: **“Here Reposes Sister Nivedita Who Gave Her All To India.”**",
+    quote: "The frail boat is sinking, but I shall yet see the sunrise.",
+    quoteAuthor: "Sister Nivedita",
+    imageCaption: "Sister Nivedita at Darjeeling on 13 October 1911, schoolgirls behind her and her memorial inscribed “Here Reposes Sister Nivedita Who Gave Her All To India.”",
+    customImage: "/images/on-this-day/13thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
