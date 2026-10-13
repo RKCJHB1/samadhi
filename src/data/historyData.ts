@@ -1822,6 +1822,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/13thOctober.png"
   },
   {
+    date: "October 14",
+    monthNumeric: 9,
+    dayNumeric: 14,
+    year: 1900,
+    headline: "October 14 — Swami Vivekananda’s Longing for Monastic Freedom",
+    narrativeParagraph1: "Writing from **Paris** to **Sister Christine** on October 14, 1900, Swami Vivekananda expressed relief at relinquishing the presidency of the Monastery.",
+    narrativeParagraph2: "Having sent his earnings from America to India, he wrote: **“Now I am free, the begging-monk as before. I have also resigned from the Presidentship of the Monastery. Thank God, I am free!”**",
+    quote: "Now I am free, the begging-monk as before. I have also resigned from the Presidentship of the Monastery. Thank God, I am free!",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Paris to Sister Christine on 14 October 1900, with a begging monk walking free at sunset beyond the Seine.",
+    customImage: "/images/on-this-day/14thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
