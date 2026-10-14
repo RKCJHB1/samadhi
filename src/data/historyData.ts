@@ -1835,6 +1835,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/14thOctober.png"
   },
   {
+    date: "October 15",
+    monthNumeric: 9,
+    dayNumeric: 15,
+    year: 1896,
+    headline: "October 15 — Swami Vivekananda’s Lecture on “Maya and Illusion”",
+    narrativeParagraph1: "On October 15, 1896, Swami Vivekananda delivered his lecture **“Maya and Illusion”** in **London**. Subsequently published in **Jnana-Yoga**, the lecture examined Maya as more than mere illusion or delusion.",
+    narrativeParagraph2: "Swamiji presented it as an account of the contradictions and limitations inherent in our experience of the universe, urging his listeners to look beyond sensory appearances towards spiritual reality. As he put it, **“Maya is not a theory for the explanation of the world; it is simply a statement of facts as they exist.”**",
+    quote: "Maya is not a theory for the explanation of the world; it is simply a statement of facts as they exist.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering “Maya and Illusion” at 39 Victoria Street, London, on 15 October 1896, with Jnana-Yoga beside the lectern and the quotation written on the blackboard.",
+    customImage: "/images/on-this-day/15thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
