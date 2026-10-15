@@ -1848,6 +1848,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/15thOctober.png"
   },
   {
+    date: "October 16",
+    monthNumeric: 9,
+    dayNumeric: 16,
+    year: 1882,
+    headline: "October 16 — Sri Ramakrishna and Narendra at Dakshineswar",
+    narrativeParagraph1: "On Monday, October 16, 1882, **Narendra**—later **Swami Vivekananda**—visited **Sri Ramakrishna** at **Dakshineswar** with two or three young members of the **Brahmo Samaj**. Narendra sang devotional songs, accompanied at first by other devotees on drums and cymbals; he later took up the **khol** and sang, **“Repeat the sweet name of the Lord with joy and gladness!”**",
+    narrativeParagraph2: "The singing deeply moved Sri Ramakrishna. The Master also spoke of **God-realization** and explained how householders could live in the world while keeping their minds fixed on God.",
+    quote: "Repeat the sweet name of the Lord with joy and gladness!",
+    quoteAuthor: "Narendra",
+    imageCaption: "Narendra playing the khol and singing before Sri Ramakrishna at Dakshineswar on 16 October 1882, young devotees gathered on the veranda and the temple beside the river.",
+    customImage: "/images/on-this-day/16thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
