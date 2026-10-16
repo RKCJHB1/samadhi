@@ -114,6 +114,15 @@ const CHANT_OPTIONS: ChantOption[] = [
     audioSrc: '/aum.mp3',
     isEnabled: true,
   },
+  {
+    id: 'jai-ma',
+    name: 'Jai Ma',
+    shortLabel: 'Jai Ma',
+    symbol: 'माँ',
+    shareTag: '#JaiMa',
+    audioSrc: '/aum.mp3',
+    isEnabled: true,
+  },
 ];
 
 const AumChanterPage = () => {
