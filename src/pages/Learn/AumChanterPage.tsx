@@ -550,7 +550,7 @@ const AumChanterPage = () => {
 
   return (
     <PageLayout title="Aum Chanter" className="no-top-padding">
-      <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-16 pb-6">
+      <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-2 pb-4 sm:pt-16 sm:pb-6">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="w-full flex items-center justify-between mt-1">
@@ -573,14 +573,14 @@ const AumChanterPage = () => {
                 <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">{count.toLocaleString()}</p>
               </div>
-              <div className="text-center">
+              <div className="hidden text-center sm:block">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Global</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">
                   {statsLoading ? '...' : globalChants.toLocaleString()}
                 </p>
               </div>
-              <div className="text-center">
+              <div className="hidden text-center sm:block">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Record</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">
@@ -603,7 +603,7 @@ const AumChanterPage = () => {
           </div>
 
           <div className="w-full max-w-2xl">
-            <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Available chants">
+            <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center" role="tablist" aria-label="Available chants">
               {availableChants.map((chant) => {
                 const isActive = chant.id === currentChant.id;
 
@@ -619,16 +619,16 @@ const AumChanterPage = () => {
                         setSelectedChantId(chant.id);
                       }
                     }}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ${isActive
+                    className={`min-w-0 rounded-full border px-2 py-2 text-sm font-medium transition-all duration-200 sm:px-4 ${isActive
                       ? 'border-spiritual-300/60 bg-spiritual-500/20 text-white shadow-[0_0_20px_rgba(251,191,36,0.18)]'
                       : 'border-spiritual-400/20 bg-slate-800/50 text-spiritual-200/80 hover:border-spiritual-300/40 hover:text-white'}`}
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="flex flex-col items-center gap-0.5 sm:flex-row sm:gap-2">
                       <span className="text-base leading-none">{chant.symbol}</span>
-                      <span>{chant.shortLabel}</span>
+                      <span className="text-[11px] leading-tight sm:text-sm">{chant.shortLabel}</span>
                       <span className="font-mono text-xs text-spiritual-100/80">{(countsByChant[chant.id] || 0).toLocaleString()}</span>
                       {!chant.isAlwaysAvailable && (
-                        <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200">
+                        <span className="hidden rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200 sm:inline">
                           Special
                         </span>
                       )}
@@ -640,7 +640,7 @@ const AumChanterPage = () => {
           </div>
 
           {/* Main Chant Button + Mala */}
-          <div className="flex flex-col items-center mt-2 mb-12">
+          <div className="flex flex-col items-center mt-2 mb-4 sm:mb-12">
             <div className="relative">
               <MalaBeads
                 litBeads={count}
@@ -738,8 +738,9 @@ const AumChanterPage = () => {
                 </div>
               </div>
             </div>
-            <p className="mt-4 text-center text-sm text-spiritual-200/70">
-              Tap the center to chant {currentChant.name}. This count is kept separately from the other chants.
+            <p className="mt-2 px-3 text-center text-xs text-spiritual-200/70 sm:mt-4 sm:text-sm">
+              Tap the center to chant {currentChant.name}.
+              <span className="hidden sm:inline"> This count is kept separately from the other chants.</span>
             </p>
           </div>
 
@@ -748,7 +749,7 @@ const AumChanterPage = () => {
             {dailyGoal && (
               <span className="font-mono">Today: {todaysChants.toLocaleString()} / {dailyGoal.toLocaleString()}</span>
             )}
-            <span className="text-center">
+            <span className="hidden text-center sm:inline">
               1 mala = <span className="font-mono">{MALA_BEAD_COUNT}</span> chants • Completed malas:{' '}
               <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span>
               <span className="mx-2 text-spiritual-400/50">•</span>
@@ -757,11 +758,28 @@ const AumChanterPage = () => {
               <span className="mx-1">/</span>
               <span className="font-mono">{MALA_BEAD_COUNT}</span>
             </span>
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
+            <span className="text-center text-xs sm:hidden">
+              Mala <span className="font-mono text-spiritual-200">{chantsIntoCurrentMala.toLocaleString()}</span>
+              <span className="mx-1">/</span>
+              <span className="font-mono">{MALA_BEAD_COUNT}</span>
+              <span className="mx-2 text-spiritual-400/50">·</span>
+              <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span> done
+            </span>
+            <div className="hidden flex-wrap items-center justify-center gap-3 sm:flex sm:gap-6">
               <span>Average Chants / User: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
               <span>Total chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
               <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
             </div>
+            <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
+              <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
+              <div className="mt-2 flex flex-col gap-1">
+                <span>Global: <span className="font-mono">{statsLoading ? '...' : globalChants.toLocaleString()}</span></span>
+                <span>Record: <span className="font-mono">{statsLoading ? '...' : recordChants.toLocaleString()}</span></span>
+                <span>Average per person: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
+                <span>Chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
+                <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
+              </div>
+            </details>
           </div>
 
           {/* Auto Chant Button */}
