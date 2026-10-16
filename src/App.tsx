@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams, useSear
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
+import BuildingProjectToast from "./components/shared/BuildingProjectToast";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 
@@ -158,6 +159,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <BuildingProjectToast />
           <ConditionalNavbar />
           <Routes>
             {/* Home Page */}
