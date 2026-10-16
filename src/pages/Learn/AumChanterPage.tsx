@@ -31,6 +31,67 @@ type ChantOption = {
   isEnabled?: boolean;
 };
 
+type ChantHistoryEntry = {
+  date: string;
+  chants: number;
+  chantId: string;
+};
+
+const DEFAULT_CHANT_ID = 'om';
+
+const readChantHistory = (): ChantHistoryEntry[] => {
+  try {
+    const savedHistory = localStorage.getItem('aumChantHistory');
+    if (!savedHistory) return [];
+    const parsed = JSON.parse(savedHistory);
+    if (!Array.isArray(parsed)) return [];
+
+    const merged = new Map<string, ChantHistoryEntry>();
+    for (const entry of parsed) {
+      if (!entry || typeof entry.date !== 'string' || typeof entry.chants !== 'number' || !Number.isFinite(entry.chants)) {
+        continue;
+      }
+      const chantId = typeof entry.chantId === 'string' && entry.chantId ? entry.chantId : DEFAULT_CHANT_ID;
+      const key = `${chantId}|${entry.date}`;
+      const existing = merged.get(key);
+      if (existing) {
+        existing.chants += entry.chants;
+      } else {
+        merged.set(key, { date: entry.date, chants: entry.chants, chantId });
+      }
+    }
+    return Array.from(merged.values());
+  } catch (error) {
+    console.error("Could not read history from localStorage:", error);
+    return [];
+  }
+};
+
+const readChantGoals = (): Record<string, number> => {
+  try {
+    const goals: Record<string, number> = {};
+    const savedGoals = localStorage.getItem('aumChantGoals');
+    if (savedGoals) {
+      const parsed = JSON.parse(savedGoals);
+      if (parsed && typeof parsed === 'object') {
+        for (const [chantId, value] of Object.entries(parsed as Record<string, unknown>)) {
+          const goal = Number(value);
+          if (Number.isFinite(goal) && goal > 0) goals[chantId] = goal;
+        }
+      }
+    }
+    if (goals[DEFAULT_CHANT_ID] == null) {
+      const legacyGoal = localStorage.getItem('aumChantGoal');
+      const goal = legacyGoal ? parseInt(legacyGoal, 10) : NaN;
+      if (Number.isFinite(goal) && goal > 0) goals[DEFAULT_CHANT_ID] = goal;
+    }
+    return goals;
+  } catch (error) {
+    console.error("Could not read goal from localStorage:", error);
+    return {};
+  }
+};
+
 const CHANT_OPTIONS: ChantOption[] = [
   {
     id: 'om',
@@ -56,32 +117,8 @@ const CHANT_OPTIONS: ChantOption[] = [
 ];
 
 const AumChanterPage = () => {
-  const [history, setHistory] = useState<{ date: string; chants: number }[]>(() => {
-    try {
-      const savedHistory = localStorage.getItem('aumChantHistory');
-      if (savedHistory) {
-        return JSON.parse(savedHistory);
-      }
-      return [];
-    } catch (error) {
-      console.error("Could not read history from localStorage:", error);
-      return [];
-    }
-  });
-
-  const [dailyGoal, setDailyGoal] = useState<number | null>(() => {
-    try {
-      const savedGoal = localStorage.getItem('aumChantGoal');
-      return savedGoal ? parseInt(savedGoal, 10) : null;
-    } catch (error) {
-      console.error("Could not read goal from localStorage:", error);
-      return null;
-    }
-  });
-
-  const count = useMemo(() => {
-    return history.reduce((total, entry) => total + entry.chants, 0);
-  }, [history]);
+  const [history, setHistory] = useState<ChantHistoryEntry[]>(readChantHistory);
+  const [goalsByChant, setGoalsByChant] = useState<Record<string, number>>(readChantGoals);
 
   const [isChanted, setIsChanted] = useState<boolean>(false);
   const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean }[]>([]);
@@ -92,7 +129,16 @@ const AumChanterPage = () => {
   const nextAudioIndexRef = useRef<number>(0);
   const lastAudioPlayAtRef = useRef<number>(0);
   const chantDurationMsRef = useRef<number>(AUTO_CHANT_FALLBACK_DURATION_MS);
-  const [selectedChantId, setSelectedChantId] = useState<string>('om');
+  const [selectedChantId, setSelectedChantId] = useState<string>(() => {
+    try {
+      return localStorage.getItem('aumSelectedChant') || DEFAULT_CHANT_ID;
+    } catch (error) {
+      console.error("Could not read selected chant from localStorage:", error);
+      return DEFAULT_CHANT_ID;
+    }
+  });
+  const selectedChantIdRef = useRef(selectedChantId);
+  selectedChantIdRef.current = selectedChantId;
 
   // Auto-chant state
   const [isAutoChantModalVisible, setIsAutoChantModalVisible] = useState<boolean>(false);
@@ -129,6 +175,22 @@ const AumChanterPage = () => {
     () => availableChants.find((chant) => chant.id === selectedChantId) ?? availableChants[0] ?? CHANT_OPTIONS[0],
     [availableChants, selectedChantId]
   );
+
+  const countsByChant = useMemo(() => {
+    const totals: Record<string, number> = {};
+    for (const entry of history) {
+      totals[entry.chantId] = (totals[entry.chantId] || 0) + entry.chants;
+    }
+    return totals;
+  }, [history]);
+
+  const chantHistory = useMemo(
+    () => history.filter((entry) => entry.chantId === currentChant.id),
+    [history, currentChant.id]
+  );
+
+  const count = countsByChant[currentChant.id] || 0;
+  const dailyGoal = goalsByChant[currentChant.id] ?? null;
 
   const createChantAudio = useCallback((src: string) => {
     const audio = new Audio(src);
@@ -223,15 +285,18 @@ const AumChanterPage = () => {
   useEffect(() => {
     try {
       localStorage.setItem('aumChantHistory', JSON.stringify(history));
-      if (dailyGoal === null) {
-        localStorage.removeItem('aumChantGoal');
+      localStorage.setItem('aumChantGoals', JSON.stringify(goalsByChant));
+      localStorage.setItem('aumSelectedChant', selectedChantId);
+      const omGoal = goalsByChant[DEFAULT_CHANT_ID];
+      if (omGoal) {
+        localStorage.setItem('aumChantGoal', omGoal.toString());
       } else {
-        localStorage.setItem('aumChantGoal', dailyGoal.toString());
+        localStorage.removeItem('aumChantGoal');
       }
     } catch (error) {
       console.error("Could not write to localStorage:", error);
     }
-  }, [history, dailyGoal]);
+  }, [history, goalsByChant, selectedChantId]);
 
   const playChantSound = useCallback((options?: { bypassThrottle?: boolean }) => {
     const now = Date.now();
@@ -299,14 +364,15 @@ const AumChanterPage = () => {
     // Update history
     setHistory(currentHistory => {
       const today = getTodayString();
-      const todayEntryIndex = currentHistory.findIndex(entry => entry.date === today);
+      const chantId = selectedChantIdRef.current;
+      const todayEntryIndex = currentHistory.findIndex(entry => entry.date === today && entry.chantId === chantId);
       const newHistory = [...currentHistory];
 
       if (todayEntryIndex > -1) {
         const updatedEntry = { ...newHistory[todayEntryIndex], chants: newHistory[todayEntryIndex].chants + 1 };
         newHistory[todayEntryIndex] = updatedEntry;
       } else {
-        newHistory.push({ date: today, chants: 1 });
+        newHistory.push({ date: today, chants: 1, chantId });
       }
       return newHistory;
     });
@@ -347,11 +413,26 @@ const AumChanterPage = () => {
 
   const handleSetGoal = () => {
     const newGoal = parseInt(goalInputValue, 10);
-    if (!isNaN(newGoal) && newGoal > 0) {
-      setDailyGoal(newGoal);
-    } else {
-      setDailyGoal(null);
-    }
+    const chantId = currentChant.id;
+    setGoalsByChant(currentGoals => {
+      const nextGoals = { ...currentGoals };
+      if (!isNaN(newGoal) && newGoal > 0) {
+        nextGoals[chantId] = newGoal;
+      } else {
+        delete nextGoals[chantId];
+      }
+      return nextGoals;
+    });
+    setIsGoalModalVisible(false);
+  };
+
+  const clearCurrentGoal = () => {
+    const chantId = currentChant.id;
+    setGoalsByChant(currentGoals => {
+      const nextGoals = { ...currentGoals };
+      delete nextGoals[chantId];
+      return nextGoals;
+    });
     setIsGoalModalVisible(false);
   };
 
@@ -439,7 +520,7 @@ const AumChanterPage = () => {
     }
   }, [chantEffects]);
 
-  const todaysChants = history.find(entry => entry.date === getTodayString())?.chants || 0;
+  const todaysChants = chantHistory.find(entry => entry.date === getTodayString())?.chants || 0;
   const completedMalas = Math.floor(count / MALA_BEAD_COUNT);
   const todaysCompletedMalas = Math.floor(todaysChants / MALA_BEAD_COUNT);
   const chantsIntoCurrentMala = count % MALA_BEAD_COUNT;
@@ -450,9 +531,7 @@ const AumChanterPage = () => {
   const progressRingCircumference = 2 * Math.PI * progressRingRadius;
   const strokeDashoffset = progressRingCircumference * (1 - progressPercent / 100);
 
-  const shareTitle = currentChant.id === 'om'
-    ? `I've chanted ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`
-    : `I've chanted ${count.toLocaleString()} times on Aum Chanter and I'm using the ${currentChant.name} festival mode. Join the global meditation.`;
+  const shareTitle = `I've chanted ${currentChant.name} ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`;
 
   const shareDescription = currentChant.id === 'om'
     ? 'Join the Aum Chanter meditation game and contribute to our global chanting community.'
@@ -482,16 +561,19 @@ const AumChanterPage = () => {
             <div className="flex items-center gap-6 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
+                <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">{count.toLocaleString()}</p>
               </div>
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Global</p>
+                <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">
                   {statsLoading ? '...' : globalChants.toLocaleString()}
                 </p>
               </div>
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Record</p>
+                <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">
                   {statsLoading ? '...' : recordChants.toLocaleString()}
                 </p>
@@ -522,7 +604,12 @@ const AumChanterPage = () => {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    onClick={() => setSelectedChantId(chant.id)}
+                    onClick={() => {
+                      if (chant.id !== currentChant.id) {
+                        stopAutoChant();
+                        setSelectedChantId(chant.id);
+                      }
+                    }}
                     className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 ${isActive
                       ? 'border-spiritual-300/60 bg-spiritual-500/20 text-white shadow-[0_0_20px_rgba(251,191,36,0.18)]'
                       : 'border-spiritual-400/20 bg-slate-800/50 text-spiritual-200/80 hover:border-spiritual-300/40 hover:text-white'}`}
@@ -530,6 +617,7 @@ const AumChanterPage = () => {
                     <span className="flex items-center gap-2">
                       <span className="text-base leading-none">{chant.symbol}</span>
                       <span>{chant.shortLabel}</span>
+                      <span className="font-mono text-xs text-spiritual-100/80">{(countsByChant[chant.id] || 0).toLocaleString()}</span>
                       {!chant.isAlwaysAvailable && (
                         <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200">
                           Special
@@ -642,9 +730,7 @@ const AumChanterPage = () => {
               </div>
             </div>
             <p className="mt-4 text-center text-sm text-spiritual-200/70">
-              {currentChant.id === 'om'
-                ? 'Tap the center to chant Om.'
-                : `Tap the center to chant ${currentChant.name}. Counts and stats remain shared for this first preview.`}
+              Tap the center to chant {currentChant.name}. This count is kept separately from the other chants.
             </p>
           </div>
 
@@ -712,7 +798,7 @@ const AumChanterPage = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsHistoryVisible(false)}>
             <div className="bg-slate-800/80 border border-spiritual-400/20 rounded-lg shadow-2xl w-11/12 max-w-md max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b border-spiritual-400/20">
-                <h2 className="text-xl font-sans text-spiritual-200">Chant History</h2>
+                <h2 className="text-xl font-sans text-spiritual-200">{currentChant.name} History</h2>
                 <button onClick={() => setIsHistoryVisible(false)} className="text-spiritual-300/60 hover:text-spiritual-200 text-2xl leading-none" aria-label="Close history view">&times;</button>
               </div>
               <div className="p-4 overflow-y-auto">
@@ -724,9 +810,9 @@ const AumChanterPage = () => {
                     <span>Today's malas: <span className="font-mono text-white">{todaysCompletedMalas.toLocaleString()}</span></span>
                   </div>
                 </div>
-                {history.length > 0 ? (
+                {chantHistory.length > 0 ? (
                   <ul className="space-y-3">
-                    {[...history].reverse().map(entry => (
+                    {[...chantHistory].reverse().map(entry => (
                       <li key={entry.date} className="flex justify-between items-baseline gap-4 text-white/90 font-mono text-lg">
                         <div>
                           <span className="text-base text-spiritual-300/80">{entry.date}</span>
@@ -739,7 +825,7 @@ const AumChanterPage = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-center text-spiritual-300/70 py-8">No chant history yet. Start chanting!</p>
+                  <p className="text-center text-spiritual-300/70 py-8">No {currentChant.name} history yet. Start chanting!</p>
                 )}
               </div>
             </div>
@@ -751,11 +837,11 @@ const AumChanterPage = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsGoalModalVisible(false)}>
             <div className="bg-slate-800/80 border border-spiritual-400/20 rounded-lg shadow-2xl w-11/12 max-w-md flex flex-col" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b border-spiritual-400/20">
-                <h2 className="text-xl font-sans text-spiritual-200">Set Daily Goal</h2>
+                <h2 className="text-xl font-sans text-spiritual-200">Set Daily Goal for {currentChant.name}</h2>
                 <button onClick={() => setIsGoalModalVisible(false)} className="text-spiritual-300/60 hover:text-spiritual-200 text-2xl leading-none" aria-label="Close goal view">&times;</button>
               </div>
               <div className="p-4 space-y-4">
-                <label htmlFor="goal-input" className="text-spiritual-300/90 text-sm">Set a target for your daily chants.</label>
+                <label htmlFor="goal-input" className="text-spiritual-300/90 text-sm">Set a daily target for {currentChant.name}. Each chant keeps its own goal.</label>
                 <input
                   id="goal-input"
                   type="number"
@@ -765,7 +851,7 @@ const AumChanterPage = () => {
                   className="w-full p-2 bg-slate-900/50 border border-spiritual-400/30 rounded text-white font-mono text-lg"
                 />
                 <div className="flex justify-end gap-3 pt-2">
-                  <button onClick={() => { setDailyGoal(null); setIsGoalModalVisible(false); }} className="px-4 py-2 rounded bg-slate-700/50 text-spiritual-200/80 hover:bg-slate-700 text-sm font-sans">Clear Goal</button>
+                  <button onClick={clearCurrentGoal} className="px-4 py-2 rounded bg-slate-700/50 text-spiritual-200/80 hover:bg-slate-700 text-sm font-sans">Clear Goal</button>
                   <button onClick={handleSetGoal} className="px-4 py-2 rounded bg-spiritual-600/80 text-white hover:bg-spiritual-600 text-sm font-sans">Save Goal</button>
                 </div>
               </div>
