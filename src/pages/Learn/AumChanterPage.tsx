@@ -549,7 +549,7 @@ const AumChanterPage = () => {
   const shareTwitterText = `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
 
   return (
-    <PageLayout title={currentChant.id === 'om' ? 'Aum Chanter' : `${currentChant.name} • Aum Chanter`} className="no-top-padding">
+    <PageLayout title="Aum Chanter" className="no-top-padding">
       <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-16 pb-6">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
           {/* Compact Stats Bar */}
