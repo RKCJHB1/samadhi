@@ -1861,6 +1861,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/16thOctober.png"
   },
   {
+    date: "October 17",
+    monthNumeric: 9,
+    dayNumeric: 17,
+    year: 1894,
+    headline: "October 17 — Swami Vivekananda Receives Recognition from Calcutta",
+    narrativeParagraph1: "On October 17, 1894, writing to **Sara Chapman Bull** from **Baltimore**, Swami Vivekananda described his busy lecture schedule and his plans to speak in **Washington**, **Philadelphia**, and **New York**.",
+    narrativeParagraph2: "He also noted that, among the letters sent from India, was an address from his fellow citizens in **Calcutta**, sent in appreciation of his work in America. He wrote that it was **“an address sent over to me from Calcutta by my fellow citizens for my work here.”**",
+    quote: "an address sent over to me from Calcutta by my fellow citizens for my work here.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda reading a letter in Baltimore on 17 October 1894, while citizens in Calcutta present an address of recognition for his work in America.",
+    customImage: "/images/on-this-day/17thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
