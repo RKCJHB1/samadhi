@@ -1874,6 +1874,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/17thOctober.jpg"
   },
   {
+    date: "October 18",
+    monthNumeric: 9,
+    dayNumeric: 18,
+    year: 1892,
+    headline: "October 18 — Swami Vivekananda Meets Haripada Mitra at Belgaum",
+    narrativeParagraph1: "On the evening of October 18, 1892, Swami Vivekananda visited **Haripada Mitra**, a Sub-Divisional Forest Officer, at **Belgaum** (present-day Belagavi, Karnataka), during his years as a wandering monk.",
+    narrativeParagraph2: "Mitra, then a sceptic about religion and God who suspected sannyasis of being cheats, was immediately struck by the young monk’s serene appearance, learning, and freedom from material wants. Recalling their first meeting, Mitra described him as remarkably free from wants, happy and content, and always wearing a cheerful, smiling countenance.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda seated with Haripada Mitra at Belgaum on 18 October 1892, during his years as a wandering monk.",
+    customImage: "/images/on-this-day/18thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
