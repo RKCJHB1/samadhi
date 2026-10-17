@@ -5,12 +5,14 @@ import { ToastAction } from '@/components/ui/toast';
 
 const SILENCE_KEY = 'rkcjhb-building-project-toast';
 const PROJECT_PATH = '/new-ashram-project';
+const CHANTER_PATH = '/learn/games/aum-chanter';
 
 let lastShownAt = 0;
 let toastIsOpen = false;
+let dismissOpenToast = () => {};
 
-const isProjectPath = (pathname: string) =>
-  pathname === PROJECT_PATH || pathname.startsWith(`${PROJECT_PATH}/`);
+const isChanterPath = (pathname: string) =>
+  pathname === CHANTER_PATH || pathname.startsWith(`${CHANTER_PATH}/`);
 
 const isSilenced = () => {
   try {
@@ -36,6 +38,7 @@ const showBuildingProjectToast = () => {
   toastIsOpen = true;
   let dismissToast = () => {};
 
+  dismissOpenToast = () => {};
   const handle = toast({
     duration: 20000,
     title: 'New Ashram Project',
@@ -65,34 +68,31 @@ const showBuildingProjectToast = () => {
   });
 
   dismissToast = handle.dismiss;
+  dismissOpenToast = handle.dismiss;
 };
 
 const BuildingProjectToast = () => {
   const location = useLocation();
   const previousPath = useRef<string | null>(null);
-  const seenPaths = useRef(new Set<string>());
 
   useEffect(() => {
     const path = location.pathname;
     const previous = previousPath.current;
     previousPath.current = path;
 
-    if (isProjectPath(path) || isSilenced()) return;
-
-    const firstArrival = previous === null;
-    const returnedToSeenPage = previous !== null && previous !== path && seenPaths.current.has(path);
-    const returnedFromProject = previous !== null && isProjectPath(previous);
-    seenPaths.current.add(path);
-
-    if (firstArrival || returnedToSeenPage || returnedFromProject) {
-      showBuildingProjectToast();
+    if (!isChanterPath(path)) {
+      dismissOpenToast();
+      return;
     }
+    if (isSilenced() || previous === path) return;
+
+    showBuildingProjectToast();
   }, [location.pathname]);
 
   useEffect(() => {
     const showOnReturn = () => {
       if (document.visibilityState !== 'visible') return;
-      if (isProjectPath(location.pathname)) return;
+      if (!isChanterPath(location.pathname)) return;
       showBuildingProjectToast();
     };
 
