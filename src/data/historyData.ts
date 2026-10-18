@@ -1887,6 +1887,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/18thOctober.png"
   },
   {
+    date: "October 19",
+    monthNumeric: 9,
+    dayNumeric: 19,
+    year: 1884,
+    headline: "October 19 — Sri Ramakrishna at the Sinthi Brahmo Samaj",
+    narrativeParagraph1: "On October 19, 1884, Sri Ramakrishna attended the autumn festival of the **Sinthi Brahmo Samaj** at **Beni Madhav Pal’s** garden house. There he instructed the assembled devotees on spiritual life, intense yearning for God, and the different classes of human beings according to their bondage to, or freedom from, worldly attachment.",
+    narrativeParagraph2: "Explaining complete self-surrender, he taught that one should entrust everything to God, as though giving Him the **“power of attorney” (bāklamā)**. The gathering was marked by devotional singing, spiritual ecstasy, and Sri Ramakrishna’s profound teachings on God-realisation.",
+    quote: "power of attorney",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna in spiritual ecstasy among the devotees at Beni Madhav Pal’s garden house on 19 October 1884, during the autumn festival of the Sinthi Brahmo Samaj.",
+    customImage: "/images/on-this-day/19thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
