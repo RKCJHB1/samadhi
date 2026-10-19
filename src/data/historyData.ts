@@ -1900,6 +1900,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/19thOctober.png"
   },
   {
+    date: "October 20",
+    monthNumeric: 9,
+    dayNumeric: 20,
+    year: 1884,
+    headline: "October 20 — Sri Ramakrishna at the Annakuta Festival in Burrabazar",
+    narrativeParagraph1: "On October 20, 1884, Sri Ramakrishna visited the home of Marwari devotees at **12 Mallick Street**, **Burrabazar**, Calcutta, for the **Annakuta** festival honouring Sri Krishna. Witnessing the worship and ceremonial offering of food, he entered into ecstasy before the image of Krishna, exclaiming, **“O Govinda, You are my vital breath, my very life!”**",
+    narrativeParagraph2: "He also praised the deep devotion of the Marwari devotees and reflected on the enduring ideal of **Sanatana Dharma**.",
+    quote: "O Govinda, You are my vital breath, my very life!",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna in ecstasy before the image of Krishna at the Annakuta festival, 12 Mallick Street, Burrabazar, on 20 October 1884.",
+    customImage: "/images/on-this-day/20thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
