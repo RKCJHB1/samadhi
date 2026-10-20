@@ -1913,6 +1913,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/20thOctober.png"
   },
   {
+    date: "October 21",
+    monthNumeric: 9,
+    dayNumeric: 21,
+    year: 1901,
+    headline: "October 21 — The First Durga Puja at Belur Math, Maha Navami",
+    narrativeParagraph1: "On October 21, 1901, **Maha Navami** was celebrated during the first **Durga Puja** at **Belur Math**, where the Divine Mother was worshipped in a clay image. Swami Vivekananda had initiated the celebration after experiencing a vision of Durga Puja being performed at the Math; **Swami Brahmananda** had also seen the Divine Mother approaching Belur Math across the **Ganga**.",
+    narrativeParagraph2: "The Holy Mother **Sri Sarada Devi** wholeheartedly approved the undertaking, and the **sankalpa** for the worship was made in her name.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Monks of Belur Math worshipping the clay image of Durga on Maha Navami, 21 October 1901, the first Durga Puja at the Math, with the Ganga and a vision of the Divine Mother beyond.",
+    customImage: "/images/on-this-day/21stOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
