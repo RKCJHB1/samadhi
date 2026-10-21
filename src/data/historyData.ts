@@ -1926,6 +1926,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/21stOctober.png"
   },
   {
+    date: "October 22",
+    monthNumeric: 9,
+    dayNumeric: 22,
+    year: 1882,
+    headline: "October 22 — Sri Ramakrishna on the Inner Meaning of Spiritual Life",
+    narrativeParagraph1: "On October 22, 1882, **Vijaya Dashami**, Sri Ramakrishna met **M.** at **Dakshineswar** and discussed the inner meaning of **Durga Puja**, including **Keshab Chandra Sen**'s interpretation of installing the Divine Mother in the heart.",
+    narrativeParagraph2: "The conversation, recorded in the **Gospel of Sri Ramakrishna**, reflects the Master's emphasis on realising God within rather than merely observing external rituals.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna speaking with M. and devotees on the Dakshineswar verandah on Vijaya Dashami, 22 October 1882, beside the image of the Divine Mother and the temple on the Hooghly.",
+    customImage: "/images/on-this-day/22ndOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
