@@ -1939,6 +1939,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/22ndOctober.png"
   },
   {
+    date: "October 23",
+    monthNumeric: 9,
+    dayNumeric: 23,
+    year: 1895,
+    headline: "October 23 — A Newspaper Report on Swami Vivekananda's Teaching on Love",
+    narrativeParagraph1: "On October 23, 1895, the **Maidenhead Adviser** published a report titled **“Swami Vivekananda on Love,”** covering Swamiji's lecture, **“The Eastern Doctrine of Love,”** delivered at **Maidenhead Town Hall** on October 17.",
+    narrativeParagraph2: "Swamiji explained **bhakti**—devotion or love for God—as the highest spiritual path, emphasising unselfish love for all creatures. The contemporary report records his effort to present the spiritual wisdom of India to an English audience in universal, non-sectarian terms.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda lecturing at Maidenhead Town Hall, beside the Maidenhead Adviser of 23 October 1895 reporting his lecture, “The Eastern Doctrine of Love.”",
+    customImage: "/images/on-this-day/23rdOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
