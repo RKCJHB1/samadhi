@@ -1952,6 +1952,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/23rdOctober.png"
   },
   {
+    date: "October 24",
+    monthNumeric: 9,
+    dayNumeric: 24,
+    year: 1885,
+    headline: "October 24 — Sri Ramakrishna on Samādhi and Spiritual Experience",
+    narrativeParagraph1: "On October 24, 1885, Sri Ramakrishna was at the **Shyampukur** house in Calcutta, where he was receiving treatment for his throat illness, later diagnosed as cancer.",
+    narrativeParagraph2: "In a conversation with **Dr. Mahendralal Sarkar**, **Narendranath**, **Mahimacharan**, **M.**, and other devotees, he spoke of his experience of **samādhi**. Referring to that state of ecstasy, he asked the doctor, **“Well, when I am in samādhi I feel intoxicated as if I were drunk with siddhi. What have you to say about that?”**",
+    quote: "Well, when I am in samādhi I feel intoxicated as if I were drunk with siddhi. What have you to say about that?",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at the Shyampukur house on 24 October 1885, speaking of samādhi with Dr. Mahendralal Sarkar, Narendranath, Mahimacharan, M., and other devotees.",
+    customImage: "/images/on-this-day/24thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
