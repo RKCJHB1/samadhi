@@ -219,6 +219,13 @@ const AumChanterPage = () => {
     downloadVideo,
     shareVideo,
   } = useChantVideo();
+  const [chanterName, setChanterName] = useState(() => {
+    try {
+      return localStorage.getItem('aumChanterName') ?? '';
+    } catch {
+      return '';
+    }
+  });
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const noteChantRef = useRef(noteChant);
   noteChantRef.current = noteChant;
@@ -546,8 +553,17 @@ const AumChanterPage = () => {
       imageSrc: currentChant.imageSrc,
       audioSrc: currentChant.audioSrc,
       imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
+      personName: chanterName,
     });
-  }, [currentChant, syncFrame]);
+  }, [chanterName, currentChant, syncFrame]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('aumChanterName', chanterName);
+    } catch {
+      // Private browsing can block storage. The name still shows for this visit.
+    }
+  }, [chanterName]);
 
   useEffect(() => {
     if (videoPhase === 'ready') setIsVideoVisible(true);
@@ -846,6 +862,20 @@ const AumChanterPage = () => {
             </div>,
             document.body
           )}
+
+          <label htmlFor="chanter-name" className="mt-2 flex w-full max-w-sm items-center gap-2 text-sm text-spiritual-200/80">
+            <span className="shrink-0">Your name</span>
+            <input
+              id="chanter-name"
+              type="text"
+              value={chanterName}
+              maxLength={40}
+              autoComplete="name"
+              placeholder="Shown on your video"
+              onChange={(event) => setChanterName(event.target.value)}
+              className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-white"
+            />
+          </label>
 
           <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting ? (

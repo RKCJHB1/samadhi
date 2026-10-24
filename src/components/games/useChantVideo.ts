@@ -11,6 +11,7 @@ export type ChantVideoFrame = {
   imageSrc?: string;
   audioSrc?: string;
   imageScale?: number;
+  personName?: string;
 };
 
 export function formatRecordingTime(ms: number): string {
@@ -188,29 +189,51 @@ type ReadoutLayout = {
   labelY: number;
   radius: number;
   cy: number;
+  personSize: number;
+  personY: number;
 };
+
+function cleanPersonName(value: string | undefined): string {
+  return (value ?? '').replace(/[\u0000-\u001F\u007F]/g, '').replace(/\s+/g, ' ').trim().slice(0, 40);
+}
 
 // WhatsApp center-crops a portrait video and covers the lower edge, so the
 // count stays in the middle band instead of on the bottom of the frame.
-function readoutLayout(width: number, height: number): ReadoutLayout {
+function readoutLayout(width: number, height: number, personName: string): ReadoutLayout {
   const shortSide = Math.min(width, height);
   const labelSize = Math.max(18, Math.round(shortSide * 0.04));
   const countSize = Math.max(48, Math.round(shortSide * 0.12));
   const nameSize = Math.max(22, Math.round(shortSide * 0.05));
   const titleSize = Math.max(18, Math.round(shortSide * 0.038));
+  const personSize = personName ? Math.max(18, Math.round(shortSide * 0.042)) : 0;
   const labelY = Math.round(height * 0.66);
   const countY = labelY - labelSize - Math.round(shortSide * 0.02);
   const nameY = countY - Math.round(countSize * 1.05);
   const titleY = Math.round(height * 0.24);
+  const personY = personName ? titleY + Math.round(titleSize * 1.45) : titleY;
   const gap = Math.round(shortSide * 0.06);
   let radius = Math.round(Math.min(width, shortSide) * 0.24);
   let cy = nameY - gap - radius;
-  const minCircleTop = titleY + titleSize + Math.round(shortSide * 0.03);
+  const headerBottom = personName ? personY + Math.round(personSize * 0.3) : titleY + titleSize;
+  const minCircleTop = headerBottom + Math.round(shortSide * 0.03);
   if (cy - radius < minCircleTop) {
     radius = Math.max(48, Math.floor((nameY - gap - minCircleTop) / 2));
     cy = minCircleTop + radius;
   }
-  return { titleSize, nameSize, countSize, labelSize, titleY, nameY, countY, labelY, radius, cy };
+  return {
+    titleSize,
+    nameSize,
+    countSize,
+    labelSize,
+    titleY,
+    nameY,
+    countY,
+    labelY,
+    radius,
+    cy,
+    personSize,
+    personY,
+  };
 }
 
 const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
@@ -251,8 +274,9 @@ function paintReadout(
   canvas: HTMLCanvasElement,
   chantName: string,
   chants: number,
+  personName: string,
 ) {
-  const layout = readoutLayout(canvas.width, canvas.height);
+  const layout = readoutLayout(canvas.width, canvas.height, personName);
   context.save();
   context.textAlign = 'center';
   context.textBaseline = 'alphabetic';
@@ -262,6 +286,16 @@ function paintReadout(
   context.fillStyle = 'rgba(251, 191, 36, 0.95)';
   context.font = `600 ${layout.titleSize}px ${CANVAS_FONT}`;
   context.fillText('AUM CHANTER', canvas.width / 2, layout.titleY);
+  if (personName) {
+    let personSize = layout.personSize;
+    context.font = `600 ${personSize}px ${CANVAS_FONT}`;
+    while (personSize > 16 && context.measureText(personName).width > canvas.width - 80) {
+      personSize -= 2;
+      context.font = `600 ${personSize}px ${CANVAS_FONT}`;
+    }
+    context.fillStyle = '#fff7ed';
+    context.fillText(personName, canvas.width / 2, layout.personY);
+  }
   let nameSize = layout.nameSize;
   context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
   while (nameSize > 18 && context.measureText(chantName).width > canvas.width - 80) {
@@ -303,6 +337,7 @@ export function useChantVideo() {
     imageSrc: '/om.jpg',
     audioSrc: '/aum.mp3',
     imageScale: 1,
+    personName: '',
   });
   const sessionCountRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -618,13 +653,13 @@ export function useChantVideo() {
         }
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         context.restore();
-
-        const scrim = context.createLinearGradient(0, canvas.height * 0.4, 0, canvas.height * 0.76);
-        scrim.addColorStop(0, 'rgba(0,0,0,0)');
-        scrim.addColorStop(1, 'rgba(0,0,0,0.72)');
-        context.fillStyle = scrim;
-        context.fillRect(0, canvas.height * 0.4, canvas.width, canvas.height * 0.38);
-        paintReadout(context, canvas, frameRef.current.chantName || 'Om', sessionCountRef.current);
+        paintReadout(
+          context,
+          canvas,
+          frameRef.current.chantName || 'Om',
+          sessionCountRef.current,
+          cleanPersonName(frameRef.current.personName),
+        );
       };
 
       const drawCard = () => {
@@ -637,7 +672,7 @@ export function useChantVideo() {
         const width = canvas.width;
         const height = canvas.height;
         const cx = width / 2;
-        const readout = readoutLayout(width, height);
+        const readout = readoutLayout(width, height, cleanPersonName(frameRef.current.personName));
         const radius = readout.radius;
         const cy = readout.cy;
         const breathe = 0.5 + 0.5 * Math.sin(performance.now() / 700);
@@ -692,7 +727,13 @@ export function useChantVideo() {
           context.stroke();
         }
 
-        paintReadout(context, canvas, frameRef.current.chantName || 'Om', chants);
+        paintReadout(
+          context,
+          canvas,
+          frameRef.current.chantName || 'Om',
+          chants,
+          cleanPersonName(frameRef.current.personName),
+        );
       };
 
       const draw = () => {
