@@ -1135,7 +1135,7 @@ const AumChanterPage = () => {
               autoComplete="name"
               placeholder="Shown on your video"
               onChange={(event) => setChanterName(event.target.value)}
-              className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-white"
+              className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
             />
           </label>
 
@@ -1155,7 +1155,7 @@ const AumChanterPage = () => {
                     maxLength={60}
                     placeholder="Mistri Family"
                     onChange={(event) => setGroupNameDraft(event.target.value)}
-                    className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-white"
+                    className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
                   />
                 </label>
                 <button
