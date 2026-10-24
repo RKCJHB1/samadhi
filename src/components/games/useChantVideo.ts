@@ -213,6 +213,39 @@ function readoutLayout(width: number, height: number): ReadoutLayout {
   return { titleSize, nameSize, countSize, labelSize, titleY, nameY, countY, labelY, radius, cy };
 }
 
+const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
+const TEMPLE_NOTE = ['Support fundraising', 'for our new temple'];
+
+function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+  const shortSide = Math.min(canvas.width, canvas.height);
+  const padX = Math.round(Math.max(16, shortSide * 0.04));
+  const y = Math.round(Math.max(20, canvas.height * 0.065));
+  let size = Math.max(16, Math.round(shortSide * 0.03));
+  const fits = () => {
+    context.font = `600 ${size}px ${CANVAS_FONT}`;
+    const leftWidth = context.measureText(SITE_LABEL).width;
+    const rightWidth = Math.max(...TEMPLE_NOTE.map((line) => context.measureText(line).width));
+    return leftWidth + rightWidth + padX * 3 <= canvas.width;
+  };
+  while (size > 12 && !fits()) size -= 1;
+
+  context.save();
+  context.font = `600 ${size}px ${CANVAS_FONT}`;
+  context.textBaseline = 'top';
+  context.shadowColor = 'rgba(0,0,0,0.8)';
+  context.shadowBlur = 8;
+  context.shadowOffsetY = 1;
+  context.fillStyle = 'rgba(255,247,237,0.96)';
+  context.textAlign = 'left';
+  context.fillText(SITE_LABEL, padX, y);
+  context.fillStyle = 'rgba(251, 191, 36, 0.98)';
+  context.textAlign = 'right';
+  TEMPLE_NOTE.forEach((line, index) => {
+    context.fillText(line, canvas.width - padX, y + index * Math.round(size * 1.25));
+  });
+  context.restore();
+}
+
 function paintReadout(
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
@@ -244,6 +277,7 @@ function paintReadout(
   context.fillStyle = 'rgba(255,247,237,0.88)';
   context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.restore();
+  paintCornerNotes(context, canvas);
 }
 
 function evenSize(value: number): number {
