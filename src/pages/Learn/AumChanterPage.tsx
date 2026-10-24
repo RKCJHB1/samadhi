@@ -209,6 +209,7 @@ const AumChanterPage = () => {
     videoUrl,
     sessionCount: videoSessionCount,
     canShare,
+    notice: videoNotice,
     setCanvasNode,
     syncFrame,
     noteChant,
@@ -539,8 +540,14 @@ const AumChanterPage = () => {
   }, []);
 
   useEffect(() => {
-    syncFrame({ chantName: currentChant.name });
-  }, [currentChant.name, syncFrame]);
+    syncFrame({
+      chantName: currentChant.name,
+      symbol: currentChant.symbol,
+      imageSrc: currentChant.imageSrc,
+      audioSrc: currentChant.audioSrc,
+      imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
+    });
+  }, [currentChant, syncFrame]);
 
   useEffect(() => {
     if (videoPhase === 'ready') setIsVideoVisible(true);
@@ -882,12 +889,15 @@ const AumChanterPage = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" />
                 </svg>
-                {videoPhase === 'starting' ? 'Starting camera…' : videoPhase === 'recording' ? 'Recording…' : 'Record video'}
+                {videoPhase === 'starting' ? 'Starting…' : videoPhase === 'recording' ? 'Recording…' : 'Record video'}
               </button>
             )}
           </div>
           {videoError && videoPhase !== 'ready' && (
             <p className="max-w-md text-center text-sm text-red-200" role="alert">{videoError}</p>
+          )}
+          {videoNotice && videoPhase !== 'idle' && (
+            <p className="max-w-md text-center text-sm text-amber-100/90" role="status">{videoNotice}</p>
           )}
 
           {/* Social Sharing */}
@@ -1031,6 +1041,9 @@ const AumChanterPage = () => {
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
                   Download it, or share the file. Nothing is uploaded.
                 </p>
+                {videoNotice && (
+                  <p className="text-sm text-amber-100/90" role="status">{videoNotice}</p>
+                )}
                 {videoError && (
                   <p className="rounded-lg border border-red-400/30 bg-red-950/40 px-3 py-2 text-sm text-red-100" role="alert">
                     {videoError}
