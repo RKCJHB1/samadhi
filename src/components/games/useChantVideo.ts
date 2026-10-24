@@ -177,6 +177,75 @@ async function openCamera(): Promise<MediaStream | null> {
   return null;
 }
 
+type ReadoutLayout = {
+  titleSize: number;
+  nameSize: number;
+  countSize: number;
+  labelSize: number;
+  titleY: number;
+  nameY: number;
+  countY: number;
+  labelY: number;
+  radius: number;
+  cy: number;
+};
+
+// WhatsApp center-crops a portrait video and covers the lower edge, so the
+// count stays in the middle band instead of on the bottom of the frame.
+function readoutLayout(width: number, height: number): ReadoutLayout {
+  const shortSide = Math.min(width, height);
+  const labelSize = Math.max(18, Math.round(shortSide * 0.04));
+  const countSize = Math.max(48, Math.round(shortSide * 0.12));
+  const nameSize = Math.max(22, Math.round(shortSide * 0.05));
+  const titleSize = Math.max(18, Math.round(shortSide * 0.038));
+  const labelY = Math.round(height * 0.66);
+  const countY = labelY - labelSize - Math.round(shortSide * 0.02);
+  const nameY = countY - Math.round(countSize * 1.05);
+  const titleY = Math.round(height * 0.24);
+  const gap = Math.round(shortSide * 0.06);
+  let radius = Math.round(Math.min(width, shortSide) * 0.24);
+  let cy = nameY - gap - radius;
+  const minCircleTop = titleY + titleSize + Math.round(shortSide * 0.03);
+  if (cy - radius < minCircleTop) {
+    radius = Math.max(48, Math.floor((nameY - gap - minCircleTop) / 2));
+    cy = minCircleTop + radius;
+  }
+  return { titleSize, nameSize, countSize, labelSize, titleY, nameY, countY, labelY, radius, cy };
+}
+
+function paintReadout(
+  context: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  chantName: string,
+  chants: number,
+) {
+  const layout = readoutLayout(canvas.width, canvas.height);
+  context.save();
+  context.textAlign = 'center';
+  context.textBaseline = 'alphabetic';
+  context.shadowColor = 'rgba(0,0,0,0.7)';
+  context.shadowBlur = 12;
+  context.shadowOffsetY = 2;
+  context.fillStyle = 'rgba(251, 191, 36, 0.95)';
+  context.font = `600 ${layout.titleSize}px ${CANVAS_FONT}`;
+  context.fillText('AUM CHANTER', canvas.width / 2, layout.titleY);
+  let nameSize = layout.nameSize;
+  context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
+  while (nameSize > 18 && context.measureText(chantName).width > canvas.width - 80) {
+    nameSize -= 2;
+    context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
+  }
+  context.fillStyle = '#fff7ed';
+  context.fillText(chantName, canvas.width / 2, layout.nameY);
+  context.fillStyle = '#ffffff';
+  context.font = `700 ${layout.countSize}px ${CANVAS_FONT}`;
+  context.fillText(chants.toLocaleString(), canvas.width / 2, layout.countY);
+  context.font = `500 ${layout.labelSize}px ${CANVAS_FONT}`;
+  context.fillStyle = 'rgba(255,247,237,0.88)';
+  context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
+  context.restore();
+}
+
 function evenSize(value: number): number {
   const even = Math.max(2, Math.round(value));
   return even - (even % 2);
@@ -216,6 +285,8 @@ export function useChantVideo() {
   const chantDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
   const chantBufferRef = useRef<AudioBuffer | null>(null);
   const chantSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const loadedAudioSrcRef = useRef('');
+  const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
 
   phaseRef.current = phase;
 
@@ -241,6 +312,9 @@ export function useChantVideo() {
     chantSourcesRef.current = [];
     chantBufferRef.current = null;
     chantDestRef.current = null;
+    loadedAudioSrcRef.current = '';
+    micSourceRef.current?.disconnect();
+    micSourceRef.current = null;
     const context = audioContextRef.current;
     audioContextRef.current = null;
     if (context && context.state !== 'closed') {
@@ -311,9 +385,25 @@ export function useChantVideo() {
     frameRef.current = frame;
   }, []);
 
+  const queueChantBuffer = useCallback(() => {
+    const context = audioContextRef.current;
+    const src = frameRef.current.audioSrc;
+    if (!context || !src || loadedAudioSrcRef.current === src) return;
+    loadedAudioSrcRef.current = src;
+    chantBufferRef.current = null;
+    const runAtRequest = runRef.current;
+    void loadChantBuffer(src, context).then((buffer) => {
+      if (runAtRequest !== runRef.current) return;
+      if (audioContextRef.current !== context) return;
+      if (frameRef.current.audioSrc !== src) return;
+      chantBufferRef.current = buffer;
+    });
+  }, []);
+
   const noteChant = useCallback(() => {
     if (phaseRef.current !== 'recording') return;
     sessionCountRef.current += 1;
+    queueChantBuffer();
     const context = audioContextRef.current;
     const destination = chantDestRef.current;
     const buffer = chantBufferRef.current;
@@ -331,7 +421,7 @@ export function useChantVideo() {
     } catch {
       // The context closed between the tap and playback.
     }
-  }, []);
+  }, [queueChantBuffer]);
 
   const setCanvasNode = useCallback((node: HTMLCanvasElement | null) => {
     canvasRef.current = node;
@@ -378,20 +468,27 @@ export function useChantVideo() {
 
       let sourceVideo: HTMLVideoElement | null = null;
       if (stream) {
-        abandon(null);
         streamRef.current = stream;
         setNotice(null);
       } else {
         setNotice(NO_CAMERA_NOTICE);
-        if (audioContextRef.current) {
-          chantDestRef.current = audioContextRef.current.createMediaStreamDestination();
-          const src = frameRef.current.audioSrc;
-          if (src) {
-            void loadChantBuffer(src, audioContextRef.current).then((buffer) => {
-              if (runId === runRef.current) chantBufferRef.current = buffer;
-            });
+      }
+      // The microphone's echo cancellation strips the chant playing from the phone
+      // speaker, so mix that chant's own audio into the recording.
+      if (audioContextRef.current) {
+        const destination = audioContextRef.current.createMediaStreamDestination();
+        chantDestRef.current = destination;
+        const micTrack = stream?.getAudioTracks()[0];
+        if (micTrack) {
+          try {
+            const micSource = audioContextRef.current.createMediaStreamSource(new MediaStream([micTrack]));
+            micSource.connect(destination);
+            micSourceRef.current = micSource;
+          } catch {
+            // The recorder falls back to the microphone track below.
           }
         }
+        queueChantBuffer();
       }
 
       setPhase('recording');
@@ -488,41 +585,12 @@ export function useChantVideo() {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         context.restore();
 
-        const scrim = context.createLinearGradient(0, canvas.height * 0.62, 0, canvas.height);
+        const scrim = context.createLinearGradient(0, canvas.height * 0.4, 0, canvas.height * 0.76);
         scrim.addColorStop(0, 'rgba(0,0,0,0)');
         scrim.addColorStop(1, 'rgba(0,0,0,0.72)');
         context.fillStyle = scrim;
-        context.fillRect(0, canvas.height * 0.58, canvas.width, canvas.height * 0.42);
-
-        const chantName = frameRef.current.chantName || 'Om';
-        const chants = sessionCountRef.current;
-        const shortSide = Math.min(canvas.width, canvas.height);
-        const titleSize = Math.max(16, Math.round(shortSide * 0.055));
-        const nameSize = Math.max(20, Math.round(shortSide * 0.07));
-        const countSize = Math.max(32, Math.round(shortSide * 0.14));
-        const labelSize = Math.max(14, Math.round(shortSide * 0.04));
-        const labelY = canvas.height - Math.round(shortSide * 0.07);
-        const countY = labelY - labelSize - Math.round(shortSide * 0.02);
-        const nameY = countY - Math.round(countSize * 0.92);
-        context.save();
-        context.textAlign = 'center';
-        context.textBaseline = 'alphabetic';
-        context.shadowColor = 'rgba(0,0,0,0.7)';
-        context.shadowBlur = 12;
-        context.shadowOffsetY = 2;
-        context.fillStyle = 'rgba(251, 191, 36, 0.95)';
-        context.font = `600 ${titleSize}px ${CANVAS_FONT}`;
-        context.fillText('AUM CHANTER', canvas.width / 2, Math.round(shortSide * 0.12));
-        context.fillStyle = '#fff7ed';
-        context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
-        context.fillText(chantName, canvas.width / 2, nameY);
-        context.fillStyle = '#ffffff';
-        context.font = `700 ${countSize}px ${CANVAS_FONT}`;
-        context.fillText(chants.toLocaleString(), canvas.width / 2, countY);
-        context.font = `500 ${labelSize}px ${CANVAS_FONT}`;
-        context.fillStyle = 'rgba(255,247,237,0.88)';
-        context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, labelY);
-        context.restore();
+        context.fillRect(0, canvas.height * 0.4, canvas.width, canvas.height * 0.38);
+        paintReadout(context, canvas, frameRef.current.chantName || 'Om', sessionCountRef.current);
       };
 
       const drawCard = () => {
@@ -535,8 +603,9 @@ export function useChantVideo() {
         const width = canvas.width;
         const height = canvas.height;
         const cx = width / 2;
-        const cy = height * 0.4;
-        const radius = Math.round(Math.min(width, height) * 0.3);
+        const readout = readoutLayout(width, height);
+        const radius = readout.radius;
+        const cy = readout.cy;
         const breathe = 0.5 + 0.5 * Math.sin(performance.now() / 700);
 
         context.clearRect(0, 0, width, height);
@@ -589,35 +658,12 @@ export function useChantVideo() {
           context.stroke();
         }
 
-        const chantName = frameRef.current.chantName || 'Om';
-        context.save();
-        context.textAlign = 'center';
-        context.textBaseline = 'alphabetic';
-        context.shadowColor = 'rgba(0,0,0,0.7)';
-        context.shadowBlur = 12;
-        context.shadowOffsetY = 2;
-        context.fillStyle = 'rgba(251, 191, 36, 0.95)';
-        context.font = `600 36px ${CANVAS_FONT}`;
-        context.fillText('AUM CHANTER', cx, 120);
-        let nameSize = 54;
-        context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
-        while (nameSize > 24 && context.measureText(chantName).width > width - 80) {
-          nameSize -= 2;
-          context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
-        }
-        context.fillStyle = '#fff7ed';
-        context.fillText(chantName, cx, cy + radius + 110);
-        context.fillStyle = '#ffffff';
-        context.font = `700 120px ${CANVAS_FONT}`;
-        context.fillText(chants.toLocaleString(), cx, cy + radius + 250);
-        context.font = `500 32px ${CANVAS_FONT}`;
-        context.fillStyle = 'rgba(255,247,237,0.88)';
-        context.fillText(chants === 1 ? 'chant' : 'chants', cx, cy + radius + 310);
-        context.restore();
+        paintReadout(context, canvas, frameRef.current.chantName || 'Om', chants);
       };
 
       const draw = () => {
         if (!drawingRef.current || runId !== runRef.current) return;
+        queueChantBuffer();
         if (sourceVideo) drawCamera(sourceVideo);
         else drawCard();
         rafRef.current = requestAnimationFrame(draw);
@@ -626,9 +672,8 @@ export function useChantVideo() {
 
       const mimeType = preferredVideoMime();
       const canvasStream = canvas.captureStream(30);
-      const audioTracks = stream
-        ? stream.getAudioTracks()
-        : chantDestRef.current?.stream.getAudioTracks() ?? [];
+      const mixedAudio = chantDestRef.current?.stream.getAudioTracks() ?? [];
+      const audioTracks = mixedAudio.length > 0 ? mixedAudio : (stream?.getAudioTracks() ?? []);
       const mixed = new MediaStream([
         ...canvasStream.getVideoTracks(),
         ...audioTracks,
@@ -706,7 +751,7 @@ export function useChantVideo() {
       setPhase('idle');
       if (message) setError(message);
     }
-  }, [clearTimers, closeChantAudio, releasePlayback, stopRecording, stopTracks]);
+  }, [clearTimers, closeChantAudio, queueChantBuffer, releasePlayback, stopRecording, stopTracks]);
 
   const downloadVideo = useCallback(() => {
     if (!playbackUrlRef.current) return;
