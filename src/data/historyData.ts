@@ -1965,6 +1965,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/24thOctober.png"
   },
   {
+    date: "October 25",
+    monthNumeric: 9,
+    dayNumeric: 25,
+    year: 1892,
+    headline: "October 25 — Swami Vivekananda Initiates Haripada Mitra",
+    narrativeParagraph1: "On October 25, 1892, while staying at **Belgaum** (now Belagavi), Swami Vivekananda initiated his host, **Haripada Mitra**, a sub-divisional forest officer, and Mitra’s wife, **Indumati Mitra**.",
+    narrativeParagraph2: "Mitra himself recorded the date in his reminiscences, describing how he had persistently requested Swamiji to accept them as disciples. The initiation became an important event in the spiritual life of this householder couple.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda initiating Haripada Mitra at Belgaum on 25 October 1892, his hand resting on Mitra’s head, while Indumati Mitra kneels beside her husband with folded hands.",
+    customImage: "/images/on-this-day/25thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
