@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
+import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
   const today = new Date();
@@ -200,6 +202,25 @@ const AumChanterPage = () => {
 
   const count = countsByChant[currentChant.id] || 0;
   const dailyGoal = goalsByChant[currentChant.id] ?? null;
+  const {
+    phase: videoPhase,
+    elapsedMs: videoElapsedMs,
+    error: videoError,
+    videoUrl,
+    sessionCount: videoSessionCount,
+    canShare,
+    setCanvasNode,
+    syncFrame,
+    noteChant,
+    startRecording,
+    stopRecording,
+    discardVideo,
+    downloadVideo,
+    shareVideo,
+  } = useChantVideo();
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const noteChantRef = useRef(noteChant);
+  noteChantRef.current = noteChant;
 
   const createChantAudio = useCallback((src: string) => {
     const audio = new Audio(src);
@@ -411,6 +432,7 @@ const AumChanterPage = () => {
       }
     }, 2000);
 
+    noteChantRef.current();
     setIsChanted(true);
     setTimeout(() => setIsChanted(false), 150);
 
@@ -515,6 +537,23 @@ const AumChanterPage = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    syncFrame({ chantName: currentChant.name });
+  }, [currentChant.name, syncFrame]);
+
+  useEffect(() => {
+    if (videoPhase === 'ready') setIsVideoVisible(true);
+  }, [videoPhase, videoUrl]);
+
+  useEffect(() => {
+    if (!isVideoVisible) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsVideoVisible(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isVideoVisible]);
 
   useEffect(() => {
     if (chantEffects.some(effect => !effect.active)) {
@@ -782,8 +821,26 @@ const AumChanterPage = () => {
             </details>
           </div>
 
-          {/* Auto Chant Button */}
-          <div className="w-full flex justify-center mt-2">
+          {videoPhase === 'recording' && createPortal(
+            <div className="fixed bottom-36 right-3 z-[70] flex w-24 flex-col gap-2 sm:bottom-6 sm:left-6 sm:right-auto sm:w-36">
+              <canvas
+                ref={setCanvasNode}
+                className="block h-28 w-full rounded-xl border border-white/20 bg-black object-cover shadow-2xl sm:h-36"
+              />
+              <button
+                type="button"
+                onClick={stopRecording}
+                className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-sans text-white shadow-lg"
+                aria-label="Stop video recording"
+              >
+                <span className="h-2.5 w-2.5 rounded-full bg-white" />
+                {formatRecordingTime(videoElapsedMs)}
+              </button>
+            </div>,
+            document.body
+          )}
+
+          <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting ? (
               <button
                 onClick={stopAutoChant}
@@ -805,7 +862,33 @@ const AumChanterPage = () => {
                 Auto Chant
               </button>
             )}
+            {videoPhase === 'recording' ? null : videoPhase === 'ready' ? (
+              <button
+                type="button"
+                onClick={() => setIsVideoVisible(true)}
+                className="flex items-center gap-2 rounded-lg bg-amber-700/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-amber-700"
+                aria-label="View the recorded video"
+              >
+                Your video
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { void startRecording(); }}
+                disabled={videoPhase === 'starting' || videoPhase === 'recording'}
+                className="flex items-center gap-2 rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-slate-700 disabled:opacity-60"
+                aria-label={`Record a ${currentChant.name} video to share`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" />
+                </svg>
+                {videoPhase === 'starting' ? 'Starting camera…' : videoPhase === 'recording' ? 'Recording…' : 'Record video'}
+              </button>
+            )}
           </div>
+          {videoError && videoPhase !== 'ready' && (
+            <p className="max-w-md text-center text-sm text-red-200" role="alert">{videoError}</p>
+          )}
 
           {/* Social Sharing */}
           <div className="w-full flex justify-center mt-1">
@@ -918,6 +1001,73 @@ const AumChanterPage = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {isVideoVisible && videoUrl && createPortal(
+          <div
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+            onClick={() => setIsVideoVisible(false)}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="chant-video-title"
+              className="flex max-h-[90vh] w-11/12 max-w-md flex-col rounded-lg border border-spiritual-400/20 bg-slate-800/80 shadow-2xl"
+              onClick={event => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-spiritual-400/20 p-4">
+                <h2 id="chant-video-title" className="font-sans text-xl text-spiritual-200">Your video</h2>
+                <button onClick={() => setIsVideoVisible(false)} className="text-2xl leading-none text-spiritual-300/60 hover:text-spiritual-200" aria-label="Close video">&times;</button>
+              </div>
+              <div className="space-y-4 overflow-y-auto p-4">
+                <video
+                  key={videoUrl}
+                  src={videoUrl}
+                  controls
+                  playsInline
+                  className="max-h-[50vh] w-full rounded-lg bg-black"
+                />
+                <p className="text-sm text-spiritual-300/90">
+                  {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
+                  Download it, or share the file. Nothing is uploaded.
+                </p>
+                {videoError && (
+                  <p className="rounded-lg border border-red-400/30 bg-red-950/40 px-3 py-2 text-sm text-red-100" role="alert">
+                    {videoError}
+                  </p>
+                )}
+                <div className="flex flex-wrap justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      discardVideo();
+                      setIsVideoVisible(false);
+                    }}
+                    className="rounded bg-slate-700/50 px-4 py-2 text-sm font-sans text-spiritual-200/80 hover:bg-slate-700"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    type="button"
+                    onClick={downloadVideo}
+                    className="rounded bg-slate-700/80 px-4 py-2 text-sm font-sans text-white hover:bg-slate-700"
+                  >
+                    Download
+                  </button>
+                  {canShare && (
+                    <button
+                      type="button"
+                      onClick={() => { void shareVideo(); }}
+                      className="rounded bg-spiritual-600/80 px-4 py-2 text-sm font-sans text-white hover:bg-spiritual-600"
+                    >
+                      Share
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
         )}
       </main>
     </PageLayout>
