@@ -10,7 +10,7 @@ export type ChantGroup = {
   total: number;
 };
 
-const CODE_ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
+const GROUP_SLUG = /^[A-Za-z0-9][A-Za-z0-9_]{0,38}[A-Za-z0-9]$/;
 const MAX_ADD = 500;
 const ready = new Map<string, Promise<void>>();
 
@@ -22,6 +22,18 @@ export function cleanLabel(value: unknown, maxLength: number): string {
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, maxLength);
+}
+
+export function groupSlug(value: unknown): string {
+  const cleaned = String(value ?? '')
+    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .trim()
+    .replace(/[\s-]+/g, '_')
+    .replace(/[^A-Za-z0-9_]/g, '')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 40);
+  return GROUP_SLUG.test(cleaned) ? cleaned : '';
 }
 
 export function tursoHost(url: string): string {
@@ -99,7 +111,7 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
 function rowToGroup(row: unknown[]): ChantGroup | null {
   if (!row || row.length < 4) return null;
   const code = cellText(row[0]);
-  if (!/^[a-z0-9]{6,12}$/.test(code)) return null;
+  if (!GROUP_SLUG.test(code)) return null;
   return {
     code,
     name: cellText(row[1]),
@@ -108,16 +120,10 @@ function rowToGroup(row: unknown[]): ChantGroup | null {
   };
 }
 
-function newCode(): string {
-  const bytes = new Uint8Array(8);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes, (byte) => CODE_ALPHABET[byte % CODE_ALPHABET.length]).join('');
-}
-
 async function readGroup(env: ChantDbEnv, code: string): Promise<ChantGroup | null> {
   const rows = await execute(
     env,
-    'SELECT code, name, chant_name, total FROM chant_groups WHERE code = ?',
+    'SELECT code, name, chant_name, total FROM chant_groups WHERE code = ? COLLATE NOCASE',
     [code],
   );
   return rowToGroup(rows[0]);
@@ -144,29 +150,33 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
           return json({ error: 'That group could not be saved.' }, 400);
         }
       }
-      const name = cleanLabel(body.name, 60) || 'Our chanting group';
+      const slug = groupSlug(body.name);
+      if (!slug) return json({ error: 'Use a group name such as Mistri Family.' }, 400);
       const chantName = cleanLabel(body.chantName, 40) || 'Om';
-      for (let attempt = 0; attempt < 5; attempt += 1) {
-        const nextCode = newCode();
-        try {
-          await execute(
-            env,
-            'INSERT INTO chant_groups (code, name, chant_name, total) VALUES (?, ?, ?, 0)',
-            [nextCode, name, chantName],
-          );
-        } catch {
-          continue;
-        }
-        const created = await readGroup(env, nextCode);
-        if (created) return json(created, 201);
+      const existing = await readGroup(env, slug);
+      if (existing) return json(existing);
+      const name = cleanLabel(body.name, 60).replace(/_/g, ' ').replace(/\s+/g, ' ').trim() || slug.replace(/_/g, ' ');
+      try {
+        await execute(
+          env,
+          'INSERT INTO chant_groups (code, name, chant_name, total) VALUES (?, ?, ?, 0)',
+          [slug, name, chantName],
+        );
+      } catch {
+        const raced = await readGroup(env, slug);
+        if (raced) return json(raced);
+        return json({ error: 'That group could not be saved.' }, 500);
       }
-      return json({ error: 'That group could not be saved.' }, 500);
+      const created = await readGroup(env, slug);
+      if (!created) return json({ error: 'That group could not be saved.' }, 500);
+      return json(created, 201);
     }
 
-    if (!/^[a-z0-9]{6,12}$/.test(code)) return json({ error: 'This group link was not found.' }, 404);
+    const slug = groupSlug(decodeURIComponent(code));
+    if (!slug) return json({ error: 'This group link was not found.' }, 404);
 
     if (request.method === 'GET' && rest.length === 1) {
-      const group = await readGroup(env, code);
+      const group = await readGroup(env, slug);
       if (!group) return json({ error: 'This group link was not found.' }, 404);
       return json(group);
     }
@@ -183,10 +193,12 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       if (!Number.isFinite(count) || count < 1 || count > MAX_ADD) {
         return json({ error: 'Those chants could not be added.' }, 400);
       }
+      const current = await readGroup(env, slug);
+      if (!current) return json({ error: 'This group link was not found.' }, 404);
       const rows = await execute(
         env,
         'UPDATE chant_groups SET total = total + ? WHERE code = ? RETURNING code, name, chant_name, total',
-        [count, code],
+        [count, current.code],
       );
       const group = rowToGroup(rows[0]);
       if (!group) return json({ error: 'This group link was not found.' }, 404);

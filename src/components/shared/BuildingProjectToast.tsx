@@ -5,14 +5,14 @@ import { ToastAction } from '@/components/ui/toast';
 
 const SILENCE_KEY = 'rkcjhb-building-project-toast';
 const PROJECT_PATH = '/new-ashram-project';
-const CHANTER_PATH = '/learn/games/aum-chanter';
+const CHANTER_PATHS = ['/learn/games/aum-chanter', '/chant'];
 
 let lastShownAt = 0;
 let toastIsOpen = false;
 let dismissOpenToast = () => {};
 
 const isChanterPath = (pathname: string) =>
-  pathname === CHANTER_PATH || pathname.startsWith(`${CHANTER_PATH}/`);
+  CHANTER_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
 
 const isSilenced = () => {
   try {

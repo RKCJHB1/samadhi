@@ -218,6 +218,7 @@ const App = () => (
               <Route path="/learn/submit" element={<SubmitQuestionPage />} />
               <Route path="/learn/games" element={<GamesPage />} />
               <Route path="/learn/games/aum-chanter" element={<AumChanterPage />} />
+              <Route path="/chant" element={<AumChanterPage />} />
               <Route path="/learn/games/guess-picture" element={<Suspense fallback={<PageLoader />}><GuessThePicturePage /></Suspense>} />
               <Route path="/learn/games/wordle" element={<Suspense fallback={<PageLoader />}><MastersWordsGamePage /></Suspense>} />
               <Route path="/learn/games/quotes" element={<Suspense fallback={<PageLoader />}><QuotesPage /></Suspense>} />

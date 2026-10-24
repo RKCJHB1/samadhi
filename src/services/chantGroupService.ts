@@ -21,21 +21,29 @@ export function chantSiteOrigin(): string {
   return SITE_ORIGIN;
 }
 
-export function chantGroupUrl(code: string): string {
-  return `${chantSiteOrigin()}/learn/games/aum-chanter?group=${encodeURIComponent(code)}`;
+const GROUP_SLUG = /^[A-Za-z0-9][A-Za-z0-9_]{0,38}[A-Za-z0-9]$/;
+
+export function groupSlug(value: string): string {
+  const cleaned = value
+    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .trim()
+    .replace(/[\s-]+/g, '_')
+    .replace(/[^A-Za-z0-9_]/g, '')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 40);
+  return GROUP_SLUG.test(cleaned) ? cleaned : '';
 }
 
-export function defaultGroupName(personName: string): string {
-  const name = personName.replace(/\s+/g, ' ').trim();
-  if (!name) return 'Our chanting group';
-  return `${name}'s group`.slice(0, 60);
+export function chantGroupUrl(code: string): string {
+  return `${chantSiteOrigin()}/chant?group=${encodeURIComponent(code)}`;
 }
 
 export function buildGroupShare(name: string, chantName: string, code: string) {
   const groupName = name.trim() || 'our group';
   const chant = chantName.trim() || 'Om';
   const url = chantGroupUrl(code);
-  const whatsappText = `🙏 Please join ${groupName} in chanting ${chant}.\n\nEvery chant you make from this link is added to our group total. We are also chanting for the new temple.`;
+  const whatsappText = `🙏 Please join the ${groupName} chant.\n\nEvery chant you make from this link is added to the ${groupName} total. We are also chanting for the new temple.`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,

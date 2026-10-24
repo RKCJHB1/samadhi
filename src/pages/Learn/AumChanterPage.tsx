@@ -4,7 +4,7 @@ import PageLayout from '../../components/layout/PageLayout';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
-import { addToChantGroup, buildGroupShare, createChantGroup, defaultGroupName, fetchChantGroup, type ChantGroup } from '../../services/chantGroupService';
+import { addToChantGroup, buildGroupShare, createChantGroup, fetchChantGroup, groupSlug, type ChantGroup } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -21,7 +21,6 @@ const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
-const MAX_GROUP_SIZE = 20;
 const LAST_GLOBAL_KEY = 'aumChanterLastGlobal';
 
 const readLastGlobal = (): number => {
@@ -288,17 +287,6 @@ const AumChanterPage = () => {
       return '';
     }
   });
-  const [groupSize, setGroupSize] = useState(() => {
-    try {
-      const saved = Number(localStorage.getItem('aumChanterGroupSize'));
-      if (Number.isInteger(saved) && saved >= 1 && saved <= MAX_GROUP_SIZE) return saved;
-    } catch {
-      // Private browsing can block storage.
-    }
-    return 1;
-  });
-  const groupSizeRef = useRef(groupSize);
-  groupSizeRef.current = groupSize;
   const [groupNameDraft, setGroupNameDraft] = useState(() => {
     try {
       return localStorage.getItem('aumChanterGroupTitle') ?? '';
@@ -319,8 +307,6 @@ const AumChanterPage = () => {
   const groupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
   const chantNameRef = useRef('Om');
-  const chanterNameRef = useRef(chanterName);
-  chanterNameRef.current = chanterName;
   chantNameRef.current = currentChant.name;
 
   const adoptGroup = useCallback((group: ChantGroup) => {
@@ -331,9 +317,7 @@ const AumChanterPage = () => {
     setGroupTitle(group.name);
     setGroupTotal(group.total + pendingGroupRef.current);
     setGroupNotice('');
-    const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.set('group', group.code);
-    window.history.replaceState({}, '', `${nextUrl.pathname}${nextUrl.search}`);
+    window.history.replaceState({}, '', `/chant?group=${encodeURIComponent(group.code)}`);
   }, []);
 
   const ensureChantGroup = useCallback(async (): Promise<ChantGroup | null> => {
@@ -345,45 +329,59 @@ const AumChanterPage = () => {
         total: confirmedGroupRef.current,
       };
     }
-    if (!createGroupRef.current) {
-      const name = groupNameDraftRef.current.trim() || defaultGroupName(chanterNameRef.current);
-      const chantName = chantNameRef.current;
-      createGroupRef.current = createChantGroup(name, chantName)
-        .then((group) => {
-          adoptGroup(group);
-          return group;
-        })
-        .catch((error: unknown) => {
-          setGroupNotice(error instanceof Error && error.message === 'offline'
-            ? 'Group links are not connected on this site yet.'
-            : 'The group link could not be saved, so it was not shared.');
-          return null;
-        })
-        .finally(() => {
-          createGroupRef.current = null;
-        });
+    if (createGroupRef.current) return createGroupRef.current;
+
+    const fromUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '');
+    const typed = groupNameDraftRef.current.trim();
+    const raw = fromUrl || typed;
+    if (!raw) {
+      setGroupNotice('Type a group name, such as Mistri Family.');
+      return null;
     }
+    const slug = groupSlug(raw);
+    if (!slug) {
+      setGroupNotice('Use letters and numbers for the group name.');
+      return null;
+    }
+    const chantName = chantNameRef.current;
+    const label = fromUrl ? slug.replace(/_/g, ' ') : typed;
+    createGroupRef.current = fetchChantGroup(slug)
+      .then((found) => found ?? createChantGroup(label, chantName))
+      .then((group) => {
+        adoptGroup(group);
+        return group;
+      })
+      .catch((error: unknown) => {
+        const offline = error instanceof Error && error.message === 'offline';
+        setGroupNotice(offline
+          ? 'Group links are not connected on this site yet.'
+          : fromUrl
+            ? 'The group total could not be loaded.'
+            : 'The group link could not be saved, so it was not shared.');
+        return null;
+      })
+      .finally(() => {
+        createGroupRef.current = null;
+      });
     return createGroupRef.current;
   }, [adoptGroup]);
 
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get('group') ?? '';
-    if (!/^[a-z0-9]{6,12}$/.test(code)) return;
+    const raw = new URLSearchParams(window.location.search).get('group');
+    if (raw == null || raw.trim() === '') return;
+    const slug = groupSlug(raw);
+    if (!slug) {
+      setGroupNotice('Use letters and numbers for the group name.');
+      return;
+    }
     let cancelled = false;
-    void fetchChantGroup(code).then((group) => {
+    void ensureChantGroup().then(() => {
       if (cancelled) return;
-      if (!group) {
-        setGroupNotice('This group link was not found.');
-        return;
-      }
-      adoptGroup(group);
-    }).catch(() => {
-      if (!cancelled) setGroupNotice('The group total could not be loaded.');
     });
     return () => {
       cancelled = true;
     };
-  }, [adoptGroup]);
+  }, [ensureChantGroup]);
 
   useEffect(() => {
     if (!groupCode) return;
@@ -587,14 +585,12 @@ const AumChanterPage = () => {
       return newHistory;
     });
 
-    // One tap is one chant for the person holding the phone. A group adds
-    // one worldwide chant for each person sharing that tap.
-    const added = Math.min(MAX_GROUP_SIZE, Math.max(1, Math.round(groupSizeRef.current) || 1));
-    unconfirmedGlobalRef.current += added;
+    // One tap is one chant on this phone, in the worldwide total, and in the named group.
+    unconfirmedGlobalRef.current += 1;
     setGlobalChants(serverGlobalRef.current + unconfirmedGlobalRef.current);
 
     if (groupCodeRef.current) {
-      pendingGroupRef.current += added;
+      pendingGroupRef.current += 1;
       setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
       if (groupTimerRef.current) clearTimeout(groupTimerRef.current);
       groupTimerRef.current = setTimeout(() => {
@@ -623,7 +619,7 @@ const AumChanterPage = () => {
       localStorage.setItem('userId', userId);
     }
 
-    pendingChantsRef.current += added;
+    pendingChantsRef.current += 1;
 
     // Clear existing timer
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
@@ -783,12 +779,11 @@ const AumChanterPage = () => {
       imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
       personName: chanterName,
       globalChants,
-      groupSize,
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
       shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode).videoText : '',
     });
-  }, [chanterName, currentChant, globalChants, groupCode, groupSize, groupTitle, groupTotal, syncFrame]);
+  }, [chanterName, currentChant, globalChants, groupCode, groupTitle, groupTotal, syncFrame]);
 
   useEffect(() => {
     try {
@@ -797,14 +792,6 @@ const AumChanterPage = () => {
       // Private browsing can block storage. The name still shows for this visit.
     }
   }, [chanterName]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('aumChanterGroupSize', String(groupSize));
-    } catch {
-      // Private browsing can block storage. The group size still applies for this visit.
-    }
-  }, [groupSize]);
 
   useEffect(() => {
     if (videoPhase === 'ready') setIsVideoVisible(true);
@@ -1153,39 +1140,9 @@ const AumChanterPage = () => {
           </label>
 
           <div className="mt-3 flex w-full max-w-sm flex-col items-center gap-2 text-sm text-spiritual-200/80">
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <span id="group-chant-label">People chanting together</span>
-              <button
-                type="button"
-                aria-label="Fewer people"
-                disabled={groupSize <= 1}
-                onClick={() => setGroupSize((size) => Math.max(1, size - 1))}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-spiritual-400/30 bg-slate-900/50 text-lg leading-none text-white disabled:opacity-40"
-              >
-                −
-              </button>
-              <span id="group-size-value" className="min-w-[1.5rem] text-center font-mono text-base text-white" aria-live="polite">
-                {groupSize}
-              </span>
-              <button
-                type="button"
-                aria-label="More people"
-                disabled={groupSize >= MAX_GROUP_SIZE}
-                onClick={() => setGroupSize((size) => Math.min(MAX_GROUP_SIZE, size + 1))}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-spiritual-400/30 bg-slate-900/50 text-lg leading-none text-white disabled:opacity-40"
-              >
-                +
-              </button>
-            </div>
-            <p className="text-center text-xs text-spiritual-300/60">
-              Each tap adds 1 to your mala and {groupSize} to {groupCode ? 'this group and ' : ''}the worldwide total.
-            </p>
-          </div>
-
-          <div className="mt-3 flex w-full max-w-sm flex-col items-center gap-2 text-sm text-spiritual-200/80">
             {groupCode ? (
               <p className="text-center text-xs text-spiritual-300/70">
-                {groupTitle}. Anyone who opens the share link and chants is added to this group.
+                {groupTitle}. Each tap from this link adds one chant to the {groupTitle} total.
               </p>
             ) : (
               <>
@@ -1196,7 +1153,7 @@ const AumChanterPage = () => {
                     type="text"
                     value={groupNameDraft}
                     maxLength={60}
-                    placeholder="Evening Aum"
+                    placeholder="Mistri Family"
                     onChange={(event) => setGroupNameDraft(event.target.value)}
                     className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-white"
                   />
@@ -1210,7 +1167,7 @@ const AumChanterPage = () => {
                   Start a group link
                 </button>
                 <p className="text-center text-xs text-spiritual-300/60">
-                  Share will also start the link, then open a message for WhatsApp, Facebook, or X.
+                  Each tap adds one chant. Share opens a message with your group link, such as /chant?group=Mistri_Family.
                 </p>
               </>
             )}
@@ -1276,7 +1233,7 @@ const AumChanterPage = () => {
           <div className="w-full flex justify-center mt-1">
             <SocialShareButtons
               url={activeShare?.url}
-              path="/learn/games/aum-chanter"
+              path="/chant"
               title={shareTitle}
               description={shareDescription}
               twitterText={shareTwitterText}

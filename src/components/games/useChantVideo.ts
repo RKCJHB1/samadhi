@@ -13,7 +13,6 @@ export type ChantVideoFrame = {
   imageScale?: number;
   personName?: string;
   globalChants?: number;
-  groupSize?: number;
   groupTitle?: string;
   groupTotal?: number;
   shareText?: string;
@@ -286,13 +285,11 @@ function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasE
   context.restore();
 }
 
-function personLine(personName: string, groupSize: number, groupTitle: string): string {
-  const group = groupSize > 1 ? `group of ${groupSize}` : '';
-  return [personName, groupTitle, group].filter(Boolean).join(' · ');
+function personLine(personName: string, groupTitle: string): string {
+  return [personName, groupTitle].filter(Boolean).join(' · ');
 }
 
 function frameCaption(frame: ChantVideoFrame) {
-  const groupSize = Math.min(20, Math.max(1, Math.round(frame.groupSize || 1)));
   const groupTitle = cleanPersonName(frame.groupTitle).slice(0, 60);
   const groupTotal = Math.max(0, Math.round(frame.groupTotal || 0));
   const globalChants = Math.max(0, Math.round(frame.globalChants || 0));
@@ -300,9 +297,8 @@ function frameCaption(frame: ChantVideoFrame) {
   if (groupTotal > 0) parts.push(`Group ${groupTotal.toLocaleString()}`);
   if (globalChants > 0) parts.push(`Worldwide ${globalChants.toLocaleString()}`);
   return {
-    line: personLine(cleanPersonName(frame.personName), groupSize, groupTitle),
+    line: personLine(cleanPersonName(frame.personName), groupTitle),
     globalChants,
-    groupSize,
     groupTitle,
     groupTotal,
     gold: parts.join(' · '),
@@ -390,7 +386,6 @@ export function useChantVideo() {
     imageScale: 1,
     personName: '',
     globalChants: 0,
-    groupSize: 1,
     groupTitle: '',
     groupTotal: 0,
     shareText: '',
