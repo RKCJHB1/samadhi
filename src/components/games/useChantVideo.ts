@@ -34,15 +34,28 @@ function extensionForMime(mimeType: string): string {
   return mimeType.includes('mp4') ? 'mp4' : 'webm';
 }
 
+function errorName(error: unknown): string {
+  if (error instanceof DOMException) return error.name;
+  if (error && typeof error === 'object' && 'name' in error && typeof (error as { name: unknown }).name === 'string') {
+    return (error as { name: string }).name;
+  }
+  return '';
+}
+
+function isPermissionError(error: unknown): boolean {
+  const name = errorName(error);
+  return name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError';
+}
+
 function recordingErrorMessage(error: unknown): string {
-  const name = error instanceof DOMException ? error.name : '';
+  const name = errorName(error);
   if (name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError') {
-    return 'Camera access is blocked. Allow the camera in the browser, then try again.';
+    return 'Camera access is blocked. Allow the camera for this site in the browser, then try again.';
   }
   if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
-    return 'No camera was found on this device.';
+    return 'No camera was found. On a phone, allow camera access. On a computer, connect a webcam and allow it in the browser.';
   }
-  if (name === 'NotReadableError') {
+  if (name === 'NotReadableError' || name === 'TrackStartError' || name === 'AbortError') {
     return 'The camera is already in use by another app.';
   }
   return 'Could not record a video in this browser.';
@@ -52,25 +65,28 @@ async function openCamera(): Promise<MediaStream> {
   if (!navigator.mediaDevices?.getUserMedia) {
     throw new Error('unsupported');
   }
-  const attempts: MediaStreamConstraints[] = [
-    { video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true },
-    { video: { facingMode: 'user' }, audio: true },
-    { video: true, audio: true },
-    { video: true, audio: false },
-  ];
-  let lastError: unknown;
-  for (const constraints of attempts) {
-    try {
-      return await navigator.mediaDevices.getUserMedia(constraints);
-    } catch (error) {
-      lastError = error;
-      const name = error instanceof DOMException ? error.name : '';
-      if (name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError') {
-        throw error;
-      }
-    }
+
+  // A bare facingMode value is an exact match and rejects many desktop webcams.
+  // ideal prefers the front camera on a phone and still accepts any webcam.
+  const preferredVideo: MediaTrackConstraints = {
+    facingMode: { ideal: 'user' },
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+  };
+
+  try {
+    return await navigator.mediaDevices.getUserMedia({ video: preferredVideo, audio: true });
+  } catch (error) {
+    if (isPermissionError(error)) throw error;
   }
-  throw lastError instanceof Error ? lastError : new Error('Could not open the camera.');
+
+  try {
+    return await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  } catch (error) {
+    if (isPermissionError(error)) throw error;
+  }
+
+  return navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 }
 
 function evenSize(value: number): number {
