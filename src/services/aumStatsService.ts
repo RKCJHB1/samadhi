@@ -35,6 +35,13 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 let supabaseClient = createClient(supabaseUrl, supabaseKey);
 
+// user_chants_log.country is VARCHAR(2). A longer value aborts increment_aum_chants
+// and rolls the worldwide total back, so only a real code is sent.
+function countryCode(country?: string): string | null {
+  const code = (country ?? '').trim().toUpperCase();
+  return /^[A-Z]{2}$/.test(code) ? code : null;
+}
+
 /**
  * Fetch current Aum stats from Supabase
  * Optimized: Single row query, very fast
@@ -78,16 +85,17 @@ export async function getAumStats(): Promise<AumStats | null> {
  */
 export async function recordChant(userId: string, chantCount: number = 1, country?: string): Promise<AumStats | null> {
   try {
+    const safeCountry = countryCode(country);
+
     // Try the atomic RPC first for perfect concurrency
     const { error: rpcError } = await supabaseClient.rpc('increment_aum_chants', {
       increment_by: chantCount,
       p_user_id: userId,
-      p_country: country || 'Local'
+      p_country: safeCountry,
     });
 
     if (!rpcError) {
-      // RPC succeeded! Stats will update via realtime subscription
-      return null;
+      return getAumStats();
     }
 
     console.warn('[AumStats] RPC failed (schema might not be updated), falling back to manual update:', rpcError);
@@ -98,7 +106,7 @@ export async function recordChant(userId: string, chantCount: number = 1, countr
       .insert([{
         user_id: userId,
         chant_count: chantCount,
-        country: country || null,
+        country: safeCountry,
       }]);
 
     if (logError) {
@@ -124,7 +132,7 @@ export async function recordChant(userId: string, chantCount: number = 1, countr
     const newUserChants = userCurrentChants + chantCount;
 
     const countries = currentData.countries || {};
-    const countryKey = country || 'Local';
+    const countryKey = safeCountry || 'Local';
     const countryCurrentCount = countries[countryKey] || 0;
 
     // Update tracking objects

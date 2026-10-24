@@ -20,6 +20,18 @@ const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
+const MAX_GROUP_SIZE = 20;
+const LAST_GLOBAL_KEY = 'aumChanterLastGlobal';
+
+const readLastGlobal = (): number => {
+  try {
+    const value = Number(localStorage.getItem(LAST_GLOBAL_KEY));
+    if (Number.isFinite(value) && value > 0) return Math.round(value);
+  } catch {
+    // Private browsing can block storage.
+  }
+  return 0;
+};
 
 type ChantOption = {
   id: string;
@@ -162,13 +174,16 @@ const AumChanterPage = () => {
   const pendingChantsRef = useRef(0);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Backend stats - will be fetched from Digital Ocean server
-  const [globalChants, setGlobalChants] = useState<number>(0);
+  // Backend stats. The visible worldwide total is the last confirmed server
+  // value plus chants from this visit that have not been confirmed yet.
+  const cachedGlobalRef = useRef(readLastGlobal());
+  const [globalChants, setGlobalChants] = useState<number>(cachedGlobalRef.current);
   const [recordChants, setRecordChants] = useState<number>(0);
   const [avgChantsPerUser, setAvgChantsPerUser] = useState<number>(0);
   const [uniqueUsers, setUniqueUsers] = useState<number>(0);
   const [uniqueCountries, setUniqueCountries] = useState<number>(0);
   const [statsLoading, setStatsLoading] = useState<boolean>(true);
+  const [serverConnected, setServerConnected] = useState(false);
   const statsRef = useRef({
     globalChants: 0,
     recordChants: 0,
@@ -176,6 +191,52 @@ const AumChanterPage = () => {
     uniqueUsers: 0,
     uniqueCountries: 0,
   });
+  const serverGlobalRef = useRef(cachedGlobalRef.current);
+  const unconfirmedGlobalRef = useRef(0);
+  const inflightBatchesRef = useRef<{ id: number; amount: number }[]>([]);
+  const batchSeqRef = useRef(0);
+  const applyServerStatsRef = useRef<(stats: {
+    globalChants: number;
+    recordChants: number;
+    avgChantsPerUser: number;
+    uniqueUsers: number;
+    uniqueCountries: number;
+  }) => void>(() => {});
+  applyServerStatsRef.current = (stats) => {
+    const nextServer = Math.max(0, Math.round(stats.globalChants || 0));
+    let growth = nextServer - serverGlobalRef.current;
+    if (growth > 0 && inflightBatchesRef.current.length > 0) {
+      const stillOpen: { id: number; amount: number }[] = [];
+      for (const batch of inflightBatchesRef.current) {
+        if (growth >= batch.amount) {
+          growth -= batch.amount;
+          unconfirmedGlobalRef.current = Math.max(0, unconfirmedGlobalRef.current - batch.amount);
+        } else {
+          stillOpen.push(batch);
+        }
+      }
+      inflightBatchesRef.current = stillOpen;
+    }
+    serverGlobalRef.current = nextServer;
+    statsRef.current = {
+      globalChants: nextServer,
+      recordChants: stats.recordChants || 0,
+      avgChantsPerUser: stats.avgChantsPerUser || 0,
+      uniqueUsers: stats.uniqueUsers || 0,
+      uniqueCountries: stats.uniqueCountries || 0,
+    };
+    setGlobalChants(nextServer + unconfirmedGlobalRef.current);
+    setRecordChants(stats.recordChants || 0);
+    setAvgChantsPerUser(stats.avgChantsPerUser || 0);
+    setUniqueUsers(stats.uniqueUsers || 0);
+    setUniqueCountries(stats.uniqueCountries || 0);
+    setServerConnected(true);
+    try {
+      localStorage.setItem(LAST_GLOBAL_KEY, String(nextServer));
+    } catch {
+      // Private browsing can block storage.
+    }
+  };
 
   const availableChants = useMemo(
     () => CHANT_OPTIONS.filter((chant) => chant.isAlwaysAvailable || chant.isEnabled),
@@ -226,6 +287,17 @@ const AumChanterPage = () => {
       return '';
     }
   });
+  const [groupSize, setGroupSize] = useState(() => {
+    try {
+      const saved = Number(localStorage.getItem('aumChanterGroupSize'));
+      if (Number.isInteger(saved) && saved >= 1 && saved <= MAX_GROUP_SIZE) return saved;
+    } catch {
+      // Private browsing can block storage.
+    }
+    return 1;
+  });
+  const groupSizeRef = useRef(groupSize);
+  groupSizeRef.current = groupSize;
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const noteChantRef = useRef(noteChant);
   noteChantRef.current = noteChant;
@@ -287,13 +359,7 @@ const AumChanterPage = () => {
     const initializeStats = async () => {
       try {
         const stats = await getAumStats();
-        if (stats) {
-          setGlobalChants(stats.globalChants || 0);
-          setRecordChants(stats.recordChants || 0);
-          setAvgChantsPerUser(stats.avgChantsPerUser || 0);
-          setUniqueUsers(stats.uniqueUsers || 0);
-          setUniqueCountries(stats.uniqueCountries || 0);
-        }
+        if (stats) applyServerStatsRef.current(stats);
       } catch (error) {
         console.error("Failed to fetch initial Aum stats:", error);
       } finally {
@@ -305,11 +371,7 @@ const AumChanterPage = () => {
 
     // Subscribe to real-time updates from Supabase
     unsubscribe = subscribeToAumStats((newStats) => {
-      setGlobalChants(newStats.globalChants || 0);
-      setRecordChants(newStats.recordChants || 0);
-      setAvgChantsPerUser(newStats.avgChantsPerUser || 0);
-      setUniqueUsers(newStats.uniqueUsers || 0);
-      setUniqueCountries(newStats.uniqueCountries || 0);
+      applyServerStatsRef.current(newStats);
     });
 
     return () => {
@@ -415,16 +477,19 @@ const AumChanterPage = () => {
       return newHistory;
     });
 
+    // One tap is one chant for the person holding the phone. A group adds
+    // one worldwide chant for each person sharing that tap.
+    const added = Math.min(MAX_GROUP_SIZE, Math.max(1, Math.round(groupSizeRef.current) || 1));
+    unconfirmedGlobalRef.current += added;
+    setGlobalChants(serverGlobalRef.current + unconfirmedGlobalRef.current);
+
     // Send chant to Supabase (Batched)
     const userId = localStorage.getItem('userId') || `user-${Date.now()}`;
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', userId);
     }
 
-    // Get country from browser (or use Cloudflare header server-side if needed)
-    const country = (navigator as any).geolocation ? 'Unknown' : undefined;
-
-    pendingChantsRef.current += 1;
+    pendingChantsRef.current += added;
 
     // Clear existing timer
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
@@ -432,12 +497,41 @@ const AumChanterPage = () => {
     // Set a new timer to flush chants after 2 seconds of inactivity
     debounceTimerRef.current = setTimeout(() => {
       const chantsToRecord = pendingChantsRef.current;
-      if (chantsToRecord > 0) {
-        pendingChantsRef.current = 0; // reset
-        recordChant(userId, chantsToRecord, country).catch(err =>
-          console.error('Failed to record chant in Supabase:', err)
-        );
-      }
+      if (chantsToRecord <= 0) return;
+      pendingChantsRef.current = 0;
+      const batchId = batchSeqRef.current + 1;
+      batchSeqRef.current = batchId;
+      inflightBatchesRef.current.push({ id: batchId, amount: chantsToRecord });
+      void (async () => {
+        const settleBatch = () => {
+          const batch = inflightBatchesRef.current.find((item) => item.id === batchId);
+          if (!batch) return;
+          inflightBatchesRef.current = inflightBatchesRef.current.filter((item) => item.id !== batchId);
+          unconfirmedGlobalRef.current = Math.max(0, unconfirmedGlobalRef.current - batch.amount);
+        };
+        const releaseBatch = () => {
+          inflightBatchesRef.current = inflightBatchesRef.current.filter((item) => item.id !== batchId);
+        };
+        try {
+          const stats = await recordChant(userId, chantsToRecord);
+          if (stats) {
+            settleBatch();
+            applyServerStatsRef.current(stats);
+            return;
+          }
+          const fresh = await getAumStats();
+          if (!fresh) return;
+          if ((fresh.globalChants || 0) >= serverGlobalRef.current + chantsToRecord) {
+            settleBatch();
+          } else {
+            releaseBatch();
+          }
+          applyServerStatsRef.current(fresh);
+        } catch (err) {
+          releaseBatch();
+          console.error('Failed to record chant in Supabase:', err);
+        }
+      })();
     }, 2000);
 
     noteChantRef.current();
@@ -554,8 +648,10 @@ const AumChanterPage = () => {
       audioSrc: currentChant.audioSrc,
       imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
       personName: chanterName,
+      globalChants,
+      groupSize,
     });
-  }, [chanterName, currentChant, syncFrame]);
+  }, [chanterName, currentChant, globalChants, groupSize, syncFrame]);
 
   useEffect(() => {
     try {
@@ -564,6 +660,14 @@ const AumChanterPage = () => {
       // Private browsing can block storage. The name still shows for this visit.
     }
   }, [chanterName]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('aumChanterGroupSize', String(groupSize));
+    } catch {
+      // Private browsing can block storage. The group size still applies for this visit.
+    }
+  }, [groupSize]);
 
   useEffect(() => {
     if (videoPhase === 'ready') setIsVideoVisible(true);
@@ -629,17 +733,17 @@ const AumChanterPage = () => {
             </button>
 
             {/* Center Stats */}
-            <div className="flex items-center gap-6 sm:gap-10">
+            <div className="flex items-center gap-4 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
                 <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">{count.toLocaleString()}</p>
               </div>
-              <div className="hidden text-center sm:block">
-                <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Global</p>
+              <div className="text-center">
+                <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Worldwide</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">
-                  {statsLoading ? '...' : globalChants.toLocaleString()}
+                  {statsLoading && globalChants === 0 ? '...' : globalChants.toLocaleString()}
                 </p>
               </div>
               <div className="hidden text-center sm:block">
@@ -827,6 +931,19 @@ const AumChanterPage = () => {
               <span className="mx-2 text-spiritual-400/50">·</span>
               <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span> done
             </span>
+            <p className="text-center text-xs text-spiritual-100/90 sm:text-sm" aria-live="polite">
+              You <span className="font-mono">{count.toLocaleString()}</span>
+              <span className="mx-2 text-spiritual-400/50">·</span>
+              Worldwide{' '}
+              <span id="worldwide-total" className="font-mono">
+                {statsLoading && globalChants === 0 ? '…' : globalChants.toLocaleString()}
+              </span>
+            </p>
+            {!statsLoading && !serverConnected && (
+              <p className="max-w-sm text-center text-[11px] leading-snug text-spiritual-300/50">
+                Your chants are included. They join the shared total when the count connects.
+              </p>
+            )}
             <div className="hidden flex-wrap items-center justify-center gap-3 sm:flex sm:gap-6">
               <span>Average Chants / User: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
               <span>Total chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
@@ -835,7 +952,7 @@ const AumChanterPage = () => {
             <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
               <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
               <div className="mt-2 flex flex-col gap-1">
-                <span>Global: <span className="font-mono">{statsLoading ? '...' : globalChants.toLocaleString()}</span></span>
+                <span>Worldwide: <span className="font-mono">{statsLoading && globalChants === 0 ? '...' : globalChants.toLocaleString()}</span></span>
                 <span>Record: <span className="font-mono">{statsLoading ? '...' : recordChants.toLocaleString()}</span></span>
                 <span>Average per person: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
                 <span>Chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
@@ -876,6 +993,36 @@ const AumChanterPage = () => {
               className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-white"
             />
           </label>
+
+          <div className="mt-3 flex w-full max-w-sm flex-col items-center gap-2 text-sm text-spiritual-200/80">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <span id="group-chant-label">People chanting together</span>
+              <button
+                type="button"
+                aria-label="Fewer people"
+                disabled={groupSize <= 1}
+                onClick={() => setGroupSize((size) => Math.max(1, size - 1))}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-spiritual-400/30 bg-slate-900/50 text-lg leading-none text-white disabled:opacity-40"
+              >
+                −
+              </button>
+              <span id="group-size-value" className="min-w-[1.5rem] text-center font-mono text-base text-white" aria-live="polite">
+                {groupSize}
+              </span>
+              <button
+                type="button"
+                aria-label="More people"
+                disabled={groupSize >= MAX_GROUP_SIZE}
+                onClick={() => setGroupSize((size) => Math.min(MAX_GROUP_SIZE, size + 1))}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-spiritual-400/30 bg-slate-900/50 text-lg leading-none text-white disabled:opacity-40"
+              >
+                +
+              </button>
+            </div>
+            <p className="text-center text-xs text-spiritual-300/60">
+              Each tap adds 1 to your mala and {groupSize} to the worldwide total.
+            </p>
+          </div>
 
           <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting ? (

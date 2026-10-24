@@ -137,9 +137,14 @@ BEGIN
     UPDATE aum_stats SET avg_chants_per_user = v_new_global::FLOAT / v_new_unique_users WHERE id = 1;
   END IF;
 
-  -- Also log it (optional, for analytics)
+  -- Also log it (optional, for analytics).
+  -- country is VARCHAR(2); a longer label such as "Unknown" must not abort the increment.
   INSERT INTO user_chants_log (user_id, chant_count, country)
-  VALUES (p_user_id, increment_by, p_country);
+  VALUES (
+    p_user_id,
+    increment_by,
+    CASE WHEN p_country IS NULL OR char_length(p_country) = 2 THEN p_country ELSE NULL END
+  );
 END;
 $$;
 

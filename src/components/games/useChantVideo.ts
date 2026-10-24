@@ -12,6 +12,8 @@ export type ChantVideoFrame = {
   audioSrc?: string;
   imageScale?: number;
   personName?: string;
+  globalChants?: number;
+  groupSize?: number;
 };
 
 export function formatRecordingTime(ms: number): string {
@@ -191,6 +193,8 @@ type ReadoutLayout = {
   cy: number;
   personSize: number;
   personY: number;
+  worldwideSize: number;
+  worldwideY: number;
 };
 
 function cleanPersonName(value: string | undefined): string {
@@ -199,22 +203,30 @@ function cleanPersonName(value: string | undefined): string {
 
 // WhatsApp center-crops a portrait video and covers the lower edge, so the
 // count stays in the middle band instead of on the bottom of the frame.
-function readoutLayout(width: number, height: number, personName: string): ReadoutLayout {
+function readoutLayout(width: number, height: number, personName: string, showWorldwide: boolean): ReadoutLayout {
   const shortSide = Math.min(width, height);
   const labelSize = Math.max(18, Math.round(shortSide * 0.04));
   const countSize = Math.max(48, Math.round(shortSide * 0.12));
   const nameSize = Math.max(22, Math.round(shortSide * 0.05));
   const titleSize = Math.max(18, Math.round(shortSide * 0.038));
   const personSize = personName ? Math.max(18, Math.round(shortSide * 0.042)) : 0;
+  const worldwideSize = showWorldwide ? Math.max(16, Math.round(shortSide * 0.032)) : 0;
   const labelY = Math.round(height * 0.66);
   const countY = labelY - labelSize - Math.round(shortSide * 0.02);
   const nameY = countY - Math.round(countSize * 1.05);
   const titleY = Math.round(height * 0.24);
   const personY = personName ? titleY + Math.round(titleSize * 1.45) : titleY;
+  const worldwideY = showWorldwide
+    ? (personName ? personY : titleY) + Math.round((personName ? personSize : titleSize) * 1.35)
+    : personY;
   const gap = Math.round(shortSide * 0.06);
   let radius = Math.round(Math.min(width, shortSide) * 0.24);
   let cy = nameY - gap - radius;
-  const headerBottom = personName ? personY + Math.round(personSize * 0.3) : titleY + titleSize;
+  const headerBottom = showWorldwide
+    ? worldwideY + Math.round(worldwideSize * 0.35)
+    : personName
+      ? personY + Math.round(personSize * 0.3)
+      : titleY + titleSize;
   const minCircleTop = headerBottom + Math.round(shortSide * 0.03);
   if (cy - radius < minCircleTop) {
     radius = Math.max(48, Math.floor((nameY - gap - minCircleTop) / 2));
@@ -233,6 +245,8 @@ function readoutLayout(width: number, height: number, personName: string): Reado
     cy,
     personSize,
     personY,
+    worldwideSize,
+    worldwideY,
   };
 }
 
@@ -269,14 +283,31 @@ function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasE
   context.restore();
 }
 
+function personLine(personName: string, groupSize: number): string {
+  const group = groupSize > 1 ? `group of ${groupSize}` : '';
+  if (personName && group) return `${personName} · ${group}`;
+  return personName || group;
+}
+
+function frameCaption(frame: ChantVideoFrame) {
+  const groupSize = Math.min(20, Math.max(1, Math.round(frame.groupSize || 1)));
+  return {
+    line: personLine(cleanPersonName(frame.personName), groupSize),
+    globalChants: Math.max(0, Math.round(frame.globalChants || 0)),
+    groupSize,
+  };
+}
+
 function paintReadout(
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   chantName: string,
   chants: number,
-  personName: string,
+  line: string,
+  globalChants: number,
 ) {
-  const layout = readoutLayout(canvas.width, canvas.height, personName);
+  const showWorldwide = globalChants > 0;
+  const layout = readoutLayout(canvas.width, canvas.height, line, showWorldwide);
   context.save();
   context.textAlign = 'center';
   context.textBaseline = 'alphabetic';
@@ -286,15 +317,26 @@ function paintReadout(
   context.fillStyle = 'rgba(251, 191, 36, 0.95)';
   context.font = `600 ${layout.titleSize}px ${CANVAS_FONT}`;
   context.fillText('AUM CHANTER', canvas.width / 2, layout.titleY);
-  if (personName) {
+  if (line) {
     let personSize = layout.personSize;
     context.font = `600 ${personSize}px ${CANVAS_FONT}`;
-    while (personSize > 16 && context.measureText(personName).width > canvas.width - 80) {
+    while (personSize > 16 && context.measureText(line).width > canvas.width - 80) {
       personSize -= 2;
       context.font = `600 ${personSize}px ${CANVAS_FONT}`;
     }
     context.fillStyle = '#fff7ed';
-    context.fillText(personName, canvas.width / 2, layout.personY);
+    context.fillText(line, canvas.width / 2, layout.personY);
+  }
+  if (showWorldwide) {
+    const worldwide = `Worldwide ${globalChants.toLocaleString()}`;
+    let worldwideSize = layout.worldwideSize;
+    context.font = `600 ${worldwideSize}px ${CANVAS_FONT}`;
+    while (worldwideSize > 14 && context.measureText(worldwide).width > canvas.width - 80) {
+      worldwideSize -= 1;
+      context.font = `600 ${worldwideSize}px ${CANVAS_FONT}`;
+    }
+    context.fillStyle = 'rgba(251, 191, 36, 0.95)';
+    context.fillText(worldwide, canvas.width / 2, layout.worldwideY);
   }
   let nameSize = layout.nameSize;
   context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
@@ -338,6 +380,8 @@ export function useChantVideo() {
     audioSrc: '/aum.mp3',
     imageScale: 1,
     personName: '',
+    globalChants: 0,
+    groupSize: 1,
   });
   const sessionCountRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -653,12 +697,14 @@ export function useChantVideo() {
         }
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         context.restore();
+        const caption = frameCaption(frameRef.current);
         paintReadout(
           context,
           canvas,
           frameRef.current.chantName || 'Om',
           sessionCountRef.current,
-          cleanPersonName(frameRef.current.personName),
+          caption.line,
+          caption.globalChants,
         );
       };
 
@@ -672,7 +718,8 @@ export function useChantVideo() {
         const width = canvas.width;
         const height = canvas.height;
         const cx = width / 2;
-        const readout = readoutLayout(width, height, cleanPersonName(frameRef.current.personName));
+        const caption = frameCaption(frameRef.current);
+        const readout = readoutLayout(width, height, caption.line, caption.globalChants > 0);
         const radius = readout.radius;
         const cy = readout.cy;
         const breathe = 0.5 + 0.5 * Math.sin(performance.now() / 700);
@@ -732,7 +779,8 @@ export function useChantVideo() {
           canvas,
           frameRef.current.chantName || 'Om',
           chants,
-          cleanPersonName(frameRef.current.personName),
+          caption.line,
+          caption.globalChants,
         );
       };
 
