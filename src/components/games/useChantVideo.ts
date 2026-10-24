@@ -14,6 +14,9 @@ export type ChantVideoFrame = {
   personName?: string;
   globalChants?: number;
   groupSize?: number;
+  groupTitle?: string;
+  groupTotal?: number;
+  shareText?: string;
 };
 
 export function formatRecordingTime(ms: number): string {
@@ -283,18 +286,26 @@ function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasE
   context.restore();
 }
 
-function personLine(personName: string, groupSize: number): string {
+function personLine(personName: string, groupSize: number, groupTitle: string): string {
   const group = groupSize > 1 ? `group of ${groupSize}` : '';
-  if (personName && group) return `${personName} · ${group}`;
-  return personName || group;
+  return [personName, groupTitle, group].filter(Boolean).join(' · ');
 }
 
 function frameCaption(frame: ChantVideoFrame) {
   const groupSize = Math.min(20, Math.max(1, Math.round(frame.groupSize || 1)));
+  const groupTitle = cleanPersonName(frame.groupTitle).slice(0, 60);
+  const groupTotal = Math.max(0, Math.round(frame.groupTotal || 0));
+  const globalChants = Math.max(0, Math.round(frame.globalChants || 0));
+  const parts: string[] = [];
+  if (groupTotal > 0) parts.push(`Group ${groupTotal.toLocaleString()}`);
+  if (globalChants > 0) parts.push(`Worldwide ${globalChants.toLocaleString()}`);
   return {
-    line: personLine(cleanPersonName(frame.personName), groupSize),
-    globalChants: Math.max(0, Math.round(frame.globalChants || 0)),
+    line: personLine(cleanPersonName(frame.personName), groupSize, groupTitle),
+    globalChants,
     groupSize,
+    groupTitle,
+    groupTotal,
+    gold: parts.join(' · '),
   };
 }
 
@@ -304,10 +315,9 @@ function paintReadout(
   chantName: string,
   chants: number,
   line: string,
-  globalChants: number,
+  gold: string,
 ) {
-  const showWorldwide = globalChants > 0;
-  const layout = readoutLayout(canvas.width, canvas.height, line, showWorldwide);
+  const layout = readoutLayout(canvas.width, canvas.height, line, gold.length > 0);
   context.save();
   context.textAlign = 'center';
   context.textBaseline = 'alphabetic';
@@ -327,16 +337,15 @@ function paintReadout(
     context.fillStyle = '#fff7ed';
     context.fillText(line, canvas.width / 2, layout.personY);
   }
-  if (showWorldwide) {
-    const worldwide = `Worldwide ${globalChants.toLocaleString()}`;
+  if (gold) {
     let worldwideSize = layout.worldwideSize;
     context.font = `600 ${worldwideSize}px ${CANVAS_FONT}`;
-    while (worldwideSize > 14 && context.measureText(worldwide).width > canvas.width - 80) {
+    while (worldwideSize > 14 && context.measureText(gold).width > canvas.width - 80) {
       worldwideSize -= 1;
       context.font = `600 ${worldwideSize}px ${CANVAS_FONT}`;
     }
     context.fillStyle = 'rgba(251, 191, 36, 0.95)';
-    context.fillText(worldwide, canvas.width / 2, layout.worldwideY);
+    context.fillText(gold, canvas.width / 2, layout.worldwideY);
   }
   let nameSize = layout.nameSize;
   context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
@@ -382,6 +391,9 @@ export function useChantVideo() {
     personName: '',
     globalChants: 0,
     groupSize: 1,
+    groupTitle: '',
+    groupTotal: 0,
+    shareText: '',
   });
   const sessionCountRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -704,7 +716,7 @@ export function useChantVideo() {
           frameRef.current.chantName || 'Om',
           sessionCountRef.current,
           caption.line,
-          caption.globalChants,
+          caption.gold,
         );
       };
 
@@ -719,7 +731,7 @@ export function useChantVideo() {
         const height = canvas.height;
         const cx = width / 2;
         const caption = frameCaption(frameRef.current);
-        const readout = readoutLayout(width, height, caption.line, caption.globalChants > 0);
+        const readout = readoutLayout(width, height, caption.line, caption.gold.length > 0);
         const radius = readout.radius;
         const cy = readout.cy;
         const breathe = 0.5 + 0.5 * Math.sin(performance.now() / 700);
@@ -780,7 +792,7 @@ export function useChantVideo() {
           frameRef.current.chantName || 'Om',
           chants,
           caption.line,
-          caption.globalChants,
+          caption.gold,
         );
       };
 
@@ -893,10 +905,17 @@ export function useChantVideo() {
         downloadVideo();
         return;
       }
-      await navigator.share({
-        files: [file],
-        title: `${frameRef.current.chantName} chant`,
-      });
+      const title = `${frameRef.current.chantName} chant`;
+      const text = frameRef.current.shareText?.trim();
+      if (text) {
+        try {
+          await navigator.share({ files: [file], title, text });
+          return;
+        } catch (fileShareError) {
+          if (fileShareError instanceof DOMException && fileShareError.name === 'AbortError') return;
+        }
+      }
+      await navigator.share({ files: [file], title });
     } catch (shareError) {
       if (shareError instanceof DOMException && shareError.name === 'AbortError') return;
       setError('Could not open sharing. Download the video instead.');

@@ -1,6 +1,15 @@
 import React from 'react';
 import { Facebook, Twitter, Share2 } from 'lucide-react';
 
+interface PreparedShare {
+  url?: string;
+  title?: string;
+  description?: string;
+  twitterText?: string;
+  whatsappText?: string;
+  facebookQuote?: string;
+}
+
 interface SocialShareButtonsProps {
   url?: string;
   title?: string;
@@ -11,6 +20,8 @@ interface SocialShareButtonsProps {
   twitterText?: string;
   whatsappText?: string;
   facebookQuote?: string;
+  // Return null to cancel the share, for example when a group link could not be saved.
+  prepareShare?: () => Promise<PreparedShare | null | void>;
 }
 
 const getSiteOrigin = () => {
@@ -36,6 +47,7 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   twitterText,
   whatsappText,
   facebookQuote,
+  prepareShare,
 }) => {
   // Determine the URL to share
   const getShareUrl = () => {
@@ -58,34 +70,40 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   };
 
   const shareUrl = getShareUrl();
-
-  // Encode parameters for sharing
-  const encodedUrl = encodeURIComponent(shareUrl);
-
-  // Platform-specific trimming: try to use the maximum allowed length
   const trimToLength = (s: string, n: number) => (s && s.length > n ? `${s.slice(0, n - 1)}…` : s);
-
-  // Twitter/X: 280 characters for the text field
   const twitterRaw = (twitterText ?? title ?? '').toString();
-  const twitterFinal = trimToLength(twitterRaw, 280);
-  const encodedTwitterText = encodeURIComponent(twitterFinal);
-
-  // WhatsApp: keep as long as possible (no trim by default)
   const whatsappRaw = (whatsappText ?? title ?? '').toString();
-  const encodedWhatsAppText = encodeURIComponent(whatsappRaw);
-
-  // Facebook: add optional quote param (FB ignores message text in sharer)
   const facebookQuoteRaw = (facebookQuote ?? title ?? '').toString();
-  const encodedFacebookQuote = encodeURIComponent(facebookQuoteRaw);
 
-  // Share URLs for different platforms
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedFacebookQuote}`;
-  const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTwitterText}`;
-  const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodedWhatsAppText}%20${encodedUrl}`;
-
-  // Function to handle share button clicks
-  const handleShareClick = (shareUrl: string) => {
-    window.open(shareUrl, '_blank', 'width=600,height=400');
+  const handleShareClick = async (platform: 'facebook' | 'twitter' | 'whatsapp') => {
+    // Open during the click so the share window survives the time spent saving a group link.
+    const popup = prepareShare ? window.open('', '_blank', 'width=600,height=400') : null;
+    let prepared: PreparedShare | null | void = undefined;
+    if (prepareShare) {
+      try {
+        prepared = await prepareShare();
+      } catch {
+        popup?.close();
+        return;
+      }
+      if (!prepared) {
+        popup?.close();
+        return;
+      }
+    }
+    const nextUrl = prepared?.url || shareUrl;
+    const nextTitle = prepared?.title || title;
+    const encodedNextUrl = encodeURIComponent(nextUrl);
+    const nextTwitter = encodeURIComponent(trimToLength((prepared?.twitterText ?? twitterRaw).toString(), 280));
+    const nextWhatsApp = encodeURIComponent((prepared?.whatsappText ?? whatsappRaw).toString());
+    const nextFacebook = encodeURIComponent((prepared?.facebookQuote ?? facebookQuoteRaw ?? nextTitle).toString());
+    const destination = platform === 'facebook'
+      ? `https://www.facebook.com/sharer/sharer.php?u=${encodedNextUrl}&quote=${nextFacebook}`
+      : platform === 'twitter'
+        ? `https://twitter.com/intent/tweet?url=${encodedNextUrl}&text=${nextTwitter}`
+        : `https://api.whatsapp.com/send?text=${nextWhatsApp}%20${encodedNextUrl}`;
+    if (popup) popup.location.href = destination;
+    else window.open(destination, '_blank', 'width=600,height=400');
   };
 
   return (
@@ -94,7 +112,8 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
 
       {/* Facebook */}
       <button
-        onClick={() => handleShareClick(facebookShareUrl)}
+        type="button"
+        onClick={() => { void handleShareClick('facebook'); }}
         className="p-2 sm:p-2.5 rounded-full bg-spiritual-50 hover:bg-spiritual-100 text-spiritual-600 transition-colors shadow-sm"
         aria-label="Share on Facebook"
         title="Share on Facebook"
@@ -104,7 +123,8 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
 
       {/* Twitter */}
       <button
-        onClick={() => handleShareClick(twitterShareUrl)}
+        type="button"
+        onClick={() => { void handleShareClick('twitter'); }}
         className="p-2 sm:p-2.5 rounded-full bg-spiritual-50 hover:bg-spiritual-100 text-spiritual-600 transition-colors shadow-sm"
         aria-label="Share on Twitter"
         title="Share on Twitter"
@@ -114,7 +134,8 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
 
       {/* WhatsApp - More prominent on mobile */}
       <button
-        onClick={() => handleShareClick(whatsappShareUrl)}
+        type="button"
+        onClick={() => { void handleShareClick('whatsapp'); }}
         className="p-2 sm:p-2.5 rounded-full bg-green-50 hover:bg-green-100 text-green-600 transition-colors shadow-sm"
         aria-label="Share on WhatsApp"
         title="Share on WhatsApp"

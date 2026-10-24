@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { copyFileSync, existsSync, mkdirSync } from "fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from "fs";
+import type { IncomingMessage, ServerResponse } from "http";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -28,6 +29,19 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' &&
     componentTagger(),
+    {
+      name: 'chant-groups-api',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const requestUrl = req.url ?? '';
+          if (!requestUrl.startsWith('/api/chant-groups')) {
+            next();
+            return;
+          }
+          void handleDevChantGroup(req, res);
+        });
+      },
+    },
     // Plugin to copy static files to dist folder for Cloudflare Pages
     {
       name: 'copy-static-files',
@@ -83,3 +97,55 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
+
+function readAumTursoEnv(): { url: string; token: string } | null {
+  const url = process.env.AUM_TURSO_URL || process.env.TURSO_CONNECTION_URL || '';
+  const token = process.env.AUM_TURSO_TOKEN || process.env.TURSO_AUTH_TOKEN || '';
+  if (url && token) return { url, token };
+  if (!existsSync('backend/.env')) return null;
+  const env: Record<string, string> = {};
+  for (const line of readFileSync('backend/.env', 'utf8').split(/\r?\n/)) {
+    const match = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    if (!match) continue;
+    env[match[1]] = match[2].trim().replace(/^["']|["']$/g, '');
+  }
+  const fileUrl = env.AUM_TURSO_URL || env.TURSO_CONNECTION_URL || '';
+  const fileToken = env.AUM_TURSO_TOKEN || env.TURSO_AUTH_TOKEN || '';
+  if (!fileUrl || !fileToken) return null;
+  return { url: fileUrl, token: fileToken };
+}
+
+function readIncomingBody(req: IncomingMessage): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    req.on('data', (chunk: Buffer | string) => {
+      chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+    });
+    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    req.on('error', reject);
+  });
+}
+
+async function handleDevChantGroup(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  try {
+    const { handleChantGroupRequest } = await import('./functions/_lib/chantGroups.ts');
+    const requestUrl = new URL(req.url ?? '/', 'http://127.0.0.1');
+    const method = req.method ?? 'GET';
+    const body = method === 'GET' || method === 'HEAD' ? undefined : await readIncomingBody(req);
+    const request = new Request(requestUrl, {
+      method,
+      headers: { 'content-type': 'application/json' },
+      body,
+    });
+    const response = await handleChantGroupRequest(request, readAumTursoEnv());
+    res.statusCode = response.status;
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+    res.end(Buffer.from(await response.arrayBuffer()));
+  } catch {
+    res.statusCode = 500;
+    res.setHeader('content-type', 'application/json; charset=utf-8');
+    res.end(JSON.stringify({ error: 'Group counting is not available right now.' }));
+  }
+}
