@@ -180,7 +180,6 @@ const AumChanterPage = () => {
   const [globalChants, setGlobalChants] = useState<number>(cachedGlobalRef.current);
   const [recordChants, setRecordChants] = useState<number>(0);
   const [avgChantsPerUser, setAvgChantsPerUser] = useState<number>(0);
-  const [uniqueUsers, setUniqueUsers] = useState<number>(0);
   const [uniqueCountries, setUniqueCountries] = useState<number>(0);
   const [statsLoading, setStatsLoading] = useState<boolean>(true);
   const [serverConnected, setServerConnected] = useState(false);
@@ -226,8 +225,6 @@ const AumChanterPage = () => {
       uniqueCountries: stats.uniqueCountries || 0,
     };
     setGlobalChants(nextServer + unconfirmedGlobalRef.current);
-    setAvgChantsPerUser(stats.avgChantsPerUser || 0);
-    setUniqueUsers(stats.uniqueUsers || 0);
     setUniqueCountries(stats.uniqueCountries || 0);
     setServerConnected(true);
     try {
@@ -307,6 +304,7 @@ const AumChanterPage = () => {
   const [savedWorldwide, setSavedWorldwide] = useState(0);
   const [worldwideReady, setWorldwideReady] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
+  const [chanterCount, setChanterCount] = useState(0);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
@@ -412,6 +410,8 @@ const AumChanterPage = () => {
       confirmedRecordRef.current = summary.recordTotal;
       setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
+      setChanterCount(summary.chanterCount);
+      setAvgChantsPerUser(summary.chanterCount > 0 ? summary.globalTotal / summary.chanterCount : 0);
       setWorldwideReady(true);
       setRecordReady(true);
     }).catch(() => {
@@ -1328,8 +1328,8 @@ const AumChanterPage = () => {
               </p>
             )}
             <div className="hidden flex-wrap items-center justify-center gap-3 sm:flex sm:gap-6">
-              <span>Average Chants / User: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
-              <span>Total chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
+              <span>Average Chants / User: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
+              <span>Total chanters: <span id="chanter-count" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
               <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
             </div>
             <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
@@ -1337,8 +1337,8 @@ const AumChanterPage = () => {
               <div className="mt-2 flex flex-col gap-1">
                 <span>Worldwide: <span className="font-mono">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</span></span>
                 <span>Record: <span id="record-total-details" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span></span>
-                <span>Average per person: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
-                <span>Chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
+                <span>Average per person: <span id="average-per-person-details" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
+                <span>Chanters: <span id="chanter-count-details" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
                 <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
               </div>
             </details>
