@@ -41,6 +41,9 @@ const showBuildingProjectToast = () => {
   dismissOpenToast = () => {};
   const handle = toast({
     duration: 20000,
+    // The shared toast sits at the top of a phone and covers the chant totals.
+    // Keep it at the bottom on small screens. Wider screens already use the bottom corner.
+    className: 'max-sm:!fixed max-sm:!inset-x-4 max-sm:!bottom-4 max-sm:!top-auto max-sm:!w-auto',
     title: 'New Ashram Project',
     description: (
       <span className="mt-1 flex flex-col items-start gap-2">

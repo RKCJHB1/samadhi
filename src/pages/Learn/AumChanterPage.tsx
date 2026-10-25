@@ -1070,7 +1070,7 @@ const AumChanterPage = () => {
 
   return (
     <PageLayout title="Aum Chanter" className="no-top-padding">
-      <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-2 pb-4 sm:pt-16 sm:pb-6">
+      <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-8 pb-4 sm:pt-16 sm:pb-6">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="w-full flex items-center justify-between mt-1">
