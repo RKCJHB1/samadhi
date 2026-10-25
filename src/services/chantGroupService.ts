@@ -188,19 +188,22 @@ export async function saveChantProgress(
   return latest;
 }
 
-export async function fetchChantGroupList(): Promise<ChantGroup[]> {
+export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number }> {
   const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
-  const body = await response.json() as { groups?: Array<Partial<ChantGroup>> };
-  return (body.groups ?? []).flatMap((group) => {
-    if (!group.code || !group.name) return [];
-    return [{
-      code: group.code,
-      name: group.name,
-      chantName: group.chantName || 'Om',
-      total: Math.max(0, Math.round(Number(group.total) || 0)),
-    }];
-  });
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown };
+  return {
+    groups: (body.groups ?? []).flatMap((group) => {
+      if (!group.code || !group.name) return [];
+      return [{
+        code: group.code,
+        name: group.name,
+        chantName: group.chantName || 'Om',
+        total: Math.max(0, Math.round(Number(group.total) || 0)),
+      }];
+    }),
+    globalTotal: Math.max(0, Math.round(Number(body.globalTotal) || 0)),
+  };
 }
 
 export async function addToChantGroup(code: string, count: number): Promise<ChantGroup | null> {

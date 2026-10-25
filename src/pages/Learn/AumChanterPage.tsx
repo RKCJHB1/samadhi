@@ -305,6 +305,8 @@ const AumChanterPage = () => {
   const [groupNotice, setGroupNotice] = useState('');
   const [savedTotal, setSavedTotal] = useState(0);
   const [savedReady, setSavedReady] = useState(false);
+  const [savedWorldwide, setSavedWorldwide] = useState(0);
+  const [worldwideReady, setWorldwideReady] = useState(false);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
@@ -318,6 +320,7 @@ const AumChanterPage = () => {
   const chanterNameRef = useRef('');
   const confirmedPersonRef = useRef(0);
   const pendingPersonRef = useRef(0);
+  const confirmedGlobalRef = useRef(0);
   const confirmedGroupPersonRef = useRef(0);
   const historySumRef = useRef(0);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
@@ -402,10 +405,13 @@ const AumChanterPage = () => {
   }, [adoptGroup]);
 
   const refreshLeaderboard = useCallback(() => {
-    void fetchChantGroupList().then((groups) => {
-      setLeaderboard(groups);
+    void fetchChantGroupList().then((summary) => {
+      setLeaderboard(summary.groups);
+      confirmedGlobalRef.current = summary.globalTotal;
+      setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
+      setWorldwideReady(true);
     }).catch(() => {
-      // Keep the list already on screen.
+      // Keep the totals already on screen.
     });
   }, []);
 
@@ -515,18 +521,18 @@ const AumChanterPage = () => {
       const code = groupCodeRef.current;
       if (!code) return;
       void fetchChantGroup(code).then((group) => {
-        if (!group || groupCodeRef.current !== group.code) return;
+        if (!group || !groupCodeRef.current || group.code.toLowerCase() !== groupCodeRef.current.toLowerCase()) return;
         confirmedGroupRef.current = group.total;
         setGroupTotal(group.total + pendingGroupRef.current);
       }).catch(() => {
         // Keep the total already on screen. The next tap tries again.
       });
-    }, 20000);
+    }, 5000);
     return () => window.clearInterval(timer);
   }, [groupCode]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => refreshLeaderboard(), 20000);
+    const timer = window.setInterval(() => refreshLeaderboard(), 5000);
     return () => window.clearInterval(timer);
   }, [refreshLeaderboard]);
 
@@ -740,6 +746,7 @@ const AumChanterPage = () => {
     setGlobalChants(serverGlobalRef.current + unconfirmedGlobalRef.current);
     pendingPersonRef.current += 1;
     setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
+    setSavedWorldwide(confirmedGlobalRef.current + pendingPersonRef.current);
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
     if (countingForGroup) {
       pendingGroupRef.current += 1;
@@ -1080,17 +1087,24 @@ const AumChanterPage = () => {
             </button>
 
             {/* Center Stats */}
-            <div className="flex items-center gap-4 sm:gap-10">
+            <div className="flex items-center gap-3 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
                 <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
                 <p className="text-lg sm:text-2xl font-mono text-white/80">{count.toLocaleString()}</p>
               </div>
+              {groupCode && (
+                <div className="text-center">
+                  <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Group</p>
+                  <p className="max-w-[4.5rem] truncate text-[10px] text-spiritual-200/70 sm:max-w-[8rem]">{groupTitle}</p>
+                  <p id="group-total-value" className="text-lg sm:text-2xl font-mono text-white/80">{groupTotal.toLocaleString()}</p>
+                </div>
+              )}
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Worldwide</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
-                <p className="text-lg sm:text-2xl font-mono text-white/80">
-                  {statsLoading && globalChants === 0 ? '...' : globalChants.toLocaleString()}
+                <p id="worldwide-total" className="text-lg sm:text-2xl font-mono text-white/80">
+                  {worldwideReady ? savedWorldwide.toLocaleString() : '...'}
                 </p>
               </div>
               <div className="hidden text-center sm:block">
@@ -1289,18 +1303,18 @@ const AumChanterPage = () => {
               )}
               <span className="mx-2 text-spiritual-400/50">·</span>
               Worldwide{' '}
-              <span id="worldwide-total" className="font-mono">
-                {statsLoading && globalChants === 0 ? '…' : globalChants.toLocaleString()}
+              <span className="font-mono">
+                {worldwideReady ? savedWorldwide.toLocaleString() : '…'}
               </span>
               {groupCode && (
                 <>
                   <span className="mx-2 text-spiritual-400/50">·</span>
                   Group{' '}
-                  <span id="group-total-value" className="font-mono">{groupTotal.toLocaleString()}</span>
+                  <span className="font-mono">{groupTotal.toLocaleString()}</span>
                 </>
               )}
             </p>
-            {!statsLoading && !serverConnected && (
+            {!worldwideReady && !statsLoading && !serverConnected && (
               <p className="max-w-sm text-center text-[11px] leading-snug text-spiritual-300/50">
                 Your chants are included. They join the shared total when the count connects.
               </p>
@@ -1313,7 +1327,7 @@ const AumChanterPage = () => {
             <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
               <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
               <div className="mt-2 flex flex-col gap-1">
-                <span>Worldwide: <span className="font-mono">{statsLoading && globalChants === 0 ? '...' : globalChants.toLocaleString()}</span></span>
+                <span>Worldwide: <span className="font-mono">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</span></span>
                 <span>Record: <span className="font-mono">{statsLoading ? '...' : recordChants.toLocaleString()}</span></span>
                 <span>Average per person: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
                 <span>Chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>

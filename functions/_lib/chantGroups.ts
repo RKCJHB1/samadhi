@@ -180,6 +180,11 @@ function storedTotal(value: unknown): number {
   return Math.max(0, Math.round(Number(cellText(value)) || 0));
 }
 
+async function savedGlobalTotal(env: ChantDbEnv): Promise<number> {
+  const rows = await execute(env, 'SELECT COALESCE(SUM(total), 0) FROM chant_people');
+  return storedTotal(rows[0]?.[0]);
+}
+
 async function listGroups(env: ChantDbEnv, limit: number): Promise<ChantGroup[]> {
   const rows = await execute(
     env,
@@ -325,7 +330,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     if (request.method === 'GET' && rest.length === 0) {
       const requested = Math.round(Number(url.searchParams.get('limit')));
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
-      return json({ groups: await listGroups(env, limit) });
+      return json({ groups: await listGroups(env, limit), globalTotal: await savedGlobalTotal(env) });
     }
 
     if (request.method === 'POST' && rest.length === 0) {
