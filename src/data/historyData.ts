@@ -1978,6 +1978,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/25thOctober.png"
   },
   {
+    date: "October 26",
+    monthNumeric: 9,
+    dayNumeric: 26,
+    year: 1885,
+    headline: "October 26 — Sri Ramakrishna on Pure Sattva and Divine Grace at Syampukur",
+    narrativeParagraph1: "On October 26, 1885, at the **Syampukur** house in Calcutta, Sri Ramakrishna spoke with **M.** and other devotees, in the context of **Dr. Mahendralal Sarkar**’s care for him, about spiritual life, unselfish action, pure sattva, and divine grace.",
+    narrativeParagraph2: "He explained that unselfish action gradually purifies the mind, leading it towards **pure sattva**—the quality of clarity and purity in which the mind turns wholly towards God. **“When a man develops pure sattva, he thinks only of God. He does not enjoy anything else.”** Sri Ramakrishna concluded, **“No sooner does a man develop pure sattva than he realizes God, through His grace.”**",
+    quote: "No sooner does a man develop pure sattva than he realizes God, through His grace.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna at the Syampukur house on 26 October 1885, speaking of pure sattva and divine grace with Dr. Mahendralal Sarkar, M., and other devotees.",
+    customImage: "/images/on-this-day/26thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
