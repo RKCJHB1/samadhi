@@ -289,6 +289,11 @@ const AumChanterPage = () => {
   });
   const [groupNameDraft, setGroupNameDraft] = useState(() => {
     try {
+      const fromUrl = new URLSearchParams(window.location.search).get('group');
+      if (fromUrl && fromUrl.trim()) {
+        const slug = groupSlug(fromUrl);
+        if (slug) return slug.replace(/_/g, ' ');
+      }
       return localStorage.getItem('aumChanterGroupTitle') ?? '';
     } catch {
       return '';
@@ -306,10 +311,14 @@ const AumChanterPage = () => {
   const pendingGroupRef = useRef(0);
   const groupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
+  const createSlugRef = useRef('');
   const chantNameRef = useRef('Om');
   chantNameRef.current = currentChant.name;
 
   const adoptGroup = useCallback((group: ChantGroup) => {
+    if (groupCodeRef.current && groupCodeRef.current.toLowerCase() !== group.code.toLowerCase()) {
+      pendingGroupRef.current = 0;
+    }
     groupCodeRef.current = group.code;
     groupTitleRef.current = group.name;
     confirmedGroupRef.current = group.total;
@@ -317,11 +326,26 @@ const AumChanterPage = () => {
     setGroupTitle(group.name);
     setGroupTotal(group.total + pendingGroupRef.current);
     setGroupNotice('');
+    if (groupSlug(groupNameDraftRef.current).toLowerCase() !== group.code.toLowerCase()) {
+      setGroupNameDraft(group.name);
+    }
     window.history.replaceState({}, '', `/chant?group=${encodeURIComponent(group.code)}`);
   }, []);
 
   const ensureChantGroup = useCallback(async (): Promise<ChantGroup | null> => {
-    if (groupCodeRef.current) {
+    const typed = groupNameDraftRef.current.trim();
+    const typedSlug = groupSlug(typed);
+    const fromUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '');
+    if (typed && !typedSlug && !fromUrl) {
+      setGroupNotice('Use letters and numbers for the group name.');
+      return null;
+    }
+    const slug = typedSlug || fromUrl;
+    if (!slug) {
+      setGroupNotice('Type a group name, such as Mistri Family.');
+      return null;
+    }
+    if (groupCodeRef.current && slug.toLowerCase() === groupCodeRef.current.toLowerCase()) {
       return {
         code: groupCodeRef.current,
         name: groupTitleRef.current,
@@ -329,41 +353,40 @@ const AumChanterPage = () => {
         total: confirmedGroupRef.current,
       };
     }
-    if (createGroupRef.current) return createGroupRef.current;
+    if (createGroupRef.current && createSlugRef.current === slug.toLowerCase()) {
+      return createGroupRef.current;
+    }
 
-    const fromUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '');
-    const typed = groupNameDraftRef.current.trim();
-    const raw = fromUrl || typed;
-    if (!raw) {
-      setGroupNotice('Type a group name, such as Mistri Family.');
-      return null;
-    }
-    const slug = groupSlug(raw);
-    if (!slug) {
-      setGroupNotice('Use letters and numbers for the group name.');
-      return null;
-    }
     const chantName = chantNameRef.current;
-    const label = fromUrl ? slug.replace(/_/g, ' ') : typed;
-    createGroupRef.current = fetchChantGroup(slug)
+    const label = typedSlug ? typed : slug.replace(/_/g, ' ');
+    let pending: Promise<ChantGroup | null>;
+    pending = fetchChantGroup(slug)
       .then((found) => found ?? createChantGroup(label, chantName))
       .then((group) => {
-        adoptGroup(group);
+        const nowTyped = groupSlug(groupNameDraftRef.current).toLowerCase();
+        const nowUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '').toLowerCase();
+        const code = group.code.toLowerCase();
+        if (nowTyped === code || nowUrl === code) adoptGroup(group);
         return group;
       })
       .catch((error: unknown) => {
         const offline = error instanceof Error && error.message === 'offline';
+        const openedFromLink = !typedSlug && Boolean(fromUrl);
         setGroupNotice(offline
-          ? 'Group links are not connected on this site yet.'
-          : fromUrl
-            ? 'The group total could not be loaded.'
-            : 'The group link could not be saved, so it was not shared.');
+          ? (openedFromLink
+            ? 'This group link is open. The shared total is not connected on this site yet.'
+            : 'The group total is not connected on this site yet. You can still copy and share this link.')
+          : (openedFromLink
+            ? 'The group total could not be loaded. You can still copy and share this link.'
+            : 'The group total could not be saved. You can still copy and share this link.'));
         return null;
       })
       .finally(() => {
-        createGroupRef.current = null;
+        if (createGroupRef.current === pending) createGroupRef.current = null;
       });
-    return createGroupRef.current;
+    createSlugRef.current = slug.toLowerCase();
+    createGroupRef.current = pending;
+    return pending;
   }, [adoptGroup]);
 
   useEffect(() => {
@@ -830,27 +853,81 @@ const AumChanterPage = () => {
   const progressRingCircumference = 2 * Math.PI * progressRingRadius;
   const strokeDashoffset = progressRingCircumference * (1 - progressPercent / 100);
 
-  const activeShare = groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode) : null;
-  const shareTitle = activeShare?.title ?? `I've chanted ${currentChant.name} ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`;
-
-  const shareDescription = activeShare?.whatsappText ?? (currentChant.id === 'om'
+  const typedGroupName = groupNameDraft.trim();
+  const typedGroupSlug = groupSlug(typedGroupName);
+  const previewCode = typedGroupSlug || (typedGroupName ? '' : (groupCode ?? ''));
+  const previewName = typedGroupSlug
+    ? typedGroupName
+    : (groupTitle || (previewCode ? previewCode.replace(/_/g, ' ') : ''));
+  const groupLink = previewCode
+    ? buildGroupShare(previewName, currentChant.name, previewCode)
+    : null;
+  const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
+  const shareTitle = `I've chanted ${currentChant.name} ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`;
+  const shareDescription = currentChant.id === 'om'
     ? 'Join the Aum Chanter meditation game and contribute to our global chanting community.'
-    : `Join the Aum Chanter meditation game and explore special festival modes like ${currentChant.name}.`);
+    : `Join the Aum Chanter meditation game and explore special festival modes like ${currentChant.name}.`;
+  const shareTwitterText = `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
 
-  const shareTwitterText = activeShare?.twitterText ?? `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
-  const prepareGroupShare = useCallback(async () => {
-    const group = await ensureChantGroup();
-    if (!group) return null;
-    const copy = buildGroupShare(group.name, group.chantName || chantNameRef.current, group.code);
-    return {
-      url: copy.url,
-      title: copy.title,
-      description: copy.whatsappText,
-      twitterText: copy.twitterText,
-      whatsappText: copy.whatsappText,
-      facebookQuote: copy.facebookQuote,
-    };
-  }, [ensureChantGroup]);
+  const copyGroupLink = async () => {
+    if (!groupLink) {
+      setGroupNotice(typedGroupName
+        ? 'Use letters and numbers for the group name.'
+        : 'Type a group name, such as Mistri Family.');
+      return;
+    }
+    let copied = false;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(groupLink.url);
+        copied = true;
+      }
+    } catch {
+      copied = false;
+    }
+    if (!copied) {
+      const area = document.createElement('textarea');
+      area.value = groupLink.url;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.top = '0';
+      area.style.left = '0';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        copied = document.execCommand('copy');
+      } catch {
+        copied = false;
+      }
+      area.remove();
+    }
+    if (!copied) {
+      const node = document.getElementById('group-link');
+      if (node) {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        const selection = window.getSelection();
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      }
+    }
+    const saved = await ensureChantGroup();
+    if (copied) {
+      setGroupNotice(saved
+        ? 'Link copied. Paste it into WhatsApp or a message.'
+        : 'Link copied. The group total is not connected on this site yet.');
+    } else {
+      setGroupNotice(saved
+        ? 'The link is selected. Copy it from the box.'
+        : 'The link is selected. Copy it from the box. The group total is not connected on this site yet.');
+    }
+  };
+
+  const rememberGroupLink = () => {
+    void ensureChantGroup();
+  };
 
   return (
     <PageLayout title="Aum Chanter" className="no-top-padding">
@@ -1139,37 +1216,89 @@ const AumChanterPage = () => {
             />
           </label>
 
-          <div className="mt-3 flex w-full max-w-sm flex-col items-center gap-2 text-sm text-spiritual-200/80">
-            {groupCode ? (
-              <p className="text-center text-xs text-spiritual-300/70">
-                {groupTitle}. Each tap from this link adds one chant to the {groupTitle} total.
-              </p>
-            ) : (
+          <div id="group-chant-card" className="mt-3 flex w-full max-w-md flex-col items-stretch gap-2 rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-200/80">
+            <p className="text-center font-sans text-base text-spiritual-100">Chant with a group</p>
+            <p className="text-center text-xs text-spiritual-200/85">
+              Type the group name. Your link appears below. Copy it, or tap Share on WhatsApp.
+            </p>
+            <label htmlFor="group-name" className="flex w-full items-center gap-2">
+              <span className="shrink-0">Group name</span>
+              <input
+                id="group-name"
+                type="text"
+                value={groupNameDraft}
+                maxLength={60}
+                placeholder="Mistri Family"
+                onChange={(event) => setGroupNameDraft(event.target.value)}
+                className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
+              />
+            </label>
+            {groupLink ? (
               <>
-                <label htmlFor="group-name" className="flex w-full items-center gap-2">
-                  <span className="shrink-0">Group name</span>
-                  <input
-                    id="group-name"
-                    type="text"
-                    value={groupNameDraft}
-                    maxLength={60}
-                    placeholder="Mistri Family"
-                    onChange={(event) => setGroupNameDraft(event.target.value)}
-                    className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
-                  />
-                </label>
+                <p className="text-xs uppercase tracking-wide text-spiritual-300/70">Your group link</p>
+                <p
+                  id="group-link"
+                  className="select-text overflow-x-auto rounded border border-amber-200/40 bg-[#FFF5E1] px-3 py-2 text-left font-mono text-[11px] leading-relaxed text-slate-900 sm:text-xs"
+                >
+                  {groupLinkParts[0]}
+                  <wbr />
+                  {groupLinkParts[1]}
+                </p>
                 <button
                   type="button"
-                  id="start-group"
-                  onClick={() => { void ensureChantGroup(); }}
-                  className="rounded-lg bg-spiritual-600/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-spiritual-600"
+                  id="copy-group-link"
+                  onClick={() => { void copyGroupLink(); }}
+                  className="rounded-lg bg-spiritual-600 px-4 py-2.5 text-sm font-sans font-medium text-white transition-colors hover:bg-spiritual-500"
                 >
-                  Start a group link
+                  Copy link
                 </button>
-                <p className="text-center text-xs text-spiritual-300/60">
-                  Each tap adds one chant. Share opens a message with your group link, such as /chant?group=Mistri_Family.
+                <div className="flex flex-wrap justify-center gap-2">
+                  <a
+                    id="share-group-whatsapp"
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${groupLink.whatsappText}\n\n${groupLink.url}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={rememberGroupLink}
+                    className="rounded-lg bg-green-600 px-4 py-2.5 text-sm font-sans font-medium text-white hover:bg-green-500"
+                  >
+                    Share on WhatsApp
+                  </a>
+                  <a
+                    id="share-group-facebook"
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(groupLink.url)}&quote=${encodeURIComponent(groupLink.facebookQuote)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={rememberGroupLink}
+                    className="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-sans text-white hover:bg-slate-600"
+                  >
+                    Facebook
+                  </a>
+                  <a
+                    id="share-group-x"
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(groupLink.twitterText)}&url=${encodeURIComponent(groupLink.url)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={rememberGroupLink}
+                    className="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-sans text-white hover:bg-slate-600"
+                  >
+                    X
+                  </a>
+                </div>
+                <p className="text-center text-xs text-spiritual-100/90">
+                  Send this link. Each tap from it adds one chant to the {previewName} total.
                 </p>
+                {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
+                  <p className="text-center text-xs text-spiritual-100">
+                    {previewName} total so far: <span className="font-mono">{groupTotal.toLocaleString()}</span>
+                  </p>
+                )}
               </>
+            ) : (
+              <p className="text-center text-xs text-spiritual-200/80">
+                {typedGroupName
+                  ? 'Use letters and numbers, at least two characters. The link appears when the name is ready.'
+                  : 'Type a name such as Mistri Family. The link appears here.'}
+              </p>
             )}
             {groupNotice && (
               <p id="group-notice" className="text-center text-xs text-amber-100/90" role="status">{groupNotice}</p>
@@ -1229,20 +1358,20 @@ const AumChanterPage = () => {
             <p className="max-w-md text-center text-sm text-amber-100/90" role="status">{videoNotice}</p>
           )}
 
-          {/* Social Sharing */}
-          <div className="w-full flex justify-center mt-1">
-            <SocialShareButtons
-              url={activeShare?.url}
-              path="/chant"
-              title={shareTitle}
-              description={shareDescription}
-              twitterText={shareTwitterText}
-              whatsappText={activeShare?.whatsappText ?? shareTitle}
-              facebookQuote={activeShare?.facebookQuote}
-              prepareShare={prepareGroupShare}
-              className="justify-center"
-            />
-          </div>
+          {!groupLink && (
+            <div className="mt-1 flex w-full justify-center">
+              <SocialShareButtons
+                path="/chant"
+                title={shareTitle}
+                description={shareDescription}
+                twitterText={shareTwitterText}
+                whatsappText={shareTitle}
+                label="Share your chant:"
+                labelClassName="mr-1 text-sm text-spiritual-100"
+                className="justify-center"
+              />
+            </div>
+          )}
         </div>
 	
         {/* History Modal */}
@@ -1373,9 +1502,9 @@ const AumChanterPage = () => {
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
                   Download it, or share the file. Nothing is uploaded.
                 </p>
-                {activeShare && (
+                {groupLink && (
                   <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
-                    {activeShare.videoText}
+                    {groupLink.videoText}
                   </p>
                 )}
                 {videoNotice && (

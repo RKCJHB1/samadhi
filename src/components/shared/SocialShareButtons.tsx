@@ -20,6 +20,8 @@ interface SocialShareButtonsProps {
   twitterText?: string;
   whatsappText?: string;
   facebookQuote?: string;
+  label?: string;
+  labelClassName?: string;
   // Return null to cancel the share, for example when a group link could not be saved.
   prepareShare?: () => Promise<PreparedShare | null | void>;
 }
@@ -47,6 +49,8 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   twitterText,
   whatsappText,
   facebookQuote,
+  label = 'Share:',
+  labelClassName = 'text-sm text-gray-600 mr-1',
   prepareShare,
 }) => {
   // Determine the URL to share
@@ -108,7 +112,7 @@ const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
 
   return (
     <div className={`flex flex-wrap items-center justify-center gap-2 ${className}`}>
-      <span className="text-sm text-gray-600 mr-1">Share:</span>
+      <span className={labelClassName}>{label}</span>
 
       {/* Facebook */}
       <button
