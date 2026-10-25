@@ -226,7 +226,6 @@ const AumChanterPage = () => {
       uniqueCountries: stats.uniqueCountries || 0,
     };
     setGlobalChants(nextServer + unconfirmedGlobalRef.current);
-    setRecordChants(stats.recordChants || 0);
     setAvgChantsPerUser(stats.avgChantsPerUser || 0);
     setUniqueUsers(stats.uniqueUsers || 0);
     setUniqueCountries(stats.uniqueCountries || 0);
@@ -307,6 +306,7 @@ const AumChanterPage = () => {
   const [savedReady, setSavedReady] = useState(false);
   const [savedWorldwide, setSavedWorldwide] = useState(0);
   const [worldwideReady, setWorldwideReady] = useState(false);
+  const [recordReady, setRecordReady] = useState(false);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
@@ -321,6 +321,7 @@ const AumChanterPage = () => {
   const confirmedPersonRef = useRef(0);
   const pendingPersonRef = useRef(0);
   const confirmedGlobalRef = useRef(0);
+  const confirmedRecordRef = useRef(0);
   const confirmedGroupPersonRef = useRef(0);
   const historySumRef = useRef(0);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
@@ -408,8 +409,11 @@ const AumChanterPage = () => {
     void fetchChantGroupList().then((summary) => {
       setLeaderboard(summary.groups);
       confirmedGlobalRef.current = summary.globalTotal;
+      confirmedRecordRef.current = summary.recordTotal;
       setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
+      setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setWorldwideReady(true);
+      setRecordReady(true);
     }).catch(() => {
       // Keep the totals already on screen.
     });
@@ -437,6 +441,7 @@ const AumChanterPage = () => {
         );
         confirmedPersonRef.current = saved.person.total;
         setSavedTotal(saved.person.total + pendingPersonRef.current);
+        setRecordChants(Math.max(confirmedRecordRef.current, saved.person.total + pendingPersonRef.current));
         setSavedReady(true);
         if (saved.group && (!groupCodeRef.current || groupCodeRef.current === saved.group.code)) {
           confirmedGroupRef.current = saved.group.total;
@@ -458,6 +463,7 @@ const AumChanterPage = () => {
         confirmedGroupPersonRef.current += groupSent;
         pendingPersonRef.current += amount - sent;
         setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
+        setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
         if (groupAmount > 0) {
           pendingGroupRef.current += groupAmount - groupSent;
           setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
@@ -500,6 +506,7 @@ const AumChanterPage = () => {
       const gap = Math.max(0, localAtStart - person.total);
       pendingPersonRef.current += gap;
       setSavedTotal(person.total + pendingPersonRef.current);
+      setRecordChants(Math.max(confirmedRecordRef.current, person.total + pendingPersonRef.current));
       setSavedReady(true);
       if (person.groupTotal != null) {
         confirmedGroupPersonRef.current = person.groupTotal;
@@ -747,6 +754,7 @@ const AumChanterPage = () => {
     pendingPersonRef.current += 1;
     setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
     setSavedWorldwide(confirmedGlobalRef.current + pendingPersonRef.current);
+    setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
     if (countingForGroup) {
       pendingGroupRef.current += 1;
@@ -1110,8 +1118,8 @@ const AumChanterPage = () => {
               <div className="hidden text-center sm:block">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Record</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
-                <p className="text-lg sm:text-2xl font-mono text-white/80">
-                  {statsLoading ? '...' : recordChants.toLocaleString()}
+                <p id="record-total" className="text-lg sm:text-2xl font-mono text-white/80">
+                  {recordReady ? recordChants.toLocaleString() : '...'}
                 </p>
               </div>
             </div>
@@ -1328,7 +1336,7 @@ const AumChanterPage = () => {
               <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
               <div className="mt-2 flex flex-col gap-1">
                 <span>Worldwide: <span className="font-mono">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</span></span>
-                <span>Record: <span className="font-mono">{statsLoading ? '...' : recordChants.toLocaleString()}</span></span>
+                <span>Record: <span id="record-total-details" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span></span>
                 <span>Average per person: <span className="font-mono">{statsLoading ? '...' : avgChantsPerUser.toFixed(0)}</span></span>
                 <span>Chanters: <span className="font-mono">{statsLoading ? '...' : uniqueUsers.toLocaleString()}</span></span>
                 <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
