@@ -5,6 +5,31 @@ export type ChantGroup = {
   total: number;
 };
 
+export type ChantPerson = {
+  id: string;
+  name: string;
+  total: number;
+  groupTotal: number | null;
+};
+
+export type SavedChantProgress = {
+  person: ChantPerson;
+  group: ChantGroup | null;
+};
+
+const PERSON_ID = /^p[a-z0-9]{8,40}$/;
+
+export class PartialChantSaveError extends Error {
+  sent: number;
+  groupSent: number;
+
+  constructor(sent: number, groupSent: number) {
+    super('person');
+    this.sent = sent;
+    this.groupSent = groupSent;
+  }
+}
+
 const SITE_ORIGIN = 'https://ramakrishna-johannesburg.org.za';
 const MAX_ADD = 500;
 
@@ -81,6 +106,101 @@ export async function createChantGroup(name: string, chantName: string): Promise
 export async function fetchChantGroup(code: string): Promise<ChantGroup | null> {
   const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}`, { cache: 'no-store' });
   return readGroup(response);
+}
+
+export function chantPersonId(): string {
+  const storageKey = 'aumChanterPersonId';
+  try {
+    const existing = localStorage.getItem(storageKey) ?? '';
+    if (PERSON_ID.test(existing)) return existing;
+  } catch {
+    // Private browsing can block storage. This visit still gets an id.
+  }
+  const created = `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+  try {
+    localStorage.setItem(storageKey, created);
+  } catch {
+    // The id still identifies this visit.
+  }
+  return created;
+}
+
+async function readPerson(response: Response): Promise<ChantPerson> {
+  if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'person');
+  const body = await response.json() as Partial<ChantPerson>;
+  if (!body.id) throw new Error('person');
+  return {
+    id: body.id,
+    name: body.name || '',
+    total: Math.max(0, Math.round(Number(body.total) || 0)),
+    groupTotal: body.groupTotal == null ? null : Math.max(0, Math.round(Number(body.groupTotal) || 0)),
+  };
+}
+
+export async function fetchChantPerson(id: string, groupCode = ''): Promise<ChantPerson> {
+  const query = groupCode ? `?group=${encodeURIComponent(groupCode)}` : '';
+  const response = await fetch(`/api/chant-people/${encodeURIComponent(id)}${query}`, { cache: 'no-store' });
+  return readPerson(response);
+}
+
+export async function saveChantProgress(
+  id: string,
+  count: number,
+  name: string,
+  groupCode = '',
+  groupCount = 0,
+): Promise<SavedChantProgress> {
+  let remaining = Math.max(0, Math.round(count));
+  let groupRemaining = Math.max(0, Math.min(remaining, Math.round(groupCount)));
+  let sent = 0;
+  let groupSent = 0;
+  let latest: SavedChantProgress | null = null;
+  while (remaining > 0) {
+    const chunk = Math.min(MAX_ADD, remaining);
+    const groupChunk = Math.min(chunk, groupRemaining);
+    try {
+      const response = await fetch(`/api/chant-people/${encodeURIComponent(id)}/chants`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          count: chunk,
+          name,
+          groupCode: groupChunk > 0 ? groupCode : '',
+          groupCount: groupChunk,
+        }),
+      });
+      if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'person');
+      const body = await response.json() as { person?: Partial<ChantPerson>; group?: Partial<ChantGroup> | null };
+      if (!body.person?.id) throw new Error('person');
+      const person = await readPerson(new Response(JSON.stringify(body.person), { status: 200 }));
+      const group = body.group ? await readGroup(new Response(JSON.stringify(body.group), { status: 200 })) : null;
+      latest = { person, group: group ?? latest?.group ?? null };
+      sent += chunk;
+      groupSent += groupChunk;
+      remaining -= chunk;
+      groupRemaining -= groupChunk;
+    } catch (error) {
+      if (sent > 0) throw new PartialChantSaveError(sent, groupSent);
+      throw error;
+    }
+  }
+  if (!latest) throw new Error('person');
+  return latest;
+}
+
+export async function fetchChantGroupList(): Promise<ChantGroup[]> {
+  const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
+  if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>> };
+  return (body.groups ?? []).flatMap((group) => {
+    if (!group.code || !group.name) return [];
+    return [{
+      code: group.code,
+      name: group.name,
+      chantName: group.chantName || 'Om',
+      total: Math.max(0, Math.round(Number(group.total) || 0)),
+    }];
+  });
 }
 
 export async function addToChantGroup(code: string, count: number): Promise<ChantGroup | null> {

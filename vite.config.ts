@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => ({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const requestUrl = req.url ?? '';
-          if (!requestUrl.startsWith('/api/chant-groups')) {
+          if (!requestUrl.startsWith('/api/chant-groups') && !requestUrl.startsWith('/api/chant-people')) {
             next();
             return;
           }
