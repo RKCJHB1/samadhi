@@ -1991,6 +1991,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/26thOctober.png"
   },
   {
+    date: "October 27",
+    monthNumeric: 9,
+    dayNumeric: 27,
+    year: 1882,
+    headline: "October 27 — Sri Ramakrishna’s Memorable Steamer Trip with Keshab Chandra Sen",
+    narrativeParagraph1: "On October 27, 1882, **Kojagari Lakshmi Puja**, Sri Ramakrishna joined Brahmo leader **Keshab Chandra Sen** and his followers on a steamer excursion along the **Ganges**. As he was taken by boat to the steamer, the Master entered **samādhi**.",
+    narrativeParagraph2: "During the journey, he spoke of the **Divine Mother**, the harmony of spiritual paths, and the power of devotion to free the mind from worldly bondage. He urged the Brahmo devotees to cultivate intense longing for God, declaring, **“Yearning is all you need in order to realize Him.”**",
+    quote: "Yearning is all you need in order to realize Him.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna speaking with Keshab Chandra Sen and the Brahmo devotees aboard a steamer on the Ganges on 27 October 1882, Kojagari Lakshmi Puja.",
+    customImage: "/images/on-this-day/27thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
