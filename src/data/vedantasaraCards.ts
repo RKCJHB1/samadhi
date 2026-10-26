@@ -14,6 +14,8 @@ export interface VedantasaraCard {
   chapter: VedantasaraChapterId;
   term: string;
   sanskrit?: string;
+  /** One-line meaning. When present, the quiz shows it before `definition`. */
+  summary?: string;
   definition: string;
 }
 
@@ -25,6 +27,22 @@ export const vedantasaraCards: VedantasaraCard[] = [
     sanskrit: 'वेदान्त',
     definition:
       'The Upaniṣads, together with the Brahma Sūtras, the Bhagavad Gītā, and the commentaries that correctly expound them. Vedāntasāra calls this the evidence (pramāṇa) of the highest truth.',
+  },
+  {
+    id: 'brahman',
+    chapter: 'preliminaries',
+    term: 'Brahman',
+    sanskrit: 'ब्रह्मन्',
+    definition:
+      'Akhaṇḍam Sat-Cit-Ānandam: indivisible Existence, Consciousness, and Bliss. Beyond words and thought, the substratum of everything, and our real nature.',
+  },
+  {
+    id: 'akhanda-sat-cit-ananda',
+    chapter: 'preliminaries',
+    term: 'Akhaṇḍam Sat-Cit-Ānanda',
+    sanskrit: 'अखण्डं सच्चिदानन्दम्',
+    definition:
+      'How the first verse of Vedāntasāra describes Brahman: undivided (akhaṇḍam) Existence-Consciousness-Bliss. This pure Consciousness is our real nature.',
   },
   {
     id: 'anubandha-chatushtaya',
@@ -48,7 +66,15 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Viṣaya',
     sanskrit: 'विषय',
     definition:
-      'The subject-matter of Vedānta: the identity of the individual self and Brahman, taught in the great saying “Tat tvam asi” — That thou art.',
+      'The subject-matter of Vedānta: the identity of the individual self (jīva) and Brahman, taught in the great saying “Tat tvam asi” — That thou art.',
+  },
+  {
+    id: 'sambandha',
+    chapter: 'preliminaries',
+    term: 'Sambandha',
+    sanskrit: 'सम्बन्ध',
+    definition:
+      'The connection of the text to its subject: this treatise is the means of revealing the identity of the jīva and Brahman.',
   },
   {
     id: 'prayojana',
@@ -81,6 +107,14 @@ export const vedantasaraCards: VedantasaraCard[] = [
     sanskrit: 'वैराग्य',
     definition:
       'Dispassion for the enjoyment of the fruits of action, both in this world and in the next. The mind is no longer driven by those results.',
+  },
+  {
+    id: 'shatsampatti',
+    chapter: 'preliminaries',
+    term: 'Ṣaṭsampatti',
+    sanskrit: 'षट्सम्पत्ति',
+    definition:
+      'The six disciplines: śama (mental restraint), dama (sense-control), uparati (withdrawal), titikṣā (forbearance), śraddhā (faith), and samādhāna (one-pointedness).',
   },
   {
     id: 'shama',
@@ -139,6 +173,41 @@ export const vedantasaraCards: VedantasaraCard[] = [
       'The intense yearning for liberation. Without this longing, the other qualifications do not bear their full fruit.',
   },
   {
+    id: 'nitya',
+    chapter: 'preliminaries',
+    term: 'Nitya-karma',
+    sanskrit: 'नित्यकर्म',
+    summary: 'Daily obligatory action, such as the regular rites.',
+    definition:
+      'It purifies the mind. It does not by itself give the knowledge that liberates.',
+  },
+  {
+    id: 'naimittika',
+    chapter: 'preliminaries',
+    term: 'Naimittika-karma',
+    sanskrit: 'नैमित्तिककर्म',
+    summary: 'Occasional rites, performed when a particular event calls for them.',
+    definition:
+      'Like daily action, these rites purify the mind. They are not the means of liberation.',
+  },
+  {
+    id: 'prayaschitta',
+    chapter: 'preliminaries',
+    term: 'Prāyaścitta',
+    sanskrit: 'प्रायश्चित्त',
+    summary: 'Expiatory action that remedies a lapse in prescribed duty.',
+    definition:
+      'It clears the disturbance caused by that lapse. It does not itself produce liberating knowledge.',
+  },
+  {
+    id: 'upasana',
+    chapter: 'preliminaries',
+    term: 'Upāsanā',
+    sanskrit: 'उपासना',
+    definition:
+      'Meditative worship or contemplation. It makes the mind steady, but like ritual action it does not itself give liberating knowledge. A guru is essential.',
+  },
+  {
     id: 'guru',
     chapter: 'preliminaries',
     term: 'Guru',
@@ -160,7 +229,7 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Adhyāropa',
     sanskrit: 'अध्यारोप',
     definition:
-      'A pedagogical tool. The teacher provisionally attributes names, forms, and the world to Brahman so the student can follow the teaching. These attributions are later withdrawn by apavāda. Adhyāropa is not the mistake; adhyāsa is.',
+      'A pedagogical tool. The teacher provisionally works with distinctions such as world, Īśvara, and the individual so the student can follow the teaching. These attributions are later withdrawn by apavāda. Adhyāropa is not the mistake; adhyāsa is.',
   },
   {
     id: 'ajnana',
@@ -168,7 +237,7 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Ajñāna (Avidyā)',
     sanskrit: 'अज्ञान / अविद्या',
     definition:
-      'Beginningless ignorance. It is neither real nor unreal, veils Brahman, projects name and form, and is removed only by knowledge.',
+      'Ignorance of our true nature. Because of it we identify the Self with the limited body-mind. It veils Brahman, projects name and form, and is removed only by knowledge.',
   },
   {
     id: 'maya',
@@ -192,7 +261,22 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Īśvara',
     sanskrit: 'ईश्वर',
     definition:
-      'Pure Consciousness associated with aggregate ignorance (māyā). From this standpoint the Lord is omniscient and the cause of the universe.',
+      'Pure Consciousness associated with aggregate ignorance (māyā). Like a colourless crystal appearing red beside a rose, Brahman itself does not change; Īśvara is Brahman viewed with māyā.',
+  },
+  {
+    id: 'upadhi',
+    chapter: 'superimposition',
+    term: 'Upādhi',
+    sanskrit: 'उपाधि',
+    definition:
+      'A limiting adjunct. Like a red rose beside a colourless crystal, māyā is the upādhi that makes attributeless Brahman appear as Īśvara.',
+  },
+  {
+    id: 'crystal-rose',
+    chapter: 'superimposition',
+    term: 'Crystal and rose',
+    definition:
+      'Colourless crystal = Brahman, without attributes. Red rose = māyā, the upādhi. Crystal appearing red = Īśvara. The crystal never becomes red; Brahman undergoes no real change.',
   },
   {
     id: 'prajna',
@@ -233,6 +317,15 @@ export const vedantasaraCards: VedantasaraCard[] = [
     sanskrit: 'स्थूलशरीर',
     definition:
       'The gross body, formed of the five great elements after they have been compounded (pañcīkaraṇa). It is the vehicle of waking experience.',
+  },
+  {
+    id: 'pancikarana',
+    chapter: 'superimposition',
+    term: 'Pañcīkaraṇa',
+    sanskrit: 'पञ्चीकरण',
+    summary: 'The compounding of the five subtle elements into the five gross elements.',
+    definition:
+      'Each gross element is half itself and one eighth of each of the other four. The gross body and the physical world are formed from these compounded elements.',
   },
   {
     id: 'pancha-kosha',
@@ -283,6 +376,15 @@ export const vedantasaraCards: VedantasaraCard[] = [
       'The individual self as it appears limited through association with ignorance and the three bodies. Its true nature is none other than Brahman.',
   },
   {
+    id: 'sakshin',
+    chapter: 'jiva',
+    term: 'Sākṣin',
+    sanskrit: 'साक्षिन्',
+    summary: 'The witness: Consciousness that illumines the three states and is not touched by them.',
+    definition:
+      'The jīva appears limited through the body and mind. The sākṣin is that same Self as the seer, never one object among others.',
+  },
+  {
     id: 'other-views',
     chapter: 'jiva',
     term: 'Other views of the Self',
@@ -295,7 +397,16 @@ export const vedantasaraCards: VedantasaraCard[] = [
     term: 'Apavāda',
     sanskrit: 'अपवाद',
     definition:
-      'The counterpart of adhyāropa. What was provisionally taught is taken back, so Brahman is left as it is. Adhyāropa and apavāda together are the method; adhyāsa is the mistake that knowledge removes.',
+      'Subsequent negation: the superimposed attributes and mistaken identifications are removed. What was provisionally taught is taken back, revealing the non-dual Self. Adhyāropa and apavāda together are the method; adhyāsa is the mistake that knowledge removes.',
+  },
+  {
+    id: 'mahavakya',
+    chapter: 'desuperimposition',
+    term: 'Mahāvākya',
+    sanskrit: 'महावाक्य',
+    summary: 'A great saying of the Upaniṣads that teaches the identity of the jīva and Brahman.',
+    definition:
+      'Vedāntasāra works especially with “Tat tvam asi” — That thou art — and shows how its implied meaning is to be taken.',
   },
   {
     id: 'tat-tvam-asi',
@@ -370,11 +481,67 @@ export const vedantasaraCards: VedantasaraCard[] = [
       'Absorption without distinction. The mental modification itself is not perceived; only Brahman shines.',
   },
   {
-    id: 'obstacles-samadhi',
+    id: 'laya',
     chapter: 'means',
-    term: 'Obstacles to samādhi',
+    term: 'Laya',
+    sanskrit: 'लय',
+    summary: 'An obstacle to samādhi in which the mind sinks into sleep or dullness.',
     definition:
-      'Four classic hindrances: laya (sleep or dullness), vikṣepa (distraction), kaṣāya (latent attachment), and rasāsvāda (clinging to the bliss of the lower samādhi).',
+      'The meditation is lost because awareness collapses, rather than because it runs toward objects.',
+  },
+  {
+    id: 'vikshepa',
+    chapter: 'means',
+    term: 'Vikṣepa',
+    sanskrit: 'विक्षेप',
+    summary: 'An obstacle to samādhi in which the mind is scattered by distraction.',
+    definition:
+      'Attention leaves the Self and moves among objects, memories, or plans.',
+  },
+  {
+    id: 'kashaya',
+    chapter: 'means',
+    term: 'Kaṣāya',
+    sanskrit: 'कषाय',
+    summary: 'A latent stain of attachment that keeps the mind from settling in samādhi.',
+    definition:
+      'The mind is neither asleep nor outwardly distracted, yet old desires cloud it and block absorption.',
+  },
+  {
+    id: 'rasasvada',
+    chapter: 'means',
+    term: 'Rasāsvāda',
+    sanskrit: 'रसास्वाद',
+    summary: 'Clinging to the bliss of a lower samādhi and stopping there.',
+    definition:
+      'The taste of that joy becomes something to enjoy, so nirvikalpa-samādhi is not reached.',
+  },
+  {
+    id: 'sanchita',
+    chapter: 'liberation',
+    term: 'Sañcita',
+    sanskrit: 'सञ्चित',
+    summary: 'The accumulated store of karma from past lives.',
+    definition:
+      'Knowledge destroys this store, so it does not fructify in a future birth.',
+  },
+  {
+    id: 'prarabdha',
+    chapter: 'liberation',
+    term: 'Prārabdha',
+    sanskrit: 'प्रारब्ध',
+    summary: 'The karma that has already begun to bear fruit as this present life.',
+    definition:
+      'It sustains the body even after knowledge. The jīvanmukta lives it out until it is exhausted.',
+  },
+  {
+    id: 'agamin',
+    chapter: 'liberation',
+    term: 'Āgāmin',
+    sanskrit: 'आगामिन्',
+    summary: 'Karma being produced by action in the present life.',
+    definition:
+      'For the one who knows the Self, this new karma does not cling and does not bind a future birth.',
   },
   {
     id: 'jivanmukta',

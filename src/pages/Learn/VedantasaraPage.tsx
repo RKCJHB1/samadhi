@@ -20,19 +20,19 @@ const VedantasaraPage = () => {
   }, []);
 
   return (
-    <PageLayout title="Vedāntasāra Flip Card Quiz (In Development)">
+    <PageLayout title="Vedāntasāra Flip Card Quiz">
       <div className="min-h-screen w-full bg-gradient-to-b from-indian-cream via-white to-indian-cream/30">
         <div className="sticky top-20 z-10 bg-white/95 backdrop-blur-sm border-b border-indian-saffron/20 shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-3">
-            <div className="flex items-center justify-between text-sm">
+            <div className="grid grid-cols-3 items-center text-sm">
               <span className="inline-flex items-center text-spiritual-500">
                 <BookOpen className="w-4 h-4 mr-1" />
                 <span className="hidden sm:inline">Vedāntasāra</span>
               </span>
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <span className="text-foreground font-medium">Flip Card Quiz</span>
               </div>
-              <span className="text-xs font-medium text-indian-saffron">In development</span>
+              <span />
             </div>
             <div className="mt-2 h-1 bg-indian-saffron/20 rounded-full overflow-hidden">
               <div className="h-full w-full bg-gradient-to-r from-indian-saffron to-spiritual-500 rounded-full" />
@@ -54,12 +54,6 @@ const VedantasaraPage = () => {
                 <p className="text-lg max-w-2xl mx-auto text-muted-foreground">
                   Flip cards for the Essence of Vedanta — Sadānanda's primer on Advaita
                 </p>
-                <div className="mt-6 mx-auto max-w-xl rounded-xl border border-dashed border-indian-saffron/50 bg-indian-cream/80 px-4 py-3 text-sm text-gray-700">
-                  <p className="font-semibold text-indian-saffron">This feature is in development</p>
-                  <p className="mt-1">
-                    It is not linked from the rest of the site. Please share feedback with us if you were given this page to try.
-                  </p>
-                </div>
               </header>
 
               <div className="lesson-content">
@@ -95,26 +89,166 @@ const VedantasaraPage = () => {
                     superimposition is removed, and what liberation looks like.
                   </p>
                   <p>
-                    These flip cards follow that order. The front shows a term from the text; the back gives the
-                    meaning used in the Ramakrishna-Vedanta tradition.
+                    These cards follow that order. You can start from the term or from the meaning. The
+                    wording is the one used in the Ramakrishna-Vedanta tradition.
                   </p>
+
+                  <h2>What is Brahman?</h2>
+                  <p>The first verse describes Brahman as:</p>
+                  <div className="not-prose my-6 rounded-xl border border-indian-saffron/40 bg-gradient-to-br from-indian-cream to-white px-6 py-5 text-center shadow-sm">
+                    <p className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 leading-snug">
+                      Akhaṇḍam Sat-Cit-Ānandam
+                    </p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Indivisible Existence–Consciousness–Bliss
+                    </p>
+                  </div>
+                  <ul>
+                    <li><strong>Akhaṇḍam</strong> — Indivisible / undivided</li>
+                    <li><strong>Sat-Cit-Ānanda</strong> — Existence, Consciousness, and Bliss</li>
+                    <li>Beyond the reach of words and thought, and the substratum (base) of everything</li>
+                  </ul>
+                  <p>This pure Consciousness is our real nature.</p>
+
+                  <h2>1. The Four Preliminaries (Anubandha-catuṣṭaya)</h2>
+                  <div className="not-prose grid sm:grid-cols-2 gap-3 my-6">
+                    {[
+                      {
+                        term: 'Adhikārī',
+                        sanskrit: 'अधिकारी',
+                        meaning: 'Who is fit to study?',
+                      },
+                      {
+                        term: 'Viṣaya',
+                        sanskrit: 'विषय',
+                        meaning: 'What is the subject matter for study? (identity of jīva and Brahman)',
+                      },
+                      {
+                        term: 'Sambandha',
+                        sanskrit: 'सम्बन्ध',
+                        meaning: 'What is the connection of the text to the subject?',
+                      },
+                      {
+                        term: 'Prayojana',
+                        sanskrit: 'प्रयोजन',
+                        meaning: 'What is the benefit? (liberation)',
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.term}
+                        className="rounded-xl border border-indian-saffron/30 bg-white px-4 py-3 shadow-sm"
+                      >
+                        <p className="text-xs font-medium uppercase tracking-wide text-indian-saffron">
+                          {item.sanskrit}
+                        </p>
+                        <p className="font-heading font-semibold text-gray-900 mt-0.5">{item.term}</p>
+                        <p className="text-sm text-gray-700 mt-1 leading-relaxed">{item.meaning}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h2>2. The Four Qualifications (Sādhana-catuṣṭaya)</h2>
+                  <ul>
+                    <li><strong>Viveka</strong> — discrimination</li>
+                    <li><strong>Vairāgya</strong> — dispassion</li>
+                    <li>
+                      <strong>Ṣaṭsampatti</strong> — the six disciplines/virtues:{' '}
+                      śama, dama, uparati, titikṣā, śraddhā, samādhāna
+                    </li>
+                    <li><strong>Mumukṣutva</strong> — desire for freedom</li>
+                  </ul>
+
+                  <h2>3. Preparing the Mind</h2>
+                  <p>
+                    <strong>Nitya</strong> (daily), <strong>naimittika</strong> (occasional) and{' '}
+                    <strong>prāyaścitta</strong> (expiatory) actions purify the mind. Meditative
+                    worship/contemplation (<strong>upāsanā</strong>) makes it steady. Neither gives
+                    liberating knowledge by itself. A guru is essential.
+                  </p>
+
+                  <h2>4. Ajñāna (Ignorance) and Superimposition (Adhyāsa)</h2>
+                  <p>
+                    <strong>Ajñāna</strong> is ignorance of our true nature. Because of it, we identify
+                    the Self with the limited body-mind. This gives rise to <strong>adhyāsa</strong>{' '}
+                    (superimposition) — the mistaken attribution of the characteristics of one thing
+                    to another, illustrated by seeing a snake where there is only a rope.
+                  </p>
+
+                  <h3>How Brahman is spoken of as Īśvara (crystal example)</h3>
+                  <div className="not-prose grid sm:grid-cols-3 gap-3 my-6">
+                    {[
+                      {
+                        label: 'Colourless crystal',
+                        meaning: 'Brahman, which is itself without attributes',
+                      },
+                      {
+                        label: 'Red rose',
+                        meaning: 'The upādhi (limiting adjunct), representing māyā',
+                      },
+                      {
+                        label: 'Crystal appearing red',
+                        meaning: 'Brahman as Īśvara, associated with māyā',
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="rounded-xl border border-spiritual-200 bg-gradient-to-br from-white to-spiritual-50 px-4 py-3 shadow-sm"
+                      >
+                        <p className="font-heading font-semibold text-gray-900">{item.label}</p>
+                        <p className="text-sm text-gray-700 mt-1 leading-relaxed">{item.meaning}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p>
+                    The crystal itself never becomes red. Similarly, Brahman does not undergo a real
+                    change; Īśvara is Brahman viewed in association with māyā.
+                  </p>
+
+                  <h2>5. The Teaching Method: Adhyāropa–Apavāda</h2>
+                  <ul>
+                    <li>
+                      <strong>Adhyāropa</strong> = provisional superimposition used for explanation
+                      and teaching.
+                    </li>
+                    <li>
+                      <strong>Apavāda</strong> = subsequent negation or removal of the superimposed
+                      attributes and mistaken identifications.
+                    </li>
+                  </ul>
+                  <p>
+                    The teaching provisionally works with distinctions such as world, Īśvara, and
+                    individual for the purpose of explanation, and then progressively resolves
+                    mistaken identifications and their supposed independent reality, revealing the
+                    non-dual Self.
+                  </p>
+
+                  <div className="not-prose my-8 rounded-xl border-l-4 border-indian-saffron bg-indian-cream/70 px-5 py-4 shadow-sm">
+                    <p className="text-gray-800 leading-relaxed">
+                      Brahman (akhaṇḍa Sat-Cit-Ānanda) alone is absolute reality. The world and the
+                      individual are experienced through māyā and ignorance, while Īśvara is Brahman
+                      associated with māyā. Through provisional teaching and subsequent negation,
+                      ignorance is removed and our ever-present identity as Brahman is recognized.
+                    </p>
+                  </div>
 
                   <h3>The six chapters</h3>
                   <ul>
                     <li><strong>I. Preliminaries</strong> — the student, the four means, and the need for a Guru</li>
-                    <li><strong>II. Superimposition</strong> — adhyāsa (the mistake), adhyāropa (the teaching method), the three bodies, the five sheaths, and Turīya</li>
-                    <li><strong>III. The Jīva</strong> — the individual self and other accounts of its nature</li>
-                    <li><strong>IV. De-superimposition</strong> — “Tat tvam asi” and the implied meaning of the mahāvākya</li>
-                    <li><strong>V. The Means</strong> — śravaṇa, manana, nididhyāsana, and samādhi</li>
-                    <li><strong>VI. Liberation</strong> — the jīvanmukta, videhamukti, and kaivalya</li>
+                    <li><strong>II. Superimposition</strong> — adhyāsa (the mistake), adhyāropa (the teaching method), pañcīkaraṇa, the three bodies, the five sheaths, and Turīya</li>
+                    <li><strong>III. The Jīva</strong> — the individual self, the witness (sākṣin), and other accounts of its nature</li>
+                    <li><strong>IV. De-superimposition</strong> — the mahāvākya “Tat tvam asi” and its implied meaning</li>
+                    <li><strong>V. The Means</strong> — śravaṇa, manana, nididhyāsana, samādhi, and the obstacles to absorption</li>
+                    <li><strong>VI. Liberation</strong> — sañcita, prārabdha, and āgāmin karma, the jīvanmukta, videhamukti, and kaivalya</li>
                   </ul>
 
                   <h3>How to use the cards</h3>
                   <ul>
-                    <li>Read the term and try to recall its meaning</li>
-                    <li>Tap the card to flip it</li>
-                    <li>Mark <strong>I knew this</strong> or <strong>Need review</strong></li>
-                    <li>Filter by chapter, or shuffle the deck, whenever you like</li>
+                    <li>A session starts with 10 cards. Terms you have not marked come first.</li>
+                    <li>Flip from the term, or switch so the meaning is shown first.</li>
+                    <li>Choose the term when you want to tell similar words apart.</li>
+                    <li>Match the three states: individual, cosmic person, and body.</li>
+                    <li>Listen to the pronunciation while the term is on screen.</li>
+                    <li>Marks are saved in this browser. Shuffle keeps them.</li>
                   </ul>
                 </div>
               </div>
@@ -126,7 +260,7 @@ const VedantasaraPage = () => {
                       Ready to test your knowledge?
                     </h3>
                     <p className="mb-4 text-muted-foreground">
-                      Flip through {vedantasaraCards.length} cards drawn from Vedāntasāra
+                      {vedantasaraCards.length} cards drawn from Vedāntasāra. A session is 10 cards, with new terms first. Your marks stay on this device.
                     </p>
                     <button
                       type="button"
