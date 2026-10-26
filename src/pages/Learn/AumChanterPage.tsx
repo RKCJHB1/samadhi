@@ -962,6 +962,18 @@ const AumChanterPage = () => {
   }, []);
 
   useEffect(() => {
+    const root = document.documentElement;
+    const previousTouchAction = root.style.touchAction;
+    const previousTapHighlight = root.style.webkitTapHighlightColor;
+    root.style.touchAction = 'manipulation';
+    root.style.webkitTapHighlightColor = 'transparent';
+    return () => {
+      root.style.touchAction = previousTouchAction;
+      root.style.webkitTapHighlightColor = previousTapHighlight;
+    };
+  }, []);
+
+  useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.repeat) return;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
@@ -1109,7 +1121,17 @@ const AumChanterPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased">
+    <div
+      className="relative min-h-screen touch-manipulation select-none bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 antialiased [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [&_*]:[-webkit-tap-highlight-color:transparent]"
+      onPointerUp={(event) => {
+        if (event.pointerType === 'mouse') return;
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+        const control = target.closest('button, a, [role="tab"]');
+        if (control instanceof HTMLElement) control.blur();
+      }}
+    >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
@@ -1248,7 +1270,7 @@ const AumChanterPage = () => {
                 <button
                   type="button"
                   onClick={() => handleChant()}
-                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer transition-[transform,box-shadow] duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
+                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
                 >
                   {/* Aura Effects */}
@@ -1268,7 +1290,7 @@ const AumChanterPage = () => {
                       maskImage: 'radial-gradient(circle, transparent 66%, #000 70%)',
                     }}
                   />
-                  <div className="relative z-10 h-full w-full">
+                  <div className="pointer-events-none relative z-10 h-full w-full">
                     {currentChant.imageSrc ? (
                       <div
                         className="relative h-full w-full overflow-hidden rounded-[50%] shadow-[inset_0_6px_10px_rgba(0,0,0,0.28)]"
@@ -1277,7 +1299,8 @@ const AumChanterPage = () => {
                         <img
                           src={currentChant.imageSrc}
                           alt={currentChant.name}
-                          className={`h-full w-full object-cover ${
+                          draggable={false}
+                          className={`pointer-events-none h-full w-full object-cover [-webkit-user-drag:none] ${
                             currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
                           }`}
                         />
@@ -1301,7 +1324,8 @@ const AumChanterPage = () => {
                           <img
                             src={currentChant.imageSrc}
                             alt=""
-                            className={`w-full h-full object-cover ${
+                            draggable={false}
+                            className={`pointer-events-none h-full w-full object-cover [-webkit-user-drag:none] ${
                               currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
                             } ${effect.active ? 'scale-150 opacity-0' : 'opacity-70'}`}
                           />
