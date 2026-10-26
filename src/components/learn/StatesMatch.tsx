@@ -10,9 +10,10 @@ import {
 
 interface StatesMatchProps {
   onMark: (id: string, mark: Mark) => void;
+  onPassed?: () => void;
 }
 
-const StatesMatch: React.FC<StatesMatchProps> = ({ onMark }) => {
+const StatesMatch: React.FC<StatesMatchProps> = ({ onMark, onPassed }) => {
   const [placements, setPlacements] = useState<Record<string, string>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
@@ -58,6 +59,7 @@ const StatesMatch: React.FC<StatesMatchProps> = ({ onMark }) => {
     });
     if (correct === slotCount) {
       confetti({ particleCount: 140, spread: 80, origin: { y: 0.65 }, colors: ['#FF9933', '#FFD700', '#FFA500'] });
+      onPassed?.();
     }
   };
 

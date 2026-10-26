@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import PageLayout from '../../components/layout/PageLayout';
 import FlipCardQuiz from '../../components/learn/FlipCardQuiz';
+import VedantaPath from '../../components/learn/VedantaPath';
 import { vedantasaraCards } from '../../data/vedantasaraCards';
 import { cn } from '@/lib/utils';
 
 const VedantasaraPage = () => {
   const [showQuiz, setShowQuiz] = useState(false);
+  const [studyMode, setStudyMode] = useState<'path' | 'deck'>('path');
   const quizRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -235,7 +237,7 @@ const VedantasaraPage = () => {
                   <ul>
                     <li><strong>I. Preliminaries</strong> — the student, the four means, and the need for a Guru</li>
                     <li><strong>II. Superimposition</strong> — adhyāsa (the mistake), adhyāropa (the teaching method), pañcīkaraṇa, the three bodies, the five sheaths, and Turīya</li>
-                    <li><strong>III. The Jīva</strong> — the individual self, the witness (sākṣin), and other accounts of its nature</li>
+                    <li><strong>III. The Jīva</strong> — the individual self and the witness (sākṣin), which close the first half</li>
                     <li><strong>IV. De-superimposition</strong> — the mahāvākya “Tat tvam asi” and its implied meaning</li>
                     <li><strong>V. The Means</strong> — śravaṇa, manana, nididhyāsana, samādhi, and the obstacles to absorption</li>
                     <li><strong>VI. Liberation</strong> — sañcita, prārabdha, and āgāmin karma, the jīvanmukta, videhamukti, and kaivalya</li>
@@ -243,12 +245,10 @@ const VedantasaraPage = () => {
 
                   <h3>How to use the cards</h3>
                   <ul>
-                    <li>A session starts with 10 cards. Terms you have not marked come first.</li>
-                    <li>Flip from the term, or switch so the meaning is shown first.</li>
-                    <li>Choose the term when you want to tell similar words apart.</li>
-                    <li>Match the three states: individual, cosmic person, and body.</li>
-                    <li>Listen to the pronunciation while the term is on screen.</li>
-                    <li>Marks are saved in this browser. Shuffle keeps them.</li>
+                    <li>Follow the guided path for the first half: the student, the provisional world, and the jīva.</li>
+                    <li>Each section asks you to place names, put a list in order, or read a short scene.</li>
+                    <li>The practice deck keeps the whole glossary. A session starts with 10 cards.</li>
+                    <li>Your place on the path, and your card marks, stay in this browser.</li>
                   </ul>
                 </div>
               </div>
@@ -260,7 +260,7 @@ const VedantasaraPage = () => {
                       Ready to test your knowledge?
                     </h3>
                     <p className="mb-4 text-muted-foreground">
-                      {vedantasaraCards.length} cards drawn from Vedāntasāra. A session is 10 cards, with new terms first. Your marks stay on this device.
+                      A guided path through the first half, then the practice deck of {vedantasaraCards.length} cards. Your place stays on this device.
                     </p>
                     <button
                       type="button"
@@ -272,16 +272,43 @@ const VedantasaraPage = () => {
                       }}
                       className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indian-saffron to-spiritual-500 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105"
                     >
-                      Start Flip Card Quiz
+                      Start
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 ) : (
                   <div className="p-6 rounded-xl border shadow-md bg-white border-indian-saffron/30">
-                    <h3 className="text-xl font-heading font-semibold mb-6 text-gray-900">
-                      Knowledge Check
-                    </h3>
-                    <FlipCardQuiz cards={vedantasaraCards} />
+                    <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Study">
+                      <button
+                        type="button"
+                        role="tab"
+                        aria-selected={studyMode === 'path'}
+                        onClick={() => setStudyMode('path')}
+                        className={cn(
+                          'px-3 py-1.5 rounded-full text-sm border',
+                          studyMode === 'path'
+                            ? 'bg-indian-saffron text-white border-indian-saffron'
+                            : 'bg-white text-gray-700 border-indian-saffron/30',
+                        )}
+                      >
+                        Guided path
+                      </button>
+                      <button
+                        type="button"
+                        role="tab"
+                        aria-selected={studyMode === 'deck'}
+                        onClick={() => setStudyMode('deck')}
+                        className={cn(
+                          'px-3 py-1.5 rounded-full text-sm border',
+                          studyMode === 'deck'
+                            ? 'bg-indian-saffron text-white border-indian-saffron'
+                            : 'bg-white text-gray-700 border-indian-saffron/30',
+                        )}
+                      >
+                        Practice deck
+                      </button>
+                    </div>
+                    {studyMode === 'path' ? <VedantaPath /> : <FlipCardQuiz cards={vedantasaraCards} />}
                   </div>
                 )}
               </div>

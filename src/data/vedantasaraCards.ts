@@ -385,13 +385,6 @@ export const vedantasaraCards: VedantasaraCard[] = [
       'The jīva appears limited through the body and mind. The sākṣin is that same Self as the seer, never one object among others.',
   },
   {
-    id: 'other-views',
-    chapter: 'jiva',
-    term: 'Other views of the Self',
-    definition:
-      'Vedāntasāra examines the materialist, Buddhist, and ritualist accounts of the Self. Each is taken as a step that trains the mind to move from the gross body toward subtler identifications, until the true Self is reached.',
-  },
-  {
     id: 'apavada',
     chapter: 'desuperimposition',
     term: 'Apavāda',
