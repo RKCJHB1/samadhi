@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import PageLayout from '../../components/layout/PageLayout';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
@@ -146,6 +145,7 @@ const AumChanterPage = () => {
   const [isChanted, setIsChanted] = useState<boolean>(false);
   const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean }[]>([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
+  const [isShareVisible, setIsShareVisible] = useState<boolean>(false);
   const [isGoalModalVisible, setIsGoalModalVisible] = useState<boolean>(false);
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioPoolRef = useRef<HTMLAudioElement[]>([]);
@@ -570,6 +570,7 @@ const AumChanterPage = () => {
     }
   }, [groupNameDraft]);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const [includeCamera, setIncludeCamera] = useState(false);
   const noteChantRef = useRef(noteChant);
   noteChantRef.current = noteChant;
 
@@ -891,6 +892,7 @@ const AumChanterPage = () => {
     }
 
     setIsAutoChantModalVisible(false);
+    setIsShareVisible(false);
     setIsAutoChanting(true);
     setAutoChantRemaining(count);
     autoChantRemainingRef.current = count;
@@ -944,8 +946,35 @@ const AumChanterPage = () => {
   }, [chanterName]);
 
   useEffect(() => {
-    if (videoPhase === 'ready') setIsVideoVisible(true);
+    if (videoPhase === 'ready') {
+      setIsVideoVisible(true);
+      setIsShareVisible(false);
+    }
   }, [videoPhase, videoUrl]);
+
+  useEffect(() => {
+    const defaultTitle = 'Ramakrishna Centre of South Africa, Johannesburg';
+    document.title = `Aum Chanter | ${defaultTitle}`;
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.repeat) return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key !== ' ' && event.key !== 'Enter') return;
+      if (document.querySelector('[data-chant-dialog]')) return;
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const tag = target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'VIDEO' || target.isContentEditable) return;
+      if (target.closest('button, a, [role="button"], [role="tab"]')) return;
+      event.preventDefault();
+      handleChant();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [handleChant]);
 
   useEffect(() => {
     if (!isVideoVisible) return;
@@ -1077,9 +1106,9 @@ const AumChanterPage = () => {
   };
 
   return (
-    <PageLayout title="Aum Chanter" className="no-top-padding">
-      <main className="relative flex min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased pt-8 pb-4 sm:pt-16 sm:pb-6">
-        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-spiritual-900 to-slate-900 text-gray-100 select-none antialiased">
+      <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
+        <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="w-full flex items-center justify-between mt-1">
             {/* History button (left) */}
@@ -1213,11 +1242,11 @@ const AumChanterPage = () => {
                   </svg>
                 )}
 
-                <div
-                  onClick={handleChant}
-                  className={`pointer-events-auto relative flex items-center justify-center w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] rounded-full bg-gradient-radial from-spiritual-700/20 via-spiritual-900/10 to-transparent border-2 border-spiritual-400/20 shadow-[0_0_30px_rgba(217,119,6,0.2),inset_0_0_15px_rgba(251,146,60,0.1)] cursor-pointer transition-all duration-150 ease-in-out hover:shadow-[0_0_45px_rgba(217,119,6,0.4),inset_0_0_20px_rgba(251,146,60,0.2)] hover:border-spiritual-400/40 active:scale-95 ${isChanted ? 'scale-95' : 'scale-100'}`}
+                <button
+                  type="button"
+                  onClick={() => handleChant()}
+                  className={`pointer-events-auto relative flex items-center justify-center w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] p-0 rounded-full bg-gradient-radial from-spiritual-700/20 via-spiritual-900/10 to-transparent border-2 border-spiritual-400/20 shadow-[0_0_30px_rgba(217,119,6,0.2),inset_0_0_15px_rgba(251,146,60,0.1)] cursor-pointer transition-all duration-150 ease-in-out hover:shadow-[0_0_45px_rgba(217,119,6,0.4),inset_0_0_20px_rgba(251,146,60,0.2)] hover:border-spiritual-400/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:scale-95 ${isChanted ? 'scale-95' : 'scale-100'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
-                  role="button"
                 >
                   {/* Aura Effects */}
                   {chantEffects.map(effect => (
@@ -1270,7 +1299,7 @@ const AumChanterPage = () => {
                       )
                     ))}
                   </div>
-                </div>
+                </button>
               </div>
             </div>
             <p className="mt-2 px-3 text-center text-xs text-spiritual-200/70 sm:mt-4 sm:text-sm">
@@ -1363,7 +1392,48 @@ const AumChanterPage = () => {
             document.body
           )}
 
-          <label htmlFor="chanter-name" className="mt-2 flex w-full max-w-sm items-center gap-2 text-sm text-spiritual-200/80">
+          <div className="mt-1 flex w-full flex-wrap items-center justify-center gap-2">
+            {isAutoChanting && (
+              <button
+                type="button"
+                onClick={stopAutoChant}
+                className="flex items-center gap-2 rounded-lg bg-red-600/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-red-600"
+              >
+                Stop ({autoChantRemaining} remaining)
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsShareVisible(true)}
+              className="rounded-lg bg-spiritual-600/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-spiritual-600"
+            >
+              Share
+            </button>
+          </div>
+          {!isShareVisible && videoError && videoPhase !== 'ready' && (
+            <p className="max-w-md text-center text-sm text-red-200" role="alert">{videoError}</p>
+          )}
+        </div>
+
+        {isShareVisible && (
+          <div
+            data-chant-dialog
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+            onClick={() => setIsShareVisible(false)}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="chant-share-title"
+              className="flex max-h-[85vh] w-full max-w-md flex-col overflow-y-auto rounded-lg border border-spiritual-400/20 bg-slate-900 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-spiritual-400/20 p-4">
+                <h2 id="chant-share-title" className="font-sans text-xl text-spiritual-200">Share</h2>
+                <button type="button" onClick={() => setIsShareVisible(false)} className="text-2xl leading-none text-spiritual-300/60 hover:text-spiritual-200" aria-label="Close share">&times;</button>
+              </div>
+              <div className="flex select-text flex-col items-center gap-4 p-4">
+          <label htmlFor="chanter-name" className="flex w-full items-center gap-2 text-sm text-spiritual-200/80">
             <span className="shrink-0">Your name</span>
             <input
               id="chanter-name"
@@ -1373,7 +1443,7 @@ const AumChanterPage = () => {
               autoComplete="name"
               placeholder="Shown on your video"
               onChange={(event) => setChanterName(event.target.value)}
-              className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
+              className="min-w-0 flex-1 rounded border border-amber-900/20 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
             />
           </label>
 
@@ -1391,7 +1461,7 @@ const AumChanterPage = () => {
                 maxLength={60}
                 placeholder="Mistri Family"
                 onChange={(event) => setGroupNameDraft(event.target.value)}
-                className="min-w-0 flex-1 rounded border border-spiritual-400/30 bg-slate-900/50 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
+                className="min-w-0 flex-1 rounded border border-amber-900/20 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
               />
             </label>
             {groupLink ? (
@@ -1469,6 +1539,42 @@ const AumChanterPage = () => {
             )}
           </div>
 
+          {videoPhase !== 'recording' && videoPhase !== 'ready' && (
+            <fieldset className="mt-2 w-full max-w-md rounded-xl border border-amber-300/70 bg-slate-950/90 p-3 text-sm text-white shadow-lg">
+              <legend className="px-2 font-sans font-semibold text-amber-200">Choose what appears in your video</legend>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-white/30 bg-slate-800 px-3 py-2.5 text-left text-white transition-colors hover:border-amber-200">
+                  <input
+                    type="radio"
+                    name="chant-video-camera"
+                    checked={!includeCamera}
+                    disabled={videoPhase === 'starting'}
+                    onChange={() => setIncludeCamera(false)}
+                    className="mt-1 accent-amber-400"
+                  />
+                  <span>
+                    <span className="block font-semibold">Chant app only</span>
+                    <span className="block text-xs text-slate-200">No camera is used.</span>
+                  </span>
+                </label>
+                <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-white/30 bg-slate-800 px-3 py-2.5 text-left text-white transition-colors hover:border-amber-200">
+                  <input
+                    type="radio"
+                    name="chant-video-camera"
+                    checked={includeCamera}
+                    disabled={videoPhase === 'starting'}
+                    onChange={() => setIncludeCamera(true)}
+                    className="mt-1 accent-amber-400"
+                  />
+                  <span>
+                    <span className="block font-semibold">Include me</span>
+                    <span className="block text-xs text-slate-200">Use the front-facing camera.</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+          )}
+
           <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting ? (
               <button
@@ -1503,7 +1609,7 @@ const AumChanterPage = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => { void startRecording(); }}
+                onClick={() => { setIsShareVisible(false); void startRecording(includeCamera); }}
                 disabled={videoPhase === 'starting' || videoPhase === 'recording'}
                 className="flex items-center gap-2 rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-slate-700 disabled:opacity-60"
                 aria-label={`Record a ${currentChant.name} video to share`}
@@ -1565,11 +1671,14 @@ const AumChanterPage = () => {
               </ol>
             )}
           </section>
-        </div>
+              </div>
+            </div>
+          </div>
+        )}
 	
         {/* History Modal */}
         {isHistoryVisible && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsHistoryVisible(false)}>
+          <div data-chant-dialog className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsHistoryVisible(false)}>
             <div className="bg-slate-800/80 border border-spiritual-400/20 rounded-lg shadow-2xl w-11/12 max-w-md max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b border-spiritual-400/20">
                 <h2 className="text-xl font-sans text-spiritual-200">{currentChant.name} History</h2>
@@ -1608,7 +1717,7 @@ const AumChanterPage = () => {
 
         {/* Goal Modal */}
         {isGoalModalVisible && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsGoalModalVisible(false)}>
+          <div data-chant-dialog className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsGoalModalVisible(false)}>
             <div className="bg-slate-800/80 border border-spiritual-400/20 rounded-lg shadow-2xl w-11/12 max-w-md flex flex-col" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b border-spiritual-400/20">
                 <h2 className="text-xl font-sans text-spiritual-200">Set Daily Goal for {currentChant.name}</h2>
@@ -1635,7 +1744,7 @@ const AumChanterPage = () => {
 
         {/* Auto Chant Modal */}
         {isAutoChantModalVisible && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsAutoChantModalVisible(false)}>
+          <div data-chant-dialog className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300" onClick={() => setIsAutoChantModalVisible(false)}>
             <div className="bg-slate-800/80 border border-spiritual-400/20 rounded-lg shadow-2xl w-11/12 max-w-md flex flex-col" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b border-spiritual-400/20">
                 <h2 className="text-xl font-sans text-spiritual-200">Auto Chant</h2>
@@ -1669,6 +1778,7 @@ const AumChanterPage = () => {
 
         {isVideoVisible && videoUrl && createPortal(
           <div
+            data-chant-dialog
             className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
             onClick={() => setIsVideoVisible(false)}
           >
@@ -1689,7 +1799,7 @@ const AumChanterPage = () => {
                   src={videoUrl}
                   controls
                   playsInline
-                  className="max-h-[50vh] w-full rounded-lg bg-black"
+                  className="max-h-[50vh] w-full rounded-lg border-4 border-amber-300 bg-black shadow-[0_0_0_2px_rgba(255,247,237,0.9),0_8px_24px_rgba(0,0,0,0.5)]"
                 />
                 <p className="text-sm text-spiritual-300/90">
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
@@ -1742,9 +1852,8 @@ const AumChanterPage = () => {
           document.body
         )}
       </main>
-    </PageLayout>
+    </div>
   );
 };
 
 export default AumChanterPage;
-
