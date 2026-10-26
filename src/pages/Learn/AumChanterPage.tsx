@@ -1248,7 +1248,7 @@ const AumChanterPage = () => {
                 <button
                   type="button"
                   onClick={() => handleChant()}
-                  className={`pointer-events-auto relative flex items-center justify-center w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] p-0 rounded-full bg-gradient-radial from-spiritual-700/20 via-spiritual-900/10 to-transparent border-2 border-spiritual-400/20 shadow-[0_0_30px_rgba(217,119,6,0.2),inset_0_0_15px_rgba(251,146,60,0.1)] cursor-pointer transition-all duration-150 ease-in-out hover:shadow-[0_0_45px_rgba(217,119,6,0.4),inset_0_0_20px_rgba(251,146,60,0.2)] hover:border-spiritual-400/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:scale-95 ${isChanted ? 'scale-95' : 'scale-100'}`}
+                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer transition-[transform,box-shadow] duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
                 >
                   {/* Aura Effects */}
@@ -1259,19 +1259,34 @@ const AumChanterPage = () => {
                     />
                   ))}
 
-                  <div className="relative flex items-center justify-center z-10 w-full h-full">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 z-20 rounded-[50%]"
+                    style={{
+                      background: 'linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.08) 34%, rgba(0,0,0,0.18) 100%)',
+                      WebkitMaskImage: 'radial-gradient(circle, transparent 66%, #000 70%)',
+                      maskImage: 'radial-gradient(circle, transparent 66%, #000 70%)',
+                    }}
+                  />
+                  <div className="relative z-10 h-full w-full">
                     {currentChant.imageSrc ? (
-                      <div className="w-[clamp(7.5rem,40vmin,16rem)] h-[clamp(7.5rem,40vmin,16rem)] rounded-full overflow-hidden drop-shadow-[0_0_15px_rgba(253,224,71,0.4)] flex items-center justify-center">
+                      <div
+                        className="relative h-full w-full overflow-hidden rounded-[50%] shadow-[inset_0_6px_10px_rgba(0,0,0,0.28)]"
+                        style={{ clipPath: 'circle(50%)', WebkitClipPath: 'circle(50%)' }}
+                      >
                         <img
                           src={currentChant.imageSrc}
                           alt={currentChant.name}
-                          className={`w-full h-full object-cover ${
+                          className={`h-full w-full object-cover ${
                             currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
                           }`}
                         />
                       </div>
                     ) : (
-                      <div className="flex h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] flex-col items-center justify-center rounded-full border border-white/40 bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300 shadow-[0_0_25px_rgba(251,146,60,0.35)]">
+                      <div
+                        className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[50%] bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300 shadow-[inset_0_6px_10px_rgba(0,0,0,0.2)]"
+                        style={{ clipPath: 'circle(50%)', WebkitClipPath: 'circle(50%)' }}
+                      >
                         <span className="text-[clamp(2.5rem,11vmin,4.75rem)] font-serif leading-none text-orange-950 drop-shadow-sm">{currentChant.symbol}</span>
                         <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
                       </div>
@@ -1280,7 +1295,8 @@ const AumChanterPage = () => {
                       currentChant.imageSrc ? (
                         <div
                           key={effect.id}
-                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] rounded-full overflow-hidden drop-shadow-[0_0_15px_rgba(253,224,71,0.4)] pointer-events-none transition-all duration-700 ease-out flex items-center justify-center"
+                          className="absolute inset-0 overflow-hidden rounded-[50%] pointer-events-none transition-all duration-700 ease-out"
+                          style={{ clipPath: 'circle(50%)', WebkitClipPath: 'circle(50%)' }}
                         >
                           <img
                             src={currentChant.imageSrc}
