@@ -146,6 +146,7 @@ const AumChanterPage = () => {
   const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean }[]>([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
   const [isShareVisible, setIsShareVisible] = useState<boolean>(false);
+  const [isGroupsVisible, setIsGroupsVisible] = useState<boolean>(false);
   const [isGoalModalVisible, setIsGoalModalVisible] = useState<boolean>(false);
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioPoolRef = useRef<HTMLAudioElement[]>([]);
@@ -1398,7 +1399,7 @@ const AumChanterPage = () => {
             <p className="text-center text-sm text-spiritual-100/90">
               <button
                 type="button"
-                onClick={() => setIsShareVisible(true)}
+                onClick={() => setIsGroupsVisible(true)}
                 className="underline decoration-spiritual-300/40 underline-offset-2 hover:text-white"
               >
                 {rankedGroups.length === 1
@@ -1438,6 +1439,51 @@ const AumChanterPage = () => {
             <p className="max-w-md text-center text-sm text-red-200" role="alert">{videoError}</p>
           )}
         </div>
+
+        {isGroupsVisible && (
+          <div
+            data-chant-dialog
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+            onClick={() => setIsGroupsVisible(false)}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="chant-groups-title"
+              className="flex max-h-[85vh] w-full max-w-md flex-col rounded-lg border border-spiritual-400/20 bg-slate-900 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-spiritual-400/20 p-4">
+                <h2 id="chant-groups-title" className="font-sans text-xl text-spiritual-200">Groups</h2>
+                <button type="button" onClick={() => setIsGroupsVisible(false)} className="text-2xl leading-none text-spiritual-300/60 hover:text-spiritual-200" aria-label="Close groups">&times;</button>
+              </div>
+              <div className="overflow-y-auto p-4 text-sm text-spiritual-100">
+                {rankedGroups.length === 0 ? (
+                  <p className="text-center text-xs text-spiritual-300/70">No saved group totals yet.</p>
+                ) : (
+                  <ol className="space-y-1">
+                    {rankedGroups.map((group, index) => {
+                      const current = Boolean(groupCode) && group.code.toLowerCase() === groupCode.toLowerCase();
+                      return (
+                        <li
+                          key={group.code}
+                          className={`flex items-baseline justify-between gap-3 rounded px-2 py-1 ${current ? 'bg-spiritual-600/30' : ''}`}
+                        >
+                          <span className="min-w-0 truncate">
+                            <span className="mr-2 font-mono text-spiritual-300/70">{index + 1}.</span>
+                            {group.name}
+                            {current ? ' · this group' : ''}
+                          </span>
+                          <span className="shrink-0 font-mono">{group.total.toLocaleString()}</span>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {isShareVisible && (
           <div
