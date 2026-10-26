@@ -305,6 +305,7 @@ const AumChanterPage = () => {
   const [worldwideReady, setWorldwideReady] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
   const [chanterCount, setChanterCount] = useState(0);
+  const [chantingNow, setChantingNow] = useState(0);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
@@ -411,6 +412,7 @@ const AumChanterPage = () => {
       setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setChanterCount(summary.chanterCount);
+      setChantingNow(summary.chantingNow);
       setAvgChantsPerUser(summary.chanterCount > 0 ? summary.globalTotal / summary.chanterCount : 0);
       setWorldwideReady(true);
       setRecordReady(true);
@@ -1403,6 +1405,14 @@ const AumChanterPage = () => {
                   ? 'There is 1 group.'
                   : `There are ${rankedGroups.length.toLocaleString()} groups.`}
               </button>
+              <span className="mx-2 text-spiritual-400/50">·</span>
+              <span>
+                {chantingNow === 1
+                  ? '1 person is chanting now.'
+                  : chantingNow === 0
+                    ? 'No one is chanting now.'
+                    : `${chantingNow.toLocaleString()} people are chanting now.`}
+              </span>
             </p>
           )}
 

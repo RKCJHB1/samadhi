@@ -180,18 +180,22 @@ function storedTotal(value: unknown): number {
   return Math.max(0, Math.round(Number(cellText(value)) || 0));
 }
 
-async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number }> {
+async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
   const rows = await execute(
     env,
     `SELECT COALESCE(SUM(total), 0),
             COALESCE(MAX(total), 0),
-            COALESCE(SUM(CASE WHEN total > 0 THEN 1 ELSE 0 END), 0)
+            COALESCE(SUM(CASE WHEN total > 0 THEN 1 ELSE 0 END), 0),
+            COALESCE(SUM(CASE
+              WHEN total > 0 AND updated_at >= strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 minutes')
+              THEN 1 ELSE 0 END), 0)
      FROM chant_people`,
   );
   return {
     globalTotal: storedTotal(rows[0]?.[0]),
     recordTotal: storedTotal(rows[0]?.[1]),
     chanterCount: storedTotal(rows[0]?.[2]),
+    chantingNow: storedTotal(rows[0]?.[3]),
   };
 }
 
@@ -346,6 +350,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
         globalTotal: people.globalTotal,
         recordTotal: people.recordTotal,
         chanterCount: people.chanterCount,
+        chantingNow: people.chantingNow,
       });
     }
 
