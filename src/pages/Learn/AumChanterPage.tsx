@@ -1392,6 +1392,20 @@ const AumChanterPage = () => {
             document.body
           )}
 
+          {worldwideReady && (
+            <p className="text-center text-sm text-spiritual-100/90">
+              <button
+                type="button"
+                onClick={() => setIsShareVisible(true)}
+                className="underline decoration-spiritual-300/40 underline-offset-2 hover:text-white"
+              >
+                {rankedGroups.length === 1
+                  ? 'There is 1 group.'
+                  : `There are ${rankedGroups.length.toLocaleString()} groups.`}
+              </button>
+            </p>
+          )}
+
           <div className="mt-1 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting && (
               <button
