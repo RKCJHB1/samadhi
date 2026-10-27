@@ -2004,6 +2004,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/27thOctober.png"
   },
   {
+    date: "October 28",
+    monthNumeric: 9,
+    dayNumeric: 28,
+    year: 1867,
+    headline: "October 28 — Birth of Sister Nivedita",
+    narrativeParagraph1: "On October 28, 1867, **Margaret Elizabeth Noble** was born in **Dungannon, Ireland**. After meeting **Swami Vivekananda** in **London** in November 1895, she dedicated her life to his vision of service to India.",
+    narrativeParagraph2: "She arrived in **Calcutta** in January 1898, and on March 25 of that year Swami Vivekananda gave her the name **Sister Nivedita**, meaning “The Dedicated One.” She pioneered girls’ education, served people during epidemics and natural disasters, and became an influential supporter of India’s national awakening and artistic revival.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Scenes from Sister Nivedita’s life: her birth as Margaret Elizabeth Noble in Dungannon on 28 October 1867, her meeting with Swami Vivekananda in London, her arrival in Calcutta, the giving of her name, girls’ education, service in epidemics and disasters, and her support of India’s national awakening and artistic revival.",
+    customImage: "/images/on-this-day/28thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
