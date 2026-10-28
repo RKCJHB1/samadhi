@@ -320,8 +320,12 @@ function paintReadout(
   context.shadowColor = 'rgba(0,0,0,0.7)';
   context.shadowBlur = 12;
   context.shadowOffsetY = 2;
-  context.fillStyle = 'rgba(251, 191, 36, 0.95)';
+  context.strokeStyle = 'rgba(0, 0, 0, 0.92)';
+  context.lineWidth = Math.max(3, Math.round(layout.titleSize * 0.16));
+  context.lineJoin = 'round';
+  context.fillStyle = '#ffd166';
   context.font = `600 ${layout.titleSize}px ${CANVAS_FONT}`;
+  context.strokeText('AUM CHANTER', canvas.width / 2, layout.titleY);
   context.fillText('AUM CHANTER', canvas.width / 2, layout.titleY);
   if (line) {
     let personSize = layout.personSize;
@@ -331,6 +335,8 @@ function paintReadout(
       context.font = `600 ${personSize}px ${CANVAS_FONT}`;
     }
     context.fillStyle = '#fff7ed';
+    context.lineWidth = Math.max(3, Math.round(personSize * 0.16));
+    context.strokeText(line, canvas.width / 2, layout.personY);
     context.fillText(line, canvas.width / 2, layout.personY);
   }
   if (gold) {
@@ -340,7 +346,9 @@ function paintReadout(
       worldwideSize -= 1;
       context.font = `600 ${worldwideSize}px ${CANVAS_FONT}`;
     }
-    context.fillStyle = 'rgba(251, 191, 36, 0.95)';
+    context.fillStyle = '#ffd166';
+    context.lineWidth = Math.max(3, Math.round(worldwideSize * 0.16));
+    context.strokeText(gold, canvas.width / 2, layout.worldwideY);
     context.fillText(gold, canvas.width / 2, layout.worldwideY);
   }
   let nameSize = layout.nameSize;
@@ -350,12 +358,18 @@ function paintReadout(
     context.font = `600 ${nameSize}px ${CANVAS_FONT}`;
   }
   context.fillStyle = '#fff7ed';
+  context.lineWidth = Math.max(3, Math.round(nameSize * 0.16));
+  context.strokeText(chantName, canvas.width / 2, layout.nameY);
   context.fillText(chantName, canvas.width / 2, layout.nameY);
   context.fillStyle = '#ffffff';
   context.font = `700 ${layout.countSize}px ${CANVAS_FONT}`;
+  context.lineWidth = Math.max(4, Math.round(layout.countSize * 0.14));
+  context.strokeText(chants.toLocaleString(), canvas.width / 2, layout.countY);
   context.fillText(chants.toLocaleString(), canvas.width / 2, layout.countY);
   context.font = `500 ${layout.labelSize}px ${CANVAS_FONT}`;
-  context.fillStyle = 'rgba(255,247,237,0.88)';
+  context.fillStyle = '#fff7ed';
+  context.lineWidth = Math.max(3, Math.round(layout.labelSize * 0.16));
+  context.strokeText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.restore();
   paintCornerNotes(context, canvas);
@@ -364,6 +378,22 @@ function paintReadout(
 function evenSize(value: number): number {
   const even = Math.max(2, Math.round(value));
   return even - (even % 2);
+}
+
+function paintVideoBorder(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+  const shortSide = Math.min(canvas.width, canvas.height);
+  const inset = Math.max(8, Math.round(shortSide * 0.012));
+  context.save();
+  context.lineWidth = Math.max(6, Math.round(shortSide * 0.012));
+  context.strokeStyle = '#ffd166';
+  context.shadowColor = 'rgba(0, 0, 0, 0.9)';
+  context.shadowBlur = 10;
+  context.strokeRect(inset, inset, canvas.width - inset * 2, canvas.height - inset * 2);
+  context.lineWidth = Math.max(2, Math.round(shortSide * 0.004));
+  context.strokeStyle = '#fff7ed';
+  context.shadowBlur = 0;
+  context.strokeRect(inset + 8, inset + 8, canvas.width - (inset + 8) * 2, canvas.height - (inset + 8) * 2);
+  context.restore();
 }
 
 export function useChantVideo() {
@@ -547,7 +577,7 @@ export function useChantVideo() {
     canvasRef.current = node;
   }, []);
 
-  const startRecording = useCallback(async () => {
+  const startRecording = useCallback(async (includeCamera = false) => {
     if (phaseRef.current === 'recording' || phaseRef.current === 'starting') return;
     setError(null);
     setNotice(null);
@@ -580,7 +610,7 @@ export function useChantVideo() {
     };
 
     try {
-      const stream = await openCamera();
+      const stream = includeCamera ? await openCamera() : null;
       if (runId !== runRef.current) {
         abandon(stream);
         return;
@@ -590,7 +620,7 @@ export function useChantVideo() {
       if (stream) {
         streamRef.current = stream;
         setNotice(null);
-      } else {
+      } else if (includeCamera) {
         setNotice(NO_CAMERA_NOTICE);
       }
       // The microphone's echo cancellation strips the chant playing from the phone
@@ -713,6 +743,7 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
+        paintVideoBorder(context, canvas);
       };
 
       const drawCard = () => {
@@ -789,6 +820,7 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
+        paintVideoBorder(context, canvas);
       };
 
       const draw = () => {

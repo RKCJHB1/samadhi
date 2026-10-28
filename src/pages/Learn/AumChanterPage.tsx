@@ -16,9 +16,17 @@ const getTodayString = () => {
 
 const MALA_BEAD_COUNT = 108;
 
-function vibrationForChant(nextCount: number): number | number[] {
-  // Two short clicks with a small gap, the rhythm of a correct-answer success haptic.
-  if (nextCount > 0 && nextCount % MALA_BEAD_COUNT === 0) return [55, 55, 53];
+const MALA_SUCCESS_PULSE = [100, 90, 100, 90, 180];
+const MALA_SUCCESS_MS = MALA_SUCCESS_PULSE.reduce((sum, part) => sum + part, 0);
+let malaPulseUntil = 0;
+
+function vibrationForChant(nextCount: number): number | number[] | null {
+  const now = Date.now();
+  if (nextCount > 0 && nextCount % MALA_BEAD_COUNT === 0) {
+    malaPulseUntil = now + MALA_SUCCESS_MS;
+    return MALA_SUCCESS_PULSE;
+  }
+  if (now < malaPulseUntil) return null;
   return 50;
 }
 const CHANT_AUDIO_POOL_SIZE = 4;
@@ -149,6 +157,8 @@ const AumChanterPage = () => {
   const [goalsByChant, setGoalsByChant] = useState<Record<string, number>>(readChantGoals);
 
   const [isChanted, setIsChanted] = useState<boolean>(false);
+  const [malaComplete, setMalaComplete] = useState(false);
+  const malaFlashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean }[]>([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
   const [isShareVisible, setIsShareVisible] = useState<boolean>(false);
@@ -743,10 +753,16 @@ const AumChanterPage = () => {
     const chantIdForPulse = selectedChantIdRef.current;
     const nextCount = (chantTotalsRef.current[chantIdForPulse] || 0) + 1;
     chantTotalsRef.current[chantIdForPulse] = nextCount;
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    const pulse = vibrationForChant(nextCount);
+    if (pulse != null && typeof navigator !== 'undefined' && navigator.vibrate) {
       try {
-        navigator.vibrate(vibrationForChant(nextCount));
+        navigator.vibrate(pulse);
       } catch (e) {}
+    }
+    if (nextCount > 0 && nextCount % MALA_BEAD_COUNT === 0) {
+      setMalaComplete(true);
+      if (malaFlashTimerRef.current) clearTimeout(malaFlashTimerRef.current);
+      malaFlashTimerRef.current = setTimeout(() => setMalaComplete(false), 900);
     }
 
     // Update history
@@ -949,7 +965,7 @@ const AumChanterPage = () => {
       globalChants,
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
-      shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode).videoText : '',
+      shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal).videoText : '',
     });
   }, [chanterName, currentChant, globalChants, groupCode, groupTitle, groupTotal, syncFrame]);
 
@@ -1029,7 +1045,9 @@ const AumChanterPage = () => {
   const todaysChants = chantHistory.find(entry => entry.date === getTodayString())?.chants || 0;
   const completedMalas = Math.floor(count / MALA_BEAD_COUNT);
   const todaysCompletedMalas = Math.floor(todaysChants / MALA_BEAD_COUNT);
-  const chantsIntoCurrentMala = count % MALA_BEAD_COUNT;
+  const chantsIntoCurrentMala = count > 0 && count % MALA_BEAD_COUNT === 0
+    ? MALA_BEAD_COUNT
+    : count % MALA_BEAD_COUNT;
   const progressPercent = dailyGoal && dailyGoal > 0 ? Math.min((todaysChants / dailyGoal) * 100, 100) : 0;
   const goalMet = progressPercent >= 100;
 
@@ -1044,7 +1062,12 @@ const AumChanterPage = () => {
     ? typedGroupName
     : (groupTitle || (previewCode ? previewCode.replace(/_/g, ' ') : ''));
   const groupLink = previewCode
-    ? buildGroupShare(previewName, currentChant.name, previewCode)
+    ? buildGroupShare(
+      previewName,
+      currentChant.name,
+      previewCode,
+      groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? groupTotal : 0,
+    )
     : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
   const rankedGroups = [...leaderboard.map((group) => ({
@@ -1283,7 +1306,7 @@ const AumChanterPage = () => {
                 <button
                   type="button"
                   onClick={() => handleChant()}
-                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
+                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${malaComplete ? 'shadow-[0_8px_0_#4a2508,0_0_42px_10px_rgba(253,224,71,0.95)]' : isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
                 >
                   {/* Aura Effects */}

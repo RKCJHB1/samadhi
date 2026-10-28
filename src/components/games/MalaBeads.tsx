@@ -18,8 +18,9 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
   showProgressText = true,
 }) => {
   // Calculate the number of beads lit (wrap around for multiple rounds)
-  const currentRound = Math.floor(litBeads / totalBeads);
-  const beadsInCurrentRound = litBeads % totalBeads;
+  const roundComplete = litBeads > 0 && litBeads % totalBeads === 0;
+  const currentRound = roundComplete ? Math.floor(litBeads / totalBeads) - 1 : Math.floor(litBeads / totalBeads);
+  const beadsInCurrentRound = roundComplete ? totalBeads : litBeads % totalBeads;
   
   // Size configurations for responsiveness
   const sizeConfig = {

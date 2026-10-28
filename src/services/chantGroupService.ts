@@ -64,18 +64,36 @@ export function chantGroupUrl(code: string): string {
   return `${chantSiteOrigin()}/chant?group=${encodeURIComponent(code)}`;
 }
 
-export function buildGroupShare(name: string, chantName: string, code: string) {
+const GROUP_CHANT_GOALS: Array<[number, string]> = [
+  [100_000, 'one hundred thousand'],
+  [1_000_000, 'one million'],
+  [10_000_000, 'ten million'],
+  [100_000_000, 'one hundred million'],
+  [1_000_000_000, 'one billion'],
+];
+
+export function groupChantGoal(total: number): string {
+  const chants = Math.max(0, Math.round(Number(total) || 0));
+  for (const [goal, words] of GROUP_CHANT_GOALS) {
+    if (chants < goal) return words;
+  }
+  return GROUP_CHANT_GOALS[GROUP_CHANT_GOALS.length - 1][1];
+}
+
+export function buildGroupShare(name: string, chantName: string, code: string, groupTotal = 0) {
   const groupName = name.trim() || 'our group';
   const chant = chantName.trim() || 'Om';
   const url = chantGroupUrl(code);
-  const whatsappText = `🙏 Please join the ${groupName} chant.\n\nEvery chant you make from this link is added to the ${groupName} total. We are also chanting for the new temple.`;
+  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project/fundraising`;
+  const whatsappText = `🙏 Please join the ${groupName} chant.\n\nEvery chant you make from this link is added to the ${groupName} total.`;
+  const videoText = `🙏 Please join the ${groupName} chant.\n\nLet us see if we can chant a combined ${groupChantGoal(groupTotal)} times?\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,
     whatsappText,
     twitterText: `Join ${groupName} in chanting ${chant}. Every chant from this link adds to our group total. 🙏`,
     facebookQuote: `Join ${groupName} in chanting ${chant}. Every chant from this link adds to our group total.`,
-    videoText: `${whatsappText}\n\n${url}`,
+    videoText,
   };
 }
 
