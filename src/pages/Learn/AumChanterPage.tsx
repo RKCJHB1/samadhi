@@ -15,6 +15,12 @@ const getTodayString = () => {
 };
 
 const MALA_BEAD_COUNT = 108;
+
+function vibrationForChant(nextCount: number): number | number[] {
+  // Two short clicks with a small gap, the rhythm of a correct-answer success haptic.
+  if (nextCount > 0 && nextCount % MALA_BEAD_COUNT === 0) return [55, 55, 53];
+  return 50;
+}
 const CHANT_AUDIO_POOL_SIZE = 4;
 const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
@@ -163,6 +169,7 @@ const AumChanterPage = () => {
   });
   const selectedChantIdRef = useRef(selectedChantId);
   selectedChantIdRef.current = selectedChantId;
+  const chantTotalsRef = useRef<Record<string, number>>({});
 
   // Auto-chant state
   const [isAutoChantModalVisible, setIsAutoChantModalVisible] = useState<boolean>(false);
@@ -259,6 +266,9 @@ const AumChanterPage = () => {
   );
 
   const count = countsByChant[currentChant.id] || 0;
+  for (const [id, total] of Object.entries(countsByChant)) {
+    if (total >= (chantTotalsRef.current[id] || 0)) chantTotalsRef.current[id] = total;
+  }
   const dailyGoal = goalsByChant[currentChant.id] ?? null;
   const {
     phase: videoPhase,
@@ -730,9 +740,12 @@ const AumChanterPage = () => {
     const opts = options && 'bypassAudioThrottle' in options ? options : undefined;
     const playedVoice = playChantSound({ bypassThrottle: opts?.bypassAudioThrottle });
 
+    const chantIdForPulse = selectedChantIdRef.current;
+    const nextCount = (chantTotalsRef.current[chantIdForPulse] || 0) + 1;
+    chantTotalsRef.current[chantIdForPulse] = nextCount;
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       try {
-        navigator.vibrate(50);
+        navigator.vibrate(vibrationForChant(nextCount));
       } catch (e) {}
     }
 
