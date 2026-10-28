@@ -106,6 +106,9 @@ const parseBoldRuns = (text: string): CanvasTextRun[] => {
   return runs;
 };
 
+// WhatsApp bolds with a single asterisk on each side. The site stores **phrase** for the web.
+const toWhatsAppBold = (text: string): string => text.replace(/\*\*(.+?)\*\*/g, "*$1*");
+
 const setCanvasRunFont = (ctx: CanvasRenderingContext2D, bold: boolean, size: number) => {
   ctx.font = `${bold ? "bold " : ""}${size}px Georgia, serif`;
 };
@@ -658,23 +661,48 @@ export default function OnThisDay() {
     
     try {
       const canvas = document.createElement("canvas");
-      canvas.width = 1080;
-      canvas.height = 1080;
       const ctx = canvas.getContext("2d");
       if (!ctx) return null;
 
+      const cardWidth = 1080;
+      canvas.width = cardWidth;
+      canvas.height = 200;
+
+      ctx.letterSpacing = "0px";
+      ctx.font = "bold 36px Georgia, serif";
+      const headlineLines = wrapTextOnCanvas(ctx, (eventData.headline || "").replace(/\*\*/g, ""), 900);
+
+      const narrativeSize = 30;
+      const narrativeLineHeight = 46;
+      const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
+      const wrappedLines = wrapRichText(ctx, fullNarrative, 900, narrativeSize);
+
+      const headlineTop = 300;
+      const headlineStep = 52;
+      const narrativeTop = headlineTop + headlineLines.length * headlineStep + 32;
+      let cursor = narrativeTop;
+      wrappedLines.forEach((line, index) => {
+        if (index === wrappedLines.length - 1 && line.length > 0) return;
+        cursor += line.length === 0 ? 24 : narrativeLineHeight;
+      });
+      const footerY = cursor + 70;
+      const cardHeight = footerY + 58;
+
+      canvas.width = cardWidth;
+      canvas.height = cardHeight;
+
       // 1. Solid cream background
       ctx.fillStyle = "#FAF9F6";
-      ctx.fillRect(0, 0, 1080, 1080);
+      ctx.fillRect(0, 0, cardWidth, cardHeight);
 
       // 2. Thick terracotta elegant outer border & double inner hairline borders
       ctx.strokeStyle = "#E26D5C";
       ctx.lineWidth = 6;
-      ctx.strokeRect(30, 30, 1020, 1020);
-      
+      ctx.strokeRect(30, 30, cardWidth - 60, cardHeight - 60);
+
       ctx.strokeStyle = "#E26D5C";
       ctx.lineWidth = 1.5;
-      ctx.strokeRect(42, 42, 996, 996);
+      ctx.strokeRect(42, 42, cardWidth - 84, cardHeight - 84);
 
       // 3. Header text
       ctx.fillStyle = "#A89F91";
@@ -724,46 +752,32 @@ export default function OnThisDay() {
       // 5. Headline Text (wrapped dynamically)
       ctx.fillStyle = "#2D2A26";
       ctx.font = "bold 36px Georgia, serif";
-      const headlineLines = wrapTextOnCanvas(ctx, (eventData.headline || "").replace(/\*\*/g, ""), 900);
-      let currentY = 300;
+      ctx.textAlign = "center";
+      let currentY = headlineTop;
       headlineLines.forEach((line) => {
         ctx.fillText(line, 540, currentY);
-        currentY += 50;
+        currentY += headlineStep;
       });
 
-      currentY += 28;
+      currentY = narrativeTop;
 
       // 6. Narrative only — the historical picture stays on the page, not on this card
-      const narrativeSize = 28;
-      const narrativeLineHeight = 44;
-      const textBottom = 980;
-      const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
-      const wrappedLines = wrapRichText(ctx, fullNarrative, 900, narrativeSize);
-
-      for (let i = 0; i < wrappedLines.length; i++) {
-        const line = wrappedLines[i];
-        const isBlank = line.length === 0;
-        const step = isBlank ? 22 : narrativeLineHeight;
-        if (!isBlank && currentY > textBottom) {
-          ctx.fillStyle = "#5C564E";
-          ctx.font = `${narrativeSize}px Georgia, serif`;
-          ctx.textAlign = "center";
-          ctx.fillText("…", 540, textBottom);
-          break;
-        }
-        if (!isBlank) {
+      wrappedLines.forEach((line) => {
+        if (line.length > 0) {
           drawCenteredRichLine(ctx, line, 540, currentY, narrativeSize, "#5C564E", "#2D2A26");
+          currentY += narrativeLineHeight;
+        } else {
+          currentY += 24;
         }
-        currentY += step;
-      }
+      });
 
-      // 9. Footer Credit watermark
+      // 9. Footer Credit watermark, kept just under the story
       const targetUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
       ctx.fillStyle = "#A89F91";
       ctx.font = "12px monospace";
       ctx.letterSpacing = "1px";
       ctx.textAlign = "center";
-      ctx.fillText(targetUrl, 540, 1020);
+      ctx.fillText(targetUrl, 540, footerY);
 
       // Get ordinal suffix for format: 31stMay style
       const getOrdinalSuffix = (num: number): string => {
@@ -822,7 +836,11 @@ export default function OnThisDay() {
     if (!eventData) return;
     try {
       const shareUrl = `https://ramakrishna-johannesburg.org.za/on-this-day?date=${selectedMonth}-${selectedDay}`;
-      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${eventData.headline}*\n\n"${eventData.narrativeParagraph1}"\n\n"${eventData.narrativeParagraph2}"\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
+      const story = [eventData.narrativeParagraph1, eventData.narrativeParagraph2]
+        .filter((paragraph) => paragraph && paragraph.trim())
+        .map((paragraph) => `"${toWhatsAppBold(paragraph)}"`)
+        .join("\n\n");
+      const textToCopy = `🏛️ *On This Day in the Ramakrishna Movement's History*\n📅 *Date*: ${selectedMonth} ${selectedDay} (${eventData.year || ""})\n\n📜 *Headline*: *${toWhatsAppBold(eventData.headline || "")}*\n\n${story}\n\n📖 Read, Search & Set Notifications Online:\n🔗 ${shareUrl}`;
       
       navigator.clipboard.writeText(textToCopy);
       setCopiedTextPanel(true);
