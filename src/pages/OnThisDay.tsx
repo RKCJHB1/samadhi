@@ -85,6 +85,105 @@ const formatNarrativeText = (text: string): string => {
   return escaped;
 };
 
+type CanvasTextRun = { text: string; bold: boolean };
+
+// **markers** mean bold on the web. The share card draws those phrases in bold and leaves the markers out.
+const parseBoldRuns = (text: string): CanvasTextRun[] => {
+  const runs: CanvasTextRun[] = [];
+  const re = /\*\*(.+?)\*\*/g;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(text)) !== null) {
+    if (match.index > last) {
+      runs.push({ text: text.slice(last, match.index), bold: false });
+    }
+    runs.push({ text: match[1], bold: true });
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) {
+    runs.push({ text: text.slice(last), bold: false });
+  }
+  return runs;
+};
+
+const setCanvasRunFont = (ctx: CanvasRenderingContext2D, bold: boolean, size: number) => {
+  ctx.font = `${bold ? "bold " : ""}${size}px Georgia, serif`;
+};
+
+const wrapRichText = (
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  fontSize: number
+): CanvasTextRun[][] => {
+  const lines: CanvasTextRun[][] = [];
+  const paragraphs = text.split("\n");
+
+  const measure = (line: CanvasTextRun[]) => {
+    let width = 0;
+    line.forEach((run) => {
+      setCanvasRunFont(ctx, run.bold, fontSize);
+      width += ctx.measureText(run.text).width;
+    });
+    return width;
+  };
+
+  paragraphs.forEach((paragraph) => {
+    if (paragraph.trim() === "") {
+      lines.push([]);
+      return;
+    }
+
+    const words: CanvasTextRun[] = [];
+    parseBoldRuns(paragraph).forEach((run) => {
+      run.text.split(/(\s+)/).forEach((part) => {
+        if (part !== "") words.push({ text: part, bold: run.bold });
+      });
+    });
+
+    let current: CanvasTextRun[] = [];
+    words.forEach((word) => {
+      if (/^\s+$/.test(word.text) && current.length === 0) return;
+      const trial = [...current, word];
+      if (measure(trial) > maxWidth && current.some((run) => !/^\s+$/.test(run.text))) {
+        while (current.length && /^\s+$/.test(current[current.length - 1].text)) current.pop();
+        lines.push(current);
+        current = /^\s+$/.test(word.text) ? [] : [{ ...word }];
+      } else {
+        current = trial;
+      }
+    });
+    while (current.length && /^\s+$/.test(current[current.length - 1].text)) current.pop();
+    if (current.length) lines.push(current);
+  });
+
+  return lines;
+};
+
+const drawCenteredRichLine = (
+  ctx: CanvasRenderingContext2D,
+  runs: CanvasTextRun[],
+  centerX: number,
+  y: number,
+  fontSize: number,
+  regularColor: string,
+  boldColor: string
+) => {
+  const width = runs.reduce((sum, run) => {
+    setCanvasRunFont(ctx, run.bold, fontSize);
+    return sum + ctx.measureText(run.text).width;
+  }, 0);
+  let x = centerX - width / 2;
+  ctx.textAlign = "left";
+  runs.forEach((run) => {
+    setCanvasRunFont(ctx, run.bold, fontSize);
+    ctx.fillStyle = run.bold ? boldColor : regularColor;
+    ctx.fillText(run.text, x, y);
+    x += ctx.measureText(run.text).width;
+  });
+  ctx.textAlign = "center";
+};
+
 const isBeforeLaunchDate = (monthName: string, day: number) => {
   try {
     if (new URLSearchParams(window.location.search).get('preview') === 'true') {
@@ -583,6 +682,7 @@ export default function OnThisDay() {
       ctx.letterSpacing = "6px";
       ctx.textAlign = "center";
       ctx.fillText("RAMAKRISHNA MOVEMENT HISTORY", 540, 95);
+      ctx.letterSpacing = "0px";
 
       // Subtle decorative separator line
       ctx.strokeStyle = "#EAE7E0";
@@ -623,91 +723,38 @@ export default function OnThisDay() {
 
       // 5. Headline Text (wrapped dynamically)
       ctx.fillStyle = "#2D2A26";
-      ctx.font = "bold 34px Georgia, serif";
-      const headlineLines = wrapTextOnCanvas(ctx, eventData.headline || "", 860);
-      let currentY = 290;
+      ctx.font = "bold 36px Georgia, serif";
+      const headlineLines = wrapTextOnCanvas(ctx, (eventData.headline || "").replace(/\*\*/g, ""), 900);
+      let currentY = 300;
       headlineLines.forEach((line) => {
         ctx.fillText(line, 540, currentY);
-        currentY += 46;
+        currentY += 50;
       });
 
-      // Space before narrative starts
-      currentY += 15;
+      currentY += 28;
 
-      // 6. Narrative Paragraphs
-      ctx.fillStyle = "#5C564E";
-      ctx.font = "20px Georgia, serif";
-      
-      const maxNarrativeY = 850; // Increased to prevent cutting off the text
+      // 6. Narrative only — the historical picture stays on the page, not on this card
+      const narrativeSize = 28;
+      const narrativeLineHeight = 44;
+      const textBottom = 980;
       const fullNarrative = `${eventData.narrativeParagraph1 || ""}${eventData.narrativeParagraph2 ? "\n\n" + eventData.narrativeParagraph2 : ""}`;
-      const wrappedLines = wrapTextOnCanvas(ctx, fullNarrative, 860);
+      const wrappedLines = wrapRichText(ctx, fullNarrative, 900, narrativeSize);
 
-      const narrativeLineHeight = 32;
       for (let i = 0; i < wrappedLines.length; i++) {
-        if (currentY + narrativeLineHeight > maxNarrativeY) {
-          // Add ellipsis representing cut-off gracefully
-          ctx.fillText(wrappedLines[i].substring(0, Math.max(0, wrappedLines[i].length - 3)) + "...", 540, currentY);
-          currentY += narrativeLineHeight;
+        const line = wrappedLines[i];
+        const isBlank = line.length === 0;
+        const step = isBlank ? 22 : narrativeLineHeight;
+        if (!isBlank && currentY > textBottom) {
+          ctx.fillStyle = "#5C564E";
+          ctx.font = `${narrativeSize}px Georgia, serif`;
+          ctx.textAlign = "center";
+          ctx.fillText("…", 540, textBottom);
           break;
         }
-        ctx.fillText(wrappedLines[i], 540, currentY);
-        currentY += narrativeLineHeight;
-      }
-
-      // 6.5 Draw the accompanying historical picture to beautifully fill the space!
-      try {
-        currentY += 25; // Add some breathing room below the text
-        const availableHeight = 970 - currentY;
-
-        if (availableHeight > 50) {
-          const imgUrl = currentSlide.src;
-
-          const img = await new Promise<HTMLImageElement>(async (resolve, reject) => {
-            try {
-              // Fetch image as blob to completely bypass canvas CORS/tainting issues
-              const response = await fetch(imgUrl);
-              if (!response.ok) throw new Error(`HTTP ${response.status}`);
-              const blob = await response.blob();
-              const objectUrl = URL.createObjectURL(blob);
-
-              const image = new window.Image();
-              image.onload = () => {
-                resolve(image);
-              };
-              image.onerror = (e) => {
-                reject(new Error(`Failed to decode image: ${imgUrl}`));
-              };
-              image.src = objectUrl;
-            } catch (err) {
-              reject(err);
-            }
-          });
-
-          // Calculate dimensions to maintain aspect ratio and fit within boundaries
-          const imgRatio = img.width / img.height;
-          let drawWidth = 860;
-          let drawHeight = drawWidth / imgRatio;
-
-          // If the image is too tall for the remaining space, scale it down
-          if (drawHeight > availableHeight) {
-            drawHeight = availableHeight;
-            drawWidth = drawHeight * imgRatio;
-          }
-
-          const drawX = 540 - (drawWidth / 2);
-
-          // Draw image with rounded corners
-          ctx.save();
-          if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(drawX, currentY, drawWidth, drawHeight, 16);
-            ctx.clip();
-          }
-          ctx.drawImage(img, drawX, currentY, drawWidth, drawHeight);
-          ctx.restore();
+        if (!isBlank) {
+          drawCenteredRichLine(ctx, line, 540, currentY, narrativeSize, "#5C564E", "#2D2A26");
         }
-      } catch (err) {
-        console.warn("Could not draw historical image on canvas:", err);
+        currentY += step;
       }
 
       // 9. Footer Credit watermark
