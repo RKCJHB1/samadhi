@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { groupChantGoal } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
+const END_CARD_MS = 2500;
+const VIDEO_CHANT_LIMITS = [11, 21, 108];
 
 export type ChantVideoPhase = 'idle' | 'starting' | 'recording' | 'ready';
 
@@ -15,6 +18,7 @@ export type ChantVideoFrame = {
   globalChants?: number;
   groupTitle?: string;
   groupTotal?: number;
+  personTotal?: number;
   shareText?: string;
 };
 
@@ -253,20 +257,17 @@ function readoutLayout(width: number, height: number, personName: string, showWo
 }
 
 const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
-const TEMPLE_NOTE = ['Support fundraising', 'for our new temple'];
 
 function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
   const shortSide = Math.min(canvas.width, canvas.height);
   const padX = Math.round(Math.max(16, shortSide * 0.04));
   const y = Math.round(Math.max(20, canvas.height * 0.065));
   let size = Math.max(16, Math.round(shortSide * 0.03));
-  const fits = () => {
+  context.font = `600 ${size}px ${CANVAS_FONT}`;
+  while (size > 12 && context.measureText(SITE_LABEL).width > canvas.width - padX * 2) {
+    size -= 1;
     context.font = `600 ${size}px ${CANVAS_FONT}`;
-    const leftWidth = context.measureText(SITE_LABEL).width;
-    const rightWidth = Math.max(...TEMPLE_NOTE.map((line) => context.measureText(line).width));
-    return leftWidth + rightWidth + padX * 3 <= canvas.width;
-  };
-  while (size > 12 && !fits()) size -= 1;
+  }
 
   context.save();
   context.font = `600 ${size}px ${CANVAS_FONT}`;
@@ -277,12 +278,67 @@ function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasE
   context.fillStyle = 'rgba(255,247,237,0.96)';
   context.textAlign = 'left';
   context.fillText(SITE_LABEL, padX, y);
-  context.fillStyle = 'rgba(251, 191, 36, 0.98)';
-  context.textAlign = 'right';
-  TEMPLE_NOTE.forEach((line, index) => {
-    context.fillText(line, canvas.width - padX, y + index * Math.round(size * 1.25));
-  });
   context.restore();
+}
+
+function paintFittedLine(
+  context: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  text: string,
+  y: number,
+  size: number,
+  color: string,
+  weight = 600,
+) {
+  const maxWidth = canvas.width - 64;
+  let fontSize = size;
+  context.font = `${weight} ${fontSize}px ${CANVAS_FONT}`;
+  while (fontSize > 14 && context.measureText(text).width > maxWidth) {
+    fontSize -= 1;
+    context.font = `${weight} ${fontSize}px ${CANVAS_FONT}`;
+  }
+  context.lineWidth = Math.max(3, Math.round(fontSize * 0.14));
+  context.strokeStyle = 'rgba(0, 0, 0, 0.92)';
+  context.fillStyle = color;
+  context.strokeText(text, canvas.width / 2, y);
+  context.fillText(text, canvas.width / 2, y);
+}
+
+function paintEndCard(
+  context: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  frame: ChantVideoFrame,
+  personTotal: number,
+) {
+  const width = canvas.width;
+  const height = canvas.height;
+  const caption = frameCaption(frame);
+  context.save();
+  context.textAlign = 'center';
+  context.textBaseline = 'alphabetic';
+  context.shadowColor = 'rgba(0,0,0,0.75)';
+  context.shadowBlur = 12;
+  context.shadowOffsetY = 2;
+  context.fillStyle = '#140e08';
+  context.fillRect(0, 0, width, height);
+  paintFittedLine(context, canvas, 'AUM CHANTER', height * 0.2, Math.round(width * 0.055), '#ffd166');
+  if (caption.line) {
+    paintFittedLine(context, canvas, caption.line, height * 0.28, Math.round(width * 0.045), '#fff7ed');
+  }
+  paintFittedLine(context, canvas, personTotal.toLocaleString(), height * 0.44, Math.round(width * 0.16), '#ffffff', 700);
+  paintFittedLine(context, canvas, frame.chantName || 'Om', height * 0.52, Math.round(width * 0.05), '#fff7ed');
+  if (caption.groupTotal > 0) {
+    paintFittedLine(context, canvas, `${caption.groupTitle || 'Group'} total ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.04), '#ffd166');
+  }
+  if (caption.groupTitle) {
+    paintFittedLine(context, canvas, 'Let us see if we can chant', height * 0.7, Math.round(width * 0.038), '#fff7ed');
+    paintFittedLine(context, canvas, `a combined ${groupChantGoal(caption.groupTotal)} times?`, height * 0.76, Math.round(width * 0.038), '#fff7ed');
+  }
+  paintFittedLine(context, canvas, 'Please view the fundraising efforts', height * 0.86, Math.round(width * 0.034), '#ffd166');
+  paintFittedLine(context, canvas, 'for our new temple', height * 0.91, Math.round(width * 0.034), '#ffd166');
+  context.restore();
+  paintCornerNotes(context, canvas);
+  paintVideoBorder(context, canvas);
 }
 
 function personLine(personName: string, groupTitle: string): string {
@@ -421,6 +477,10 @@ export function useChantVideo() {
     shareText: '',
   });
   const sessionCountRef = useRef(0);
+  const personBaselineRef = useRef(0);
+  const chantLimitRef = useRef<number | null>(null);
+  const endingRef = useRef(false);
+  const endHoldTimerRef = useRef<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
@@ -448,6 +508,10 @@ export function useChantVideo() {
     if (maxTimerRef.current != null) {
       window.clearTimeout(maxTimerRef.current);
       maxTimerRef.current = null;
+    }
+    if (endHoldTimerRef.current != null) {
+      window.clearTimeout(endHoldTimerRef.current);
+      endHoldTimerRef.current = null;
     }
   }, []);
 
@@ -524,6 +588,7 @@ export function useChantVideo() {
     stopTracks();
     releasePlayback();
     sessionCountRef.current = 0;
+    endingRef.current = false;
     setSessionCount(0);
     setElapsedMs(0);
     setError(null);
@@ -551,8 +616,15 @@ export function useChantVideo() {
   }, []);
 
   const noteChant = useCallback(() => {
-    if (phaseRef.current !== 'recording') return;
+    if (phaseRef.current !== 'recording' || endingRef.current) return;
     sessionCountRef.current += 1;
+    setSessionCount(sessionCountRef.current);
+    const limit = chantLimitRef.current;
+    if (limit && sessionCountRef.current >= limit) {
+      endingRef.current = true;
+      if (endHoldTimerRef.current != null) window.clearTimeout(endHoldTimerRef.current);
+      endHoldTimerRef.current = window.setTimeout(() => stopRecording(), END_CARD_MS);
+    }
     queueChantBuffer();
     const context = audioContextRef.current;
     const destination = chantDestRef.current;
@@ -571,18 +643,21 @@ export function useChantVideo() {
     } catch {
       // The context closed between the tap and playback.
     }
-  }, [queueChantBuffer]);
+  }, [queueChantBuffer, stopRecording]);
 
   const setCanvasNode = useCallback((node: HTMLCanvasElement | null) => {
     canvasRef.current = node;
   }, []);
 
-  const startRecording = useCallback(async (includeCamera = false) => {
+  const startRecording = useCallback(async (includeCamera = false, chantLimit: number | null = null) => {
     if (phaseRef.current === 'recording' || phaseRef.current === 'starting') return;
     setError(null);
     setNotice(null);
     releasePlayback();
     sessionCountRef.current = 0;
+    endingRef.current = false;
+    personBaselineRef.current = Math.max(0, Math.round(frameRef.current.personTotal || 0));
+    chantLimitRef.current = VIDEO_CHANT_LIMITS.includes(chantLimit ?? 0) ? chantLimit : null;
     setSessionCount(0);
     setElapsedMs(0);
 
@@ -638,7 +713,18 @@ export function useChantVideo() {
             // The recorder falls back to the microphone track below.
           }
         }
-        queueChantBuffer();
+        const src = frameRef.current.audioSrc;
+        if (src) {
+          const buffer = await loadChantBuffer(src, audioContextRef.current);
+          if (runId !== runRef.current) {
+            abandon(stream);
+            return;
+          }
+          if (buffer && audioContextRef.current) {
+            chantBufferRef.current = buffer;
+            loadedAudioSrcRef.current = src;
+          }
+        }
       }
 
       setPhase('recording');
@@ -739,7 +825,7 @@ export function useChantVideo() {
           context,
           canvas,
           frameRef.current.chantName || 'Om',
-          sessionCountRef.current,
+          personBaselineRef.current + sessionCountRef.current,
           caption.line,
           caption.gold,
         );
@@ -816,7 +902,7 @@ export function useChantVideo() {
           context,
           canvas,
           frameRef.current.chantName || 'Om',
-          chants,
+          personBaselineRef.current + chants,
           caption.line,
           caption.gold,
         );
@@ -826,8 +912,18 @@ export function useChantVideo() {
       const draw = () => {
         if (!drawingRef.current || runId !== runRef.current) return;
         queueChantBuffer();
-        if (sourceVideo) drawCamera(sourceVideo);
-        else drawCard();
+        if (endingRef.current) {
+          paintEndCard(
+            context,
+            canvas,
+            frameRef.current,
+            personBaselineRef.current + sessionCountRef.current,
+          );
+        } else if (sourceVideo) {
+          drawCamera(sourceVideo);
+        } else {
+          drawCard();
+        }
         rafRef.current = requestAnimationFrame(draw);
       };
       draw();
@@ -894,10 +990,13 @@ export function useChantVideo() {
       timerRef.current = window.setInterval(() => {
         setElapsedMs(Math.min(MAX_RECORDING_MS, performance.now() - startedAt));
       }, 200);
+      const recordingLimitMs = chantLimitRef.current
+        ? Math.min(8 * 60_000, chantLimitRef.current * 4000 + END_CARD_MS)
+        : MAX_RECORDING_MS;
       maxTimerRef.current = window.setTimeout(() => {
         if (runId !== runRef.current) return;
         stopRecording();
-      }, MAX_RECORDING_MS);
+      }, recordingLimitMs);
     } catch (startError) {
       if (runId !== runRef.current) return;
       drawingRef.current = false;

@@ -594,6 +594,11 @@ const AumChanterPage = () => {
   }, [groupNameDraft]);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [includeCamera, setIncludeCamera] = useState(false);
+  const [videoChantLimit, setVideoChantLimit] = useState<number | null>(null);
+  useEffect(() => {
+    if (videoPhase !== 'recording') return;
+    document.querySelector('[data-chant-button]')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [videoPhase]);
   const noteChantRef = useRef(noteChant);
   noteChantRef.current = noteChant;
 
@@ -962,12 +967,13 @@ const AumChanterPage = () => {
       audioSrc: currentChant.audioSrc,
       imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
       personName: chanterName,
-      globalChants,
+      globalChants: savedWorldwide,
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
-      shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal).videoText : '',
+      personTotal: count,
+      shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count).videoText : '',
     });
-  }, [chanterName, currentChant, globalChants, groupCode, groupTitle, groupTotal, syncFrame]);
+  }, [chanterName, count, currentChant, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame]);
 
   useEffect(() => {
     try {
@@ -1067,6 +1073,7 @@ const AumChanterPage = () => {
       currentChant.name,
       previewCode,
       groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? groupTotal : 0,
+      count,
     )
     : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
@@ -1306,7 +1313,8 @@ const AumChanterPage = () => {
                 <button
                   type="button"
                   onClick={() => handleChant()}
-                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 ${malaComplete ? 'shadow-[0_8px_0_#4a2508,0_0_42px_10px_rgba(253,224,71,0.95)]' : isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
+                  data-chant-button
+                  className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 scroll-mb-[46vh] ${malaComplete ? 'shadow-[0_8px_0_#4a2508,0_0_42px_10px_rgba(253,224,71,0.95)]' : isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
                 >
                   {/* Aura Effects */}
@@ -1453,20 +1461,27 @@ const AumChanterPage = () => {
           </div>
 
           {videoPhase === 'recording' && createPortal(
-            <div className="fixed bottom-36 right-3 z-[70] flex w-24 flex-col gap-2 sm:bottom-6 sm:left-6 sm:right-auto sm:w-36">
+            <div className="fixed inset-x-0 bottom-0 z-[70] flex flex-col items-center gap-2 border-t border-amber-200/30 bg-slate-950/95 px-4 pb-4 pt-3">
               <canvas
                 ref={setCanvasNode}
-                className="block h-28 w-full rounded-xl border border-white/20 bg-black object-cover shadow-2xl sm:h-36"
+                className="aspect-[9/16] h-[34vh] max-h-[28rem] w-auto max-w-full rounded-xl border border-amber-200/40 bg-black object-contain shadow-2xl"
               />
-              <button
-                type="button"
-                onClick={stopRecording}
-                className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-sans text-white shadow-lg"
-                aria-label="Stop video recording"
-              >
-                <span className="h-2.5 w-2.5 rounded-full bg-white" />
-                {formatRecordingTime(videoElapsedMs)}
-              </button>
+              <div className="flex items-center gap-3">
+                {videoChantLimit ? (
+                  <p className="font-mono text-sm text-amber-100">
+                    {videoSessionCount.toLocaleString()} / {videoChantLimit.toLocaleString()}
+                  </p>
+                ) : null}
+                <button
+                  type="button"
+                  onClick={stopRecording}
+                  className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-sans text-white shadow-lg"
+                  aria-label="Stop video recording"
+                >
+                  <span className="h-2.5 w-2.5 rounded-full bg-white" />
+                  {formatRecordingTime(videoElapsedMs)}
+                </button>
+              </div>
             </div>,
             document.body
           )}
@@ -1632,7 +1647,7 @@ const AumChanterPage = () => {
                 <div className="flex flex-wrap justify-center gap-2">
                   <a
                     id="share-group-whatsapp"
-                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${groupLink.whatsappText}\n\n${groupLink.url}`)}`}
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(groupLink.whatsappText)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={rememberGroupLink}
@@ -1652,7 +1667,7 @@ const AumChanterPage = () => {
                   </a>
                   <a
                     id="share-group-x"
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(groupLink.twitterText)}&url=${encodeURIComponent(groupLink.url)}`}
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(groupLink.twitterText)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={rememberGroupLink}
@@ -1721,6 +1736,32 @@ const AumChanterPage = () => {
             </fieldset>
           )}
 
+          {videoPhase !== 'recording' && videoPhase !== 'ready' && (
+            <fieldset className="mt-2 w-full max-w-md rounded-xl border border-amber-300/70 bg-slate-950/90 p-3 text-sm text-white shadow-lg">
+              <legend className="px-2 font-sans font-semibold text-amber-200">Stop the video after</legend>
+              <div className="grid grid-cols-4 gap-2">
+                {([
+                  ['Until I stop', null],
+                  ['11', 11],
+                  ['21', 21],
+                  ['108', 108],
+                ] as const).map(([label, value]) => (
+                  <label key={label} className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-white/30 bg-slate-800 px-2 py-2 text-center text-white">
+                    <input
+                      type="radio"
+                      name="chant-video-length"
+                      checked={videoChantLimit === value}
+                      disabled={videoPhase === 'starting'}
+                      onChange={() => setVideoChantLimit(value)}
+                      className="accent-amber-400"
+                    />
+                    <span className="text-xs font-semibold">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+
           <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
             {isAutoChanting ? (
               <button
@@ -1755,7 +1796,7 @@ const AumChanterPage = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => { setIsShareVisible(false); void startRecording(includeCamera); }}
+                onClick={() => { setIsShareVisible(false); void startRecording(includeCamera, videoChantLimit); }}
                 disabled={videoPhase === 'starting' || videoPhase === 'recording'}
                 className="flex items-center gap-2 rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-slate-700 disabled:opacity-60"
                 aria-label={`Record a ${currentChant.name} video to share`}
