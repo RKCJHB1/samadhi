@@ -2017,6 +2017,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/28thOctober.png"
   },
   {
+    date: "October 29",
+    monthNumeric: 9,
+    dayNumeric: 29,
+    year: 1885,
+    headline: "October 29 — M. Recounts Sri Ramakrishna’s Parable of the Orchard",
+    narrativeParagraph1: "On October 29, 1885, **M.** (Mahendranath Gupta) visited **Dr. Mahendralal Sarkar** at his home in **Sankharitola, Calcutta**, to report on Sri Ramakrishna’s health. In their conversation, M. recalled the Master’s teaching that human life is meant for cultivating devotion to God.",
+    narrativeParagraph2: "He related Sri Ramakrishna’s parable of a man who entered an orchard to eat mangoes but instead began counting its trees, branches, and leaves—a reminder not to let intellectual curiosity distract one from the direct realization and love of God.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "M. recounting Sri Ramakrishna’s parable of the orchard to Dr. Mahendralal Sarkar at Sankharitola on 29 October 1885, the mango grove and the man counting trees shown beyond them.",
+    customImage: "/images/on-this-day/29thOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
