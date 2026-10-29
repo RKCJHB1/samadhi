@@ -2040,7 +2040,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     quote: "",
     quoteAuthor: "",
     imageCaption: "Swami Vijnanananda seated before the Sri Ramakrishna temple at Belur Math, the temple he designed and consecrated on 14 January 1938.",
-    customImage: "/images/on-this-day/30thOctober.jpg"
+    customImage: "/images/on-this-day/30thOctober.jpeg"
   },
   {
     date: "January 1",
