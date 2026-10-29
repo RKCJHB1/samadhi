@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -196,6 +196,28 @@ function GroupNameRing({ members, selfId }: { members: GroupMember[]; selfId: st
   );
 }
 
+function countryLine(country: ChantCountry): string {
+  let name = country.code;
+  try {
+    name = new Intl.DisplayNames(['en'], { type: 'region' }).of(country.code) || country.code;
+  } catch {
+    name = country.code;
+  }
+  const om = country.byChant.om;
+  const ram = country.byChant['sri-ram'];
+  const ma = country.byChant['jai-ma'];
+  const split = om + ram + ma;
+  const parts = [
+    om > 0 ? `Om ${om.toLocaleString()}` : '',
+    ram > 0 ? `Jai Sri Ram ${ram.toLocaleString()}` : '',
+    ma > 0 ? `Jai Ma ${ma.toLocaleString()}` : '',
+  ].filter(Boolean);
+  const earlier = Math.max(0, country.total - split);
+  if (earlier > 0) parts.push(`Earlier ${earlier.toLocaleString()}`);
+  if (country.total !== split) parts.push(`All ${country.total.toLocaleString()}`);
+  return `${name}: ${parts.join(' · ')}`;
+}
+
 const AumChanterPage = () => {
   const [history, setHistory] = useState<ChantHistoryEntry[]>(readChantHistory);
   const [goalsByChant, setGoalsByChant] = useState<Record<string, number>>(readChantGoals);
@@ -242,7 +264,6 @@ const AumChanterPage = () => {
   const [globalChants, setGlobalChants] = useState<number>(cachedGlobalRef.current);
   const [recordChants, setRecordChants] = useState<number>(0);
   const [avgChantsPerUser, setAvgChantsPerUser] = useState<number>(0);
-  const [uniqueCountries, setUniqueCountries] = useState<number>(0);
   const [statsLoading, setStatsLoading] = useState<boolean>(true);
   const [serverConnected, setServerConnected] = useState(false);
   const statsRef = useRef({
@@ -287,7 +308,6 @@ const AumChanterPage = () => {
       uniqueCountries: stats.uniqueCountries || 0,
     };
     setGlobalChants(nextServer + unconfirmedGlobalRef.current);
-    setUniqueCountries(stats.uniqueCountries || 0);
     setServerConnected(true);
     try {
       localStorage.setItem(LAST_GLOBAL_KEY, String(nextServer));
@@ -382,6 +402,8 @@ const AumChanterPage = () => {
   const pendingGroupRef = useRef(0);
   const confirmedByChantRef = useRef<GroupChantTotals>(emptyChantTotals());
   const pendingByChantRef = useRef<GroupChantTotals>(emptyChantTotals());
+  const pendingPersonByChantRef = useRef<GroupChantTotals>(emptyChantTotals());
+  const [countries, setCountries] = useState<ChantCountry[]>([]);
   const [groupByChant, setGroupByChant] = useState<GroupChantTotals>(emptyChantTotals());
   const groupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const personIdRef = useRef('');
@@ -486,6 +508,7 @@ const AumChanterPage = () => {
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setChanterCount(summary.chanterCount);
       setChantingNow(summary.chantingNow);
+      setCountries(summary.countries);
       setAvgChantsPerUser(summary.chanterCount > 0 ? summary.globalTotal / summary.chanterCount : 0);
       setWorldwideReady(true);
       setRecordReady(true);
@@ -500,8 +523,10 @@ const AumChanterPage = () => {
     pendingPersonRef.current = 0;
     const groupAmount = pendingGroupRef.current;
     const groupByChant = { ...pendingByChantRef.current };
+    const personByChant = { ...pendingPersonByChantRef.current };
     pendingGroupRef.current = 0;
     pendingByChantRef.current = emptyChantTotals();
+    pendingPersonByChantRef.current = emptyChantTotals();
     const showGroupTotals = () => {
       setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
       setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
@@ -520,6 +545,7 @@ const AumChanterPage = () => {
           groupAmount > 0 && code ? code : '',
           groupAmount > 0 && code ? groupAmount : 0,
           groupAmount > 0 && code ? groupByChant : emptyChantTotals(),
+          personByChant,
         );
         confirmedPersonRef.current = saved.person.total;
         setSavedTotal(saved.person.total + pendingPersonRef.current);
@@ -544,11 +570,13 @@ const AumChanterPage = () => {
         const groupSent = error instanceof PartialChantSaveError ? error.groupSent : 0;
         const sentByChant = error instanceof PartialChantSaveError ? error.sentByChant : emptyChantTotals();
         const unsentByChant = error instanceof PartialChantSaveError ? error.unsentByChant : groupByChant;
+        const unsentPersonByChant = error instanceof PartialChantSaveError ? error.unsentPersonByChant : personByChant;
         confirmedPersonRef.current += sent;
         confirmedGroupRef.current += groupSent;
         confirmedGroupPersonRef.current += groupSent;
         confirmedByChantRef.current = addChantTotals(confirmedByChantRef.current, sentByChant);
         pendingPersonRef.current += amount - sent;
+        pendingPersonByChantRef.current = addChantTotals(pendingPersonByChantRef.current, unsentPersonByChant);
         setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
         setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
         if (groupAmount > 0) {
@@ -870,12 +898,18 @@ const AumChanterPage = () => {
     // One tap is one chant on this phone, in the saved personal total, and in the named group.
     unconfirmedGlobalRef.current += 1;
     setGlobalChants(serverGlobalRef.current + unconfirmedGlobalRef.current);
+    const chantKey = CHANT_TOTAL_IDS.find((id) => id === selectedChantIdRef.current);
     pendingPersonRef.current += 1;
+    if (chantKey) {
+      pendingPersonByChantRef.current = {
+        ...pendingPersonByChantRef.current,
+        [chantKey]: pendingPersonByChantRef.current[chantKey] + 1,
+      };
+    }
     setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
     setSavedWorldwide(confirmedGlobalRef.current + pendingPersonRef.current);
     setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
-    const chantKey = CHANT_TOTAL_IDS.find((id) => id === selectedChantIdRef.current);
     if (countingForGroup && chantKey) {
       pendingGroupRef.current += 1;
       pendingByChantRef.current = {
@@ -1572,8 +1606,15 @@ const AumChanterPage = () => {
             <div className="hidden flex-wrap items-center justify-center gap-3 sm:flex sm:gap-6">
               <span>Average Chants / User: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
               <span>Total chanters: <span id="chanter-count" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
-              <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
+              <span>Countries: <span className="font-mono">{worldwideReady ? countries.length.toLocaleString() : '...'}</span></span>
             </div>
+            {countries.length > 0 && (
+              <div className="hidden max-w-md flex-col items-center gap-1 text-center text-xs text-spiritual-300/70 sm:flex">
+                {countries.map((country) => (
+                  <span key={country.code}>{countryLine(country)}</span>
+                ))}
+              </div>
+            )}
             <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
               <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
               <div className="mt-2 flex flex-col gap-1">
@@ -1581,7 +1622,10 @@ const AumChanterPage = () => {
                 <span>Record: <span id="record-total-details" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span></span>
                 <span>Average per person: <span id="average-per-person-details" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
                 <span>Chanters: <span id="chanter-count-details" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
-                <span>Countries: <span className="font-mono">{statsLoading ? '...' : uniqueCountries.toLocaleString()}</span></span>
+                <span>Countries: <span className="font-mono">{worldwideReady ? countries.length.toLocaleString() : '...'}</span></span>
+                {countries.map((country) => (
+                  <span key={country.code}>{countryLine(country)}</span>
+                ))}
               </div>
             </details>
           </div>

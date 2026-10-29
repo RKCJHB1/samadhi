@@ -25,6 +25,12 @@ export function addChantTotals(left: GroupChantTotals, right: GroupChantTotals):
   };
 }
 
+export type ChantCountry = {
+  code: string;
+  total: number;
+  byChant: GroupChantTotals;
+};
+
 export type ChantGroup = {
   code: string;
   name: string;
@@ -65,13 +71,15 @@ export class PartialChantSaveError extends Error {
   groupSent: number;
   sentByChant: GroupChantTotals;
   unsentByChant: GroupChantTotals;
+  unsentPersonByChant: GroupChantTotals;
 
-  constructor(sent: number, groupSent: number, sentByChant: GroupChantTotals, unsentByChant: GroupChantTotals) {
+  constructor(sent: number, groupSent: number, sentByChant: GroupChantTotals, unsentByChant: GroupChantTotals, unsentPersonByChant: GroupChantTotals) {
     super('person');
     this.sent = sent;
     this.groupSent = groupSent;
     this.sentByChant = sentByChant;
     this.unsentByChant = unsentByChant;
+    this.unsentPersonByChant = unsentPersonByChant;
   }
 }
 
@@ -260,10 +268,12 @@ export async function saveChantProgress(
   groupCode = '',
   groupCount = 0,
   groupByChant: GroupChantTotals = emptyChantTotals(),
+  byChant: GroupChantTotals = emptyChantTotals(),
 ): Promise<SavedChantProgress> {
   let remaining = Math.max(0, Math.round(count));
   let groupRemaining = Math.max(0, Math.min(remaining, Math.round(groupCount)));
   const chantPool = readChantTotals(groupByChant);
+  const personPool = readChantTotals(byChant);
   const sentByChant = emptyChantTotals();
   let sent = 0;
   let groupSent = 0;
@@ -272,6 +282,8 @@ export async function saveChantProgress(
     const chunk = Math.min(MAX_ADD, remaining);
     const groupChunk = Math.min(chunk, groupRemaining);
     const chantChunk = takeChantChunk(chantPool, groupChunk);
+    const personChunk = takeChantChunk(personPool, chunk);
+    const personSplit = CHANT_TOTAL_IDS.reduce((sum, id) => sum + personChunk[id], 0);
     try {
       const response = await fetch(`/api/chant-people/${encodeURIComponent(id)}/chants`, {
         method: 'POST',
@@ -282,6 +294,7 @@ export async function saveChantProgress(
           groupCode: groupChunk > 0 ? groupCode : '',
           groupCount: groupChunk,
           groupByChant: groupChunk > 0 ? chantChunk : undefined,
+          byChant: personSplit === chunk ? personChunk : undefined,
         }),
       });
       if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'person');
@@ -296,7 +309,7 @@ export async function saveChantProgress(
       groupRemaining -= groupChunk;
       for (const chantId of CHANT_TOTAL_IDS) sentByChant[chantId] += chantChunk[chantId];
     } catch (error) {
-      if (sent > 0) throw new PartialChantSaveError(sent, groupSent, sentByChant, addChantTotals(chantChunk, chantPool));
+      if (sent > 0) throw new PartialChantSaveError(sent, groupSent, sentByChant, addChantTotals(chantChunk, chantPool), addChantTotals(personChunk, personPool));
       throw error;
     }
   }
@@ -304,10 +317,23 @@ export async function saveChantProgress(
   return latest;
 }
 
-export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
+function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown }): ChantCountry | null {
+  const code = String(value.code ?? '').trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code)) return null;
+  const byChant = value.byChant
+    ? readChantTotals(value.byChant)
+    : readChantTotals({ om: value.om, 'sri-ram': value['sri-ram'], 'jai-ma': value['jai-ma'] });
+  return {
+    code,
+    total: Math.max(0, Math.round(Number(value.total) || 0)),
+    byChant,
+  };
+}
+
+export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number; countries: ChantCountry[] }> {
   const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
-  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown };
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown }> };
   return {
     groups: (body.groups ?? []).flatMap((group) => {
       if (!group.code || !group.name) return [];
@@ -323,6 +349,10 @@ export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; glo
     recordTotal: Math.max(0, Math.round(Number(body.recordTotal) || 0)),
     chanterCount: Math.max(0, Math.round(Number(body.chanterCount) || 0)),
     chantingNow: Math.max(0, Math.round(Number(body.chantingNow) || 0)),
+    countries: (body.countries ?? []).flatMap((country) => {
+      const read = readCountry(country);
+      return read && read.total > 0 ? [read] : [];
+    }),
   };
 }
 

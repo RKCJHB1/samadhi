@@ -162,6 +162,16 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
         PRIMARY KEY (group_code, person_id)
       )`,
     );
+    await execute(
+      env,
+      `CREATE TABLE IF NOT EXISTS chant_countries (
+        code TEXT PRIMARY KEY,
+        om_total INTEGER NOT NULL DEFAULT 0,
+        ram_total INTEGER NOT NULL DEFAULT 0,
+        ma_total INTEGER NOT NULL DEFAULT 0,
+        total INTEGER NOT NULL DEFAULT 0
+      )`,
+    );
   })().catch((error: unknown) => {
     ready.delete(key);
     throw error;
@@ -289,6 +299,37 @@ async function readPerson(env: ChantDbEnv, id: string, groupCode: string): Promi
   };
 }
 
+function requestCountry(request: Request): string {
+  const withCf = request as Request & { cf?: { country?: string } };
+  const code = (withCf.cf?.country || request.headers.get('cf-ipcountry') || '').trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code) || code === 'XX' || code === 'T1') return '';
+  return code;
+}
+
+type ChantCountSplit = { om: number; ram: number; ma: number };
+
+async function listCountries(env: ChantDbEnv): Promise<Array<{ code: string; om: number; ram: number; ma: number; total: number }>> {
+  const rows = await execute(
+    env,
+    `SELECT code, om_total, ram_total, ma_total, total
+     FROM chant_countries
+     WHERE total > 0
+     ORDER BY total DESC, code ASC
+     LIMIT 40`,
+  );
+  return rows.flatMap((row) => {
+    const code = cellText(row[0]).trim().toUpperCase();
+    if (!/^[A-Z]{2}$/.test(code)) return [];
+    return [{
+      code,
+      om: storedTotal(row[1]),
+      ram: storedTotal(row[2]),
+      ma: storedTotal(row[3]),
+      total: storedTotal(row[4]),
+    }];
+  });
+}
+
 async function saveProgress(
   env: ChantDbEnv,
   id: string,
@@ -296,7 +337,9 @@ async function saveProgress(
   name: string,
   groupCode: string,
   groupCount: number,
-  chantCounts: { om: number; ram: number; ma: number },
+  chantCounts: ChantCountSplit,
+  countryCode: string,
+  countryCounts: ChantCountSplit | null,
 ): Promise<{ person: ChantPerson; group: ChantGroup | null }> {
   const appliedGroupCount = Math.min(count, Math.max(0, groupCount));
   const group = appliedGroupCount > 0 && groupCode ? await readGroup(env, groupCode) : null;
@@ -330,6 +373,21 @@ async function saveProgress(
               updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now')
             RETURNING total`,
       args: [group.code, id, name, appliedGroupCount, appliedGroupCount, name, name],
+    });
+  }
+  if (countryCode) {
+    const om = countryCounts?.om ?? 0;
+    const ram = countryCounts?.ram ?? 0;
+    const ma = countryCounts?.ma ?? 0;
+    statements.push({
+      sql: `INSERT INTO chant_countries (code, om_total, ram_total, ma_total, total)
+            VALUES (?, ?, ?, ?, ?)
+            ON CONFLICT(code) DO UPDATE SET
+              om_total = om_total + excluded.om_total,
+              ram_total = ram_total + excluded.ram_total,
+              ma_total = ma_total + excluded.ma_total,
+              total = total + excluded.total`,
+      args: [countryCode, om, ram, ma, count],
     });
   }
   statements.push({ sql: 'COMMIT' });
@@ -396,9 +454,23 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
         }
         const chantCounts = readGroupChantCounts(body.groupByChant, Number.isFinite(groupCount) ? groupCount : 0);
         if (!chantCounts) return json({ error: 'Those chants could not be saved.' }, 400);
+        const countryCounts = readGroupChantCounts((body as { byChant?: unknown }).byChant, count);
+        if (!countryCounts && (body as { byChant?: unknown }).byChant != null) {
+          return json({ error: 'Those chants could not be saved.' }, 400);
+        }
         const name = cleanLabel(body.name, 40);
         const requestedGroup = groupSlug(body.groupCode ?? '') || groupCode;
-        const saved = await saveProgress(env, id, count, name, requestedGroup, Number.isFinite(groupCount) ? groupCount : 0, chantCounts);
+        const saved = await saveProgress(
+          env,
+          id,
+          count,
+          name,
+          requestedGroup,
+          Number.isFinite(groupCount) ? groupCount : 0,
+          chantCounts,
+          requestCountry(request),
+          countryCounts,
+        );
         return json(saved);
       }
       return json({ error: 'This chanter was not found.' }, 404);
@@ -407,13 +479,24 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     if (request.method === 'GET' && rest.length === 0) {
       const requested = Math.round(Number(url.searchParams.get('limit')));
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
-      const [groups, people] = await Promise.all([listGroups(env, limit), savedPeopleSummary(env)]);
+      const [groups, people, countries] = await Promise.all([
+        listGroups(env, limit),
+        savedPeopleSummary(env),
+        listCountries(env),
+      ]);
       return json({
         groups,
         globalTotal: people.globalTotal,
         recordTotal: people.recordTotal,
         chanterCount: people.chanterCount,
         chantingNow: people.chantingNow,
+        countries: countries.map((country) => ({
+          code: country.code,
+          om: country.om,
+          'sri-ram': country.ram,
+          'jai-ma': country.ma,
+          total: country.total,
+        })),
       });
     }
 
