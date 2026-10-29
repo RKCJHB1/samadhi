@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
-import { buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, chantPersonId, createChantGroup, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupFilm, groupSlug, PartialChantSaveError, saveChantProgress, saveGroupFilm, type ChantGroup, type GroupFilmMember } from '../../services/chantGroupService';
+import { buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, chantPersonId, createChantGroup, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantGroup, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -152,44 +152,46 @@ const CHANT_OPTIONS: ChantOption[] = [
   },
 ];
 
-function GroupFilmRing({ members }: { members: GroupFilmMember[] }) {
-  const [step, setStep] = useState(0);
-  useEffect(() => {
-    if (members.length === 0) return undefined;
-    const timer = window.setInterval(() => setStep((value) => value + 1), 800);
-    return () => window.clearInterval(timer);
-  }, [members]);
+function GroupNameRing({ members, selfId }: { members: GroupMember[]; selfId: string }) {
   if (members.length === 0) return null;
   return (
-    <section className="mt-3 w-full max-w-md" aria-label="Group film">
-      <h2 className="text-center font-sans text-base text-amber-100">Group film</h2>
+    <section className="mt-3 w-full max-w-md" aria-label="Chanting together">
+      <h2 className="text-center font-sans text-base text-amber-100">Chanting together</h2>
       <p className="mt-1 text-center text-xs text-spiritual-200/80">
-        Each circle is one member. It fades through the stills from their clip.
+        Each circle is a person in this group.
       </p>
-      <div className="relative mx-auto mt-3 h-64 w-64 sm:h-72 sm:w-72">
+      <ul className="relative mx-auto mt-3 h-64 w-64 list-none sm:h-72 sm:w-72">
         {members.length > 1 && (
-          <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-amber-200/40 text-lg text-amber-100" aria-hidden="true">
+          <li className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-amber-200/40 text-lg text-amber-100" aria-hidden="true">
             ॐ
-          </div>
+          </li>
         )}
         {members.map((member, index) => {
           const alone = members.length === 1;
           const angle = -Math.PI / 2 + (index * 2 * Math.PI) / members.length;
-          const frame = member.frames[step % member.frames.length];
+          const yours = member.personId === selfId;
+          const label = member.name.trim() || (yours ? 'You' : 'Member');
           return (
-            <img
+            <li
               key={member.personId}
-              src={frame}
-              alt={member.name ? `${member.name} chanting` : 'A group member chanting'}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-300 object-cover shadow-[0_0_18px_rgba(251,191,36,0.35)] ${alone ? 'h-24 w-24 sm:h-28 sm:w-28' : 'h-14 w-14 sm:h-16 sm:w-16'}`}
+              className="absolute flex w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center"
               style={{
                 left: alone ? '50%' : `${50 + Math.cos(angle) * 38}%`,
                 top: alone ? '50%' : `${50 + Math.sin(angle) * 38}%`,
               }}
-            />
+            >
+              <div
+                className={`flex items-center justify-center rounded-full border-2 font-sans text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.35)] ${yours ? 'border-amber-100 bg-amber-700/70' : 'border-amber-300/80 bg-amber-950/80'} ${alone ? 'h-24 w-24 text-3xl' : 'h-14 w-14 text-sm sm:h-16 sm:w-16'}`}
+                aria-label={`${label}, ${member.total.toLocaleString()} chants`}
+              >
+                {memberInitials(member.name)}
+              </div>
+              <span className="mt-1 max-w-16 truncate text-center text-[10px] text-amber-100">{label}</span>
+              <span className="font-mono text-[10px] text-amber-200/80">{member.total.toLocaleString()}</span>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }
@@ -328,7 +330,6 @@ const AumChanterPage = () => {
     error: videoError,
     videoUrl,
     sessionCount: videoSessionCount,
-    clipFrames,
     canShare,
     notice: videoNotice,
     setCanvasNode,
@@ -371,10 +372,7 @@ const AumChanterPage = () => {
   const [chanterCount, setChanterCount] = useState(0);
   const [chantingNow, setChantingNow] = useState(0);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
-  const [groupFilms, setGroupFilms] = useState<GroupFilmMember[]>([]);
-  const filmStampRef = useRef(0);
-  const [filmNotice, setFilmNotice] = useState('');
-  const [filmBusy, setFilmBusy] = useState(false);
+  const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
   groupNameDraftRef.current = groupNameDraft;
@@ -594,52 +592,24 @@ const AumChanterPage = () => {
 
   useEffect(() => {
     if (!groupCode) {
-      setGroupFilms([]);
+      setGroupMembers([]);
       return;
     }
     let cancelled = false;
-    const loadFilm = () => {
-      const stamp = filmStampRef.current;
-      void fetchGroupFilm(groupCode).then((members) => {
-        if (cancelled) return;
-        if (filmStampRef.current !== stamp && members.length === 0) return;
-        setGroupFilms(members);
+    const loadMembers = () => {
+      void fetchGroupMembers(groupCode).then((members) => {
+        if (!cancelled) setGroupMembers(members);
       }).catch(() => {
-        // Keep the faces already on screen.
+        // Keep the names already on screen.
       });
     };
-    loadFilm();
-    const timer = window.setInterval(loadFilm, 15000);
+    loadMembers();
+    const timer = window.setInterval(loadMembers, 15000);
     return () => {
       cancelled = true;
       window.clearInterval(timer);
     };
   }, [groupCode]);
-
-  const offerClipToGroup = async () => {
-    if (clipFrames.length === 0 || filmBusy) return;
-    setFilmBusy(true);
-    setFilmNotice('');
-    try {
-      let code = groupCode;
-      if (!code) {
-        const group = await ensureChantGroup();
-        code = group?.code ?? null;
-      }
-      if (!code) {
-        setFilmNotice('Type a group name, then offer the clip.');
-        return;
-      }
-      const members = await saveGroupFilm(code, chantPersonId(), chanterName, clipFrames);
-      filmStampRef.current += 1;
-      setGroupFilms(members);
-      setFilmNotice('Your pictures are in the group film. The video file stays on this phone.');
-    } catch {
-      setFilmNotice('The pictures could not be offered. The video is still on this phone.');
-    } finally {
-      setFilmBusy(false);
-    }
-  };
 
   useEffect(() => {
     if (!groupCode) return;
@@ -1048,6 +1018,17 @@ const AumChanterPage = () => {
     };
   }, []);
 
+  const visibleGroupMembers = useMemo(() => {
+    if (!groupCode) return [];
+    const selfId = chantPersonId();
+    const yourName = chanterName.trim();
+    const known = groupMembers.map((member) => (
+      member.personId === selfId && yourName ? { ...member, name: yourName } : member
+    ));
+    if (!yourName || known.some((member) => member.personId === selfId)) return known;
+    return [{ personId: selfId, name: yourName, total: groupPersonTotal }, ...known].slice(0, 12);
+  }, [chanterName, groupCode, groupMembers, groupPersonTotal]);
+
   useEffect(() => {
     syncFrame({
       chantName: currentChant.name,
@@ -1060,12 +1041,12 @@ const AumChanterPage = () => {
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
       personTotal: count,
-      groupFilms,
+      groupMembers: groupCode ? visibleGroupMembers : [],
       shareText: groupCode
         ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count).videoText
         : buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText,
     });
-  }, [chanterName, count, currentChant, groupCode, groupFilms, groupTitle, groupTotal, savedWorldwide, syncFrame]);
+  }, [chanterName, count, currentChant, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame, visibleGroupMembers]);
 
   useEffect(() => {
     try {
@@ -1488,7 +1469,7 @@ const AumChanterPage = () => {
               Tap the center to chant {currentChant.name}.
               <span className="hidden sm:inline"> This count is kept separately from the other chants.</span>
             </p>
-            <GroupFilmRing members={groupFilms} />
+            <GroupNameRing members={visibleGroupMembers} selfId={chantPersonId()} />
           </div>
 
           {/* Stats row: Today's progress + Secondary stats */}
@@ -2092,21 +2073,8 @@ const AumChanterPage = () => {
                 />
                 <p className="text-sm text-spiritual-300/90">
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
-                  The video file stays on this phone. Offer stills from it to gather a group film.
+                  The video stays on this phone.
                 </p>
-                {clipFrames.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => { void offerClipToGroup(); }}
-                    disabled={filmBusy}
-                    className="rounded-lg bg-amber-700/80 px-4 py-2 text-sm font-sans text-white hover:bg-amber-700 disabled:opacity-60"
-                  >
-                    {filmBusy ? 'Offering…' : 'Offer this to the group film'}
-                  </button>
-                )}
-                {filmNotice && (
-                  <p className="text-sm text-amber-100/90" role="status">{filmNotice}</p>
-                )}
                 <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
                   {videoMessage}
                 </p>

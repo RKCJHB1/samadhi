@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CHANT_APP_NAME, groupChantGoal } from '../../services/chantGroupService';
+import { CHANT_APP_NAME, groupChantGoal, memberInitials } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
@@ -20,7 +20,7 @@ export type ChantVideoFrame = {
   groupTotal?: number;
   personTotal?: number;
   shareText?: string;
-  groupFilms?: { name: string; frames: string[] }[];
+  groupMembers?: { name: string }[];
 };
 
 export function formatRecordingTime(ms: number): string {
@@ -342,68 +342,36 @@ function paintEndCard(
   paintVideoBorder(context, canvas);
 }
 
-const filmImages = new Map<string, HTMLImageElement>();
-
-function readyFilmImage(src: string): HTMLImageElement | null {
-  const cached = filmImages.get(src);
-  if (cached) return cached.complete && cached.naturalWidth > 0 ? cached : null;
-  const image = new Image();
-  image.src = src;
-  filmImages.set(src, image);
-  return null;
-}
-
-function paintGroupFilm(
+function paintGroupNames(
   context: CanvasRenderingContext2D,
-  canvas: HTMLCanvasElement,
-  members: { name: string; frames: string[] }[] | undefined,
+  members: { name: string }[] | undefined,
   centerX: number,
   centerY: number,
   orbit: number,
 ) {
-  const films = (members ?? []).filter((member) => member.frames.length > 0).slice(0, 12);
-  if (films.length === 0) return;
-  const face = Math.max(18, Math.round(Math.min(canvas.width, canvas.height) * 0.055));
-  const now = performance.now();
-  films.forEach((member, index) => {
-    const frameIndex = Math.floor(now / 800) % member.frames.length;
-    const image = readyFilmImage(member.frames[frameIndex]);
-    const angle = (index * 2 * Math.PI) / films.length;
+  const people = (members ?? []).slice(0, 12);
+  if (people.length === 0) return;
+  const face = Math.max(18, Math.round(orbit * 0.22));
+  people.forEach((member, index) => {
+    const angle = (index * 2 * Math.PI) / people.length;
     const x = centerX + Math.cos(angle) * orbit;
     const y = centerY + Math.sin(angle) * orbit;
+    const initials = memberInitials(member.name);
     context.save();
     context.beginPath();
     context.arc(x, y, face, 0, Math.PI * 2);
-    context.clip();
-    if (image) context.drawImage(image, x - face, y - face, face * 2, face * 2);
-    else {
-      context.fillStyle = '#3b2a16';
-      context.fillRect(x - face, y - face, face * 2, face * 2);
-    }
-    context.restore();
-    context.beginPath();
-    context.arc(x, y, face, 0, Math.PI * 2);
-    context.strokeStyle = 'rgba(251, 191, 36, 0.95)';
+    context.fillStyle = 'rgba(69, 26, 3, 0.92)';
+    context.fill();
     context.lineWidth = Math.max(2, Math.round(face * 0.08));
+    context.strokeStyle = 'rgba(251, 191, 36, 0.95)';
     context.stroke();
+    context.fillStyle = '#fff7ed';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.font = `600 ${Math.round(face * (Array.from(initials).length > 1 ? 0.62 : 0.78))}px sans-serif`;
+    context.fillText(initials, x, y);
+    context.restore();
   });
-}
-
-function sampleClipStill(source: HTMLCanvasElement): string | null {
-  const tile = document.createElement('canvas');
-  tile.width = 144;
-  tile.height = 144;
-  const tileContext = tile.getContext('2d');
-  if (!tileContext || source.width < 2 || source.height < 2) return null;
-  const side = Math.min(source.width, source.height) * 0.62;
-  const sx = (source.width - side) / 2;
-  const sy = (source.height - side) / 2;
-  tileContext.drawImage(source, sx, sy, side, side, 0, 0, tile.width, tile.height);
-  try {
-    return tile.toDataURL('image/jpeg', 0.62);
-  } catch {
-    return null;
-  }
 }
 
 function paintCameraMessage(
@@ -570,7 +538,6 @@ export function useChantVideo() {
   const [sessionCount, setSessionCount] = useState(0);
   const [canShare, setCanShare] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [clipFrames, setClipFrames] = useState<string[]>([]);
 
   const phaseRef = useRef<ChantVideoPhase>('idle');
   const runRef = useRef(0);
@@ -700,7 +667,6 @@ export function useChantVideo() {
     sessionCountRef.current = 0;
     endingRef.current = false;
     setSessionCount(0);
-    setClipFrames([]);
     setElapsedMs(0);
     setError(null);
     setNotice(null);
@@ -767,7 +733,6 @@ export function useChantVideo() {
     releasePlayback();
     sessionCountRef.current = 0;
     endingRef.current = false;
-    setClipFrames([]);
     personBaselineRef.current = Math.max(0, Math.round(frameRef.current.personTotal || 0));
     chantLimitRef.current = VIDEO_CHANT_LIMITS.includes(chantLimit ?? 0) ? chantLimit : null;
     setSessionCount(0);
@@ -907,18 +872,6 @@ export function useChantVideo() {
       let artReady = false;
       let seenCount = 0;
       let pulseUntil = 0;
-      const clipSamples: string[] = [];
-      let lastSampleAt = 0;
-      const takeClipSample = () => {
-        const now = performance.now();
-        if (clipSamples.length > 0 && now - lastSampleAt < 600) return;
-        const shot = sampleClipStill(canvas);
-        if (!shot) return;
-        lastSampleAt = now;
-        if (clipSamples.length >= 8) clipSamples.shift();
-        clipSamples.push(shot);
-      };
-
       const ensureArt = () => {
         const src = frameRef.current.imageSrc || '';
         if (src === loadedSrc) return;
@@ -952,10 +905,9 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
-        paintGroupFilm(
+        paintGroupNames(
           context,
-          canvas,
-          frameRef.current.groupFilms,
+          frameRef.current.groupMembers,
           canvas.width / 2,
           canvas.height * 0.42,
           Math.round(Math.min(canvas.width, canvas.height) * 0.28),
@@ -1030,10 +982,9 @@ export function useChantVideo() {
           context.stroke();
         }
 
-        paintGroupFilm(
+        paintGroupNames(
           context,
-          canvas,
-          frameRef.current.groupFilms,
+          frameRef.current.groupMembers,
           cx,
           cy,
           radius + Math.round(Math.min(width, height) * 0.1),
@@ -1051,7 +1002,6 @@ export function useChantVideo() {
 
       const draw = () => {
         if (!drawingRef.current || runId !== runRef.current) return;
-        takeClipSample();
         queueChantBuffer();
         if (endingRef.current) {
           paintEndCard(
@@ -1098,7 +1048,6 @@ export function useChantVideo() {
         if (runId !== runRef.current) return;
         const blobType = recorder.mimeType || mimeType || 'video/webm';
         const blob = new Blob(chunks, { type: blobType });
-        setClipFrames(clipSamples.slice());
         if (blob.size < 1000) {
           setNotice(null);
           setError('That video was too short to save. Record a little longer.');
@@ -1213,7 +1162,6 @@ export function useChantVideo() {
     videoUrl,
     fileName,
     sessionCount,
-    clipFrames,
     canShare,
     notice,
     maxRecordingMs: MAX_RECORDING_MS,
