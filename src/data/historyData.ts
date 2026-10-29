@@ -2030,6 +2030,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/29thOctober.png"
   },
   {
+    date: "October 30",
+    monthNumeric: 9,
+    dayNumeric: 30,
+    year: 1868,
+    headline: "October 30 — Birth of Swami Vijnanananda",
+    narrativeParagraph1: "On October 30, 1868, **Hariprasanna Chattopadhyay**, later known as **Swami Vijnanananda**, was born at **Etawah** in present-day Uttar Pradesh. He met Sri Ramakrishna at **Dakshineswar** in 1883, and the Master's influence helped shape his spiritual life. After serving as a government engineer, he renounced the world in 1896 and joined the **Alambazar Math**.",
+    narrativeParagraph2: "**Swami Vivekananda** entrusted him with preparing the design for the **Sri Ramakrishna temple** at **Belur Math**. As Vice-President and later the fourth President of the Ramakrishna Math and Ramakrishna Mission, he saw the project through to its completion and consecrated the temple on 14 January 1938.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vijnanananda seated before the Sri Ramakrishna temple at Belur Math, the temple he designed and consecrated on 14 January 1938.",
+    customImage: "/images/on-this-day/30thOctober.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
