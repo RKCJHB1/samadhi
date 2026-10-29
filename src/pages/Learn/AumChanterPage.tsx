@@ -1173,7 +1173,7 @@ const AumChanterPage = () => {
       }}
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
-        <h1 className="text-center font-sans text-2xl tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
+        <h1 className="px-2 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="w-full flex items-center justify-between mt-1">
