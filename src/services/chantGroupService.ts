@@ -12,6 +12,12 @@ export type ChantPerson = {
   groupTotal: number | null;
 };
 
+export type GroupFilmMember = {
+  personId: string;
+  name: string;
+  frames: string[];
+};
+
 export type SavedChantProgress = {
   person: ChantPerson;
   group: ChantGroup | null;
@@ -79,6 +85,35 @@ export function groupChantGoal(total: number): string {
     if (chants < goal) return words;
   }
   return GROUP_CHANT_GOALS[GROUP_CHANT_GOALS.length - 1][1];
+}
+
+export async function fetchGroupFilm(code: string): Promise<GroupFilmMember[]> {
+  const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}/frames`, { cache: 'no-store' });
+  if (!response.ok) return [];
+  const body = await response.json() as { members?: GroupFilmMember[] };
+  return (body.members ?? []).flatMap((member) => {
+    if (!member?.personId || !Array.isArray(member.frames) || member.frames.length === 0) return [];
+    return [{
+      personId: member.personId,
+      name: member.name || '',
+      frames: member.frames.filter((frame) => typeof frame === 'string' && frame.startsWith('data:image/jpeg')).slice(0, 8),
+    }];
+  }).filter((member) => member.frames.length > 0);
+}
+
+export async function saveGroupFilm(code: string, personId: string, name: string, frames: string[]): Promise<GroupFilmMember[]> {
+  const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}/frames`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      personId,
+      name,
+      frames: frames.slice(0, 8),
+    }),
+  });
+  if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'film');
+  const body = await response.json() as { members?: GroupFilmMember[] };
+  return body.members ?? [];
 }
 
 export function buildPersonalChantShare(chantName: string, personTotal = 0, worldwide = 0) {

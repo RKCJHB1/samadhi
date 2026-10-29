@@ -59,6 +59,43 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
+function cleanFrames(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  const frames: string[] = [];
+  for (const item of value) {
+    if (typeof item !== 'string') continue;
+    if (!item.startsWith('data:image/jpeg;base64,')) continue;
+    if (item.length > 48_000) continue;
+    frames.push(item);
+    if (frames.length >= 8) break;
+  }
+  return frames;
+}
+
+async function readGroupFrames(env: ChantDbEnv, code: string): Promise<Array<{ personId: string; name: string; frames: string[] }>> {
+  const rows = await execute(
+    env,
+    `SELECT person_id, name, frames
+     FROM chant_group_frames
+     WHERE group_code = ? COLLATE NOCASE
+     ORDER BY updated_at DESC
+     LIMIT 12`,
+    [code],
+  );
+  return rows.flatMap((row) => {
+    const id = personId(cellText(row[0]));
+    if (!id) return [];
+    let frames: string[] = [];
+    try {
+      frames = cleanFrames(JSON.parse(cellText(row[2])));
+    } catch {
+      frames = [];
+    }
+    if (frames.length === 0) return [];
+    return [{ personId: id, name: cleanLabel(cellText(row[1]), 40), frames }];
+  });
+}
+
 function cellText(value: unknown): string {
   if (value && typeof value === 'object' && 'value' in value) {
     const raw = (value as { value: unknown }).value;
@@ -138,6 +175,17 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
         person_id TEXT NOT NULL,
         name TEXT NOT NULL DEFAULT '',
         total INTEGER NOT NULL DEFAULT 0,
+        updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+        PRIMARY KEY (group_code, person_id)
+      )`,
+    );
+    await execute(
+      env,
+      `CREATE TABLE IF NOT EXISTS chant_group_frames (
+        group_code TEXT NOT NULL,
+        person_id TEXT NOT NULL,
+        name TEXT NOT NULL DEFAULT '',
+        frames TEXT NOT NULL,
         updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
         PRIMARY KEY (group_code, person_id)
       )`,
@@ -394,6 +442,41 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       const group = await readGroup(env, slug);
       if (!group) return json({ error: 'This group link was not found.' }, 404);
       return json(group);
+    }
+
+    if (request.method === 'GET' && action === 'frames' && rest.length === 2) {
+      const group = await readGroup(env, slug);
+      if (!group) return json({ error: 'This group link was not found.' }, 404);
+      return json({ members: await readGroupFrames(env, group.code) });
+    }
+
+    if (request.method === 'POST' && action === 'frames' && rest.length === 2) {
+      const group = await readGroup(env, slug);
+      if (!group) return json({ error: 'This group link was not found.' }, 404);
+      const text = await request.text();
+      if (text.length > 400_000) return json({ error: 'Those pictures are too large to keep.' }, 400);
+      let body: { personId?: unknown; name?: unknown; frames?: unknown } = {};
+      try {
+        body = JSON.parse(text) as { personId?: unknown; name?: unknown; frames?: unknown };
+      } catch {
+        return json({ error: 'Those pictures could not be kept.' }, 400);
+      }
+      const id = personId(body.personId);
+      if (!id) return json({ error: 'Those pictures could not be kept.' }, 400);
+      const frames = cleanFrames(body.frames);
+      if (frames.length === 0) return json({ error: 'Those pictures could not be kept.' }, 400);
+      const name = cleanLabel(body.name, 40);
+      await execute(
+        env,
+        `INSERT INTO chant_group_frames (group_code, person_id, name, frames, updated_at)
+         VALUES (?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now'))
+         ON CONFLICT(group_code, person_id) DO UPDATE SET
+           name = excluded.name,
+           frames = excluded.frames,
+           updated_at = excluded.updated_at`,
+        [group.code, id, name, JSON.stringify(frames)],
+      );
+      return json({ members: await readGroupFrames(env, group.code) });
     }
 
     if (request.method === 'POST' && action === 'chants' && rest.length === 2) {
