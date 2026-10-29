@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
-import { buildGroupShare, chantPersonId, createChantGroup, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantGroup } from '../../services/chantGroupService';
+import { buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, chantPersonId, createChantGroup, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantGroup } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -311,7 +311,7 @@ const AumChanterPage = () => {
         const slug = groupSlug(fromUrl);
         if (slug) return slug.replace(/_/g, ' ');
       }
-      return localStorage.getItem('aumChanterGroupTitle') ?? '';
+      return '';
     } catch {
       return '';
     }
@@ -378,7 +378,7 @@ const AumChanterPage = () => {
     }
     const slug = typedSlug || fromUrl;
     if (!slug) {
-      setGroupNotice('Type a group name, such as Mistri Family.');
+      setGroupNotice('Type a group name.');
       return null;
     }
     if (groupCodeRef.current && slug.toLowerCase() === groupCodeRef.current.toLowerCase()) {
@@ -585,13 +585,6 @@ const AumChanterPage = () => {
     };
   }, [groupCode]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('aumChanterGroupTitle', groupNameDraft);
-    } catch {
-      // Private browsing can block storage. The draft still applies for this visit.
-    }
-  }, [groupNameDraft]);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [includeCamera, setIncludeCamera] = useState(false);
   const [videoChantLimit, setVideoChantLimit] = useState<number | null>(null);
@@ -971,7 +964,9 @@ const AumChanterPage = () => {
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
       personTotal: count,
-      shareText: groupCode ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count).videoText : '',
+      shareText: groupCode
+        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count).videoText
+        : buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText,
     });
   }, [chanterName, count, currentChant, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame]);
 
@@ -992,7 +987,7 @@ const AumChanterPage = () => {
 
   useEffect(() => {
     const defaultTitle = 'Ramakrishna Centre of South Africa, Johannesburg';
-    document.title = `Aum Chanter | ${defaultTitle}`;
+    document.title = `${CHANT_APP_NAME} | ${defaultTitle}`;
     window.scrollTo(0, 0);
   }, []);
 
@@ -1077,6 +1072,8 @@ const AumChanterPage = () => {
     )
     : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
+  const videoMessage = groupLink?.videoText
+    ?? buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText;
   const rankedGroups = [...leaderboard.map((group) => ({
     ...group,
     total: groupCode && group.code.toLowerCase() === groupCode.toLowerCase()
@@ -1097,17 +1094,17 @@ const AumChanterPage = () => {
     });
   }
   rankedGroups.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
-  const shareTitle = `I've chanted ${currentChant.name} ${count.toLocaleString()} times on Aum Chanter. Join the global meditation.`;
+  const shareTitle = `I've chanted ${currentChant.name} ${count.toLocaleString()} times on ${CHANT_APP_NAME}. Join the chant.`;
   const shareDescription = currentChant.id === 'om'
-    ? 'Join the Aum Chanter meditation game and contribute to our global chanting community.'
-    : `Join the Aum Chanter meditation game and explore special festival modes like ${currentChant.name}.`;
+    ? `Join ${CHANT_APP_NAME} and add your chant to the worldwide total.`
+    : `Join ${CHANT_APP_NAME} and chant ${currentChant.name}.`;
   const shareTwitterText = `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
 
   const copyGroupLink = async () => {
     if (!groupLink) {
       setGroupNotice(typedGroupName
         ? 'Use letters and numbers for the group name.'
-        : 'Type a group name, such as Mistri Family.');
+        : 'Type a group name.');
       return;
     }
     let copied = false;
@@ -1176,6 +1173,7 @@ const AumChanterPage = () => {
       }}
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
+        <h1 className="text-center font-sans text-2xl tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="w-full flex items-center justify-between mt-1">
@@ -1611,7 +1609,7 @@ const AumChanterPage = () => {
           <div id="group-chant-card" className="mt-3 flex w-full max-w-md flex-col items-stretch gap-2 rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-200/80">
             <p className="text-center font-sans text-base text-spiritual-100">Chant with a group</p>
             <p className="text-center text-xs text-spiritual-200/85">
-              Type the group name. Your link appears below. Copy it, or tap Share on WhatsApp.
+              Leave this blank to chant on your own. Or type a group name to chant together.
             </p>
             <label htmlFor="group-name" className="flex w-full items-center gap-2">
               <span className="shrink-0">Group name</span>
@@ -1620,7 +1618,7 @@ const AumChanterPage = () => {
                 type="text"
                 value={groupNameDraft}
                 maxLength={60}
-                placeholder="Mistri Family"
+                placeholder=""
                 onChange={(event) => setGroupNameDraft(event.target.value)}
                 className="min-w-0 flex-1 rounded border border-amber-900/20 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
               />
@@ -1692,7 +1690,7 @@ const AumChanterPage = () => {
               <p className="text-center text-xs text-spiritual-200/80">
                 {typedGroupName
                   ? 'Use letters and numbers, at least two characters. The link appears when the name is ready.'
-                  : 'Type a name such as Mistri Family. The link appears here.'}
+                  : 'Type a group name. The link appears here.'}
               </p>
             )}
             {groupNotice && (
@@ -1729,7 +1727,7 @@ const AumChanterPage = () => {
                   />
                   <span>
                     <span className="block font-semibold">Include me</span>
-                    <span className="block text-xs text-slate-200">Use the front-facing camera.</span>
+                    <span className="block text-xs text-slate-200">Use the front-facing camera. The chant message stays on the video.</span>
                   </span>
                 </label>
               </div>
@@ -1760,6 +1758,12 @@ const AumChanterPage = () => {
                 ))}
               </div>
             </fieldset>
+          )}
+
+          {includeCamera && videoPhase !== 'recording' && videoPhase !== 'ready' && (
+            <p className="w-full max-w-md whitespace-pre-wrap rounded-xl border border-amber-300/50 bg-slate-950/80 px-3 py-2 text-xs leading-relaxed text-amber-50">
+              {videoMessage}
+            </p>
           )}
 
           <div className="mt-2 flex w-full flex-wrap items-center justify-center gap-2">
@@ -1992,11 +1996,9 @@ const AumChanterPage = () => {
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
                   Download it, or share the file. Nothing is uploaded.
                 </p>
-                {groupLink && (
-                  <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
-                    {groupLink.videoText}
-                  </p>
-                )}
+                <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
+                  {videoMessage}
+                </p>
                 {videoNotice && (
                   <p className="text-sm text-amber-100/90" role="status">{videoNotice}</p>
                 )}

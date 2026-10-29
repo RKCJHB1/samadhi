@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { groupChantGoal } from '../../services/chantGroupService';
+import { CHANT_APP_NAME, groupChantGoal } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
@@ -321,7 +321,7 @@ function paintEndCard(
   context.shadowOffsetY = 2;
   context.fillStyle = '#140e08';
   context.fillRect(0, 0, width, height);
-  paintFittedLine(context, canvas, 'AUM CHANTER', height * 0.2, Math.round(width * 0.055), '#ffd166');
+  paintFittedLine(context, canvas, CHANT_APP_NAME, height * 0.2, Math.round(width * 0.055), '#ffd166');
   if (caption.line) {
     paintFittedLine(context, canvas, caption.line, height * 0.28, Math.round(width * 0.045), '#fff7ed');
   }
@@ -339,6 +339,45 @@ function paintEndCard(
   context.restore();
   paintCornerNotes(context, canvas);
   paintVideoBorder(context, canvas);
+}
+
+function paintCameraMessage(
+  context: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  frame: ChantVideoFrame,
+) {
+  const caption = frameCaption(frame);
+  const lines = caption.groupTitle
+    ? [
+        `Let us see if we can chant a combined ${groupChantGoal(caption.groupTotal)} times?`,
+        'Please view the fundraising efforts for our new temple',
+      ]
+    : [
+        CHANT_APP_NAME,
+        'Please view the fundraising efforts for our new temple',
+      ];
+  const shortSide = Math.min(canvas.width, canvas.height);
+  const size = Math.max(16, Math.round(shortSide * 0.034));
+  const lineHeight = Math.round(size * 1.4);
+  const pad = Math.round(shortSide * 0.04);
+  const barHeight = pad * 2 + lineHeight * lines.length;
+  const top = canvas.height - barHeight;
+  context.save();
+  context.fillStyle = 'rgba(20, 14, 8, 0.78)';
+  context.fillRect(0, top, canvas.width, barHeight);
+  context.textAlign = 'center';
+  context.textBaseline = 'alphabetic';
+  lines.forEach((line, index) => {
+    paintFittedLine(
+      context,
+      canvas,
+      line,
+      top + pad + size + index * lineHeight,
+      size,
+      index === 0 ? '#ffd166' : '#fff7ed',
+    );
+  });
+  context.restore();
 }
 
 function personLine(personName: string, groupTitle: string): string {
@@ -380,9 +419,14 @@ function paintReadout(
   context.lineWidth = Math.max(3, Math.round(layout.titleSize * 0.16));
   context.lineJoin = 'round';
   context.fillStyle = '#ffd166';
-  context.font = `600 ${layout.titleSize}px ${CANVAS_FONT}`;
-  context.strokeText('AUM CHANTER', canvas.width / 2, layout.titleY);
-  context.fillText('AUM CHANTER', canvas.width / 2, layout.titleY);
+  let titleSize = layout.titleSize;
+  context.font = `600 ${titleSize}px ${CANVAS_FONT}`;
+  while (titleSize > 14 && context.measureText(CHANT_APP_NAME).width > canvas.width - 64) {
+    titleSize -= 1;
+    context.font = `600 ${titleSize}px ${CANVAS_FONT}`;
+  }
+  context.strokeText(CHANT_APP_NAME, canvas.width / 2, layout.titleY);
+  context.fillText(CHANT_APP_NAME, canvas.width / 2, layout.titleY);
   if (line) {
     let personSize = layout.personSize;
     context.font = `600 ${personSize}px ${CANVAS_FONT}`;
@@ -829,6 +873,7 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
+        paintCameraMessage(context, canvas, frameRef.current);
         paintVideoBorder(context, canvas);
       };
 

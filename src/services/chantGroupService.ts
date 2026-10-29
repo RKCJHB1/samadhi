@@ -31,6 +31,7 @@ export class PartialChantSaveError extends Error {
 }
 
 const SITE_ORIGIN = 'https://ramakrishna-johannesburg.org.za';
+export const CHANT_APP_NAME = 'Global Japa Yajna';
 const MAX_ADD = 500;
 
 export function chantSiteOrigin(): string {
@@ -80,6 +81,23 @@ export function groupChantGoal(total: number): string {
   return GROUP_CHANT_GOALS[GROUP_CHANT_GOALS.length - 1][1];
 }
 
+export function buildPersonalChantShare(chantName: string, personTotal = 0, worldwide = 0) {
+  const chant = chantName.trim() || 'Om';
+  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project/fundraising`;
+  const url = `${SITE_ORIGIN}/chant`;
+  const yourTotal = Math.max(0, Math.round(personTotal));
+  const worldTotal = Math.max(0, Math.round(worldwide));
+  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\nWorldwide total: ${worldTotal.toLocaleString()}\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
+  return {
+    url,
+    title: CHANT_APP_NAME,
+    whatsappText: message,
+    twitterText: message,
+    facebookQuote: message,
+    videoText: message,
+  };
+}
+
 export function buildGroupShare(name: string, chantName: string, code: string, groupTotal = 0, personTotal = 0) {
   const groupName = name.trim() || 'our group';
   const chant = chantName.trim() || 'Om';
@@ -87,7 +105,7 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project/fundraising`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const sharedTotal = Math.max(0, Math.round(groupTotal));
-  const message = `🙏 Please join the ${groupName} chant.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} total: ${sharedTotal.toLocaleString()}\n\nLet us see if we can chant a combined ${groupChantGoal(sharedTotal)} times?\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
+  const message = `🙏 Please join the ${groupName} chant on ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} total: ${sharedTotal.toLocaleString()}\n\nLet us see if we can chant a combined ${groupChantGoal(sharedTotal)} times?\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,
