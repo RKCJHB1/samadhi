@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
-import { buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, chantPersonId, createChantGroup, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantGroup, type GroupMember } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -380,6 +380,9 @@ const AumChanterPage = () => {
   const groupTitleRef = useRef('');
   const confirmedGroupRef = useRef(0);
   const pendingGroupRef = useRef(0);
+  const confirmedByChantRef = useRef<GroupChantTotals>(emptyChantTotals());
+  const pendingByChantRef = useRef<GroupChantTotals>(emptyChantTotals());
+  const [groupByChant, setGroupByChant] = useState<GroupChantTotals>(emptyChantTotals());
   const groupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const personIdRef = useRef('');
   const chanterNameRef = useRef('');
@@ -399,13 +402,16 @@ const AumChanterPage = () => {
   const adoptGroup = useCallback((group: ChantGroup) => {
     if (groupCodeRef.current && groupCodeRef.current.toLowerCase() !== group.code.toLowerCase()) {
       pendingGroupRef.current = 0;
+      pendingByChantRef.current = emptyChantTotals();
     }
     groupCodeRef.current = group.code;
     groupTitleRef.current = group.name;
     confirmedGroupRef.current = group.total;
+    confirmedByChantRef.current = group.byChant ?? emptyChantTotals();
     setGroupCode(group.code);
     setGroupTitle(group.name);
     setGroupTotal(group.total + pendingGroupRef.current);
+    setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
     setGroupNotice('');
     if (groupSlug(groupNameDraftRef.current).toLowerCase() !== group.code.toLowerCase()) {
       setGroupNameDraft(group.name);
@@ -432,6 +438,7 @@ const AumChanterPage = () => {
         name: groupTitleRef.current,
         chantName: chantNameRef.current,
         total: confirmedGroupRef.current,
+        byChant: confirmedByChantRef.current,
       };
     }
     if (createGroupRef.current && createSlugRef.current === slug.toLowerCase()) {
@@ -492,7 +499,13 @@ const AumChanterPage = () => {
     if (amount <= 0) return;
     pendingPersonRef.current = 0;
     const groupAmount = pendingGroupRef.current;
+    const groupByChant = { ...pendingByChantRef.current };
     pendingGroupRef.current = 0;
+    pendingByChantRef.current = emptyChantTotals();
+    const showGroupTotals = () => {
+      setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
+      setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
+    };
     void (async () => {
       let code = groupCodeRef.current;
       if (groupAmount > 0 && !code) {
@@ -506,6 +519,7 @@ const AumChanterPage = () => {
           chanterNameRef.current.trim(),
           groupAmount > 0 && code ? code : '',
           groupAmount > 0 && code ? groupAmount : 0,
+          groupAmount > 0 && code ? groupByChant : emptyChantTotals(),
         );
         confirmedPersonRef.current = saved.person.total;
         setSavedTotal(saved.person.total + pendingPersonRef.current);
@@ -513,10 +527,12 @@ const AumChanterPage = () => {
         setSavedReady(true);
         if (saved.group && (!groupCodeRef.current || groupCodeRef.current === saved.group.code)) {
           confirmedGroupRef.current = saved.group.total;
-          setGroupTotal(saved.group.total + pendingGroupRef.current);
+          confirmedByChantRef.current = saved.group.byChant;
+          showGroupTotals();
         } else if (groupAmount > 0) {
           pendingGroupRef.current += groupAmount;
-          setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
+          pendingByChantRef.current = addChantTotals(pendingByChantRef.current, groupByChant);
+          showGroupTotals();
         }
         if (saved.person.groupTotal != null && code && groupCodeRef.current === code) {
           confirmedGroupPersonRef.current = saved.person.groupTotal;
@@ -526,15 +542,19 @@ const AumChanterPage = () => {
       } catch (error) {
         const sent = error instanceof PartialChantSaveError ? error.sent : 0;
         const groupSent = error instanceof PartialChantSaveError ? error.groupSent : 0;
+        const sentByChant = error instanceof PartialChantSaveError ? error.sentByChant : emptyChantTotals();
+        const unsentByChant = error instanceof PartialChantSaveError ? error.unsentByChant : groupByChant;
         confirmedPersonRef.current += sent;
         confirmedGroupRef.current += groupSent;
         confirmedGroupPersonRef.current += groupSent;
+        confirmedByChantRef.current = addChantTotals(confirmedByChantRef.current, sentByChant);
         pendingPersonRef.current += amount - sent;
         setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
         setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
         if (groupAmount > 0) {
           pendingGroupRef.current += groupAmount - groupSent;
-          setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
+          pendingByChantRef.current = addChantTotals(pendingByChantRef.current, unsentByChant);
+          showGroupTotals();
           setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
         }
       }
@@ -619,7 +639,9 @@ const AumChanterPage = () => {
       void fetchChantGroup(code).then((group) => {
         if (!group || !groupCodeRef.current || group.code.toLowerCase() !== groupCodeRef.current.toLowerCase()) return;
         confirmedGroupRef.current = group.total;
+        confirmedByChantRef.current = group.byChant;
         setGroupTotal(group.total + pendingGroupRef.current);
+        setGroupByChant(addChantTotals(group.byChant, pendingByChantRef.current));
       }).catch(() => {
         // Keep the total already on screen. The next tap tries again.
       });
@@ -853,9 +875,15 @@ const AumChanterPage = () => {
     setSavedWorldwide(confirmedGlobalRef.current + pendingPersonRef.current);
     setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
-    if (countingForGroup) {
+    const chantKey = CHANT_TOTAL_IDS.find((id) => id === selectedChantIdRef.current);
+    if (countingForGroup && chantKey) {
       pendingGroupRef.current += 1;
+      pendingByChantRef.current = {
+        ...pendingByChantRef.current,
+        [chantKey]: pendingByChantRef.current[chantKey] + 1,
+      };
       setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
+      setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
       setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
     }
     scheduleSavedChants();
@@ -1029,6 +1057,11 @@ const AumChanterPage = () => {
     return [{ personId: selfId, name: yourName, total: groupPersonTotal }, ...known].slice(0, 12);
   }, [chanterName, groupCode, groupMembers, groupPersonTotal]);
 
+  const currentGroupChantTotal = (CHANT_TOTAL_IDS as readonly string[]).includes(currentChant.id)
+    ? groupByChant[currentChant.id as ChantTotalId]
+    : 0;
+  const earlierGroupChants = Math.max(0, groupTotal - CHANT_TOTAL_IDS.reduce((sum, id) => sum + groupByChant[id], 0));
+
   useEffect(() => {
     syncFrame({
       chantName: currentChant.name,
@@ -1040,13 +1073,14 @@ const AumChanterPage = () => {
       globalChants: savedWorldwide,
       groupTitle: groupCode ? groupTitle : '',
       groupTotal: groupCode ? groupTotal : 0,
+      groupChantTotal: groupCode ? currentGroupChantTotal : 0,
       personTotal: count,
       groupMembers: groupCode ? visibleGroupMembers : [],
       shareText: groupCode
-        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count).videoText
+        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count, currentGroupChantTotal).videoText
         : buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText,
     });
-  }, [chanterName, count, currentChant, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame, visibleGroupMembers]);
+  }, [chanterName, count, currentChant, currentGroupChantTotal, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame, visibleGroupMembers]);
 
   useEffect(() => {
     try {
@@ -1147,6 +1181,7 @@ const AumChanterPage = () => {
       previewCode,
       groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? groupTotal : 0,
       count,
+      groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? currentGroupChantTotal : 0,
     )
     : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
@@ -1169,6 +1204,7 @@ const AumChanterPage = () => {
       name: groupTitle,
       chantName: currentChant.name,
       total: groupTotal,
+      byChant: groupByChant,
     });
   }
   rankedGroups.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
@@ -1277,8 +1313,9 @@ const AumChanterPage = () => {
               {groupCode && (
                 <div className="text-center">
                   <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Group</p>
-                  <p className="max-w-[4.5rem] truncate text-[10px] text-spiritual-200/70 sm:max-w-[8rem]">{groupTitle}</p>
-                  <p id="group-total-value" className="text-lg sm:text-2xl font-mono text-white/80">{groupTotal.toLocaleString()}</p>
+                  <p className="max-w-[4.5rem] truncate text-[10px] text-spiritual-200/70 sm:max-w-[8rem]">{currentChant.shortLabel}</p>
+                  <p id="group-chant-total" className="text-lg sm:text-2xl font-mono text-white/80">{currentGroupChantTotal.toLocaleString()}</p>
+                  <p id="group-total-value" className="text-[10px] text-spiritual-300/70">all {groupTotal.toLocaleString()}</p>
                 </div>
               )}
               <div className="text-center">
@@ -1510,7 +1547,19 @@ const AumChanterPage = () => {
               {groupCode && (
                 <>
                   <span className="mx-2 text-spiritual-400/50">·</span>
-                  Group{' '}
+                  Group Om <span className="font-mono">{groupByChant.om.toLocaleString()}</span>
+                  <span className="mx-2 text-spiritual-400/50">·</span>
+                  Jai Sri Ram <span className="font-mono">{groupByChant['sri-ram'].toLocaleString()}</span>
+                  <span className="mx-2 text-spiritual-400/50">·</span>
+                  Jai Ma <span className="font-mono">{groupByChant['jai-ma'].toLocaleString()}</span>
+                  {earlierGroupChants > 0 && (
+                    <>
+                      <span className="mx-2 text-spiritual-400/50">·</span>
+                      Earlier <span className="font-mono">{earlierGroupChants.toLocaleString()}</span>
+                    </>
+                  )}
+                  <span className="mx-2 text-spiritual-400/50">·</span>
+                  All{' '}
                   <span className="font-mono">{groupTotal.toLocaleString()}</span>
                 </>
               )}
@@ -1758,7 +1807,9 @@ const AumChanterPage = () => {
                 </p>
                 {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
                   <p className="text-center text-xs text-spiritual-100">
-                    {previewName} total so far: <span className="font-mono">{groupTotal.toLocaleString()}</span>
+                    {previewName} {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
+                    <span className="mx-2 text-spiritual-400/50">·</span>
+                    All chants: <span className="font-mono">{groupTotal.toLocaleString()}</span>
                     <span className="mx-2 text-spiritual-400/50">·</span>
                     Your chants in this group:{' '}
                     <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span>

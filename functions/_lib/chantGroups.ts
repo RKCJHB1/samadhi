@@ -8,6 +8,7 @@ export type ChantGroup = {
   name: string;
   chantName: string;
   total: number;
+  byChant: { om: number; 'sri-ram': number; 'jai-ma': number };
 };
 
 export type ChantPerson = {
@@ -140,6 +141,7 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
         created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
       )`,
     );
+    await ensureChantTotalColumns(env);
     await execute(
       env,
       `CREATE TABLE IF NOT EXISTS chant_people (
@@ -168,6 +170,25 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
   return pending;
 }
 
+const GROUP_COLUMNS = 'code, name, chant_name, total, om_total, ram_total, ma_total';
+
+async function ensureChantTotalColumns(env: ChantDbEnv): Promise<void> {
+  try {
+    await execute(env, 'SELECT om_total, ram_total, ma_total FROM chant_groups LIMIT 1');
+    return;
+  } catch {
+    // The per-chant totals are not stored yet.
+  }
+  for (const column of ['om_total', 'ram_total', 'ma_total']) {
+    try {
+      await execute(env, `ALTER TABLE chant_groups ADD COLUMN ${column} INTEGER NOT NULL DEFAULT 0`);
+    } catch {
+      // This column is already present.
+    }
+  }
+  await execute(env, 'SELECT om_total, ram_total, ma_total FROM chant_groups LIMIT 1');
+}
+
 function rowToGroup(row: unknown[]): ChantGroup | null {
   if (!row || row.length < 4) return null;
   const code = cellText(row[0]);
@@ -176,14 +197,19 @@ function rowToGroup(row: unknown[]): ChantGroup | null {
     code,
     name: cellText(row[1]),
     chantName: cellText(row[2]),
-    total: Math.max(0, Math.round(Number(cellText(row[3])) || 0)),
+    total: storedTotal(row[3]),
+    byChant: {
+      om: storedTotal(row[4]),
+      'sri-ram': storedTotal(row[5]),
+      'jai-ma': storedTotal(row[6]),
+    },
   };
 }
 
 async function readGroup(env: ChantDbEnv, code: string): Promise<ChantGroup | null> {
   const rows = await execute(
     env,
-    'SELECT code, name, chant_name, total FROM chant_groups WHERE code = ? COLLATE NOCASE',
+    `SELECT ${GROUP_COLUMNS} FROM chant_groups WHERE code = ? COLLATE NOCASE`,
     [code],
   );
   return rowToGroup(rows[0]);
@@ -196,6 +222,19 @@ function personId(value: unknown): string {
 
 function storedTotal(value: unknown): number {
   return Math.max(0, Math.round(Number(cellText(value)) || 0));
+}
+
+function readGroupChantCounts(value: unknown, groupCount: number): { om: number; ram: number; ma: number } | null {
+  const safeCount = Number.isFinite(groupCount) && groupCount > 0 ? groupCount : 0;
+  if (value == null) return { om: 0, ram: 0, ma: 0 };
+  if (typeof value !== 'object') return null;
+  const source = value as Record<string, unknown>;
+  const om = Math.round(Number(source.om));
+  const ram = Math.round(Number(source['sri-ram']));
+  const ma = Math.round(Number(source['jai-ma']));
+  if (![om, ram, ma].every((count) => Number.isFinite(count) && count >= 0 && count <= safeCount)) return null;
+  if (om + ram + ma !== safeCount) return null;
+  return { om, ram, ma };
 }
 
 async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
@@ -220,7 +259,7 @@ async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: numbe
 async function listGroups(env: ChantDbEnv, limit: number): Promise<ChantGroup[]> {
   const rows = await execute(
     env,
-    `SELECT code, name, chant_name, total
+    `SELECT ${GROUP_COLUMNS}
      FROM chant_groups
      WHERE total > 0
      ORDER BY total DESC, name COLLATE NOCASE ASC
@@ -257,6 +296,7 @@ async function saveProgress(
   name: string,
   groupCode: string,
   groupCount: number,
+  chantCounts: { om: number; ram: number; ma: number },
 ): Promise<{ person: ChantPerson; group: ChantGroup | null }> {
   const appliedGroupCount = Math.min(count, Math.max(0, groupCount));
   const group = appliedGroupCount > 0 && groupCode ? await readGroup(env, groupCode) : null;
@@ -275,8 +315,11 @@ async function saveProgress(
   ];
   if (group) {
     statements.push({
-      sql: 'UPDATE chant_groups SET total = total + ? WHERE code = ? RETURNING code, name, chant_name, total',
-      args: [appliedGroupCount, group.code],
+      sql: `UPDATE chant_groups
+            SET total = total + ?, om_total = om_total + ?, ram_total = ram_total + ?, ma_total = ma_total + ?
+            WHERE code = ?
+            RETURNING ${GROUP_COLUMNS}`,
+      args: [appliedGroupCount, chantCounts.om, chantCounts.ram, chantCounts.ma, group.code],
     });
     statements.push({
       sql: `INSERT INTO chant_group_people (group_code, person_id, name, total)
@@ -337,9 +380,9 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       if (request.method === 'POST' && action === 'chants' && rest.length === 2) {
         const text = await request.text();
         if (text.length > 2000) return json({ error: 'Those chants could not be saved.' }, 400);
-        let body: { count?: unknown; groupCount?: unknown; name?: unknown; groupCode?: unknown } = {};
+        let body: { count?: unknown; groupCount?: unknown; name?: unknown; groupCode?: unknown; groupByChant?: unknown } = {};
         try {
-          body = JSON.parse(text) as { count?: unknown; groupCount?: unknown; name?: unknown; groupCode?: unknown };
+          body = JSON.parse(text) as { count?: unknown; groupCount?: unknown; name?: unknown; groupCode?: unknown; groupByChant?: unknown };
         } catch {
           return json({ error: 'Those chants could not be saved.' }, 400);
         }
@@ -351,9 +394,11 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
         if (Number.isFinite(groupCount) && (groupCount < 0 || groupCount > count)) {
           return json({ error: 'Those chants could not be saved.' }, 400);
         }
+        const chantCounts = readGroupChantCounts(body.groupByChant, Number.isFinite(groupCount) ? groupCount : 0);
+        if (!chantCounts) return json({ error: 'Those chants could not be saved.' }, 400);
         const name = cleanLabel(body.name, 40);
         const requestedGroup = groupSlug(body.groupCode ?? '') || groupCode;
-        const saved = await saveProgress(env, id, count, name, requestedGroup, Number.isFinite(groupCount) ? groupCount : 0);
+        const saved = await saveProgress(env, id, count, name, requestedGroup, Number.isFinite(groupCount) ? groupCount : 0, chantCounts);
         return json(saved);
       }
       return json({ error: 'This chanter was not found.' }, 404);
@@ -440,7 +485,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       if (!current) return json({ error: 'This group link was not found.' }, 404);
       const rows = await execute(
         env,
-        'UPDATE chant_groups SET total = total + ? WHERE code = ? RETURNING code, name, chant_name, total',
+        `UPDATE chant_groups SET total = total + ? WHERE code = ? RETURNING ${GROUP_COLUMNS}`,
         [count, current.code],
       );
       const group = rowToGroup(rows[0]);

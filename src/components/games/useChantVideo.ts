@@ -18,6 +18,7 @@ export type ChantVideoFrame = {
   globalChants?: number;
   groupTitle?: string;
   groupTotal?: number;
+  groupChantTotal?: number;
   personTotal?: number;
   shareText?: string;
   groupMembers?: { name: string }[];
@@ -328,12 +329,10 @@ function paintEndCard(
   }
   paintFittedLine(context, canvas, personTotal.toLocaleString(), height * 0.44, Math.round(width * 0.16), '#ffffff', 700);
   paintFittedLine(context, canvas, frame.chantName || 'Om', height * 0.52, Math.round(width * 0.05), '#fff7ed');
-  if (caption.groupTotal > 0) {
-    paintFittedLine(context, canvas, `${caption.groupTitle || 'Group'} total ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.04), '#ffd166');
-  }
   if (caption.groupTitle) {
+    paintFittedLine(context, canvas, `${caption.groupTitle} ${frame.chantName || 'Om'} ${caption.groupChantTotal.toLocaleString()} · all ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.034), '#ffd166');
     paintFittedLine(context, canvas, 'Let us see if we can chant', height * 0.7, Math.round(width * 0.038), '#fff7ed');
-    paintFittedLine(context, canvas, `a combined ${groupChantGoal(caption.groupTotal)} times?`, height * 0.76, Math.round(width * 0.038), '#fff7ed');
+    paintFittedLine(context, canvas, `${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`, height * 0.76, Math.round(width * 0.038), '#fff7ed');
   }
   paintFittedLine(context, canvas, 'Please view the fundraising efforts', height * 0.86, Math.round(width * 0.034), '#ffd166');
   paintFittedLine(context, canvas, 'for our new temple', height * 0.91, Math.round(width * 0.034), '#ffd166');
@@ -382,7 +381,7 @@ function paintCameraMessage(
   const caption = frameCaption(frame);
   const lines = caption.groupTitle
     ? [
-        `Let us see if we can chant a combined ${groupChantGoal(caption.groupTotal)} times?`,
+        `Let us see if we can chant ${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`,
         'Please view the fundraising efforts for our new temple',
       ]
     : [
@@ -420,13 +419,16 @@ function personLine(personName: string, groupTitle: string): string {
 function frameCaption(frame: ChantVideoFrame) {
   const groupTitle = cleanPersonName(frame.groupTitle).slice(0, 60);
   const groupTotal = Math.max(0, Math.round(frame.groupTotal || 0));
+  const groupChantTotal = Math.max(0, Math.round(frame.groupChantTotal || 0));
   const globalChants = Math.max(0, Math.round(frame.globalChants || 0));
   const parts: string[] = [];
-  if (groupTotal > 0) parts.push(`Group ${groupTotal.toLocaleString()}`);
+  if (groupTitle) parts.push(`${frame.chantName || 'Om'} ${groupChantTotal.toLocaleString()}`);
+  if (groupTotal > 0) parts.push(`All ${groupTotal.toLocaleString()}`);
   if (globalChants > 0) parts.push(`Worldwide ${globalChants.toLocaleString()}`);
   return {
     line: personLine(cleanPersonName(frame.personName), groupTitle),
     globalChants,
+    groupChantTotal,
     groupTitle,
     groupTotal,
     gold: parts.join(' · '),
@@ -551,6 +553,7 @@ export function useChantVideo() {
     globalChants: 0,
     groupTitle: '',
     groupTotal: 0,
+    groupChantTotal: 0,
     shareText: '',
   });
   const sessionCountRef = useRef(0);
