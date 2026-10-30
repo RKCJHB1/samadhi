@@ -2043,6 +2043,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/30thOctober.jpeg"
   },
   {
+    date: "October 31",
+    monthNumeric: 9,
+    dayNumeric: 31,
+    year: 1885,
+    headline: "October 31 — Sri Ramakrishna, Prabhudayal Misra, and Narendra’s Songs at Shyampukur",
+    narrativeParagraph1: "On October 31, 1885, at the **Shyampukur** house in Calcutta, Sri Ramakrishna met **Prabhudayal Misra**, a Christian renunciate belonging to the Quaker tradition. Misra recounted his visions of Jesus and said that he had previously seen Sri Ramakrishna in a vision, now recognizing him as God himself. Sri Ramakrishna entered **samādhi** in his presence.",
+    narrativeParagraph2: "Later, asking **Narendra** to sing so that he could rest, he requested, **“O my mind, be drunk with the wine of divine love.”** Narendra then sang it, and Sri Ramakrishna asked him also to sing **“On the Sea of the Bliss of Consciousness,”** filling the gathering with devotional fervour.",
+    quote: "O my mind, be drunk with the wine of divine love.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna resting at the Shyampukur house on 31 October 1885 while Narendra sings, with Prabhudayal Misra and the devotees gathered around.",
+    customImage: "/images/on-this-day/31stOctober.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
