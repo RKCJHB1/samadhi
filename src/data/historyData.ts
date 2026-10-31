@@ -2056,6 +2056,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/31stOctober.png"
   },
   {
+    date: "November 1",
+    monthNumeric: 10,
+    dayNumeric: 1,
+    year: 1900,
+    headline: "November 1 — Swami Vivekananda Sends Postcards from Constantinople",
+    narrativeParagraph1: "On November 1, 1900, while visiting **Constantinople** (present-day Istanbul) during his European travels, Swami Vivekananda sent picture postcards to **Alberta Sturges**, **Sister Christine** and **Sister Nivedita**. To Alberta, he wrote, **“I am having a grand Turkish time.”**",
+    narrativeParagraph2: "To Christine, he remarked that he was having a good time. His postcard to Nivedita, depicting dervishes and local merchants, carried the playful message: **“The blessings of the howling dervishes go with you.”**",
+    quote: "The blessings of the howling dervishes go with you.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing picture postcards in Constantinople on 1 November 1900, the Golden Horn, Hagia Sophia, and whirling dervishes beyond the window.",
+    customImage: "/images/on-this-day/1stNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
