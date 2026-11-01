@@ -2069,6 +2069,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/1stNovember.png"
   },
   {
+    date: "November 2",
+    monthNumeric: 10,
+    dayNumeric: 2,
+    year: 1893,
+    headline: "November 2 — Swami Vivekananda’s Letter from Chicago to Alasinga Perumal",
+    narrativeParagraph1: "On November 2, 1893, writing from **Chicago** to his disciple **Alasinga Perumal** in Madras, Swami Vivekananda described the circumstances that had brought him to the **Parliament of Religions**. He recalled meeting **Dr. John Henry Wright**, Professor of Greek at Harvard University, at a village near Boston; Wright encouraged him to participate and undertook to arrange what was needed for him to do so.",
+    narrativeParagraph2: "Swamiji also described the delegates’ lodging, the opening of the Parliament at the **Art Palace**, his fellow representatives, and his prospects for lecturing in America. The letter provides a vivid firsthand account of the beginnings of his public work in the West.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda writing from Chicago on 2 November 1893 to Alasinga Perumal, recalling how Professor John Henry Wright sent him to the Parliament of Religions.",
+    customImage: "/images/on-this-day/2ndNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
