@@ -2082,6 +2082,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/2ndNovember.png"
   },
   {
+    date: "November 3",
+    monthNumeric: 10,
+    dayNumeric: 3,
+    year: 1896,
+    headline: "November 3 — Swami Vivekananda Lectures on “Unity in Diversity” in London",
+    narrativeParagraph1: "On November 3, 1896, Swami Vivekananda delivered his class lecture **Unity in Diversity** at the **Victoria Street** class room in London. Opening with a verse from the **Katha Upanishad** — **“The Self-existent One projected the senses outwards and, therefore, a man looks outward, not within himself”** — Swamiji explained how the apparent multiplicity of the universe conceals an underlying spiritual unity.",
+    narrativeParagraph2: "He showed that the true Self is not to be discovered through external perception alone, but through turning inward and realising the one Reality underlying all existence.",
+    quote: "The Self-existent One projected the senses outwards and, therefore, a man looks outward, not within himself.",
+    quoteAuthor: "Katha Upanishad",
+    imageCaption: "Swami Vivekananda lecturing on “Unity in Diversity” at the Victoria Street class room in London on 3 November 1896, the Katha Upanishad verse written on the board behind him.",
+    customImage: "/images/on-this-day/3rdNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
