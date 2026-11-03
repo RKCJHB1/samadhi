@@ -2095,6 +2095,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/3rdNovember.png"
   },
   {
+    date: "November 4",
+    monthNumeric: 10,
+    dayNumeric: 4,
+    year: 1894,
+    headline: "November 4 — Swami Akhandananda Writes to Pramadadas Mitra",
+    narrativeParagraph1: "On November 4, 1894, **Swami Akhandananda** wrote to the distinguished Sanskrit scholar **Pramadadas Mitra** of **Varanasi** regarding efforts to organize public recognition of Swami Vivekananda following his success at the **Parliament of Religions** in Chicago.",
+    narrativeParagraph2: "He sought Mitra’s help in obtaining a Sanskrit letter of appreciation, signed by leading Sanskrit scholars of Varanasi, as part of the wider effort to secure formal acknowledgement in India of Vivekananda’s work in the West.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Akhandananda writing on 4 November 1894 to Pramadadas Mitra of Varanasi, seeking a Sanskrit letter of appreciation for Swami Vivekananda’s work in the West.",
+    customImage: "/images/on-this-day/4thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
