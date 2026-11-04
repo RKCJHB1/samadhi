@@ -2108,6 +2108,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/4thNovember.png"
   },
   {
+    date: "November 5",
+    monthNumeric: 10,
+    dayNumeric: 5,
+    year: 1896,
+    headline: "November 5 — Swami Vivekananda Lectures on “The Freedom of the Soul” in London",
+    narrativeParagraph1: "On November 5, 1896, Swami Vivekananda delivered his lecture **The Freedom of the Soul** in London, expounding the central teaching of **Advaita Vedanta**. He declared that freedom, purity, and divine nature are not qualities to be acquired, but the very nature of the soul.",
+    narrativeParagraph2: "Explaining that bondage is a delusion superimposed upon our true nature, he urged humanity to realize its inherent spiritual freedom. He concluded with the affirmation: **“I am free, and was free, and always will be free.”**",
+    quote: "I am free, and was free, and always will be free.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda lecturing on “The Freedom of the Soul” in London on 5 November 1896.",
+    customImage: "/images/on-this-day/5thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
