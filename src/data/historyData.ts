@@ -2121,6 +2121,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/5thNovember.png"
   },
   {
+    date: "November 6",
+    monthNumeric: 10,
+    dayNumeric: 6,
+    year: 1885,
+    headline: "November 6 — Sri Ramakrishna Manifests as the Divine Mother",
+    narrativeParagraph1: "On November 6, 1885, **Kali Puja** night at **Shyampukur Bati**, Sri Ramakrishna sat surrounded by devotees as arrangements were made for the worship of the Divine Mother. When **Girish Chandra Ghosh** offered flowers at his feet, exclaiming, **“Victory to Sri Ramakrishna! Victory to the Mother!”**, the other devotees followed.",
+    narrativeParagraph2: "Sri Ramakrishna then entered deep **samādhi**, his hands assuming the divine gestures of granting boons and fearlessness. The devotees saw in him the manifestation of the Divine Mother—an incident recorded in **The Gospel of Sri Ramakrishna**.",
+    quote: "Victory to Sri Ramakrishna! Victory to the Mother!",
+    quoteAuthor: "Girish Chandra Ghosh",
+    imageCaption: "On Kali Puja night at Shyampukur, 6 November 1885, Girish Chandra Ghosh offers flowers at Sri Ramakrishna’s feet as the Master sits in samādhi before the image of the Divine Mother.",
+    customImage: "/images/on-this-day/6thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
