@@ -1129,21 +1129,45 @@ export function useChantVideo() {
     const title = `${frameRef.current.chantName} chant`;
     const text = frameRef.current.shareText?.trim() || '';
     const cancelled = (shareError: unknown) => shareError instanceof DOMException && shareError.name === 'AbortError';
+    const phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     setError(null);
+
+    const copyMessage = async () => {
+      if (!text || !navigator.clipboard?.writeText) return false;
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        return false;
+      }
+    };
 
     try {
       if (navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share(text ? { files: [file], title, text } : { files: [file], title });
-          return;
-        } catch (fileShareError) {
-          if (cancelled(fileShareError)) return;
-          if (text) {
-            try {
-              await navigator.share({ files: [file], title });
-              return;
-            } catch (fileOnlyError) {
-              if (cancelled(fileOnlyError)) return;
+        if (!phone) {
+          const copied = await copyMessage();
+          try {
+            await navigator.share({ files: [file], title });
+            setNotice(copied
+              ? 'The video is in the share window. The message has been copied, so paste it into the chat.'
+              : 'The video is in the share window. Copy the message above and paste it into the chat.');
+            return;
+          } catch (fileShareError) {
+            if (cancelled(fileShareError)) return;
+          }
+        } else {
+          try {
+            await navigator.share(text ? { files: [file], title, text } : { files: [file], title });
+            return;
+          } catch (fileShareError) {
+            if (cancelled(fileShareError)) return;
+            if (text) {
+              try {
+                await navigator.share({ files: [file], title });
+                return;
+              } catch (fileOnlyError) {
+                if (cancelled(fileOnlyError)) return;
+              }
             }
           }
         }
