@@ -37,6 +37,9 @@ const HinduismForChildren = () => {
               <p className="text-gray-700">
                 Interactive and engaging programs to help children learn about Hindu values, philosophy, and culture
               </p>
+              <p className="text-gray-700 mt-3">
+                On 16 August 2026 the Centre held a seminar on spiritual education for children in Midrand. <Link to="/services/seva" className="text-indian-saffron hover:underline">The account is on the Seva/Outreach page.</Link>
+              </p>
             </div>
 
             {/* ── Hero Image ── */}

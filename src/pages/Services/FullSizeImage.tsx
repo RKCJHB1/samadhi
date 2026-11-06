@@ -73,7 +73,7 @@ const FullSizeImage = () => {
 
   // Get the image array and return path
   const imageArray = nutritionImages;
-  const returnPath = '/services/nutrition-programme';
+  const returnPath = '/services/seva';
 
   // Find the current image and its index - we need to handle both string and number IDs
   const currentImageIndex = imageArray.findIndex(img =>
@@ -127,7 +127,7 @@ const FullSizeImage = () => {
                 onClick={handleClose}
                 className="px-4 py-2 bg-spiritual-500 text-white rounded hover:bg-spiritual-600"
               >
-                Return to Nutrition Programme
+                Return to Seva/Outreach
               </button>
             </div>
           </div>
@@ -190,7 +190,7 @@ const FullSizeImage = () => {
                 onClick={handleClose}
                 className="px-4 py-2 bg-spiritual-500 text-white rounded hover:bg-spiritual-600"
               >
-                Return to Nutrition Programme
+                Return to Seva/Outreach
               </button>
 
               <button

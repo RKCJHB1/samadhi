@@ -29,8 +29,7 @@ export const EVENTS: Event[] = [
     title: 'Seminar: The Importance of Spiritual Education for Children',
     description: 'A comprehensive seminar featuring papers on religious education, parental roles, teaching methods, and age-appropriate resources for spiritual education. Keynote speakers include Mrs Ragini Haribhai, Mr M K Angajan, Revered Swami Viprananda, and Revered Pravrajika Ishtaprana Mataji.',
     location: 'Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand',
-    status: 'upcoming',
-    registrationUrl: 'https://forms.gle/opGyZGV8Ju8nC9EM7',
-    pdfUrl: '/pics/Education Seminar August 2026.pdf'
+    status: 'completed',
+    pdfUrl: '/pics/RKC Education Seminar August 2026.pdf'
   }
 ];

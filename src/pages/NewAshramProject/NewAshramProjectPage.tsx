@@ -27,7 +27,7 @@ const NewAshramProjectPage = () => {
             <p className="lead text-xl text-gray-700">
               The Johannesburg Centre conducts a wide-range of welfare work and is developing a fixed premises to expand on this.
 The sole purpose of this development is to serve and uplift society and to promote spirituality and tranquility,
-where devotees can find God in themselves and around them.
+where devotees can find God in themselves and around them. The work itself is told on the <Link to="/services/seva" className="text-indian-saffron hover:underline">Seva/Outreach page</Link>.
             </p>
 
             <div className="my-8 grid grid-cols-1 md:grid-cols-3 gap-8">

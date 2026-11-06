@@ -26,7 +26,7 @@ import Satsangs from "./pages/Services/Satsangs.tsx";
 import HinduismForChildren from "./pages/Services/HinduismForChildren";
 import SpecialFunctions from "./pages/Services/SpecialFunctions.tsx";
 
-import NutritionProgramme from "./pages/Services/NutritionProgramme";
+import SevaPage from "./pages/Services/SevaPage";
 import FullSizeImage from "./pages/Services/FullSizeImage";
 import SeminarRegistration from "./pages/Services/SeminarRegistration";
 import GuruPurnimaInvitation from "./pages/Services/GuruPurnimaInvitation";
@@ -182,7 +182,8 @@ const App = () => (
               <Route path="/services/satsangs" element={<Satsangs />} />
               <Route path="/services/hinduism-for-children" element={<HinduismForChildren />} />
               <Route path="/services/special-functions" element={<SpecialFunctions />} />
-              <Route path="/services/nutrition-programme" element={<NutritionProgramme />} />
+              <Route path="/services/seva" element={<SevaPage />} />
+              <Route path="/services/nutrition-programme" element={<Navigate to="/services/seva" replace />} />
               <Route path="/services/nutrition-programme/image/:imageId" element={<FullSizeImage />} />
             </Route>
 

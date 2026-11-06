@@ -39,8 +39,8 @@ const ThankYouPage = () => {
           </Button>
 
           <Button asChild variant="outline">
-            <Link to="/services/nutrition-programme">
-              Learn About Our Outreach Programs
+            <Link to="/services/seva">
+              See Seva/Outreach
             </Link>
           </Button>
         </div>

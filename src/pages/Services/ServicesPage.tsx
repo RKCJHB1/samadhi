@@ -12,7 +12,7 @@ const ServicesPage = () => {
     { name: "Hinduism for Children", path: "/services/hinduism-for-children" },
     { name: "Upcoming Events", path: "/services/special-functions" },
 
-    { name: "Nutrition Programme and Community Outreach", path: "/services/nutrition-programme" },
+    { name: "Seva/Outreach", path: "/services/seva" },
   ];
 
   // Check if we're on the main services page or a subpage
@@ -41,7 +41,7 @@ const ServicesPage = () => {
                     <Link
                       to={link.path}
                       className={`tab-nav-link text-md px-1 py-1 sm:py-0 ${link.name.length > 15 ? 'long-item' : ''} ${
-                        location.pathname === link.path
+                        (location.pathname === link.path || (link.path === '/services/seva' && location.pathname.startsWith('/services/nutrition-programme')))
                           ? 'active text-spiritual-500'
                           : 'text-gray-500'
                       } ${index > 0 ? 'mt-1 sm:mt-0' : ''}`}
@@ -79,7 +79,7 @@ const ServicesPage = () => {
                       {link.name === "Satsangs" && "Join our regular spiritual gatherings which include the chanting of prayers, meditation, and a discourse on Vedantic Philosophy and Principles. The Sub-Centre also celebrates all major hindu festivals."}
                       {link.name === "Hinduism for Children" && "Interactive lessons, games, and Sunday classes teaching Hindu values, philosophy, and culture to children."}
                       {link.name === "Upcoming Events" && "Celebrations of major religious festivals and other special programmes extending our service activities (seminars/workshops etc)."}
-                      {link.name === "Nutrition Programme and Community Outreach" && "Our initiatives to serve the community through nutrition programs and various welfare activities."}
+                      {link.name === "Seva/Outreach" && "Food, a meal, and care for families in Lenasia, with the record of each month's work."}
                     </p>
                     <span className="text-spiritual-500 inline-flex items-center">
                       Read More

@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 
 const donationSchema = z.object({
   firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
@@ -24,20 +25,25 @@ const donationSchema = z.object({
 
 type DonationFormValues = z.infer<typeof donationSchema>;
 
+const donationPurposes = [
+  "New Ashram Project",
+  "General Donation",
+  "Nutrition Programme",
+  "Women Empowerment",
+  "Children's Value Education",
+  "Temple Maintenance"
+];
+
 const DonatePage = () => {
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [searchParams] = useSearchParams();
+  const requestedPurpose = searchParams.get('purpose');
+  const purpose = requestedPurpose && donationPurposes.includes(requestedPurpose)
+    ? requestedPurpose
+    : "New Ashram Project";
 
   const presetAmounts = [100, 250, 500, 1000];
-
-  const donationPurposes = [
-    "New Ashram Project",
-    "General Donation",
-    "Nutrition Programme",
-    "Women Empowerment",
-    "Children's Value Education",
-    "Temple Maintenance"
-  ];
 
   const form = useForm<DonationFormValues>({
     resolver: zodResolver(donationSchema),
@@ -47,7 +53,7 @@ const DonatePage = () => {
       email: "",
       mobile: "",
       amount: 100,
-      purpose: "New Ashram Project"
+      purpose
     }
   });
 
@@ -244,7 +250,7 @@ const DonatePage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Purpose of Donation</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select key={purpose} onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select purpose" />

@@ -19,6 +19,7 @@ const SpecialFunctions = () => {
                 <h3 className="text-2xl font-heading font-semibold mb-6">
                   Upcoming Programmes <span className="text-base font-normal ml-2">(If you would like to get involved, please <Link to="/contact" className="text-indian-saffron hover:underline">contact us</Link>.)</span>
                 </h3>
+                <p className="mb-6 text-gray-700">No programme is scheduled at present.</p>
 
                 {/* Desktop view - table */}
                 <div className="hidden md:block overflow-x-auto">
@@ -32,33 +33,64 @@ const SpecialFunctions = () => {
                     </thead>
                     <tbody>
 
-                      {/* Seminar: The Importance of Spiritual Education for Children - Upcoming */}
-                      <tr className="bg-indian-saffron/5">
+                      {/* Diwali distribution 2026 - Completed */}
+                      <tr className="opacity-60">
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p className="font-semibold text-indian-saffron">Sunday, <span className="whitespace-nowrap">16th August</span></p>
-                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap font-medium">10:00 AM - 12:30 PM</p>
-                          <span className="inline-block mt-2 px-2 py-1 bg-indian-saffron/20 text-indian-saffron text-xs font-semibold rounded-full animate-pulse">Upcoming</span>
+                          <p>31 October and <span className="whitespace-nowrap">1 November 2026</span></p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p className="font-semibold text-base text-black leading-snug">Seminar: The Importance of Spiritual Education for Children</p>
+                          <p>Diwali distribution</p>
                           <div className="mt-2 flex flex-col gap-1.5">
-                            <a href="/pics/Education Seminar August 2026.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-semibold text-sm">
-                              View Invitation (PDF)
+                            <a href={encodeURI('/pics/Diwali Report 2026.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-medium text-sm">
+                              Read the Diwali report
                             </a>
-                            <a href="https://forms.gle/opGyZGV8Ju8nC9EM7" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-semibold text-sm">
-                              Register Online
-                            </a>
+                            <Link to="/services/seva" className="text-indian-saffron hover:underline font-medium text-sm">
+                              The account on the Seva/Outreach page
+                            </Link>
                           </div>
                         </td>
                         <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
-                          <p className="text-sm font-semibold text-gray-800">Papers to be presented:</p>
+                          <p className="text-sm text-gray-700">One hundred and eighty families, about 540 people, received a month of food, household goods, and a standing fan. Each household was served breyani, dhal, salad, and soji, and took a meal home.</p>
+                          <p className="mt-2 text-sm text-gray-700">On 1 November the Women’s Empowerment Programme gave the musical item. One hundred and twenty families attended.</p>
+                          <p className="mt-1.5 text-sm text-gray-600">
+                            (<a href="https://www.google.com/maps/search/?api=1&query=Ramakrishna+Hall+Lenasia" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
+                              Ramakrishna Hall, Lenasia
+                            </a>)
+                          </p>
+                        </td>
+                      </tr>
+
+                      {/* Seminar: The Importance of Spiritual Education for Children - Completed */}
+                      <tr className="opacity-60">
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Sunday, <span className="whitespace-nowrap">16th August 2026</span></p>
+                          <p className="mt-1 text-sm text-gray-600 whitespace-nowrap">10:00 AM - 12:30 PM</p>
+                          <span className="inline-block mt-2 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p>Seminar: The Importance of Spiritual Education for Children</p>
+                          <div className="mt-2 flex flex-col gap-1.5">
+                            <a href={encodeURI('/pics/RKC Education Seminar August 2026.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-medium text-sm">
+                              Read the seminar account
+                            </a>
+                            <a href={encodeURI('/pics/Seminar Pamphlet.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indian-saffron hover:underline font-medium text-sm">
+                              Read the pamphlet
+                            </a>
+                            <Link to="/services/seva" className="text-indian-saffron hover:underline font-medium text-sm">
+                              The account on the Seva/Outreach page
+                            </Link>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 border-b border-indian-saffron/30 align-top">
+                          <p className="text-sm font-semibold text-gray-800">Papers presented:</p>
                           <ul className="list-disc pl-4 text-sm mt-1.5 space-y-1.5 text-gray-700">
                             <li><strong>Paper 1:</strong> "The Necessity and Role of Religious Education for Children" by <span className="font-medium text-black">Mrs Ragini Haribhai</span></li>
                             <li><strong>Paper 2:</strong> "The Role of Parents in Establishing and Developing an Incubator for Spiritual Education Within the Home" by <span className="font-medium text-black">Mr M K Angajan</span></li>
                             <li><strong>Paper 3:</strong> "Effective Methods for Imparting Spiritual Education to Children" by <span className="font-medium text-black">Revered Swami Viprananda</span></li>
                             <li><strong>Paper 4:</strong> "Choosing the Right Teaching Resources for Age-Appropriate Spiritual Education" by <span className="font-medium text-black">Revered Pravrajika Ishtaprana Mataji</span></li>
                           </ul>
-                          <p className="mt-3 text-sm text-gray-600">Guests to be seated by 09h45. Lunch will be served after the programme. Registration is compulsory (limited to 180 guests).</p>
+                          <p className="mt-3 text-sm text-gray-600">About 150 parents, educators, and community leaders attended. Lunch was served after the programme.</p>
                           <p className="mt-1.5 text-sm text-gray-600">
                             (<a href="https://www.google.com/maps/search/?api=1&query=Vodacom+World+Midrand" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
                               Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand
@@ -380,36 +412,71 @@ const SpecialFunctions = () => {
                 {/* Mobile view - cards */}
                 <div className="md:hidden space-y-6">
 
-                  {/* Seminar: The Importance of Spiritual Education for Children - Upcoming */}
-                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron rounded-lg p-4 shadow-md pop-shadow-card">
-                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded text-indian-saffron">Sunday, 16th August</div>
-                    <div className="text-sm text-gray-600 mb-3 font-medium">10:00 AM - 12:30 PM</div>
-                    <span className="inline-block mb-3 px-2 py-1 bg-indian-saffron/20 text-indian-saffron text-xs font-semibold rounded-full animate-pulse">Upcoming</span>
+                  {/* Diwali distribution 2026 - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">31 October and 1 November 2026</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="font-medium">Event:</div>
                       <div>
-                        <p className="font-semibold text-black">Seminar: The Importance of Spiritual Education for Children</p>
+                        <p>Diwali distribution</p>
                         <div className="mt-2 flex flex-col gap-1.5">
-                          <a href="/pics/Education Seminar August 2026.pdf" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-semibold text-sm">
-                            View Invitation (PDF)
+                          <a href={encodeURI('/pics/Diwali Report 2026.pdf')} target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            Read the Diwali report
                           </a>
-                          <a href="https://forms.gle/opGyZGV8Ju8nC9EM7" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-semibold text-sm">
-                            Register Online
-                          </a>
+                          <Link to="/services/seva" className="text-indian-saffron hover:underline font-medium text-sm">
+                            The account on the Seva/Outreach page
+                          </Link>
                         </div>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 gap-2">
                       <div className="font-medium">Details:</div>
                       <div className="text-sm text-gray-700">
-                        <p className="font-semibold text-gray-800">Papers to be presented:</p>
+                        <p>One hundred and eighty families, about 540 people, received a month of food, household goods, and a standing fan. Each household was served breyani, dhal, salad, and soji, and took a meal home.</p>
+                        <p className="mt-2">On 1 November the Women’s Empowerment Programme gave the musical item. One hundred and twenty families attended.</p>
+                        <p className="mt-1.5 text-gray-600">
+                          (<a href="https://www.google.com/maps/search/?api=1&query=Ramakrishna+Hall+Lenasia" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
+                            Ramakrishna Hall, Lenasia
+                          </a>)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Seminar: The Importance of Spiritual Education for Children - Completed */}
+                  <div className="bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg p-4 shadow-sm pop-shadow-card opacity-60">
+                    <div className="font-semibold text-lg mb-2 bg-indian-saffron/10 p-2 rounded">Sunday, 16th August 2026</div>
+                    <div className="text-sm text-gray-600 mb-3">10:00 AM - 12:30 PM</div>
+                    <span className="inline-block mb-3 px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Completed</span>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="font-medium">Event:</div>
+                      <div>
+                        <p>Seminar: The Importance of Spiritual Education for Children</p>
+                        <div className="mt-2 flex flex-col gap-1.5">
+                          <a href={encodeURI('/pics/RKC Education Seminar August 2026.pdf')} target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            Read the seminar account
+                          </a>
+                          <a href={encodeURI('/pics/Seminar Pamphlet.pdf')} target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium text-sm">
+                            Read the pamphlet
+                          </a>
+                          <Link to="/services/seva" className="text-indian-saffron hover:underline font-medium text-sm">
+                            The account on the Seva/Outreach page
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="font-medium">Details:</div>
+                      <div className="text-sm text-gray-700">
+                        <p className="font-semibold text-gray-800">Papers presented:</p>
                         <ul className="list-disc pl-4 mt-1.5 space-y-1.5">
                           <li><strong>Paper 1:</strong> "The Necessity and Role of Religious Education for Children" by <span className="font-medium text-black">Mrs Ragini Haribhai</span></li>
                           <li><strong>Paper 2:</strong> "The Role of Parents in Establishing and Developing an Incubator for Spiritual Education Within the Home" by <span className="font-medium text-black">Mr M K Angajan</span></li>
                           <li><strong>Paper 3:</strong> "Effective Methods for Imparting Spiritual Education to Children" by <span className="font-medium text-black">Revered Swami Viprananda</span></li>
                           <li><strong>Paper 4:</strong> "Choosing the Right Teaching Resources for Age-Appropriate Spiritual Education" by <span className="font-medium text-black">Revered Pravrajika Ishtaprana Mataji</span></li>
                         </ul>
-                        <p className="mt-3 text-gray-600">Guests to be seated by 09h45. Lunch will be served after the programme. Registration is compulsory (limited to 180 guests).</p>
+                        <p className="mt-3 text-gray-600">About 150 parents, educators, and community leaders attended. Lunch was served after the programme.</p>
                         <p className="mt-1.5 text-gray-600">
                           (<a href="https://www.google.com/maps/search/?api=1&query=Vodacom+World+Midrand" target="_blank" rel="noopener noreferrer" className="text-indian-saffron hover:underline font-medium">
                             Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand

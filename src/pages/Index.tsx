@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import PageLayout from '../components/layout/PageLayout';
 import HomeBanner from '../components/home/HomeBanner';
 import FeaturedEvents from '../components/home/FeaturedEvents';
-import RecentActivities from '../components/home/RecentActivities';
+import ServiceBand from '../components/home/ServiceBand';
 import HolyTrinity from '../components/home/HolyTrinity';
 import QuickInfo from '../components/home/QuickInfo';
 import GradientBackground from '../components/shared/GradientBackground';
@@ -52,7 +52,7 @@ const Index = () => {
       <QuickInfo />
       <div className="border-t border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RecentActivities />
+          <ServiceBand />
         </div>
       </div>
 
@@ -71,7 +71,7 @@ const Index = () => {
           >
             <h2 className="text-2xl font-heading font-semibold mb-4 bg-gradient-to-r from-spiritual-600 to-indian-saffron bg-clip-text text-transparent">Support Our Mission</h2>
             <p className="mb-6 max-w-2xl mx-auto text-gray-700">
-              Your generous contributions help us continue our spiritual and humanitarian services to the community.
+              A gift keeps the feeding in Lenasia going, and helps raise the ashram that will house this work.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/donate">

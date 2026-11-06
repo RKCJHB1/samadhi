@@ -1,98 +1,73 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../shared/SectionHeader';
-import EventCard from '../shared/EventCard';
 import Button from '../shared/Button';
-import { EVENTS } from '../../data/eventsData';
 
-// Filter only upcoming events
-const upcomingEvents = EVENTS.filter(event => event.status === 'upcoming');
+const DIWALI_REPORT = encodeURI('/pics/Diwali Report 2026.pdf');
+const SEMINAR_REPORT = encodeURI('/pics/RKC Education Seminar August 2026.pdf');
+const SEMINAR_PAMPHLET = encodeURI('/pics/Seminar Pamphlet.pdf');
+
+function RecentCard({ title, when, place, children }: { title: string; when: string; place: string; children: ReactNode }) {
+  return (
+    <article className="rounded-lg border border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white p-5 md:p-6">
+      <div className="grid items-start gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(16rem,1fr)]">
+        <div>
+          <h3 className="font-heading text-2xl font-semibold text-indian-maroon">{title}</h3>
+          <p className="mt-3 text-gray-800">{when}</p>
+          <p className="mt-1 text-gray-700">{place}</p>
+        </div>
+        <div className="flex flex-col gap-3 border-t border-indian-saffron/20 pt-4 md:border-l md:border-t-0 md:pl-6 md:pt-0">
+          {children}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+const linkClass = 'text-indian-saffron font-medium hover:underline';
 
 const FeaturedEvents = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-indian-cream to-white border-t border-indian-saffron/30 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Upcoming Events"
-          subtitle="Join us for these upcoming spiritual gatherings and educational programs"
+          title="Recent Events"
+          subtitle="The Centre's most recent gatherings"
         />
 
-        {upcomingEvents.length > 0 ? (
-          upcomingEvents.length === 1 ? (
-            <div className="mt-8 flex justify-center">
-              <div className="w-full lg:w-4/5 xl:w-3/4">
-                <div className="rounded-lg overflow-hidden border-2 border-indian-saffron bg-white hover:border-indian-saffron/60 hover:shadow-lg transition-all hover:scale-[1.02] duration-300 flex flex-col lg:flex-row">
-                  <div className="p-6 bg-gradient-to-br from-indian-cream to-white flex flex-col justify-center lg:w-1/2">
-                    <h3 className="text-2xl font-heading font-semibold text-indian-maroon mb-4">{upcomingEvents[0].title}</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-start text-indian-saffron">
-                        <svg className="h-6 w-6 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v2H4a2 2 0 00-2 2v2h16V7a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v2H7V3a1 1 0 00-1-1zm0 5a2 2 0 012 2v2H4V9a2 2 0 012-2h8zm8 8H4v5a2 2 0 002 2h8a2 2 0 002-2v-5z" clipRule="evenodd" />
-                        </svg>
-                        <div>
-                          <p className="font-semibold text-gray-800">{upcomingEvents[0].date}</p>
-                          <p className="text-gray-700">{upcomingEvents[0].time}</p>
-                        </div>
-                      </div>
-                      {upcomingEvents[0].location && (
-                        <div className="flex items-start text-indian-saffron">
-                          <svg className="h-6 w-6 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                          </svg>
-                          <p className="text-gray-700">{upcomingEvents[0].location}</p>
-                        </div>
-                      )}
-                      <p className="text-gray-700 mt-4 leading-relaxed">{upcomingEvents[0].description}</p>
-                    </div>
-                    <div className="mt-6 flex gap-3 flex-wrap">
-                      {upcomingEvents[0].registrationUrl && (
-                        <a href={upcomingEvents[0].registrationUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 bg-indian-saffron text-white rounded-lg hover:bg-indian-saffron/90 transition-colors font-semibold">
-                          Register Online
-                        </a>
-                      )}
-                      {upcomingEvents[0].pdfUrl && (
-                        <a href={upcomingEvents[0].pdfUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 border-2 border-indian-saffron text-indian-saffron rounded-lg hover:bg-indian-saffron/10 transition-colors font-semibold">
-                          View Details (PDF)
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indian-cream to-white items-center justify-center p-8">
-                    <div className="text-center">
-                      <div className="inline-block p-8 bg-indian-saffron/10 rounded-full mb-4">
-                        <svg className="h-16 w-16 text-indian-saffron" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm4 2v4h8V8H6z" />
-                        </svg>
-                      </div>
-                      <p className="text-gray-700 font-semibold">Educational Seminar</p>
-                      <p className="text-gray-600 text-sm mt-2">Join us for an enriching experience</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-              {upcomingEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  title={event.title}
-                  date={event.date}
-                  time={event.time}
-                  location={event.location}
-                  description={event.description}
-                  link="/services/special-functions"
-                  className="border-indian-saffron bg-gradient-to-br from-indian-cream to-white"
-                />
-              ))}
-            </div>
-          )
-        ) : (
-          <div className="text-center mt-8 p-8 bg-gradient-to-br from-indian-cream to-white border border-indian-saffron/30 rounded-lg">
-            <p className="text-lg text-gray-600 mb-4">No upcoming events at this time.</p>
-            <p className="text-sm text-gray-500">Please check back soon for new announcements or view our past events.</p>
-          </div>
-        )}
+        <div className="mx-auto mt-8 flex max-w-5xl flex-col gap-4">
+          <RecentCard
+            title="Diwali distribution, 2026"
+            when="31 October and 1 November 2026"
+            place="Ramakrishna Hall, Lenasia"
+          >
+            <a href={DIWALI_REPORT} target="_blank" rel="noopener noreferrer" className={linkClass}>
+              Read the Diwali report
+            </a>
+            <Link to="/services/seva" className={linkClass}>
+              The account on the Seva/Outreach page
+            </Link>
+          </RecentCard>
+
+          <RecentCard
+            title="Seminar: The Importance of Spiritual Education for Children"
+            when="Sunday, 16th August 2026 · 10:00 AM - 12:30 PM"
+            place="Vodaworld at Vodacom Office Park, Vodacom Boulevard, Midrand"
+          >
+            <a href={SEMINAR_REPORT} target="_blank" rel="noopener noreferrer" className={linkClass}>
+              Read the seminar account
+            </a>
+            <a href={SEMINAR_PAMPHLET} target="_blank" rel="noopener noreferrer" className={linkClass}>
+              Read the pamphlet
+            </a>
+            <Link to="/services/seva" className={linkClass}>
+              The account on the Seva/Outreach page
+            </Link>
+            <Link to="/services/hinduism-for-children" className={linkClass}>
+              Hinduism for Children
+            </Link>
+          </RecentCard>
+        </div>
 
         <div className="text-center mt-12">
           <Button href="/services/special-functions" variant="outline" className="border-indian-saffron text-indian-saffron hover:bg-indian-saffron/10">
