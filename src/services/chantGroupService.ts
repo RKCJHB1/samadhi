@@ -151,7 +151,7 @@ export async function fetchGroupMembers(code: string): Promise<GroupMember[]> {
 
 export function buildPersonalChantShare(chantName: string, personTotal = 0, worldwide = 0) {
   const chant = chantName.trim() || 'Om';
-  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project/fundraising`;
+  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project`;
   const url = `${SITE_ORIGIN}/chant`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
@@ -170,7 +170,7 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const groupName = name.trim() || 'our group';
   const chant = chantName.trim() || 'Om';
   const url = chantGroupUrl(code);
-  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project/fundraising`;
+  const fundraisingUrl = `${SITE_ORIGIN}/new-ashram-project`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const sharedTotal = Math.max(0, Math.round(groupTotal));
   const thisChant = Math.max(0, Math.round(chantTotal));
