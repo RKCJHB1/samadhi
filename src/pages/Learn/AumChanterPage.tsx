@@ -1198,7 +1198,7 @@ const AumChanterPage = () => {
             </button>
 
             {/* Center Stats */}
-            <div className="flex items-center gap-3 sm:gap-10">
+            <div className="flex items-start gap-3 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
                 <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
