@@ -1146,17 +1146,13 @@ export function useChantVideo() {
       // canShare can throw when this computer has no share sheet.
     }
 
-    downloadVideo();
     if (text && typeof navigator.share === 'function') {
       try {
         await navigator.share({ title, text });
-        setNotice('This computer cannot share the video file. The clip has been downloaded. Send the message from the share window.');
+        setNotice('This computer cannot attach the video. The message is in the share window. Press Download if you want the clip.');
         return;
       } catch (textShareError) {
-        if (cancelled(textShareError)) {
-          setNotice('This computer cannot share the video file. The clip has been downloaded.');
-          return;
-        }
+        if (cancelled(textShareError)) return;
       }
     }
 
@@ -1170,9 +1166,9 @@ export function useChantVideo() {
       }
     }
     setNotice(copied
-      ? 'This computer cannot share the video file. The clip has been downloaded, and the message has been copied so you can paste it.'
-      : 'This computer cannot share the video file. The clip has been downloaded. Copy the message above and send it with the clip.');
-  }, [downloadVideo, fileName]);
+      ? 'This computer cannot attach the video. The message has been copied. Press Download if you want the clip.'
+      : 'This computer cannot attach the video. Press Download for the clip, and copy the message above.');
+  }, [fileName]);
 
   useEffect(() => {
     return () => {
