@@ -55,8 +55,45 @@ function shareableVideoType(mimeType: string): string {
   return mimeType.toLowerCase().includes('mp4') ? 'video/mp4' : 'video/webm';
 }
 
-// WhatsApp Desktop plays a fast-start MP4 with Constrained Baseline H.264 and an AAC sound track.
-// A High-profile picture, or a clip with no sound track, shows a thumbnail and then fails.
+// WhatsApp Desktop shows a thumbnail and then refuses the message when the H.264 header
+// has no timing information. The browser's software encoder writes that short header.
+// The hardware encoder writes a normal Baseline header, with stereo AAC, in a fast-start MP4.
+const WHATSAPP_VIDEO_ATTEMPTS = [
+  {
+    codec: 'avc' as const,
+    fullCodecString: 'avc1.42001F',
+    hardwareAcceleration: 'prefer-hardware' as const,
+    latencyMode: 'quality' as const,
+  },
+  {
+    codec: 'avc' as const,
+    fullCodecString: 'avc1.42E01F',
+    hardwareAcceleration: 'prefer-software' as const,
+    latencyMode: 'quality' as const,
+  },
+];
+
+function whatsAppBrands(file: ArrayBuffer): ArrayBuffer {
+  const bytes = new Uint8Array(file);
+  if (bytes.length < 28) return file;
+  const brand = String.fromCharCode(bytes[4], bytes[5], bytes[6], bytes[7]);
+  if (brand !== 'ftyp') return file;
+  bytes.set([0x6d, 0x70, 0x34, 0x32], 8);
+  bytes.set([0x00, 0x00, 0x00, 0x00], 12);
+  bytes.set([0x6d, 0x70, 0x34, 0x32, 0x69, 0x73, 0x6f, 0x6d, 0x6d, 0x70, 0x34, 0x31], 16);
+  return file;
+}
+
+function sequenceHeaderLength(file: ArrayBuffer): number {
+  const bytes = new Uint8Array(file);
+  for (let i = 0; i + 8 < bytes.length; i += 1) {
+    if (bytes[i] === 0x61 && bytes[i + 1] === 0x76 && bytes[i + 2] === 0x63 && bytes[i + 3] === 0x43) {
+      return (bytes[i + 10] << 8) | bytes[i + 11];
+    }
+  }
+  return 0;
+}
+
 async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
   const {
     Input,
@@ -84,73 +121,83 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
     const audioTrack = await input.getPrimaryAudioTrack();
     const duration = await videoTrack.computeDuration();
     const canHear = !!audioTrack && await audioTrack.canDecode();
-    const target = new BufferTarget();
-    const output = new Output({
-      format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
-      target,
-    });
-    const videoSource = new VideoSampleSource({
-      codec: 'avc',
-      fullCodecString: 'avc1.42E01F',
-      quality: new Quality('high'),
-      keyFrameInterval: 2,
-      hardwareAcceleration: 'prefer-software',
-      latencyMode: 'quality',
-    });
-    output.addVideoTrack(videoSource);
-    const heardSource = canHear
-      ? new AudioSampleSource({ codec: 'aac', quality: new Quality('medium') })
-      : null;
-    const silentSource = heardSource
-      ? null
-      : new AudioBufferSource({ codec: 'aac', quality: new Quality('low') });
-    output.addAudioTrack(heardSource ?? silentSource!);
-    await output.start();
 
-    const encode = (async () => {
-      const videoSink = new VideoSampleSink(videoTrack);
-      for await (const sample of videoSink.samples()) {
-        try {
-          await videoSource.add(sample);
-        } finally {
-          sample.close();
-        }
-      }
-      if (heardSource && audioTrack) {
-        const audioSink = new AudioSampleSink(audioTrack);
-        for await (const sample of audioSink.samples()) {
-          try {
-            await heardSource.add(sample);
-          } finally {
-            sample.close();
+    let best: ArrayBuffer | null = null;
+    for (const attempt of WHATSAPP_VIDEO_ATTEMPTS) {
+      const target = new BufferTarget();
+      const output = new Output({
+        format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
+        target,
+      });
+      const videoSource = new VideoSampleSource({
+        ...attempt,
+        quality: new Quality('high'),
+        keyFrameInterval: 2,
+      });
+      output.addVideoTrack(videoSource);
+      const heardSource = canHear
+        ? new AudioSampleSource({
+          codec: 'aac',
+          quality: new Quality('medium'),
+          transform: { numberOfChannels: 2, sampleRate: 44100 },
+        })
+        : null;
+      const silentSource = heardSource
+        ? null
+        : new AudioBufferSource({ codec: 'aac', quality: new Quality('low') });
+      output.addAudioTrack(heardSource ?? silentSource!);
+      try {
+        await output.start();
+        const encode = (async () => {
+          for await (const sample of new VideoSampleSink(videoTrack).samples()) {
+            try {
+              await videoSource.add(sample);
+            } finally {
+              sample.close();
+            }
           }
-        }
-        return;
+          if (heardSource && audioTrack) {
+            for await (const sample of new AudioSampleSink(audioTrack).samples()) {
+              try {
+                await heardSource.add(sample);
+              } finally {
+                sample.close();
+              }
+            }
+            return;
+          }
+          const sampleRate = 44100;
+          let remaining = Math.max(duration, 0.2);
+          while (remaining > 0) {
+            const seconds = Math.min(1, remaining);
+            await silentSource!.add(new AudioBuffer({
+              length: Math.max(1, Math.ceil(seconds * sampleRate)),
+              numberOfChannels: 2,
+              sampleRate,
+            }));
+            remaining -= seconds;
+          }
+        })();
+        const file = await Promise.race([
+          encode.then(async () => {
+            await output.finalize();
+            return target.buffer;
+          }),
+          new Promise<ArrayBuffer | null>((_, reject) => {
+            window.clearTimeout(timer);
+            timer = window.setTimeout(() => reject(new Error('timeout')), 120_000);
+          }),
+        ]);
+        if (!file || file.byteLength < 1000) continue;
+        const branded = whatsAppBrands(file);
+        best = branded;
+        if (sequenceHeaderLength(branded) >= 32) break;
+      } catch {
+        // This encoder could not finish the clip. The next attempt uses the other encoder.
       }
-      const sampleRate = 44100;
-      let remaining = Math.max(duration, 0.2);
-      while (remaining > 0) {
-        const seconds = Math.min(1, remaining);
-        const silence = new AudioBuffer({
-          length: Math.max(1, Math.ceil(seconds * sampleRate)),
-          numberOfChannels: 1,
-          sampleRate,
-        });
-        await silentSource!.add(silence);
-        remaining -= seconds;
-      }
-    })();
-    const file = await Promise.race([
-      encode.then(async () => {
-        await output.finalize();
-        return target.buffer;
-      }),
-      new Promise<ArrayBuffer | null>((_, reject) => {
-        timer = window.setTimeout(() => reject(new Error('timeout')), 120_000);
-      }),
-    ]);
-    if (!file || file.byteLength < 1000) return blob;
-    return new Blob([file], { type: 'video/mp4' });
+    }
+    if (!best) return blob;
+    return new Blob([best], { type: 'video/mp4' });
   } catch {
     return blob;
   } finally {
