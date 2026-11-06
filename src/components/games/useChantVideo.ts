@@ -49,6 +49,12 @@ function extensionForMime(mimeType: string): string {
   return mimeType.includes('mp4') ? 'mp4' : 'webm';
 }
 
+function shareableVideoType(mimeType: string): string {
+  const base = mimeType.split(';')[0]?.trim().toLowerCase() ?? '';
+  if (base === 'video/mp4' || base === 'video/webm' || base === 'video/ogg' || base === 'video/mpeg') return base;
+  return mimeType.toLowerCase().includes('mp4') ? 'video/mp4' : 'video/webm';
+}
+
 function errorName(error: unknown): string {
   if (error instanceof DOMException) return error.name;
   if (error && typeof error === 'object' && 'name' in error && typeof (error as { name: unknown }).name === 'string') {
@@ -1065,7 +1071,7 @@ export function useChantVideo() {
         setFileName(name);
         setVideoUrl(url);
         setSessionCount(sessionCountRef.current);
-        const file = new File([blob], name, { type: blobType });
+        const file = new File([blob], name, { type: shareableVideoType(blobType) });
         let shareable = false;
         try {
           shareable = !!navigator.canShare?.({ files: [file] });
@@ -1119,7 +1125,7 @@ export function useChantVideo() {
   const shareVideo = useCallback(async () => {
     const blob = blobRef.current;
     if (!blob) return;
-    const file = new File([blob], fileName, { type: blob.type || 'video/webm' });
+    const file = new File([blob], fileName, { type: shareableVideoType(blob.type || 'video/webm') });
     const title = `${frameRef.current.chantName} chant`;
     const text = frameRef.current.shareText?.trim() || '';
     const cancelled = (shareError: unknown) => shareError instanceof DOMException && shareError.name === 'AbortError';
