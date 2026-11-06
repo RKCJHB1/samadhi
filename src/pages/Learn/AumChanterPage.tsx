@@ -407,6 +407,7 @@ const AumChanterPage = () => {
   const [savedTotal, setSavedTotal] = useState(0);
   const [savedReady, setSavedReady] = useState(false);
   const [savedWorldwide, setSavedWorldwide] = useState(0);
+  const [worldwideByChant, setWorldwideByChant] = useState<GroupChantTotals>(emptyChantTotals);
   const [worldwideReady, setWorldwideReady] = useState(false);
   const [worldwideFailed, setWorldwideFailed] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
@@ -531,6 +532,7 @@ const AumChanterPage = () => {
       confirmedGlobalRef.current = summary.globalTotal;
       confirmedRecordRef.current = summary.recordTotal;
       setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
+      setWorldwideByChant(summary.byChant);
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setChanterCount(summary.chanterCount);
       setChantingNow(summary.chantingNow);
@@ -1036,6 +1038,10 @@ const AumChanterPage = () => {
     return [{ personId: selfId, name: yourName, total: groupPersonTotal }, ...known].slice(0, 12);
   }, [chanterName, groupCode, groupMembers, groupPersonTotal]);
 
+  const currentChantKey = CHANT_TOTAL_IDS.find((id) => id === currentChant.id);
+  const worldwideChantTotal = currentChantKey
+    ? worldwideByChant[currentChantKey] + pendingPersonByChantRef.current[currentChantKey]
+    : 0;
   const currentGroupChantTotal = (CHANT_TOTAL_IDS as readonly string[]).includes(currentChant.id)
     ? groupByChant[currentChant.id as ChantTotalId]
     : 0;
@@ -1270,15 +1276,20 @@ const AumChanterPage = () => {
         <h1 className="px-2 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
-          <div className="mt-1 flex items-start justify-center gap-10 text-center sm:gap-16">
+          <div className="mt-1 grid w-full max-w-lg grid-cols-3 gap-2 text-center">
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
-              <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
+              <p className="text-[10px] leading-tight text-spiritual-200/70">{currentChant.shortLabel}</p>
               <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
-              <p className="text-[10px] text-spiritual-200/70">all chants</p>
+              <p className="text-[10px] leading-tight text-spiritual-200/70">{currentChant.shortLabel}</p>
+              <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{worldwideReady ? worldwideChantTotal.toLocaleString() : '...'}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
+              <p className="text-[10px] leading-tight text-spiritual-200/70">all chants</p>
               <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</p>
             </div>
           </div>

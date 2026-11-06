@@ -257,6 +257,23 @@ function readGroupChantCounts(value: unknown, groupCount: number): { om: number;
   return { om, ram, ma, krishna };
 }
 
+async function savedChantTotals(env: ChantDbEnv): Promise<{ om: number; ram: number; ma: number; krishna: number }> {
+  const rows = await execute(
+    env,
+    `SELECT COALESCE(SUM(om_total), 0),
+            COALESCE(SUM(ram_total), 0),
+            COALESCE(SUM(ma_total), 0),
+            COALESCE(SUM(krishna_total), 0)
+     FROM chant_countries`,
+  );
+  return {
+    om: storedTotal(rows[0]?.[0]),
+    ram: storedTotal(rows[0]?.[1]),
+    ma: storedTotal(rows[0]?.[2]),
+    krishna: storedTotal(rows[0]?.[3]),
+  };
+}
+
 async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
   const rows = await execute(
     env,
@@ -492,14 +509,21 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     if (request.method === 'GET' && rest.length === 0) {
       const requested = Math.round(Number(url.searchParams.get('limit')));
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
-      const [groups, people, countries] = await Promise.all([
+      const [groups, people, countries, chants] = await Promise.all([
         listGroups(env, limit),
         savedPeopleSummary(env),
         listCountries(env),
+        savedChantTotals(env),
       ]);
       return json({
         groups,
         globalTotal: people.globalTotal,
+        byChant: {
+          om: chants.om,
+          'sri-ram': chants.ram,
+          'jai-ma': chants.ma,
+          'jai-shri-krishna': chants.krishna,
+        },
         recordTotal: people.recordTotal,
         chanterCount: people.chanterCount,
         chantingNow: people.chantingNow,

@@ -332,10 +332,14 @@ function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown
   };
 }
 
-export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number; countries: ChantCountry[] }> {
+export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; byChant: GroupChantTotals; recordTotal: number; chanterCount: number; chantingNow: number; countries: ChantCountry[] }> {
   const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
-  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; byChant?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
+  const countries = (body.countries ?? []).flatMap((country) => {
+    const read = readCountry(country);
+    return read && read.total > 0 ? [read] : [];
+  });
   return {
     groups: (body.groups ?? []).flatMap((group) => {
       if (!group.code || !group.name) return [];
@@ -348,13 +352,13 @@ export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; glo
       }];
     }),
     globalTotal: Math.max(0, Math.round(Number(body.globalTotal) || 0)),
+    byChant: body.byChant
+      ? readChantTotals(body.byChant)
+      : countries.reduce((sum, country) => addChantTotals(sum, country.byChant), emptyChantTotals()),
     recordTotal: Math.max(0, Math.round(Number(body.recordTotal) || 0)),
     chanterCount: Math.max(0, Math.round(Number(body.chanterCount) || 0)),
     chantingNow: Math.max(0, Math.round(Number(body.chantingNow) || 0)),
-    countries: (body.countries ?? []).flatMap((country) => {
-      const read = readCountry(country);
-      return read && read.total > 0 ? [read] : [];
-    }),
+    countries,
   };
 }
 
