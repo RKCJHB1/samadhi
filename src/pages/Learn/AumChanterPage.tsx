@@ -1229,8 +1229,8 @@ const AumChanterPage = () => {
               </div>
             </div>
             {groupCode && (
-              <p className="max-w-xs text-center text-[10px] leading-snug text-spiritual-300/60">
-                The group number is this chant. “all” is every chant the group has done.
+              <p className="max-w-sm text-center text-[10px] leading-snug text-spiritual-300/60">
+                The members of this group have chanted a total of {groupTotal.toLocaleString()} {groupTotal === 1 ? 'time' : 'times'} amongst all the chants.
               </p>
             )}
             </div>
