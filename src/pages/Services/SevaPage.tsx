@@ -50,8 +50,11 @@ const SevaPage = () => {
     <article className="max-w-5xl mx-auto pb-20 text-gray-800">
       <header className="max-w-2xl mx-auto text-center">
         <h1 className="text-3xl md:text-5xl font-heading font-bold text-black">Seva/Outreach</h1>
-        <p className="mt-6 font-heading text-xl md:text-2xl text-black">Shiva Jnane Jiva Seva</p>
-        <p className="mt-2 text-lg text-gray-700">Service to Man is Worship of God</p>
+        <p className="mt-6 font-heading text-xl md:text-2xl text-black leading-snug">
+          Shiva Jnane Jiva Seva -<br />
+          Service to Man is Worship of God
+        </p>
+        <p className="mt-3 text-lg italic text-gray-700">Swami Vivekananda</p>
         <div className="mx-auto mt-6 h-px w-16 bg-indian-saffron" />
       </header>
 
