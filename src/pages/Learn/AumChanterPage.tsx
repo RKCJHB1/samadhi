@@ -1535,7 +1535,7 @@ const AumChanterPage = () => {
             </ChantFold>
           </div>
 
-          {videoPhase === 'recording' && createPortal(
+          {(videoPhase === 'recording' || videoPhase === 'preparing') && createPortal(
             <div className="fixed inset-x-0 bottom-0 z-[70] flex flex-col items-center gap-2 border-t border-amber-200/30 bg-slate-950/95 px-4 pb-4 pt-3">
               <canvas
                 ref={setCanvasNode}
@@ -1547,15 +1547,19 @@ const AumChanterPage = () => {
                     {videoSessionCount.toLocaleString()} / {videoChantLimit.toLocaleString()}
                   </p>
                 ) : null}
-                <button
-                  type="button"
-                  onClick={stopRecording}
-                  className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-sans text-white shadow-lg"
-                  aria-label="Stop video recording"
-                >
-                  <span className="h-2.5 w-2.5 rounded-full bg-white" />
-                  {formatRecordingTime(videoElapsedMs)}
-                </button>
+                {videoPhase === 'preparing' ? (
+                  <p className="font-sans text-sm text-amber-100" role="status">Preparing the video…</p>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={stopRecording}
+                    className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-sans text-white shadow-lg"
+                    aria-label="Stop video recording"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-white" />
+                    {formatRecordingTime(videoElapsedMs)}
+                  </button>
+                )}
               </div>
             </div>,
             document.body
@@ -1741,7 +1745,7 @@ const AumChanterPage = () => {
             )}
           </div>
 
-          {videoPhase !== 'recording' && videoPhase !== 'ready' && (
+          {videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
             <fieldset className="mt-2 w-full max-w-md rounded-xl border border-amber-300/70 bg-slate-950/90 p-3 text-sm text-white shadow-lg">
               <legend className="px-2 font-sans font-semibold text-amber-200">Choose what appears in your video</legend>
               <div className="grid gap-2 sm:grid-cols-2">
@@ -1777,7 +1781,7 @@ const AumChanterPage = () => {
             </fieldset>
           )}
 
-          {videoPhase !== 'recording' && videoPhase !== 'ready' && (
+          {videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
             <fieldset className="mt-2 w-full max-w-md rounded-xl border border-amber-300/70 bg-slate-950/90 p-3 text-sm text-white shadow-lg">
               <legend className="px-2 font-sans font-semibold text-amber-200">Stop the video after</legend>
               <div className="grid grid-cols-4 gap-2">
@@ -1803,7 +1807,7 @@ const AumChanterPage = () => {
             </fieldset>
           )}
 
-          {includeCamera && videoPhase !== 'recording' && videoPhase !== 'ready' && (
+          {includeCamera && videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
             <p className="w-full max-w-md whitespace-pre-wrap rounded-xl border border-amber-300/50 bg-slate-950/80 px-3 py-2 text-xs leading-relaxed text-amber-50">
               {videoMessage}
             </p>
@@ -1831,7 +1835,7 @@ const AumChanterPage = () => {
                 Auto Chant
               </button>
             )}
-            {videoPhase === 'recording' ? null : videoPhase === 'ready' ? (
+            {videoPhase === 'recording' || videoPhase === 'preparing' ? null : videoPhase === 'ready' ? (
               <button
                 type="button"
                 onClick={() => setIsVideoVisible(true)}
@@ -1844,7 +1848,7 @@ const AumChanterPage = () => {
               <button
                 type="button"
                 onClick={() => { setIsShareVisible(false); void startRecording(includeCamera, videoChantLimit); }}
-                disabled={videoPhase === 'starting' || videoPhase === 'recording'}
+                disabled={videoPhase === 'starting' || videoPhase === 'recording' || videoPhase === 'preparing'}
                 className="flex items-center gap-2 rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-slate-700 disabled:opacity-60"
                 aria-label={`Record a ${currentChant.name} video to share`}
               >

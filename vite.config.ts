@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => ({
     strictPort: true, // fail if 8080 is taken, don't auto-switch
     historyApiFallback: true, // Ensures React Router handles dynamic routes
   },
+  optimizeDeps: {
+    exclude: ['mediabunny'],
+  },
   build: {
     rollupOptions: {
       // Optimize chunks for better performance

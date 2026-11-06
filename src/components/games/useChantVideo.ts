@@ -6,7 +6,7 @@ const VIDEO_LONG_SIDE = 1280;
 const END_CARD_MS = 2500;
 const VIDEO_CHANT_LIMITS = [11, 21, 108];
 
-export type ChantVideoPhase = 'idle' | 'starting' | 'recording' | 'ready';
+export type ChantVideoPhase = 'idle' | 'starting' | 'recording' | 'preparing' | 'ready';
 
 export type ChantVideoFrame = {
   chantName: string;
@@ -53,6 +53,76 @@ function shareableVideoType(mimeType: string): string {
   const base = mimeType.split(';')[0]?.trim().toLowerCase() ?? '';
   if (base === 'video/mp4' || base === 'video/webm' || base === 'video/ogg' || base === 'video/mpeg') return base;
   return mimeType.toLowerCase().includes('mp4') ? 'video/mp4' : 'video/webm';
+}
+
+// MediaRecorder writes a fragmented MP4 or WebM. WhatsApp plays a normal fast-start MP4 with H.264 and AAC.
+async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
+  const {
+    Input,
+    ALL_FORMATS,
+    BlobSource,
+    Output,
+    Mp4OutputFormat,
+    BufferTarget,
+    Conversion,
+  } = await import('mediabunny');
+
+  const convert = async (audio: { codec: 'aac' } | { discard: true }) => {
+    const input = new Input({
+      formats: ALL_FORMATS,
+      source: new BlobSource(blob),
+    });
+    try {
+      const target = new BufferTarget();
+      const output = new Output({
+        format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
+        target,
+      });
+      const conversion = await Conversion.init({
+        input,
+        output,
+        video: { codec: 'avc' },
+        audio,
+      });
+      if (!conversion.isValid) return null;
+      await conversion.execute();
+      const buffer = target.buffer;
+      if (!buffer || buffer.byteLength < 1000) return null;
+      return new Blob([buffer], { type: 'video/mp4' });
+    } finally {
+      input.dispose();
+    }
+  };
+
+  const attempt = async () => {
+    try {
+      const withAudio = await convert({ codec: 'aac' });
+      if (withAudio) return withAudio;
+    } catch {
+      // The sound track could not be converted. Try the picture on its own.
+    }
+    try {
+      const silent = await convert({ discard: true });
+      if (silent) return silent;
+    } catch {
+      // Keep the original recording when this browser cannot build the MP4.
+    }
+    return blob;
+  };
+
+  let timer = 0;
+  try {
+    return await Promise.race([
+      attempt(),
+      new Promise<Blob>((_, reject) => {
+        timer = window.setTimeout(() => reject(new Error('timeout')), 45_000);
+      }),
+    ]);
+  } catch {
+    return blob;
+  } finally {
+    window.clearTimeout(timer);
+  }
 }
 
 function errorName(error: unknown): string {
@@ -738,7 +808,7 @@ export function useChantVideo() {
   }, []);
 
   const startRecording = useCallback(async (includeCamera = false, chantLimit: number | null = null) => {
-    if (phaseRef.current === 'recording' || phaseRef.current === 'starting') return;
+    if (phaseRef.current === 'recording' || phaseRef.current === 'starting' || phaseRef.current === 'preparing') return;
     setError(null);
     setNotice(null);
     releasePlayback();
@@ -1050,6 +1120,7 @@ export function useChantVideo() {
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) chunks.push(event.data);
       };
+      const keptNotice = stream ? null : includeCamera ? NO_CAMERA_NOTICE : null;
       recorder.onstop = () => {
         drawingRef.current = false;
         clearTimers();
@@ -1065,23 +1136,33 @@ export function useChantVideo() {
           setPhase('idle');
           return;
         }
-        const url = URL.createObjectURL(blob);
-        const safeName = (frameRef.current.chantName || 'chant').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'chant';
-        const name = `${safeName}-${new Date().toISOString().slice(0, 10)}.${extensionForMime(blobType)}`;
-        playbackUrlRef.current = url;
-        blobRef.current = blob;
-        setFileName(name);
-        setVideoUrl(url);
-        setSessionCount(sessionCountRef.current);
-        const file = new File([blob], name, { type: shareableVideoType(blobType) });
-        let shareable = false;
-        try {
-          shareable = !!navigator.canShare?.({ files: [file] });
-        } catch {
-          shareable = false;
-        }
-        setCanShare(shareable);
-        setPhase('ready');
+        setNotice('Preparing the video so WhatsApp can play it.');
+        setPhase('preparing');
+        void (async () => {
+          const ready = await whatsAppReadyVideo(blob);
+          if (runId !== runRef.current) return;
+          const readyType = ready.type === 'video/mp4' ? 'video/mp4' : blobType;
+          const url = URL.createObjectURL(ready);
+          const safeName = (frameRef.current.chantName || 'chant').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'chant';
+          const name = `${safeName}-${new Date().toISOString().slice(0, 10)}.${extensionForMime(readyType)}`;
+          playbackUrlRef.current = url;
+          blobRef.current = ready;
+          setFileName(name);
+          setVideoUrl(url);
+          setSessionCount(sessionCountRef.current);
+          const file = new File([ready], name, { type: shareableVideoType(readyType) });
+          let shareable = false;
+          try {
+            shareable = !!navigator.canShare?.({ files: [file] });
+          } catch {
+            shareable = false;
+          }
+          setCanShare(shareable);
+          setNotice(ready.type === 'video/mp4'
+            ? keptNotice
+            : 'This clip may not play in WhatsApp. Press Download and send that file.');
+          setPhase('ready');
+        })();
       };
 
       if (audioContextRef.current?.state === 'suspended') {
