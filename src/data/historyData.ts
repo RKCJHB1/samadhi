@@ -2134,6 +2134,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/6thNovember.png"
   },
   {
+    date: "November 7",
+    monthNumeric: 10,
+    dayNumeric: 7,
+    year: 1965,
+    headline: "November 7 — Installation of Sri Ramakrishna’s Holy Relics at Rajkot",
+    narrativeParagraph1: "On November 7, 1965, **Swami Bhuteshanandaji Maharaj**, who later became the 12th President of the Ramakrishna Math and Ramakrishna Mission, placed the holy relics of Sri Ramakrishna in the shrine of the new temple at **Rajkot Ashrama**. This marked an important milestone in the Ashrama’s development and its effort to provide a larger and more suitable shrine for its growing number of devotees.",
+    narrativeParagraph2: "The foundation stone of the present temple was laid by **Swami Vireshwaranandaji Maharaj**, the 10th President of the Ramakrishna Math and Ramakrishna Mission, on August 16, 1971.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "The temple at Rajkot Ashrama, where Swami Bhuteshananda placed the holy relics of Sri Ramakrishna on 7 November 1965.",
+    customImage: "/images/on-this-day/7thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
