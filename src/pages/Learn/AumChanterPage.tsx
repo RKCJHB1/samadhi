@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
-import { getAumStats, recordChant, subscribeToAumStats } from '../../services/aumStatsService';
 import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
@@ -34,17 +33,6 @@ const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
-const LAST_GLOBAL_KEY = 'aumChanterLastGlobal';
-
-const readLastGlobal = (): number => {
-  try {
-    const value = Number(localStorage.getItem(LAST_GLOBAL_KEY));
-    if (Number.isFinite(value) && value > 0) return Math.round(value);
-  } catch {
-    // Private browsing can block storage.
-  }
-  return 0;
-};
 
 type ChantOption = {
   id: string;
@@ -150,6 +138,15 @@ const CHANT_OPTIONS: ChantOption[] = [
     audioSrc: '/aum.mp3',
     isEnabled: true,
   },
+  {
+    id: 'jai-shri-krishna',
+    name: 'Jai Shri Krishna',
+    shortLabel: 'Jai Shri Krishna',
+    symbol: 'कृष्ण',
+    shareTag: '#JaiShriKrishna',
+    audioSrc: '/aum.mp3',
+    isEnabled: true,
+  },
 ];
 
 function GroupNameRing({ members, selfId }: { members: GroupMember[]; selfId: string }) {
@@ -206,11 +203,13 @@ function countryLine(country: ChantCountry): string {
   const om = country.byChant.om;
   const ram = country.byChant['sri-ram'];
   const ma = country.byChant['jai-ma'];
-  const split = om + ram + ma;
+  const krishna = country.byChant['jai-shri-krishna'];
+  const split = om + ram + ma + krishna;
   const parts = [
     om > 0 ? `Om ${om.toLocaleString()}` : '',
     ram > 0 ? `Jai Sri Ram ${ram.toLocaleString()}` : '',
     ma > 0 ? `Jai Ma ${ma.toLocaleString()}` : '',
+    krishna > 0 ? `Jai Shri Krishna ${krishna.toLocaleString()}` : '',
   ].filter(Boolean);
   const earlier = Math.max(0, country.total - split);
   if (earlier > 0) parts.push(`Earlier ${earlier.toLocaleString()}`);
@@ -254,67 +253,8 @@ const AumChanterPage = () => {
   const [autoChantRemaining, setAutoChantRemaining] = useState<number>(0);
   const autoChantIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Batching chant logic
-  const pendingChantsRef = useRef(0);
-  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Backend stats. The visible worldwide total is the last confirmed server
-  // value plus chants from this visit that have not been confirmed yet.
-  const cachedGlobalRef = useRef(readLastGlobal());
-  const [globalChants, setGlobalChants] = useState<number>(cachedGlobalRef.current);
   const [recordChants, setRecordChants] = useState<number>(0);
   const [avgChantsPerUser, setAvgChantsPerUser] = useState<number>(0);
-  const [statsLoading, setStatsLoading] = useState<boolean>(true);
-  const [serverConnected, setServerConnected] = useState(false);
-  const statsRef = useRef({
-    globalChants: 0,
-    recordChants: 0,
-    avgChantsPerUser: 0,
-    uniqueUsers: 0,
-    uniqueCountries: 0,
-  });
-  const serverGlobalRef = useRef(cachedGlobalRef.current);
-  const unconfirmedGlobalRef = useRef(0);
-  const inflightBatchesRef = useRef<{ id: number; amount: number }[]>([]);
-  const batchSeqRef = useRef(0);
-  const applyServerStatsRef = useRef<(stats: {
-    globalChants: number;
-    recordChants: number;
-    avgChantsPerUser: number;
-    uniqueUsers: number;
-    uniqueCountries: number;
-  }) => void>(() => {});
-  applyServerStatsRef.current = (stats) => {
-    const nextServer = Math.max(0, Math.round(stats.globalChants || 0));
-    let growth = nextServer - serverGlobalRef.current;
-    if (growth > 0 && inflightBatchesRef.current.length > 0) {
-      const stillOpen: { id: number; amount: number }[] = [];
-      for (const batch of inflightBatchesRef.current) {
-        if (growth >= batch.amount) {
-          growth -= batch.amount;
-          unconfirmedGlobalRef.current = Math.max(0, unconfirmedGlobalRef.current - batch.amount);
-        } else {
-          stillOpen.push(batch);
-        }
-      }
-      inflightBatchesRef.current = stillOpen;
-    }
-    serverGlobalRef.current = nextServer;
-    statsRef.current = {
-      globalChants: nextServer,
-      recordChants: stats.recordChants || 0,
-      avgChantsPerUser: stats.avgChantsPerUser || 0,
-      uniqueUsers: stats.uniqueUsers || 0,
-      uniqueCountries: stats.uniqueCountries || 0,
-    };
-    setGlobalChants(nextServer + unconfirmedGlobalRef.current);
-    setServerConnected(true);
-    try {
-      localStorage.setItem(LAST_GLOBAL_KEY, String(nextServer));
-    } catch {
-      // Private browsing can block storage.
-    }
-  };
 
   const availableChants = useMemo(
     () => CHANT_OPTIONS.filter((chant) => chant.isAlwaysAvailable || chant.isEnabled),
@@ -388,6 +328,7 @@ const AumChanterPage = () => {
   const [savedReady, setSavedReady] = useState(false);
   const [savedWorldwide, setSavedWorldwide] = useState(0);
   const [worldwideReady, setWorldwideReady] = useState(false);
+  const [worldwideFailed, setWorldwideFailed] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
   const [chanterCount, setChanterCount] = useState(0);
   const [chantingNow, setChantingNow] = useState(0);
@@ -511,9 +452,10 @@ const AumChanterPage = () => {
       setCountries(summary.countries);
       setAvgChantsPerUser(summary.chanterCount > 0 ? summary.globalTotal / summary.chanterCount : 0);
       setWorldwideReady(true);
+      setWorldwideFailed(false);
       setRecordReady(true);
     }).catch(() => {
-      // Keep the totals already on screen.
+      setWorldwideFailed(true);
     });
   }, []);
 
@@ -761,35 +703,6 @@ const AumChanterPage = () => {
     }
   }, [availableChants, selectedChantId]);
 
-  // Fetch initial stats and subscribe to real-time updates
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-
-    const initializeStats = async () => {
-      try {
-        const stats = await getAumStats();
-        if (stats) applyServerStatsRef.current(stats);
-      } catch (error) {
-        console.error("Failed to fetch initial Aum stats:", error);
-      } finally {
-        setStatsLoading(false);
-      }
-    };
-
-    initializeStats();
-
-    // Subscribe to real-time updates from Supabase
-    unsubscribe = subscribeToAumStats((newStats) => {
-      applyServerStatsRef.current(newStats);
-    });
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, []);
-
   // Save local data to localStorage
   useEffect(() => {
     try {
@@ -896,8 +809,6 @@ const AumChanterPage = () => {
     });
 
     // One tap is one chant on this phone, in the saved personal total, and in the named group.
-    unconfirmedGlobalRef.current += 1;
-    setGlobalChants(serverGlobalRef.current + unconfirmedGlobalRef.current);
     const chantKey = CHANT_TOTAL_IDS.find((id) => id === selectedChantIdRef.current);
     pendingPersonRef.current += 1;
     if (chantKey) {
@@ -921,57 +832,6 @@ const AumChanterPage = () => {
       setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
     }
     scheduleSavedChants();
-
-    // Send chant to Supabase (Batched)
-    const userId = localStorage.getItem('userId') || `user-${Date.now()}`;
-    if (!localStorage.getItem('userId')) {
-      localStorage.setItem('userId', userId);
-    }
-
-    pendingChantsRef.current += 1;
-
-    // Clear existing timer
-    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-
-    // Set a new timer to flush chants after 2 seconds of inactivity
-    debounceTimerRef.current = setTimeout(() => {
-      const chantsToRecord = pendingChantsRef.current;
-      if (chantsToRecord <= 0) return;
-      pendingChantsRef.current = 0;
-      const batchId = batchSeqRef.current + 1;
-      batchSeqRef.current = batchId;
-      inflightBatchesRef.current.push({ id: batchId, amount: chantsToRecord });
-      void (async () => {
-        const settleBatch = () => {
-          const batch = inflightBatchesRef.current.find((item) => item.id === batchId);
-          if (!batch) return;
-          inflightBatchesRef.current = inflightBatchesRef.current.filter((item) => item.id !== batchId);
-          unconfirmedGlobalRef.current = Math.max(0, unconfirmedGlobalRef.current - batch.amount);
-        };
-        const releaseBatch = () => {
-          inflightBatchesRef.current = inflightBatchesRef.current.filter((item) => item.id !== batchId);
-        };
-        try {
-          const stats = await recordChant(userId, chantsToRecord);
-          if (stats) {
-            settleBatch();
-            applyServerStatsRef.current(stats);
-            return;
-          }
-          const fresh = await getAumStats();
-          if (!fresh) return;
-          if ((fresh.globalChants || 0) >= serverGlobalRef.current + chantsToRecord) {
-            settleBatch();
-          } else {
-            releaseBatch();
-          }
-          applyServerStatsRef.current(fresh);
-        } catch (err) {
-          releaseBatch();
-          console.error('Failed to record chant in Supabase:', err);
-        }
-      })();
-    }, 2000);
 
     noteChantRef.current();
     setIsChanted(true);
@@ -1382,7 +1242,7 @@ const AumChanterPage = () => {
           </div>
 
           <div className="w-full max-w-2xl">
-            <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center" role="tablist" aria-label="Available chants">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center" role="tablist" aria-label="Available chants">
               {availableChants.map((chant) => {
                 const isActive = chant.id === currentChant.id;
 
@@ -1502,7 +1362,7 @@ const AumChanterPage = () => {
                         style={{ clipPath: 'circle(50%)', WebkitClipPath: 'circle(50%)' }}
                       >
                         <span className="text-[clamp(2.5rem,11vmin,4.75rem)] font-serif leading-none text-orange-950 drop-shadow-sm">{currentChant.symbol}</span>
-                        <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
+                        <span className="mt-2 max-w-[78%] text-center text-[10px] uppercase leading-tight tracking-[0.14em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
                       </div>
                     )}
                     {chantEffects.map(effect => (
@@ -1528,7 +1388,7 @@ const AumChanterPage = () => {
                           className={`absolute top-1/2 left-1/2 flex h-[clamp(7.5rem,40vmin,16rem)] w-[clamp(7.5rem,40vmin,16rem)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/40 bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300 shadow-[0_0_25px_rgba(251,146,60,0.35)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-70'}`}
                         >
                           <span className="text-[clamp(2.5rem,11vmin,4.75rem)] font-serif leading-none text-orange-950 drop-shadow-sm">{currentChant.symbol}</span>
-                          <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
+                          <span className="mt-2 max-w-[78%] text-center text-[10px] uppercase leading-tight tracking-[0.14em] text-orange-950/80 sm:text-xs">{currentChant.shortLabel}</span>
                         </div>
                       )
                     ))}
@@ -1586,6 +1446,8 @@ const AumChanterPage = () => {
                   Jai Sri Ram <span className="font-mono">{groupByChant['sri-ram'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
                   Jai Ma <span className="font-mono">{groupByChant['jai-ma'].toLocaleString()}</span>
+                  <span className="mx-2 text-spiritual-400/50">·</span>
+                  Jai Shri Krishna <span className="font-mono">{groupByChant['jai-shri-krishna'].toLocaleString()}</span>
                   {earlierGroupChants > 0 && (
                     <>
                       <span className="mx-2 text-spiritual-400/50">·</span>
@@ -1598,7 +1460,7 @@ const AumChanterPage = () => {
                 </>
               )}
             </p>
-            {!worldwideReady && !statsLoading && !serverConnected && (
+            {worldwideFailed && !worldwideReady && (
               <p className="max-w-sm text-center text-[11px] leading-snug text-spiritual-300/50">
                 Your chants are included. They join the shared total when the count connects.
               </p>

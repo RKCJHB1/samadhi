@@ -8,7 +8,7 @@ export type ChantGroup = {
   name: string;
   chantName: string;
   total: number;
-  byChant: { om: number; 'sri-ram': number; 'jai-ma': number };
+  byChant: { om: number; 'sri-ram': number; 'jai-ma': number; 'jai-shri-krishna': number };
 };
 
 export type ChantPerson = {
@@ -169,9 +169,11 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
         om_total INTEGER NOT NULL DEFAULT 0,
         ram_total INTEGER NOT NULL DEFAULT 0,
         ma_total INTEGER NOT NULL DEFAULT 0,
+        krishna_total INTEGER NOT NULL DEFAULT 0,
         total INTEGER NOT NULL DEFAULT 0
       )`,
     );
+    await ensureChantColumn(env, 'chant_countries', 'krishna_total');
   })().catch((error: unknown) => {
     ready.delete(key);
     throw error;
@@ -180,23 +182,25 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
   return pending;
 }
 
-const GROUP_COLUMNS = 'code, name, chant_name, total, om_total, ram_total, ma_total';
+const GROUP_COLUMNS = 'code, name, chant_name, total, om_total, ram_total, ma_total, krishna_total';
 
-async function ensureChantTotalColumns(env: ChantDbEnv): Promise<void> {
+async function ensureChantColumn(env: ChantDbEnv, table: string, column: string): Promise<void> {
   try {
-    await execute(env, 'SELECT om_total, ram_total, ma_total FROM chant_groups LIMIT 1');
-    return;
+    await execute(env, `SELECT ${column} FROM ${table} LIMIT 1`);
   } catch {
-    // The per-chant totals are not stored yet.
-  }
-  for (const column of ['om_total', 'ram_total', 'ma_total']) {
     try {
-      await execute(env, `ALTER TABLE chant_groups ADD COLUMN ${column} INTEGER NOT NULL DEFAULT 0`);
+      await execute(env, `ALTER TABLE ${table} ADD COLUMN ${column} INTEGER NOT NULL DEFAULT 0`);
     } catch {
       // This column is already present.
     }
   }
-  await execute(env, 'SELECT om_total, ram_total, ma_total FROM chant_groups LIMIT 1');
+}
+
+async function ensureChantTotalColumns(env: ChantDbEnv): Promise<void> {
+  for (const column of ['om_total', 'ram_total', 'ma_total', 'krishna_total']) {
+    await ensureChantColumn(env, 'chant_groups', column);
+  }
+  await execute(env, 'SELECT om_total, ram_total, ma_total, krishna_total FROM chant_groups LIMIT 1');
 }
 
 function rowToGroup(row: unknown[]): ChantGroup | null {
@@ -212,6 +216,7 @@ function rowToGroup(row: unknown[]): ChantGroup | null {
       om: storedTotal(row[4]),
       'sri-ram': storedTotal(row[5]),
       'jai-ma': storedTotal(row[6]),
+      'jai-shri-krishna': storedTotal(row[7]),
     },
   };
 }
@@ -234,17 +239,22 @@ function storedTotal(value: unknown): number {
   return Math.max(0, Math.round(Number(cellText(value)) || 0));
 }
 
-function readGroupChantCounts(value: unknown, groupCount: number): { om: number; ram: number; ma: number } | null {
+function readGroupChantCounts(value: unknown, groupCount: number): { om: number; ram: number; ma: number; krishna: number } | null {
   const safeCount = Number.isFinite(groupCount) && groupCount > 0 ? groupCount : 0;
-  if (value == null) return { om: 0, ram: 0, ma: 0 };
+  if (value == null) return { om: 0, ram: 0, ma: 0, krishna: 0 };
   if (typeof value !== 'object') return null;
   const source = value as Record<string, unknown>;
-  const om = Math.round(Number(source.om));
-  const ram = Math.round(Number(source['sri-ram']));
-  const ma = Math.round(Number(source['jai-ma']));
-  if (![om, ram, ma].every((count) => Number.isFinite(count) && count >= 0 && count <= safeCount)) return null;
-  if (om + ram + ma !== safeCount) return null;
-  return { om, ram, ma };
+  const read = (key: string) => {
+    if (source[key] == null || source[key] === '') return 0;
+    return Math.round(Number(source[key]));
+  };
+  const om = read('om');
+  const ram = read('sri-ram');
+  const ma = read('jai-ma');
+  const krishna = read('jai-shri-krishna');
+  if (![om, ram, ma, krishna].every((count) => Number.isFinite(count) && count >= 0 && count <= safeCount)) return null;
+  if (om + ram + ma + krishna !== safeCount) return null;
+  return { om, ram, ma, krishna };
 }
 
 async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
@@ -306,12 +316,12 @@ function requestCountry(request: Request): string {
   return code;
 }
 
-type ChantCountSplit = { om: number; ram: number; ma: number };
+type ChantCountSplit = { om: number; ram: number; ma: number; krishna: number };
 
-async function listCountries(env: ChantDbEnv): Promise<Array<{ code: string; om: number; ram: number; ma: number; total: number }>> {
+async function listCountries(env: ChantDbEnv): Promise<Array<{ code: string; om: number; ram: number; ma: number; krishna: number; total: number }>> {
   const rows = await execute(
     env,
-    `SELECT code, om_total, ram_total, ma_total, total
+    `SELECT code, om_total, ram_total, ma_total, total, krishna_total
      FROM chant_countries
      WHERE total > 0
      ORDER BY total DESC, code ASC
@@ -326,6 +336,7 @@ async function listCountries(env: ChantDbEnv): Promise<Array<{ code: string; om:
       ram: storedTotal(row[2]),
       ma: storedTotal(row[3]),
       total: storedTotal(row[4]),
+      krishna: storedTotal(row[5]),
     }];
   });
 }
@@ -359,10 +370,10 @@ async function saveProgress(
   if (group) {
     statements.push({
       sql: `UPDATE chant_groups
-            SET total = total + ?, om_total = om_total + ?, ram_total = ram_total + ?, ma_total = ma_total + ?
+            SET total = total + ?, om_total = om_total + ?, ram_total = ram_total + ?, ma_total = ma_total + ?, krishna_total = krishna_total + ?
             WHERE code = ?
             RETURNING ${GROUP_COLUMNS}`,
-      args: [appliedGroupCount, chantCounts.om, chantCounts.ram, chantCounts.ma, group.code],
+      args: [appliedGroupCount, chantCounts.om, chantCounts.ram, chantCounts.ma, chantCounts.krishna, group.code],
     });
     statements.push({
       sql: `INSERT INTO chant_group_people (group_code, person_id, name, total)
@@ -379,15 +390,17 @@ async function saveProgress(
     const om = countryCounts?.om ?? 0;
     const ram = countryCounts?.ram ?? 0;
     const ma = countryCounts?.ma ?? 0;
+    const krishna = countryCounts?.krishna ?? 0;
     statements.push({
-      sql: `INSERT INTO chant_countries (code, om_total, ram_total, ma_total, total)
-            VALUES (?, ?, ?, ?, ?)
+      sql: `INSERT INTO chant_countries (code, om_total, ram_total, ma_total, krishna_total, total)
+            VALUES (?, ?, ?, ?, ?, ?)
             ON CONFLICT(code) DO UPDATE SET
               om_total = om_total + excluded.om_total,
               ram_total = ram_total + excluded.ram_total,
               ma_total = ma_total + excluded.ma_total,
+              krishna_total = krishna_total + excluded.krishna_total,
               total = total + excluded.total`,
-      args: [countryCode, om, ram, ma, count],
+      args: [countryCode, om, ram, ma, krishna, count],
     });
   }
   statements.push({ sql: 'COMMIT' });
@@ -495,6 +508,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
           om: country.om,
           'sri-ram': country.ram,
           'jai-ma': country.ma,
+          'jai-shri-krishna': country.krishna,
           total: country.total,
         })),
       });

@@ -1,11 +1,11 @@
-export type ChantTotalId = 'om' | 'sri-ram' | 'jai-ma';
+export type ChantTotalId = 'om' | 'sri-ram' | 'jai-ma' | 'jai-shri-krishna';
 
 export type GroupChantTotals = Record<ChantTotalId, number>;
 
-export const CHANT_TOTAL_IDS: ChantTotalId[] = ['om', 'sri-ram', 'jai-ma'];
+export const CHANT_TOTAL_IDS: ChantTotalId[] = ['om', 'sri-ram', 'jai-ma', 'jai-shri-krishna'];
 
 export function emptyChantTotals(): GroupChantTotals {
-  return { om: 0, 'sri-ram': 0, 'jai-ma': 0 };
+  return { om: 0, 'sri-ram': 0, 'jai-ma': 0, 'jai-shri-krishna': 0 };
 }
 
 export function readChantTotals(value: unknown): GroupChantTotals {
@@ -22,6 +22,7 @@ export function addChantTotals(left: GroupChantTotals, right: GroupChantTotals):
     om: left.om + right.om,
     'sri-ram': left['sri-ram'] + right['sri-ram'],
     'jai-ma': left['jai-ma'] + right['jai-ma'],
+    'jai-shri-krishna': left['jai-shri-krishna'] + right['jai-shri-krishna'],
   };
 }
 
@@ -317,12 +318,12 @@ export async function saveChantProgress(
   return latest;
 }
 
-function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown }): ChantCountry | null {
+function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }): ChantCountry | null {
   const code = String(value.code ?? '').trim().toUpperCase();
   if (!/^[A-Z]{2}$/.test(code)) return null;
   const byChant = value.byChant
     ? readChantTotals(value.byChant)
-    : readChantTotals({ om: value.om, 'sri-ram': value['sri-ram'], 'jai-ma': value['jai-ma'] });
+    : readChantTotals({ om: value.om, 'sri-ram': value['sri-ram'], 'jai-ma': value['jai-ma'], 'jai-shri-krishna': value['jai-shri-krishna'] });
   return {
     code,
     total: Math.max(0, Math.round(Number(value.total) || 0)),
@@ -333,7 +334,7 @@ function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown
 export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number; countries: ChantCountry[] }> {
   const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
-  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown }> };
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
   return {
     groups: (body.groups ?? []).flatMap((group) => {
       if (!group.code || !group.name) return [];
