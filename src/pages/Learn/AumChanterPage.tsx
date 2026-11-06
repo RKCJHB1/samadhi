@@ -1221,7 +1221,6 @@ const AumChanterPage = () => {
                   <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Group</p>
                   <p className="max-w-[4.5rem] truncate text-[10px] text-spiritual-200/70 sm:max-w-[8rem]">{currentChant.shortLabel}</p>
                   <p id="group-chant-total" className="text-lg sm:text-2xl font-mono text-white/80">{currentGroupChantTotal.toLocaleString()}</p>
-                  <p id="group-total-value" className="text-[10px] text-spiritual-300/70">all {groupTotal.toLocaleString()}</p>
                 </div>
               )}
               <div className="text-center">
