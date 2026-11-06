@@ -55,9 +55,10 @@ function shareableVideoType(mimeType: string): string {
   return mimeType.toLowerCase().includes('mp4') ? 'video/mp4' : 'video/webm';
 }
 
-// WhatsApp Desktop shows a thumbnail and then refuses the message when the H.264 header
-// has no timing information. The browser's software encoder writes that short header.
-// The hardware encoder writes a normal Baseline header, with stereo AAC, in a fast-start MP4.
+// WhatsApp Desktop shows a thumbnail and then refuses the message unless the clip is
+// Constrained Baseline H.264 with timing information, limited-range color, stereo AAC,
+// and a fast-start MP4. The hardware encoder supplies the timing; the bytes below
+// correct the flags and color it writes.
 const WHATSAPP_VIDEO_ATTEMPTS = [
   {
     codec: 'avc' as const,
@@ -75,12 +76,24 @@ const WHATSAPP_VIDEO_ATTEMPTS = [
 
 function whatsAppBrands(file: ArrayBuffer): ArrayBuffer {
   const bytes = new Uint8Array(file);
-  if (bytes.length < 28) return file;
-  const brand = String.fromCharCode(bytes[4], bytes[5], bytes[6], bytes[7]);
-  if (brand !== 'ftyp') return file;
-  bytes.set([0x6d, 0x70, 0x34, 0x32], 8);
-  bytes.set([0x00, 0x00, 0x00, 0x00], 12);
-  bytes.set([0x6d, 0x70, 0x34, 0x32, 0x69, 0x73, 0x6f, 0x6d, 0x6d, 0x70, 0x34, 0x31], 16);
+  if (bytes.length >= 28 && String.fromCharCode(bytes[4], bytes[5], bytes[6], bytes[7]) === 'ftyp') {
+    bytes.set([0x6d, 0x70, 0x34, 0x32], 8);
+    bytes.set([0x00, 0x00, 0x00, 0x00], 12);
+    bytes.set([0x6d, 0x70, 0x34, 0x32, 0x69, 0x73, 0x6f, 0x6d, 0x6d, 0x70, 0x34, 0x31], 16);
+  }
+  for (let i = 0; i + 16 < bytes.length; i += 1) {
+    if (bytes[i] !== 0x61 || bytes[i + 1] !== 0x76 || bytes[i + 2] !== 0x63 || bytes[i + 3] !== 0x43) continue;
+    if (bytes[i + 5] === 66) bytes[i + 6] = 0xc0;
+    for (let j = i + 8; j < i + 24 && j + 3 < bytes.length; j += 1) {
+      if (bytes[j] === 0x67 && bytes[j + 1] === 0x42) bytes[j + 2] = 0xc0;
+    }
+  }
+  for (let i = 0; i + 12 < bytes.length; i += 1) {
+    if (bytes[i] !== 0x6e || bytes[i + 1] !== 0x63 || bytes[i + 2] !== 0x6c || bytes[i + 3] !== 0x78) continue;
+    bytes[i + 6] = 0x00;
+    bytes[i + 7] = 0x01;
+    bytes[i + 10] = 0x00;
+  }
   return file;
 }
 
