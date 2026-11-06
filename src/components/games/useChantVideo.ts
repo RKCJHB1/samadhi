@@ -1120,26 +1120,58 @@ export function useChantVideo() {
     const blob = blobRef.current;
     if (!blob) return;
     const file = new File([blob], fileName, { type: blob.type || 'video/webm' });
+    const title = `${frameRef.current.chantName} chant`;
+    const text = frameRef.current.shareText?.trim() || '';
+    const cancelled = (shareError: unknown) => shareError instanceof DOMException && shareError.name === 'AbortError';
+    setError(null);
+
     try {
-      if (!navigator.canShare?.({ files: [file] })) {
-        downloadVideo();
-        return;
-      }
-      const title = `${frameRef.current.chantName} chant`;
-      const text = frameRef.current.shareText?.trim();
-      if (text) {
+      if (navigator.canShare?.({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], title, text });
+          await navigator.share(text ? { files: [file], title, text } : { files: [file], title });
           return;
         } catch (fileShareError) {
-          if (fileShareError instanceof DOMException && fileShareError.name === 'AbortError') return;
+          if (cancelled(fileShareError)) return;
+          if (text) {
+            try {
+              await navigator.share({ files: [file], title });
+              return;
+            } catch (fileOnlyError) {
+              if (cancelled(fileOnlyError)) return;
+            }
+          }
         }
       }
-      await navigator.share({ files: [file], title });
-    } catch (shareError) {
-      if (shareError instanceof DOMException && shareError.name === 'AbortError') return;
-      setError('Could not open sharing. Download the video instead.');
+    } catch {
+      // canShare can throw when this computer has no share sheet.
     }
+
+    downloadVideo();
+    if (text && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({ title, text });
+        setNotice('This computer cannot share the video file. The clip has been downloaded. Send the message from the share window.');
+        return;
+      } catch (textShareError) {
+        if (cancelled(textShareError)) {
+          setNotice('This computer cannot share the video file. The clip has been downloaded.');
+          return;
+        }
+      }
+    }
+
+    let copied = false;
+    if (text && navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      } catch {
+        copied = false;
+      }
+    }
+    setNotice(copied
+      ? 'This computer cannot share the video file. The clip has been downloaded, and the message has been copied so you can paste it.'
+      : 'This computer cannot share the video file. The clip has been downloaded. Copy the message above and send it with the clip.');
   }, [downloadVideo, fileName]);
 
   useEffect(() => {
