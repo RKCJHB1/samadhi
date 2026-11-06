@@ -155,7 +155,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   const url = `${SITE_ORIGIN}/chant`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
-  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\nWorldwide total: ${worldTotal.toLocaleString()}\n\n${url}\n\nPlease subscribe to keep informed of our new temple fundraising at: ${fundraisingUrl}`;
+  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\nWorldwide total: ${worldTotal.toLocaleString()}\n\n${url}\n\nPlease subscribe to keep informed of our new temple fundraising\n${fundraisingUrl}`;
   return {
     url,
     title: CHANT_APP_NAME,
@@ -175,7 +175,7 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const sharedTotal = Math.max(0, Math.round(groupTotal));
   const thisChant = Math.max(0, Math.round(chantTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
-  const message = `🙏 Please join the ${groupName} Group on The ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} ${chant}: ${thisChant.toLocaleString()}\n${groupName}, all chants: ${sharedTotal.toLocaleString()}\nWorldwide, all chants: ${worldTotal.toLocaleString()}\n\nLet us see if we can chant ${chant} ${groupChantGoal(thisChant)} times?\n\n${url}\n\nPlease subscribe to keep informed of our new temple fundraising at: ${fundraisingUrl}`;
+  const message = `🙏 Please join the ${groupName} Group on The ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} ${chant}: ${thisChant.toLocaleString()}\n${groupName}, all chants: ${sharedTotal.toLocaleString()}\nWorldwide, all chants: ${worldTotal.toLocaleString()}\n\nLet us see if we can chant ${chant} ${groupChantGoal(thisChant)} times?\n\njoin our '${groupName}' group and chant with us\n${url}\n\nPlease subscribe to keep informed of our new temple fundraising\n${fundraisingUrl}`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,
