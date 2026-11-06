@@ -55,7 +55,8 @@ function shareableVideoType(mimeType: string): string {
   return mimeType.toLowerCase().includes('mp4') ? 'video/mp4' : 'video/webm';
 }
 
-// MediaRecorder writes a fragmented MP4 or WebM. WhatsApp plays a normal fast-start MP4 with H.264 and AAC.
+// WhatsApp Desktop plays a fast-start MP4 with Constrained Baseline H.264 and an AAC sound track.
+// A High-profile picture, or a clip with no sound track, shows a thumbnail and then fails.
 async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
   const {
     Input,
@@ -64,64 +65,97 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
     Output,
     Mp4OutputFormat,
     BufferTarget,
-    Conversion,
+    VideoSampleSink,
+    AudioSampleSink,
+    VideoSampleSource,
+    AudioSampleSource,
+    AudioBufferSource,
+    Quality,
   } = await import('mediabunny');
 
-  const convert = async (audio: { codec: 'aac' } | { discard: true }) => {
-    const input = new Input({
-      formats: ALL_FORMATS,
-      source: new BlobSource(blob),
-    });
-    try {
-      const target = new BufferTarget();
-      const output = new Output({
-        format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
-        target,
-      });
-      const conversion = await Conversion.init({
-        input,
-        output,
-        video: { codec: 'avc' },
-        audio,
-      });
-      if (!conversion.isValid) return null;
-      await conversion.execute();
-      const buffer = target.buffer;
-      if (!buffer || buffer.byteLength < 1000) return null;
-      return new Blob([buffer], { type: 'video/mp4' });
-    } finally {
-      input.dispose();
-    }
-  };
-
-  const attempt = async () => {
-    try {
-      const withAudio = await convert({ codec: 'aac' });
-      if (withAudio) return withAudio;
-    } catch {
-      // The sound track could not be converted. Try the picture on its own.
-    }
-    try {
-      const silent = await convert({ discard: true });
-      if (silent) return silent;
-    } catch {
-      // Keep the original recording when this browser cannot build the MP4.
-    }
-    return blob;
-  };
-
+  const input = new Input({
+    formats: ALL_FORMATS,
+    source: new BlobSource(blob),
+  });
   let timer = 0;
   try {
-    return await Promise.race([
-      attempt(),
-      new Promise<Blob>((_, reject) => {
-        timer = window.setTimeout(() => reject(new Error('timeout')), 45_000);
+    const videoTrack = await input.getPrimaryVideoTrack();
+    if (!videoTrack) return blob;
+    const audioTrack = await input.getPrimaryAudioTrack();
+    const duration = await videoTrack.computeDuration();
+    const canHear = !!audioTrack && await audioTrack.canDecode();
+    const target = new BufferTarget();
+    const output = new Output({
+      format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
+      target,
+    });
+    const videoSource = new VideoSampleSource({
+      codec: 'avc',
+      fullCodecString: 'avc1.42E01F',
+      quality: new Quality('high'),
+      keyFrameInterval: 2,
+      hardwareAcceleration: 'prefer-software',
+      latencyMode: 'quality',
+    });
+    output.addVideoTrack(videoSource);
+    const heardSource = canHear
+      ? new AudioSampleSource({ codec: 'aac', quality: new Quality('medium') })
+      : null;
+    const silentSource = heardSource
+      ? null
+      : new AudioBufferSource({ codec: 'aac', quality: new Quality('low') });
+    output.addAudioTrack(heardSource ?? silentSource!);
+    await output.start();
+
+    const encode = (async () => {
+      const videoSink = new VideoSampleSink(videoTrack);
+      for await (const sample of videoSink.samples()) {
+        try {
+          await videoSource.add(sample);
+        } finally {
+          sample.close();
+        }
+      }
+      if (heardSource && audioTrack) {
+        const audioSink = new AudioSampleSink(audioTrack);
+        for await (const sample of audioSink.samples()) {
+          try {
+            await heardSource.add(sample);
+          } finally {
+            sample.close();
+          }
+        }
+        return;
+      }
+      const sampleRate = 44100;
+      let remaining = Math.max(duration, 0.2);
+      while (remaining > 0) {
+        const seconds = Math.min(1, remaining);
+        const silence = new AudioBuffer({
+          length: Math.max(1, Math.ceil(seconds * sampleRate)),
+          numberOfChannels: 1,
+          sampleRate,
+        });
+        await silentSource!.add(silence);
+        remaining -= seconds;
+      }
+    })();
+    const file = await Promise.race([
+      encode.then(async () => {
+        await output.finalize();
+        return target.buffer;
+      }),
+      new Promise<ArrayBuffer | null>((_, reject) => {
+        timer = window.setTimeout(() => reject(new Error('timeout')), 120_000);
       }),
     ]);
+    if (!file || file.byteLength < 1000) return blob;
+    return new Blob([file], { type: 'video/mp4' });
   } catch {
     return blob;
   } finally {
     window.clearTimeout(timer);
+    input.dispose();
   }
 }
 
