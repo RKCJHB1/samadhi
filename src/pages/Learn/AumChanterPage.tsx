@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom';
 import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, memberInitials, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -149,46 +149,52 @@ const CHANT_OPTIONS: ChantOption[] = [
   },
 ];
 
-function GroupNameRing({ members, selfId }: { members: GroupMember[]; selfId: string }) {
+function GroupJoinList({
+  groups,
+  currentCode,
+  onJoin,
+}: {
+  groups: ChantGroup[];
+  currentCode: string | null;
+  onJoin: (group: ChantGroup) => void;
+}) {
+  if (groups.length === 0) {
+    return <p className="text-center text-xs text-spiritual-300/70">No saved group totals yet.</p>;
+  }
+  return (
+    <ol className="space-y-1">
+      {groups.map((group, index) => {
+        const current = Boolean(currentCode) && group.code.toLowerCase() === currentCode.toLowerCase();
+        return (
+          <li key={group.code}>
+            <button
+              type="button"
+              onClick={() => onJoin(group)}
+              className={`flex w-full items-center justify-between gap-3 rounded px-2 py-2 text-left hover:bg-spiritual-600/20 ${current ? 'bg-spiritual-600/30' : ''}`}
+            >
+              <span className="min-w-0 truncate">
+                <span className="mr-2 font-mono text-spiritual-300/70">{index + 1}.</span>
+                {group.name}
+              </span>
+              <span className="shrink-0 text-xs text-amber-100">{current ? 'Joined' : 'Join'}</span>
+              <span className="shrink-0 font-mono">{group.total.toLocaleString()}</span>
+            </button>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function GroupChantingNote({ members }: { members: GroupMember[] }) {
   if (members.length === 0) return null;
+  const count = members.length;
   return (
     <section className="mt-3 w-full max-w-md" aria-label="Chanting together">
       <h2 className="text-center font-sans text-base text-amber-100">Chanting together</h2>
-      <p className="mt-1 text-center text-xs text-spiritual-200/80">
-        Each circle is a person in this group.
+      <p className="mt-1 text-center text-sm text-spiritual-200/80">
+        A total of {count.toLocaleString()} {count === 1 ? 'member is' : 'members are'} chanting in this group.
       </p>
-      <ul className="relative mx-auto mt-3 h-64 w-64 list-none sm:h-72 sm:w-72">
-        {members.length > 1 && (
-          <li className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-amber-200/40 text-lg text-amber-100" aria-hidden="true">
-            ॐ
-          </li>
-        )}
-        {members.map((member, index) => {
-          const alone = members.length === 1;
-          const angle = -Math.PI / 2 + (index * 2 * Math.PI) / members.length;
-          const yours = member.personId === selfId;
-          const label = member.name.trim() || (yours ? 'You' : 'Member');
-          return (
-            <li
-              key={member.personId}
-              className="absolute flex w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center"
-              style={{
-                left: alone ? '50%' : `${50 + Math.cos(angle) * 38}%`,
-                top: alone ? '50%' : `${50 + Math.sin(angle) * 38}%`,
-              }}
-            >
-              <div
-                className={`flex items-center justify-center rounded-full border-2 font-sans text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.35)] ${yours ? 'border-amber-100 bg-amber-700/70' : 'border-amber-300/80 bg-amber-950/80'} ${alone ? 'h-24 w-24 text-3xl' : 'h-14 w-14 text-sm sm:h-16 sm:w-16'}`}
-                aria-label={`${label}, ${member.total.toLocaleString()} chants`}
-              >
-                {memberInitials(member.name)}
-              </div>
-              <span className="mt-1 max-w-16 truncate text-center text-[10px] text-amber-100">{label}</span>
-              <span className="font-mono text-[10px] text-amber-200/80">{member.total.toLocaleString()}</span>
-            </li>
-          );
-        })}
-      </ul>
     </section>
   );
 }
@@ -439,6 +445,11 @@ const AumChanterPage = () => {
     createGroupRef.current = pending;
     return pending;
   }, [adoptGroup]);
+
+  const joinListedGroup = (group: ChantGroup, closeList: boolean) => {
+    adoptGroup(group);
+    if (closeList) setIsGroupsVisible(false);
+  };
 
   const refreshLeaderboard = useCallback(() => {
     void fetchChantGroupList().then((summary) => {
@@ -1407,7 +1418,7 @@ const AumChanterPage = () => {
               Tap the center to chant {currentChant.name}.
               <span className="hidden sm:inline"> This count is kept separately from the other chants.</span>
             </p>
-            <GroupNameRing members={visibleGroupMembers} selfId={chantPersonId()} />
+            <GroupChantingNote members={visibleGroupMembers} />
           </div>
 
           {/* Stats row: Today's progress + Secondary stats */}
@@ -1527,23 +1538,11 @@ const AumChanterPage = () => {
 
           {worldwideReady && (
             <p className="text-center text-sm text-spiritual-100/90">
-              <button
-                type="button"
-                onClick={() => setIsGroupsVisible(true)}
-                className="underline decoration-spiritual-300/40 underline-offset-2 hover:text-white"
-              >
-                {rankedGroups.length === 1
-                  ? 'There is 1 group.'
-                  : `There are ${rankedGroups.length.toLocaleString()} groups.`}
-              </button>
-              <span className="mx-2 text-spiritual-400/50">·</span>
-              <span>
-                {chantingNow === 1
-                  ? '1 person is chanting now.'
-                  : chantingNow === 0
-                    ? 'No one is chanting now.'
-                    : `${chantingNow.toLocaleString()} people are chanting now.`}
-              </span>
+              {chantingNow === 1
+                ? '1 person is chanting now.'
+                : chantingNow === 0
+                  ? 'No one is chanting now.'
+                  : `${chantingNow.toLocaleString()} people are chanting now.`}
             </p>
           )}
 
@@ -1557,6 +1556,13 @@ const AumChanterPage = () => {
                 Stop ({autoChantRemaining} remaining)
               </button>
             )}
+            <button
+              type="button"
+              onClick={() => setIsGroupsVisible(true)}
+              className="rounded-lg bg-spiritual-600/80 px-4 py-2 text-sm font-sans text-white transition-colors hover:bg-spiritual-600"
+            >
+              {groupCode ? 'Change group' : 'Join a group'}
+            </button>
             <button
               type="button"
               onClick={() => setIsShareVisible(true)}
@@ -1588,28 +1594,10 @@ const AumChanterPage = () => {
                 <button type="button" onClick={() => setIsGroupsVisible(false)} className="text-2xl leading-none text-spiritual-300/60 hover:text-spiritual-200" aria-label="Close groups">&times;</button>
               </div>
               <div className="overflow-y-auto p-4 text-sm text-spiritual-100">
-                {rankedGroups.length === 0 ? (
-                  <p className="text-center text-xs text-spiritual-300/70">No saved group totals yet.</p>
-                ) : (
-                  <ol className="space-y-1">
-                    {rankedGroups.map((group, index) => {
-                      const current = Boolean(groupCode) && group.code.toLowerCase() === groupCode.toLowerCase();
-                      return (
-                        <li
-                          key={group.code}
-                          className={`flex items-baseline justify-between gap-3 rounded px-2 py-1 ${current ? 'bg-spiritual-600/30' : ''}`}
-                        >
-                          <span className="min-w-0 truncate">
-                            <span className="mr-2 font-mono text-spiritual-300/70">{index + 1}.</span>
-                            {group.name}
-                            {current ? ' · this group' : ''}
-                          </span>
-                          <span className="shrink-0 font-mono">{group.total.toLocaleString()}</span>
-                        </li>
-                      );
-                    })}
-                  </ol>
-                )}
+                <p className="mb-3 text-center text-xs text-spiritual-200/80">
+                  Tap a group to chant with them.
+                </p>
+                <GroupJoinList groups={rankedGroups} currentCode={groupCode} onJoin={(group) => joinListedGroup(group, true)} />
               </div>
             </div>
           </div>
@@ -1880,30 +1868,11 @@ const AumChanterPage = () => {
           <section id="group-leaderboard" className="mt-2 w-full max-w-md rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-100">
             <h2 className="text-center font-sans text-base">Groups</h2>
             <p className="mt-1 text-center text-xs text-spiritual-200/80">
-              Scroll to see which groups have chanted the most.
+              Tap a group to chant with them.
             </p>
-            {rankedGroups.length === 0 ? (
-              <p className="mt-3 text-center text-xs text-spiritual-300/70">No saved group totals yet.</p>
-            ) : (
-              <ol className="mt-3 max-h-64 space-y-1 overflow-y-auto pr-1">
-                {rankedGroups.map((group, index) => {
-                  const current = Boolean(groupCode) && group.code.toLowerCase() === groupCode.toLowerCase();
-                  return (
-                    <li
-                      key={group.code}
-                      className={`flex items-baseline justify-between gap-3 rounded px-2 py-1 ${current ? 'bg-spiritual-600/30' : ''}`}
-                    >
-                      <span className="min-w-0 truncate">
-                        <span className="mr-2 font-mono text-spiritual-300/70">{index + 1}.</span>
-                        {group.name}
-                        {current ? ' · this group' : ''}
-                      </span>
-                      <span className="shrink-0 font-mono">{group.total.toLocaleString()}</span>
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
+            <div className="mt-3 max-h-64 overflow-y-auto pr-1">
+              <GroupJoinList groups={rankedGroups} currentCode={groupCode} onJoin={(group) => joinListedGroup(group, false)} />
+            </div>
           </section>
               </div>
             </div>
