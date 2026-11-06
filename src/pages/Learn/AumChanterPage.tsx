@@ -1270,10 +1270,17 @@ const AumChanterPage = () => {
         <h1 className="px-2 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
-          <div className="mt-1 text-center">
-            <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
-            <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
-            <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
+          <div className="mt-1 flex items-start justify-center gap-10 text-center sm:gap-16">
+            <div>
+              <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
+              <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
+              <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
+              <p className="text-[10px] text-spiritual-200/70">all chants</p>
+              <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</p>
+            </div>
           </div>
 
           <div className="w-full max-w-2xl">
@@ -1474,7 +1481,6 @@ const AumChanterPage = () => {
               storageKey="chant-fold-world"
               title="The world"
               summary={worldwideReady ? savedWorldwide.toLocaleString() : '...'}
-              summaryId="worldwide-total"
             >
               <p>
                 Record, all chants: <span id="record-total" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span>
