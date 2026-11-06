@@ -216,12 +216,60 @@ function GroupChantingNote({ members }: { members: GroupMember[] }) {
   if (members.length === 0) return null;
   const count = members.length;
   return (
-    <section className="mt-3 w-full max-w-md" aria-label="Chanting together">
+    <section aria-label="Chanting together">
       <h2 className="text-center font-sans text-base text-amber-100">Chanting together</h2>
       <p className="mt-1 text-center text-sm text-spiritual-200/80">
         A total of {count.toLocaleString()} {count === 1 ? 'member is' : 'members are'} chanting in this group.
       </p>
     </section>
+  );
+}
+
+function chantFoldOpen(key: string): boolean {
+  try {
+    return localStorage.getItem(key) === 'open';
+  } catch {
+    return false;
+  }
+}
+
+function ChantFold({
+  storageKey,
+  title,
+  summary,
+  summaryId,
+  children,
+}: {
+  storageKey: string;
+  title: string;
+  summary: string;
+  summaryId?: string;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(() => chantFoldOpen(storageKey));
+  return (
+    <details
+      className="group w-full max-w-md rounded-xl border border-spiritual-400/25 bg-slate-900/40 text-sm text-spiritual-100"
+      open={open}
+      onToggle={(event) => {
+        const next = event.currentTarget.open;
+        setOpen(next);
+        try {
+          localStorage.setItem(storageKey, next ? 'open' : 'closed');
+        } catch {
+          // The section still opens for this visit.
+        }
+      }}
+    >
+      <summary className="flex cursor-pointer list-none items-center gap-3 px-3 py-2.5 [&::-webkit-details-marker]:hidden">
+        <span className="font-sans text-spiritual-100">{title}</span>
+        <span id={summaryId} className="ml-auto font-mono text-white/80">{summary}</span>
+        <span aria-hidden className="text-spiritual-300/70 transition-transform group-open:rotate-180">▾</span>
+      </summary>
+      <div className="flex flex-col items-center gap-2 border-t border-spiritual-400/20 px-3 py-3 text-center text-xs leading-relaxed text-spiritual-200/85">
+        {children}
+      </div>
+    </details>
   );
 }
 
@@ -1222,67 +1270,10 @@ const AumChanterPage = () => {
         <h1 className="px-2 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
-          <div className="w-full flex items-center justify-between mt-1">
-            {/* History button (left) */}
-            <button
-              onClick={() => setIsHistoryVisible(true)}
-              className="flex items-center gap-1.5 text-spiritual-300/60 hover:text-spiritual-200 transition-colors text-xs font-sans tracking-wide"
-              aria-label="View chant history"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="hidden sm:inline">History</span>
-            </button>
-
-            {/* Center Stats */}
-            <div className="flex flex-col items-center gap-1">
-            <div className="flex items-start justify-center gap-2 sm:gap-10">
-              <div className="text-center">
-                <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
-                <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
-                <p className="text-lg sm:text-2xl font-mono text-white/80">{count.toLocaleString()}</p>
-              </div>
-              {groupCode && (
-                <div className="text-center">
-                  <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Group</p>
-                  <p className="max-w-[4.5rem] truncate text-[10px] text-spiritual-200/70 sm:max-w-[8rem]">{currentChant.shortLabel}</p>
-                  <p id="group-chant-total" className="text-lg sm:text-2xl font-mono text-white/80">{currentGroupChantTotal.toLocaleString()}</p>
-                </div>
-              )}
-              <div className="text-center">
-                <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Worldwide</p>
-                <p className="text-[10px] text-spiritual-300/40">all chants</p>
-                <p id="worldwide-total" className="text-lg sm:text-2xl font-mono text-white/80">
-                  {worldwideReady ? savedWorldwide.toLocaleString() : '...'}
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Record</p>
-                <p className="text-[10px] text-spiritual-300/40">all chants</p>
-                <p id="record-total" className="text-lg sm:text-2xl font-mono text-white/80">
-                  {recordReady ? recordChants.toLocaleString() : '...'}
-                </p>
-              </div>
-            </div>
-            {groupCode && (
-              <p className="max-w-sm text-center text-[10px] leading-snug text-spiritual-300/60">
-                The members of this group have chanted a total of {groupTotal.toLocaleString()} {groupTotal === 1 ? 'time' : 'times'} amongst all the chants.
-              </p>
-            )}
-            </div>
-
-            {/* Goal button (right) */}
-            <button
-              onClick={() => { setGoalInputValue(dailyGoal?.toString() || ''); setIsGoalModalVisible(true); }}
-              className="flex items-center gap-1.5 text-spiritual-300/60 hover:text-spiritual-200 transition-colors text-xs font-sans tracking-wide"
-              aria-label="Set daily goal"
-            >
-              <span className="hidden sm:inline">Goal</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </button>
+          <div className="mt-1 text-center">
+            <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
+            <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
+            <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
           </div>
 
           <div className="w-full max-w-2xl">
@@ -1444,48 +1435,24 @@ const AumChanterPage = () => {
               Tap the center to chant {currentChant.name}.
               <span className="hidden sm:inline"> This count is kept separately from the other chants.</span>
             </p>
-            <GroupChantingNote members={visibleGroupMembers} />
           </div>
 
-          {/* Stats row: Today's progress + Secondary stats */}
-          <div className="w-full flex flex-col items-center gap-1 text-sm sm:text-base text-spiritual-300/70">
-            {dailyGoal && (
-              <span className="font-mono">Today: {todaysChants.toLocaleString()} / {dailyGoal.toLocaleString()}</span>
-            )}
-            <span className="hidden text-center sm:inline">
-              1 mala = <span className="font-mono">{MALA_BEAD_COUNT}</span> chants • Completed malas:{' '}
-              <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span>
-              <span className="mx-2 text-spiritual-400/50">•</span>
-              Current cycle:{' '}
-              <span className="font-mono text-spiritual-200">{chantsIntoCurrentMala.toLocaleString()}</span>
-              <span className="mx-1">/</span>
-              <span className="font-mono">{MALA_BEAD_COUNT}</span>
-            </span>
-            <span className="text-center text-xs sm:hidden">
-              Mala <span className="font-mono text-spiritual-200">{chantsIntoCurrentMala.toLocaleString()}</span>
-              <span className="mx-1">/</span>
-              <span className="font-mono">{MALA_BEAD_COUNT}</span>
-              <span className="mx-2 text-spiritual-400/50">·</span>
-              <span className="font-mono text-spiritual-200">{completedMalas.toLocaleString()}</span> done
-            </span>
-            <p className="text-center text-xs text-spiritual-100/90 sm:text-sm" aria-live="polite">
-              You <span className="font-mono">{count.toLocaleString()}</span>
-              {savedReady && (
-                <>
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  Your total{' '}
-                  <span id="saved-total" className="font-mono">{savedTotal.toLocaleString()}</span>
-                </>
-              )}
-              <span className="mx-2 text-spiritual-400/50">·</span>
-              Worldwide{' '}
-              <span className="font-mono">
-                {worldwideReady ? savedWorldwide.toLocaleString() : '…'}
-              </span>
-              {groupCode && (
-                <>
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  Group Om <span className="font-mono">{groupByChant.om.toLocaleString()}</span>
+          <div className="flex w-full flex-col items-center gap-2">
+            {groupCode && (
+              <ChantFold
+                storageKey="chant-fold-group"
+                title="This group"
+                summary={groupTotal.toLocaleString()}
+                summaryId="group-total-value"
+              >
+                <p>
+                  The members of this group have chanted a total of {groupTotal.toLocaleString()} {groupTotal === 1 ? 'time' : 'times'} amongst all the chants.
+                </p>
+                <p id="group-chant-total">
+                  {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
+                </p>
+                <p>
+                  Om <span className="font-mono">{groupByChant.om.toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
                   Jai Sri Ram <span className="font-mono">{groupByChant['sri-ram'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
@@ -1498,42 +1465,74 @@ const AumChanterPage = () => {
                       Earlier <span className="font-mono">{earlierGroupChants.toLocaleString()}</span>
                     </>
                   )}
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  All{' '}
-                  <span className="font-mono">{groupTotal.toLocaleString()}</span>
-                </>
-              )}
-            </p>
-            {worldwideFailed && !worldwideReady && (
-              <p className="max-w-sm text-center text-[11px] leading-snug text-spiritual-300/50">
-                Your chants are included. They join the shared total when the count connects.
+                </p>
+                <GroupChantingNote members={visibleGroupMembers} />
+              </ChantFold>
+            )}
+
+            <ChantFold
+              storageKey="chant-fold-world"
+              title="The world"
+              summary={worldwideReady ? savedWorldwide.toLocaleString() : '...'}
+              summaryId="worldwide-total"
+            >
+              <p>
+                Record, all chants: <span id="record-total" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span>
               </p>
-            )}
-            <div className="hidden flex-wrap items-center justify-center gap-3 sm:flex sm:gap-6">
-              <span>Average Chants / User: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
-              <span>Total chanters: <span id="chanter-count" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
-              <span>Countries: <span className="font-mono">{worldwideReady ? countries.length.toLocaleString() : '...'}</span></span>
-            </div>
-            {countries.length > 0 && (
-              <div className="hidden max-w-md flex-col items-center gap-1 text-center text-xs text-spiritual-300/70 sm:flex">
-                {countries.map((country) => (
-                  <span key={country.code}>{countryLine(country)}</span>
-                ))}
+              <p>
+                Average per person: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span>
+              </p>
+              <p>
+                {chantingNow === 1
+                  ? '1 person is chanting now.'
+                  : chantingNow === 0
+                    ? 'No one is chanting now.'
+                    : `${chantingNow.toLocaleString()} people are chanting now.`}
+              </p>
+              <p>
+                Total chanters: <span id="chanter-count" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span>
+              </p>
+              <p>Countries: <span className="font-mono">{worldwideReady ? countries.length.toLocaleString() : '...'}</span></p>
+              {countries.map((country) => (
+                <span key={country.code}>{countryLine(country)}</span>
+              ))}
+              {worldwideFailed && !worldwideReady && (
+                <p>Your chants are included. They join the shared total when the count connects.</p>
+              )}
+            </ChantFold>
+
+            <ChantFold
+              storageKey="chant-fold-you"
+              title="Your chanting"
+              summary={savedReady ? savedTotal.toLocaleString() : '...'}
+              summaryId="saved-total"
+            >
+              <p>
+                This mala: <span className="font-mono">{chantsIntoCurrentMala.toLocaleString()}</span>
+                <span className="mx-1">/</span>
+                <span className="font-mono">{MALA_BEAD_COUNT}</span>
+              </p>
+              <p>Completed malas: <span className="font-mono">{completedMalas.toLocaleString()}</span></p>
+              {dailyGoal && (
+                <p className="font-mono">Today: {todaysChants.toLocaleString()} / {dailyGoal.toLocaleString()}</p>
+              )}
+              <div className="flex flex-wrap justify-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsHistoryVisible(true)}
+                  className="rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white hover:bg-slate-700"
+                >
+                  History
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setGoalInputValue(dailyGoal?.toString() || ''); setIsGoalModalVisible(true); }}
+                  className="rounded-lg bg-slate-700/80 px-4 py-2 text-sm font-sans text-white hover:bg-slate-700"
+                >
+                  Goal
+                </button>
               </div>
-            )}
-            <details className="w-full text-center text-xs text-spiritual-300/70 sm:hidden">
-              <summary className="cursor-pointer text-spiritual-300/50">Community totals</summary>
-              <div className="mt-2 flex flex-col gap-1">
-                <span>Worldwide: <span className="font-mono">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</span></span>
-                <span>Record: <span id="record-total-details" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span></span>
-                <span>Average per person: <span id="average-per-person-details" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span></span>
-                <span>Chanters: <span id="chanter-count-details" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span></span>
-                <span>Countries: <span className="font-mono">{worldwideReady ? countries.length.toLocaleString() : '...'}</span></span>
-                {countries.map((country) => (
-                  <span key={country.code}>{countryLine(country)}</span>
-                ))}
-              </div>
-            </details>
+            </ChantFold>
           </div>
 
           {videoPhase === 'recording' && createPortal(
@@ -1560,16 +1559,6 @@ const AumChanterPage = () => {
               </div>
             </div>,
             document.body
-          )}
-
-          {worldwideReady && (
-            <p className="text-center text-sm text-spiritual-100/90">
-              {chantingNow === 1
-                ? '1 person is chanting now.'
-                : chantingNow === 0
-                  ? 'No one is chanting now.'
-                  : `${chantingNow.toLocaleString()} people are chanting now.`}
-            </p>
           )}
 
           <div className="mt-1 flex w-full flex-wrap items-center justify-center gap-2">
