@@ -166,7 +166,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   };
 }
 
-export function buildGroupShare(name: string, chantName: string, code: string, groupTotal = 0, personTotal = 0, chantTotal = groupTotal) {
+export function buildGroupShare(name: string, chantName: string, code: string, groupTotal = 0, personTotal = 0, chantTotal = groupTotal, worldwide = 0) {
   const groupName = name.trim() || 'our group';
   const chant = chantName.trim() || 'Om';
   const url = chantGroupUrl(code);
@@ -174,7 +174,8 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const yourTotal = Math.max(0, Math.round(personTotal));
   const sharedTotal = Math.max(0, Math.round(groupTotal));
   const thisChant = Math.max(0, Math.round(chantTotal));
-  const message = `🙏 Please join the ${groupName} Group on The ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} ${chant}: ${thisChant.toLocaleString()}\n${groupName}, all chants: ${sharedTotal.toLocaleString()}\n\nLet us see if we can chant ${chant} ${groupChantGoal(thisChant)} times?\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
+  const worldTotal = Math.max(0, Math.round(worldwide));
+  const message = `🙏 Please join the ${groupName} Group on The ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\n${groupName} ${chant}: ${thisChant.toLocaleString()}\n${groupName}, all chants: ${sharedTotal.toLocaleString()}\nWorldwide, all chants: ${worldTotal.toLocaleString()}\n\nLet us see if we can chant ${chant} ${groupChantGoal(thisChant)} times?\n\nPlease view the fundraising efforts for our new temple at: ${fundraisingUrl}\n\n${url}`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,

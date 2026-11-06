@@ -1008,7 +1008,7 @@ const AumChanterPage = () => {
       personTotal: count,
       groupMembers: groupCode ? visibleGroupMembers : [],
       shareText: groupCode
-        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count, currentGroupChantTotal).videoText
+        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count, currentGroupChantTotal, savedWorldwide).videoText
         : buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText,
     });
   }, [chanterName, count, currentChant, currentGroupChantTotal, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame, visibleGroupMembers]);
@@ -1113,6 +1113,7 @@ const AumChanterPage = () => {
       groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? groupTotal : 0,
       count,
       groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? currentGroupChantTotal : 0,
+      savedWorldwide,
     )
     : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
