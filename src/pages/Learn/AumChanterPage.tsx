@@ -1237,7 +1237,7 @@ const AumChanterPage = () => {
 
             {/* Center Stats */}
             <div className="flex flex-col items-center gap-1">
-            <div className="flex items-start gap-3 sm:gap-10">
+            <div className="flex items-start justify-center gap-2 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
                 <p className="text-[10px] text-spiritual-200/70">{currentChant.shortLabel}</p>
@@ -1257,7 +1257,7 @@ const AumChanterPage = () => {
                   {worldwideReady ? savedWorldwide.toLocaleString() : '...'}
                 </p>
               </div>
-              <div className="hidden text-center sm:block">
+              <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">Record</p>
                 <p className="text-[10px] text-spiritual-300/40">all chants</p>
                 <p id="record-total" className="text-lg sm:text-2xl font-mono text-white/80">
