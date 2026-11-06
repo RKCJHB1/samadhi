@@ -340,8 +340,8 @@ function paintEndCard(
     paintFittedLine(context, canvas, 'Let us see if we can chant', height * 0.7, Math.round(width * 0.038), '#fff7ed');
     paintFittedLine(context, canvas, `${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`, height * 0.76, Math.round(width * 0.038), '#fff7ed');
   }
-  paintFittedLine(context, canvas, 'Please view the fundraising efforts', height * 0.86, Math.round(width * 0.034), '#ffd166');
-  paintFittedLine(context, canvas, 'for our new temple', height * 0.91, Math.round(width * 0.034), '#ffd166');
+  paintFittedLine(context, canvas, 'Please subscribe to keep informed', height * 0.86, Math.round(width * 0.034), '#ffd166');
+  paintFittedLine(context, canvas, 'of our new temple fundraising.', height * 0.91, Math.round(width * 0.034), '#ffd166');
   context.restore();
   paintCornerNotes(context, canvas);
   paintVideoBorder(context, canvas);
@@ -388,11 +388,13 @@ function paintCameraMessage(
   const lines = caption.groupTitle
     ? [
         `Let us see if we can chant ${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`,
-        'Please view the fundraising efforts for our new temple',
+        'Please subscribe to keep informed',
+        'of our new temple fundraising.',
       ]
     : [
         CHANT_APP_NAME,
-        'Please view the fundraising efforts for our new temple',
+        'Please subscribe to keep informed',
+        'of our new temple fundraising.',
       ];
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.max(16, Math.round(shortSide * 0.034));
