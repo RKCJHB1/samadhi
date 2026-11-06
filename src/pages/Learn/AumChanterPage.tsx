@@ -1198,6 +1198,7 @@ const AumChanterPage = () => {
             </button>
 
             {/* Center Stats */}
+            <div className="flex flex-col items-center gap-1">
             <div className="flex items-start gap-3 sm:gap-10">
               <div className="text-center">
                 <p className="text-[10px] sm:text-xs font-sans tracking-wider text-spiritual-300/50 uppercase">You</p>
@@ -1226,6 +1227,12 @@ const AumChanterPage = () => {
                   {recordReady ? recordChants.toLocaleString() : '...'}
                 </p>
               </div>
+            </div>
+            {groupCode && (
+              <p className="max-w-xs text-center text-[10px] leading-snug text-spiritual-300/60">
+                The group number is this chant. “all” is every chant the group has done.
+              </p>
+            )}
             </div>
 
             {/* Goal button (right) */}
