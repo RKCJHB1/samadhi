@@ -1,20 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 
 const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VbE4YeY89ino9wbDMA0f';
 
 const FundNoticePreview = () => {
-  useEffect(() => {
-    const robots = document.createElement('meta');
-    robots.name = 'robots';
-    robots.content = 'noindex, nofollow';
-    document.head.appendChild(robots);
-    return () => {
-      document.head.removeChild(robots);
-    };
-  }, []);
-
   return (
     <PageLayout title="New Ashram Development Updates">
       <div className="min-h-screen w-full bg-gradient-to-br from-indian-cream to-white">

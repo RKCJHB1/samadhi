@@ -58,13 +58,23 @@ where devotees can find God in themselves and around them. The work itself is to
               <p className="mb-6">
                 We invite you to be part of this sacred journey. Your support (either in cash or goods/services), no matter how big or small, will help us create a space where spiritual seekers can find peace, guidance, and community for generations to come.
               </p>
-              <Button
-                href="/new-ashram-project/fundraising"
-                size="lg"
-                className="bg-indian-saffron !text-black border border-indian-saffron hover:bg-indian-saffron/90 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-              >
-                Donate Now
-              </Button>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Button
+                  href="/new-ashram-project/fundraising"
+                  size="lg"
+                  className="bg-indian-saffron !text-black border border-indian-saffron hover:bg-indian-saffron/90 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+                >
+                  Donate Now
+                </Button>
+                <Button
+                  href="/new-ashram-project/fundraising/notice"
+                  size="lg"
+                  variant="outline"
+                  className="border-indian-saffron text-black hover:bg-indian-saffron/10 font-semibold"
+                >
+                  Subscribe for updates
+                </Button>
+              </div>
             </div>
           </div>
         </div>

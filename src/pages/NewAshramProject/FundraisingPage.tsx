@@ -22,6 +22,16 @@ const FundraisingPage = () => {
                   Your contribution to the New Ashram Project will help create a spiritual sanctuary that serves our community and upholds the teachings of Sri Ramakrishna, Holy Mother Sri Sarada Devi, and Swami Vivekananda for generations to come.
                 </p>
 
+                <div className="my-8 rounded-lg border border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white p-6 text-center shadow-sm">
+                  <h3 className="text-2xl font-heading font-semibold mb-3">New Ashram Development Updates</h3>
+                  <p className="mb-6 text-gray-700">
+                    Subscribe to our WhatsApp channel to hear when the fundraising platform launches.
+                  </p>
+                  <Link to="/new-ashram-project/fundraising/notice">
+                    <Button>Subscribe for updates</Button>
+                  </Link>
+                </div>
+
                 {/* Fundraising Progress */}
                 <div className="my-10 bg-gradient-to-r from-indian-cream to-white p-6 rounded-lg shadow-sm border border-indian-saffron/30 pop-shadow-card">
                   <h3 className="text-2xl font-heading font-semibold mb-4">Fundraising Progress</h3>
