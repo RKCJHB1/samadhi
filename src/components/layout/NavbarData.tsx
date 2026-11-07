@@ -30,6 +30,7 @@ export const navigation: NavItem[] = [
   },
 
   { name: 'New Ashram Project', href: '/new-ashram-project' },
+  { name: 'Chant', href: '/chant' },
   {
     name: 'Hinduism',
     href: '/learn'
