@@ -16,15 +16,15 @@ const FundNoticePreview = () => {
   }, []);
 
   return (
-    <PageLayout title="Fundraising platform">
+    <PageLayout title="New Ashram Development Updates">
       <div className="min-h-screen w-full bg-gradient-to-br from-indian-cream to-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-xl mx-auto">
             <h1 className="mt-8 font-heading text-3xl font-bold text-black md:text-4xl">
-              Subscribe to know when we launch our fundraising platform
+              Subscribe to our New Ashram Development Updates
             </h1>
             <p className="mt-4 text-lg text-gray-700">
-              We will soon launch our online fundraising platform. Subscribe to our WhatsApp channel to be informed as soon as developments related to the New Ashram Development occur.
+              We will soon launch our online fundraising platform for this New Ashram Development. Subscribe to our WhatsApp channel to be informed of further developments.
             </p>
 
             <div className="mt-8 rounded-lg border border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white p-6 text-center shadow-sm">
