@@ -653,28 +653,39 @@ function readoutLayout(width: number, height: number, personName: string, showWo
   };
 }
 
+const CENTRE_NAME = 'The Ramakrishna Centre of South Africa, Johannesburg';
 const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
 
-function paintCornerNotes(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+function paintCentreName(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
   const shortSide = Math.min(canvas.width, canvas.height);
-  const padX = Math.round(Math.max(16, shortSide * 0.04));
-  const y = Math.round(Math.max(20, canvas.height * 0.065));
-  let size = Math.max(16, Math.round(shortSide * 0.03));
-  context.font = `600 ${size}px ${CANVAS_FONT}`;
-  while (size > 12 && context.measureText(SITE_LABEL).width > canvas.width - padX * 2) {
-    size -= 1;
-    context.font = `600 ${size}px ${CANVAS_FONT}`;
-  }
-
   context.save();
-  context.font = `600 ${size}px ${CANVAS_FONT}`;
-  context.textBaseline = 'top';
-  context.shadowColor = 'rgba(0,0,0,0.8)';
-  context.shadowBlur = 8;
-  context.shadowOffsetY = 1;
-  context.fillStyle = 'rgba(255,247,237,0.96)';
-  context.textAlign = 'left';
-  context.fillText(SITE_LABEL, padX, y);
+  context.textAlign = 'center';
+  context.textBaseline = 'alphabetic';
+  paintFittedLine(
+    context,
+    canvas,
+    CENTRE_NAME,
+    Math.round(Math.max(36, canvas.height * 0.075)),
+    Math.round(shortSide * 0.032),
+    '#fff7ed',
+  );
+  context.restore();
+}
+
+function paintSiteLink(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+  const shortSide = Math.min(canvas.width, canvas.height);
+  const inset = Math.max(28, Math.round(shortSide * 0.045));
+  context.save();
+  context.textAlign = 'center';
+  context.textBaseline = 'alphabetic';
+  paintFittedLine(
+    context,
+    canvas,
+    SITE_LABEL,
+    canvas.height - inset,
+    Math.round(shortSide * 0.03),
+    '#fff7ed',
+  );
   context.restore();
 }
 
@@ -732,7 +743,8 @@ function paintEndCard(
   paintFittedLine(context, canvas, 'Please subscribe to keep informed', height * 0.86, Math.round(width * 0.034), '#ffd166');
   paintFittedLine(context, canvas, 'of our new temple fundraising.', height * 0.91, Math.round(width * 0.034), '#ffd166');
   context.restore();
-  paintCornerNotes(context, canvas);
+  paintCentreName(context, canvas);
+  paintSiteLink(context, canvas);
   paintVideoBorder(context, canvas);
 }
 
@@ -779,11 +791,13 @@ function paintCameraMessage(
         `Let us see if we can chant ${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`,
         'Please subscribe to keep informed',
         'of our new temple fundraising.',
+        SITE_LABEL,
       ]
     : [
         CHANT_APP_NAME,
         'Please subscribe to keep informed',
         'of our new temple fundraising.',
+        SITE_LABEL,
       ];
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.max(16, Math.round(shortSide * 0.034));
@@ -904,7 +918,7 @@ function paintReadout(
   context.strokeText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.restore();
-  paintCornerNotes(context, canvas);
+  paintCentreName(context, canvas);
 }
 
 function evenSize(value: number): number {
@@ -1397,6 +1411,7 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
+        paintSiteLink(context, canvas);
         paintVideoBorder(context, canvas);
       };
 
