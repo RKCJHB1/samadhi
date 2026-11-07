@@ -32,7 +32,7 @@ const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
-const TOTAL_WALK_MS = 5000;
+const TOTAL_WALK_MS = 10000;
 
 type RisingTotal = {
   shown: number;
@@ -743,6 +743,28 @@ const AumChanterPage = () => {
       setWorldwideReady(true);
       setWorldwideFailed(false);
       setRecordReady(true);
+      const code = groupCodeRef.current;
+      if (!code) return;
+      const listed = summary.groups.find((group) => group.code.toLowerCase() === code.toLowerCase());
+      const applyGroup = (group: ChantGroup) => {
+        if (!groupCodeRef.current || group.code.toLowerCase() !== groupCodeRef.current.toLowerCase()) return;
+        confirmedGroupRef.current = group.total;
+        confirmedByChantRef.current = group.byChant;
+        const total = group.total + pendingGroupRef.current;
+        const byChant = addChantTotals(group.byChant, pendingByChantRef.current);
+        setGroupTotal(total);
+        setGroupByChant(byChant);
+        totalsApi.current.noteGroup(group.code, total, byChant);
+      };
+      if (listed) {
+        applyGroup(listed);
+        return;
+      }
+      void fetchChantGroup(code).then((group) => {
+        if (group) applyGroup(group);
+      }).catch(() => {
+        // Keep the group total already on screen.
+      });
     }).catch(() => {
       setWorldwideFailed(true);
     });
@@ -883,28 +905,7 @@ const AumChanterPage = () => {
   }, [refreshLeaderboard, scheduleSavedChants]);
 
   useEffect(() => {
-    if (!groupCode) return;
-    const timer = window.setInterval(() => {
-      const code = groupCodeRef.current;
-      if (!code) return;
-      void fetchChantGroup(code).then((group) => {
-        if (!group || !groupCodeRef.current || group.code.toLowerCase() !== groupCodeRef.current.toLowerCase()) return;
-        confirmedGroupRef.current = group.total;
-        confirmedByChantRef.current = group.byChant;
-        const total = group.total + pendingGroupRef.current;
-        const byChant = addChantTotals(group.byChant, pendingByChantRef.current);
-        setGroupTotal(total);
-        setGroupByChant(byChant);
-        totalsApi.current.noteGroup(group.code, total, byChant);
-      }).catch(() => {
-        // Keep the total already on screen. The next tap tries again.
-      });
-    }, 5000);
-    return () => window.clearInterval(timer);
-  }, [groupCode]);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => refreshLeaderboard(), 5000);
+    const timer = window.setInterval(() => refreshLeaderboard(), 10000);
     return () => window.clearInterval(timer);
   }, [refreshLeaderboard]);
 

@@ -464,7 +464,7 @@ async function saveProgress(
   };
 }
 
-const TOTAL_SHARE_MS = 5000;
+const TOTAL_SHARE_MS = 10000;
 
 type SharedTotal = { expires: number; status: number; body: string };
 
@@ -488,7 +488,7 @@ function sharedTotalResponse(status: number, body: string, shared: 'hit' | 'miss
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': status === 200 ? 'public, max-age=5' : 'no-store',
+      'cache-control': status === 200 ? 'public, max-age=10' : 'no-store',
       'x-chant-shared': shared,
     },
   });
@@ -542,7 +542,7 @@ async function loadSharedTotal(key: string, produce: () => Promise<Response>): P
             status: response.status,
             headers: {
               'content-type': 'application/json; charset=utf-8',
-              'cache-control': 'public, max-age=5',
+              'cache-control': 'public, max-age=10',
             },
           }));
         } catch {
