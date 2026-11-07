@@ -125,7 +125,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   const url = `${SITE_ORIGIN}/chant`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
-  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\nWorldwide total: *${worldTotal.toLocaleString()}*\n\n${url}\n\n${fundraisingClose()}`;
+  const message = `Diwali, symbolizes the ultimate triumph of light over darkness and good over evil. It honors key sacred events, including the joyful return of Lord Rama to Ayodhya, Lord Krishna's slaying of Narakasura, and the Divine Mother's fierce destruction of the demon Raktabija. This Diwali, while we celebrate, let us remember its spiritual significance.\n\nThis ${CHANT_APP_NAME} is meant to keep families together by remembering the Divine. Please join me in chanting or start your own group and let our chanting be collectively counted.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\nWorldwide, all chants: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}\n\n${fundraisingClose()}`;
   return {
     url,
     title: CHANT_APP_NAME,
