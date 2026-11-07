@@ -220,22 +220,36 @@ const CHANT_OPTIONS: ChantOption[] = [
 
 const WHY_THESE_CHANTS = [
   {
+    id: 'om',
     name: 'Om',
     text: 'The universal symbol of God. Om is the sacred sound of the one Reality behind every name and form.',
   },
   {
+    id: 'sri-ram',
     name: 'Jai Sri Ram',
     text: 'Diwali marks the return of Lord Rama to Ayodhya. After his exile, the people lit rows of lamps to welcome him home.',
   },
   {
+    id: 'jai-shri-krishna',
     name: 'Jai Shri Krishna',
     text: 'During Diwali, Lord Krishna destroyed the demon Narakasura. That victory set the captives free and brought a long darkness to an end.',
   },
   {
+    id: 'jai-ma',
     name: 'Jai Ma',
     text: 'During Diwali, Mother Lakshmi is worshipped. It also honours the Divine Mother, who destroyed the demon Raktabija: every drop of his blood became another demon, until she put an end to him.',
   },
 ] as const;
+
+function ChantInfoIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 fill-none stroke-current stroke-[1.75]">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v6" strokeLinecap="round" />
+      <circle cx="12" cy="7.5" r="0.8" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
 
 function GroupJoinList({
   groups,
@@ -502,7 +516,9 @@ const AumChanterPage = () => {
   const [groupCode, setGroupCode] = useState<string | null>(null);
   const [groupTitle, setGroupTitle] = useState('');
   const [whyChantsOpen, setWhyChantsOpen] = useState(false);
+  const [chantNoteId, setChantNoteId] = useState<string | null>(null);
   const whyChantsRef = useRef<HTMLDivElement>(null);
+  const chantNotesRef = useRef<HTMLDivElement>(null);
   const [groupTotal, setGroupTotal] = useState(0);
   const [groupNotice, setGroupNotice] = useState('');
   const [savedTotal, setSavedTotal] = useState(0);
@@ -729,6 +745,7 @@ const AumChanterPage = () => {
     const saved = await ensureChantGroup();
     if (!saved) return;
     setGroupNotice(`You are in the ${saved.name} group.`);
+    setIsShareVisible(false);
   }, [ensureChantGroup]);
 
   const joinListedGroup = (group: ChantGroup, closeList: boolean) => {
@@ -1371,6 +1388,23 @@ const AumChanterPage = () => {
   }, [whyChantsOpen]);
 
   useEffect(() => {
+    if (!chantNoteId) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const node = chantNotesRef.current;
+      if (node && event.target instanceof Node && !node.contains(event.target)) setChantNoteId(null);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setChantNoteId(null);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [chantNoteId]);
+
+  useEffect(() => {
     const root = document.documentElement;
     const previousTouchAction = root.style.touchAction;
     const previousTapHighlight = root.style.webkitTapHighlightColor;
@@ -1589,41 +1623,70 @@ const AumChanterPage = () => {
             </div>
           </div>
 
-          <div className="w-full max-w-2xl">
+          <div ref={chantNotesRef} className="w-full max-w-2xl">
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center" role="tablist" aria-label="Available chants">
               {availableChants.map((chant) => {
                 const isActive = chant.id === currentChant.id;
+                const note = WHY_THESE_CHANTS.find((item) => item.id === chant.id);
+                const noteOpen = chantNoteId === chant.id;
 
                 return (
-                  <button
-                    key={chant.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => {
-                      if (chant.id !== currentChant.id) {
-                        stopAutoChant();
-                        setSelectedChantId(chant.id);
-                      }
-                    }}
-                    className={`min-w-0 rounded-full border px-2 py-2 text-sm font-medium transition-all duration-200 sm:px-4 ${isActive
-                      ? 'border-spiritual-300/60 bg-spiritual-500/20 text-white shadow-[0_0_20px_rgba(251,191,36,0.18)]'
-                      : 'border-spiritual-400/20 bg-slate-800/50 text-spiritual-200/80 hover:border-spiritual-300/40 hover:text-white'}`}
-                  >
-                    <span className="flex flex-col items-center gap-0.5 sm:flex-row sm:gap-2">
-                      <span className="text-base leading-none">{chant.symbol}</span>
-                      <span className="text-[11px] leading-tight sm:text-sm">{chant.shortLabel}</span>
-                      <span className="font-mono text-xs text-spiritual-100/80">{(countsByChant[chant.id] || 0).toLocaleString()}</span>
-                      {!chant.isAlwaysAvailable && (
-                        <span className="hidden rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200 sm:inline">
-                          Special
-                        </span>
-                      )}
-                    </span>
-                  </button>
+                  <div key={chant.id} className="relative flex min-w-0 items-center gap-1">
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => {
+                        if (chant.id !== currentChant.id) {
+                          stopAutoChant();
+                          setSelectedChantId(chant.id);
+                        }
+                      }}
+                      className={`min-w-0 flex-1 rounded-full border px-2 py-2 text-sm font-medium transition-all duration-200 sm:px-4 ${isActive
+                        ? 'border-spiritual-300/60 bg-spiritual-500/20 text-white shadow-[0_0_20px_rgba(251,191,36,0.18)]'
+                        : 'border-spiritual-400/20 bg-slate-800/50 text-spiritual-200/80 hover:border-spiritual-300/40 hover:text-white'}`}
+                    >
+                      <span className="flex flex-col items-center gap-0.5 sm:flex-row sm:gap-2">
+                        <span className="text-base leading-none">{chant.symbol}</span>
+                        <span className="text-[11px] leading-tight sm:text-sm">{chant.shortLabel}</span>
+                        <span className="font-mono text-xs text-spiritual-100/80">{(countsByChant[chant.id] || 0).toLocaleString()}</span>
+                        {!chant.isAlwaysAvailable && (
+                          <span className="hidden rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.22em] text-amber-200 sm:inline">
+                            Special
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                    {note && (
+                      <button
+                        type="button"
+                        aria-expanded={noteOpen}
+                        aria-controls={`chant-note-${chant.id}`}
+                        aria-label={`Why ${chant.name} was chosen`}
+                        onClick={() => setChantNoteId(noteOpen ? null : chant.id)}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-200/40 text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
+                      >
+                        <ChantInfoIcon />
+                      </button>
+                    )}
+                  </div>
                 );
               })}
             </div>
+            {(() => {
+              const note = WHY_THESE_CHANTS.find((item) => item.id === chantNoteId);
+              if (!note) return null;
+              return (
+                <p
+                  id={`chant-note-${note.id}`}
+                  role="region"
+                  className="mt-2 rounded-xl border border-amber-200/25 bg-slate-950/95 p-3 text-left text-sm leading-relaxed text-spiritual-100/85 shadow-xl"
+                >
+                  <span className="font-sans font-semibold text-amber-100">{note.name}. </span>
+                  {note.text}
+                </p>
+              );
+            })()}
           </div>
 
           {/* Main Chant Button + Mala */}
