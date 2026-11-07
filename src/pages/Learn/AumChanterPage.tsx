@@ -224,15 +224,15 @@ const WHY_THESE_CHANTS = [
   },
   {
     name: 'Jai Sri Ram',
-    text: 'Diwali remembers the return of Lord Rama to Ayodhya. After his exile, the people lit rows of lamps to welcome him home.',
+    text: 'Diwali marks the return of Lord Rama to Ayodhya. After his exile, the people lit rows of lamps to welcome him home.',
   },
   {
     name: 'Jai Shri Krishna',
-    text: 'Diwali remembers Lord Krishna destroying the demon Narakasura. That victory set the captives free and brought a long darkness to an end.',
+    text: 'Diwali marks Lord Krishna destroying the demon Narakasura. That victory set the captives free and brought a long darkness to an end.',
   },
   {
     name: 'Jai Ma',
-    text: 'Diwali is the worship of Mother Lakshmi, welcomed into the home with light. It also honours the Divine Mother, who destroyed the demon Raktabija: every drop of his blood became another demon, until she put an end to him.',
+    text: 'During Diwali, Mother Lakshmi is worshipped. It also honours the Divine Mother, who destroyed the demon Raktabija: every drop of his blood became another demon, until she put an end to him.',
   },
 ] as const;
 
