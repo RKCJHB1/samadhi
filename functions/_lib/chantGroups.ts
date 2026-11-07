@@ -174,7 +174,7 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
         chanter_count INTEGER NOT NULL DEFAULT 0
       )`,
     );
-    await execute(env, 'CREATE INDEX IF NOT EXISTS chant_people_updated ON chant_people (updated_at)');
+    await execute(env, 'DROP INDEX IF EXISTS chant_people_updated');
     const world = await execute(env, 'SELECT id FROM chant_world WHERE id = 1');
     if (world.length === 0) {
       try {
