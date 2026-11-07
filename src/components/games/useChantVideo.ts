@@ -1121,6 +1121,7 @@ export function useChantVideo() {
       gain.connect(destination);
       tanpura = context.createBufferSource();
       tanpura.buffer = tanpuraBuffer;
+      tanpura.loop = true;
       tanpura.connect(gain);
       tanpura.onended = () => {
         if (!tanpura) return;

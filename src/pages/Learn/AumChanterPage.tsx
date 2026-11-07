@@ -1020,7 +1020,7 @@ const AumChanterPage = () => {
     if (!tanpura) {
       tanpura = new Audio(TANPURA_SRC);
       tanpura.preload = 'auto';
-      tanpura.loop = false;
+      tanpura.loop = true;
       tanpuraRef.current = tanpura;
     }
     const generation = tanpuraGenerationRef.current + 1;
@@ -1033,7 +1033,7 @@ const AumChanterPage = () => {
       current.pause();
     };
     voice.addEventListener('ended', stopWithChant);
-    tanpura.loop = false;
+    tanpura.loop = true;
     tanpura.volume = TANPURA_VOLUME;
     try {
       tanpura.pause();
