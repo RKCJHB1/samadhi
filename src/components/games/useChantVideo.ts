@@ -56,9 +56,9 @@ function shareableVideoType(mimeType: string): string {
 }
 
 // WhatsApp Desktop shows a thumbnail and then refuses the message unless the clip is
-// Constrained Baseline H.264 with timing information, limited-range color, stereo AAC,
-// and a fast-start MP4. The hardware encoder supplies the timing; the bytes below
-// correct the flags and color it writes.
+// Constrained Baseline H.264, constant frame rate, limited-range color, and stereo AAC
+// in a fast-start MP4. A downloaded copy can still play. The bytes below correct the
+// flags and color, then give every frame the same duration so sending the attachment works.
 const WHATSAPP_VIDEO_ATTEMPTS = [
   {
     codec: 'avc' as const,
@@ -94,7 +94,140 @@ function whatsAppBrands(file: ArrayBuffer): ArrayBuffer {
     bytes[i + 7] = 0x01;
     bytes[i + 10] = 0x00;
   }
-  return file;
+  return steadyVideoTiming(file);
+}
+
+const MP4_CONTAINERS = new Set(['moov', 'trak', 'mdia', 'minf', 'stbl', 'edts', 'udta']);
+
+type Mp4Box = { o: number; size: number; type: string; children: Mp4Box[] };
+
+function readU32(bytes: Uint8Array, offset: number): number {
+  return ((bytes[offset] << 24) | (bytes[offset + 1] << 16) | (bytes[offset + 2] << 8) | bytes[offset + 3]) >>> 0;
+}
+
+function writeU32(bytes: Uint8Array, offset: number, value: number) {
+  const next = value >>> 0;
+  bytes[offset] = (next >>> 24) & 255;
+  bytes[offset + 1] = (next >>> 16) & 255;
+  bytes[offset + 2] = (next >>> 8) & 255;
+  bytes[offset + 3] = next & 255;
+}
+
+function boxType(bytes: Uint8Array, offset: number): string {
+  return String.fromCharCode(bytes[offset + 4], bytes[offset + 5], bytes[offset + 6], bytes[offset + 7]);
+}
+
+function parseBoxes(bytes: Uint8Array, start: number, end: number): Mp4Box[] {
+  const list: Mp4Box[] = [];
+  let o = start;
+  while (o + 8 <= end) {
+    const size = readU32(bytes, o);
+    if (size < 8 || o + size > bytes.length) break;
+    const type = boxType(bytes, o);
+    const box: Mp4Box = { o, size, type, children: [] };
+    if (MP4_CONTAINERS.has(type)) box.children = parseBoxes(bytes, o + 8, o + size);
+    list.push(box);
+    o += size;
+  }
+  return list;
+}
+
+function findBox(box: Mp4Box | undefined, type: string): Mp4Box | null {
+  if (!box) return null;
+  if (box.type === type) return box;
+  for (const child of box.children) {
+    const found = findBox(child, type);
+    if (found) return found;
+  }
+  return null;
+}
+
+function walkBoxes(list: Mp4Box[], visit: (box: Mp4Box) => void) {
+  for (const box of list) {
+    visit(box);
+    walkBoxes(box.children, visit);
+  }
+}
+
+// The recorder writes a different duration for almost every frame. Players still
+// open that file. WhatsApp's sender does not, so every frame is given one duration
+// and the audio roll groups are removed. Movie timing stays version 0.
+function steadyVideoTiming(file: ArrayBuffer): ArrayBuffer {
+  const bytes = new Uint8Array(file.slice(0));
+  const tree = parseBoxes(bytes, 0, bytes.length);
+  const moov = tree.find((box) => box.type === 'moov');
+  const video = moov?.children.find((box) => box.type === 'trak');
+  const stts = findBox(video, 'stts');
+  const mdhd = findBox(video, 'mdhd');
+  const tkhd = findBox(video, 'tkhd');
+  const mvhd = findBox(moov, 'mvhd');
+  const handler = findBox(video, 'hdlr');
+  const videoHandler = !!handler
+    && bytes[handler.o + 16] === 0x76
+    && bytes[handler.o + 17] === 0x69
+    && bytes[handler.o + 18] === 0x64
+    && bytes[handler.o + 19] === 0x65;
+  if (!moov || !video || !stts || !mdhd || !tkhd || !mvhd || !videoHandler) return file;
+  if (bytes[mdhd.o + 8] !== 0 || bytes[tkhd.o + 8] !== 0 || bytes[mvhd.o + 8] !== 0) return file;
+  if (stts.size < 24) return file;
+
+  const entryCount = readU32(bytes, stts.o + 12);
+  let samples = 0;
+  let total = 0;
+  const tableEnd = Math.min(stts.o + stts.size, stts.o + 16 + entryCount * 8);
+  for (let at = stts.o + 16; at + 8 <= tableEnd; at += 8) {
+    const count = readU32(bytes, at);
+    const delta = readU32(bytes, at + 4);
+    samples += count;
+    total += count * delta;
+  }
+  if (samples < 1 || total < 1) return file;
+
+  const frameDelta = Math.max(1, Math.round(total / samples));
+  const duration = samples * frameDelta;
+  const audio = moov.children.filter((box) => box.type === 'trak')[1];
+  const audioTkhd = findBox(audio, 'tkhd');
+  const audioDuration = audioTkhd ? readU32(bytes, audioTkhd.o + 28) : 0;
+  // Version 0: mdhd and mvhd store duration 24 bytes in, tkhd stores it 28 bytes in.
+  writeU32(bytes, mdhd.o + 24, duration);
+  writeU32(bytes, tkhd.o + 28, duration);
+  writeU32(bytes, mvhd.o + 24, Math.max(duration, audioDuration));
+  writeU32(bytes, stts.o + 12, 1);
+  writeU32(bytes, stts.o + 16, samples);
+  writeU32(bytes, stts.o + 20, frameDelta);
+
+  const cuts: { o: number; n: number }[] = [];
+  if (entryCount > 1 && stts.size > 24) cuts.push({ o: stts.o + 24, n: stts.size - 24 });
+  walkBoxes(tree, (box) => {
+    if (box.type === 'sgpd' || box.type === 'sbgp') cuts.push({ o: box.o, n: box.size });
+  });
+  if (cuts.length === 0) return bytes.buffer;
+
+  const removedBefore = (pos: number) => cuts.reduce((sum, cut) => sum + (cut.o + cut.n <= pos ? cut.n : 0), 0);
+  walkBoxes(tree, (box) => {
+    const inside = cuts.reduce((sum, cut) => (
+      sum + (box.o < cut.o && cut.o + cut.n <= box.o + box.size ? cut.n : 0)
+    ), 0);
+    if (inside > 0) writeU32(bytes, box.o, box.size - inside);
+    if (box.type !== 'stco') return;
+    const count = readU32(bytes, box.o + 12);
+    if (box.o + 16 + count * 4 > box.o + box.size) return;
+    for (let i = 0; i < count; i += 1) {
+      const at = box.o + 16 + i * 4;
+      const offset = readU32(bytes, at);
+      writeU32(bytes, at, offset - removedBefore(offset));
+    }
+  });
+  if (entryCount > 1) writeU32(bytes, stts.o, 24);
+
+  let out = bytes;
+  for (const cut of cuts.slice().sort((a, b) => b.o - a.o)) {
+    const next = new Uint8Array(out.length - cut.n);
+    next.set(out.subarray(0, cut.o), 0);
+    next.set(out.subarray(cut.o + cut.n), cut.o);
+    out = next;
+  }
+  return out.buffer;
 }
 
 function sequenceHeaderLength(file: ArrayBuffer): number {
