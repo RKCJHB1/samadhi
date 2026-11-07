@@ -182,7 +182,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     symbol: 'ॐ',
     shareTag: '#Om',
     imageSrc: '/om.jpg',
-    audioSrc: '/aum.mp3',
+    audioSrc: '/aum.mp3?v=2',
     isAlwaysAvailable: true,
     isEnabled: true,
   },

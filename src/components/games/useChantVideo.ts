@@ -931,7 +931,7 @@ export function useChantVideo() {
     chantName: 'Om',
     symbol: 'ॐ',
     imageSrc: '/om.jpg',
-    audioSrc: '/aum.mp3',
+    audioSrc: '/aum.mp3?v=2',
     imageScale: 1,
     personName: '',
     globalChants: 0,
