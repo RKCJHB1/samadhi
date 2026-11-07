@@ -191,7 +191,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     symbol: 'राम',
     shareTag: '#RamNavami',
     imageSrc: '/jai-sri-ram.jpg',
-    audioSrc: '/aum.mp3',
+    audioSrc: '/jai-sri-ram.mp3',
     isEnabled: true,
   },
   {
@@ -201,7 +201,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     symbol: 'माँ',
     shareTag: '#JaiMa',
     imageSrc: '/jai-ma.jpg',
-    audioSrc: '/aum.mp3',
+    audioSrc: '/jai-ma.mp3',
     isEnabled: true,
   },
   {
@@ -211,7 +211,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     symbol: 'कृष्ण',
     shareTag: '#JaiShriKrishna',
     imageSrc: '/jai-shri-krishna.jpg',
-    audioSrc: '/aum.mp3',
+    audioSrc: '/jai-shri-krishna.mp3',
     isEnabled: true,
   },
 ];
