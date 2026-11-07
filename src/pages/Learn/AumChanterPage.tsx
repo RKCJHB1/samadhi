@@ -314,14 +314,6 @@ function GroupJoinList({
   );
 }
 
-function chantFoldOpen(key: string): boolean {
-  try {
-    return localStorage.getItem(key) === 'open';
-  } catch {
-    return false;
-  }
-}
-
 function renderWhatsAppText(text: string): React.ReactNode[] {
   const pattern = /(_\*[^*\n]+?\*_|\*_[^*\n]+?_\*|\*[^*\n]+?\*|_[^_\n]+?_)/g;
   const nodes: React.ReactNode[] = [];
@@ -345,31 +337,23 @@ function renderWhatsAppText(text: string): React.ReactNode[] {
 }
 
 function ChantFold({
-  storageKey,
   title,
   summary,
   summaryId,
   children,
 }: {
-  storageKey: string;
   title: string;
   summary: string;
   summaryId?: string;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(() => chantFoldOpen(storageKey));
+  const [open, setOpen] = useState(false);
   return (
     <details
       className="group w-full max-w-md rounded-xl border border-spiritual-400/25 bg-slate-900/40 text-sm text-spiritual-100"
       open={open}
       onToggle={(event) => {
-        const next = event.currentTarget.open;
-        setOpen(next);
-        try {
-          localStorage.setItem(storageKey, next ? 'open' : 'closed');
-        } catch {
-          // The section still opens for this visit.
-        }
+        setOpen(event.currentTarget.open);
       }}
     >
       <summary className="flex cursor-pointer list-none items-center gap-3 px-3 py-2.5 [&::-webkit-details-marker]:hidden">
@@ -1812,7 +1796,6 @@ const AumChanterPage = () => {
           <div className="flex w-full flex-col items-center gap-2">
             {groupCode && (
               <ChantFold
-                storageKey="chant-fold-group"
                 title="This group"
                 summary={groupShown.toLocaleString()}
                 summaryId="group-total-value"
@@ -1842,7 +1825,6 @@ const AumChanterPage = () => {
             )}
 
             <ChantFold
-              storageKey="chant-fold-world"
               title="The world"
               summary={worldwideReady ? worldShown.toLocaleString() : '...'}
             >
@@ -1865,7 +1847,6 @@ const AumChanterPage = () => {
             </ChantFold>
 
             <ChantFold
-              storageKey="chant-fold-you"
               title="Your chanting"
               summary={savedReady ? savedTotal.toLocaleString() : '...'}
               summaryId="saved-total"
