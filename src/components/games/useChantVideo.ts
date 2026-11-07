@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CHANT_APP_NAME, groupChantGoal } from '../../services/chantGroupService';
+import { CHANT_APP_NAME, CHANT_SHARE_QUOTE_LINES } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
@@ -741,8 +741,8 @@ function paintEndCard(
   paintFittedLine(context, canvas, frame.chantName || 'Om', height * 0.52, Math.round(width * 0.05), '#fff7ed');
   if (caption.groupTitle) {
     paintFittedLine(context, canvas, `${caption.groupTitle} ${frame.chantName || 'Om'} ${caption.groupChantTotal.toLocaleString()} · all ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.034), '#ffd166');
-    paintFittedLine(context, canvas, 'Let us see if we can chant', height * 0.7, Math.round(width * 0.038), '#fff7ed');
-    paintFittedLine(context, canvas, `${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`, height * 0.76, Math.round(width * 0.038), '#fff7ed');
+    paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[0], height * 0.7, Math.round(width * 0.032), '#fff7ed');
+    paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[1], height * 0.76, Math.round(width * 0.032), '#fff7ed');
   }
   paintFittedLine(context, canvas, 'Please subscribe to keep informed', height * 0.86, Math.round(width * 0.034), '#ffd166');
   paintFittedLine(context, canvas, 'of our new temple fundraising.', height * 0.91, Math.round(width * 0.034), '#ffd166');
@@ -760,7 +760,7 @@ function paintCameraMessage(
   const caption = frameCaption(frame);
   const lines = caption.groupTitle
     ? [
-        `Let us see if we can chant ${frame.chantName || 'Om'} ${groupChantGoal(caption.groupChantTotal)} times?`,
+        ...CHANT_SHARE_QUOTE_LINES,
         'Please subscribe to keep informed',
         'of our new temple fundraising.',
         SITE_LABEL,
@@ -771,6 +771,7 @@ function paintCameraMessage(
         'of our new temple fundraising.',
         SITE_LABEL,
       ];
+  const quoteLineCount = caption.groupTitle ? CHANT_SHARE_QUOTE_LINES.length : 1;
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.max(16, Math.round(shortSide * 0.034));
   const lineHeight = Math.round(size * 1.4);
@@ -789,7 +790,7 @@ function paintCameraMessage(
       line,
       top + pad + size + index * lineHeight,
       size,
-      index === 0 ? '#ffd166' : '#fff7ed',
+      index < quoteLineCount ? '#ffd166' : '#fff7ed',
     );
   });
   context.restore();
