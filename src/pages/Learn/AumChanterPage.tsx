@@ -1068,6 +1068,32 @@ const AumChanterPage = () => {
     ? groupByChant[currentChant.id as ChantTotalId]
     : 0;
   const earlierGroupChants = Math.max(0, groupTotal - CHANT_TOTAL_IDS.reduce((sum, id) => sum + groupByChant[id], 0));
+  const typedGroupName = groupNameDraft.trim();
+  const typedGroupSlug = groupSlug(typedGroupName);
+  const previewCode = typedGroupSlug || (typedGroupName ? '' : (groupCode ?? ''));
+  const previewName = typedGroupSlug
+    ? typedGroupName
+    : (groupTitle || (previewCode ? previewCode.replace(/_/g, ' ') : ''));
+  const sharingThisGroup = Boolean(groupCode) && previewCode.toLowerCase() === groupCode.toLowerCase();
+  const listedGroup = leaderboard.find((group) => group.code.toLowerCase() === previewCode.toLowerCase());
+  const listedChantTotal = listedGroup && (CHANT_TOTAL_IDS as readonly string[]).includes(currentChant.id)
+    ? listedGroup.byChant[currentChant.id as ChantTotalId]
+    : 0;
+  const messageGroupTotal = Math.max(sharingThisGroup ? groupTotal : 0, listedGroup?.total ?? 0);
+  const messageChantTotal = Math.max(sharingThisGroup ? currentGroupChantTotal : 0, listedChantTotal);
+  const groupLink = previewCode
+    ? buildGroupShare(
+      previewName,
+      currentChant.name,
+      previewCode,
+      messageGroupTotal,
+      count,
+      messageChantTotal,
+      savedWorldwide,
+    )
+    : null;
+  const videoMessage = groupLink?.videoText
+    ?? buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText;
 
   useEffect(() => {
     syncFrame({
@@ -1078,16 +1104,14 @@ const AumChanterPage = () => {
       imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
       personName: chanterName,
       globalChants: savedWorldwide,
-      groupTitle: groupCode ? groupTitle : '',
-      groupTotal: groupCode ? groupTotal : 0,
-      groupChantTotal: groupCode ? currentGroupChantTotal : 0,
+      groupTitle: sharingThisGroup ? groupTitle : '',
+      groupTotal: sharingThisGroup ? groupTotal : 0,
+      groupChantTotal: sharingThisGroup ? currentGroupChantTotal : 0,
       personTotal: count,
-      groupMembers: groupCode ? visibleGroupMembers : [],
-      shareText: groupCode
-        ? buildGroupShare(groupTitle, currentChant.name, groupCode, groupTotal, count, currentGroupChantTotal, savedWorldwide).videoText
-        : buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText,
+      groupMembers: sharingThisGroup ? visibleGroupMembers : [],
+      shareText: videoMessage,
     });
-  }, [chanterName, count, currentChant, currentGroupChantTotal, groupCode, groupTitle, groupTotal, savedWorldwide, syncFrame, visibleGroupMembers]);
+  }, [chanterName, count, currentChant, currentGroupChantTotal, groupTitle, savedWorldwide, sharingThisGroup, syncFrame, videoMessage, visibleGroupMembers]);
 
   useEffect(() => {
     try {
@@ -1175,26 +1199,7 @@ const AumChanterPage = () => {
   const progressRingCircumference = 2 * Math.PI * progressRingRadius;
   const strokeDashoffset = progressRingCircumference * (1 - progressPercent / 100);
 
-  const typedGroupName = groupNameDraft.trim();
-  const typedGroupSlug = groupSlug(typedGroupName);
-  const previewCode = typedGroupSlug || (typedGroupName ? '' : (groupCode ?? ''));
-  const previewName = typedGroupSlug
-    ? typedGroupName
-    : (groupTitle || (previewCode ? previewCode.replace(/_/g, ' ') : ''));
-  const groupLink = previewCode
-    ? buildGroupShare(
-      previewName,
-      currentChant.name,
-      previewCode,
-      groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? groupTotal : 0,
-      count,
-      groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() ? currentGroupChantTotal : 0,
-      savedWorldwide,
-    )
-    : null;
   const groupLinkParts = groupLink ? groupLink.url.split(/(?=\?)/) : [];
-  const videoMessage = groupLink?.videoText
-    ?? buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText;
   const rankedGroups = [...leaderboard.map((group) => ({
     ...group,
     total: groupCode && group.code.toLowerCase() === groupCode.toLowerCase()
