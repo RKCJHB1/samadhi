@@ -233,6 +233,28 @@ function chantFoldOpen(key: string): boolean {
   }
 }
 
+function renderWhatsAppText(text: string): React.ReactNode[] {
+  const pattern = /(_\*[^*\n]+?\*_|\*_[^*\n]+?_\*|\*[^*\n]+?\*|_[^_\n]+?_)/g;
+  const nodes: React.ReactNode[] = [];
+  let last = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > last) nodes.push(text.slice(last, match.index));
+    const token = match[0];
+    const boldItalic = token.startsWith('_*') || token.startsWith('*_');
+    const bold = !boldItalic && token.startsWith('*');
+    const inner = boldItalic ? token.slice(2, -2) : token.slice(1, -1);
+    nodes.push(
+      <span key={key} className={boldItalic ? 'font-bold italic' : bold ? 'font-bold' : 'italic'}>{inner}</span>,
+    );
+    key += 1;
+    last = match.index + token.length;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
 function ChantFold({
   storageKey,
   title,
@@ -1274,6 +1296,9 @@ const AumChanterPage = () => {
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
         <h1 className="px-2 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
+        {groupTitle && (
+          <p className="px-2 text-center font-sans text-xl font-bold italic leading-tight tracking-wide text-amber-100 sm:text-2xl">{groupTitle}</p>
+        )}
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
           <div className="mt-1 grid w-full max-w-lg grid-cols-3 gap-2 text-center">
@@ -1737,11 +1762,11 @@ const AumChanterPage = () => {
                   </a>
                 </div>
                 <p className="text-center text-xs text-spiritual-100/90">
-                  Send this link. Each tap from it adds one chant to the {previewName} total.
+                  Send this link. Each tap from it adds one chant to the <span className="font-bold italic">{previewName}</span> total.
                 </p>
                 {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
                   <p className="text-center text-xs text-spiritual-100">
-                    {previewName} {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
+                    <span className="font-bold italic">{previewName}</span> {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
                     <span className="mx-2 text-spiritual-400/50">·</span>
                     All chants: <span className="font-mono">{groupTotal.toLocaleString()}</span>
                     <span className="mx-2 text-spiritual-400/50">·</span>
@@ -1826,7 +1851,7 @@ const AumChanterPage = () => {
 
           {includeCamera && videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
             <p className="w-full max-w-md whitespace-pre-wrap rounded-xl border border-amber-300/50 bg-slate-950/80 px-3 py-2 text-xs leading-relaxed text-amber-50">
-              {videoMessage}
+              {renderWhatsAppText(videoMessage)}
             </p>
           )}
 
@@ -2039,7 +2064,7 @@ const AumChanterPage = () => {
                   The video stays on this phone.
                 </p>
                 <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
-                  {videoMessage}
+                  {renderWhatsAppText(videoMessage)}
                 </p>
                 {videoNotice && (
                   <p className="text-sm text-amber-100/90" role="status">{videoNotice}</p>
