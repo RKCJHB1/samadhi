@@ -117,7 +117,7 @@ const FUNDRAISING_URL = `${SITE_ORIGIN}/new-ashram-project`;
 const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VbE4YeY89ino9wbDMA0f';
 
 function fundraisingClose(): string {
-  return `Please subscribe to our WhatsApp Channel to keep informed of our new temple fundraising launch: ${WHATSAPP_CHANNEL_URL}\n${FUNDRAISING_URL}`;
+  return `Please subscribe to the WhatsApp Channel of The Ramakrishna Centre of South Africa, Johannesburg and keep informed of our new temple fundraising launch: ${WHATSAPP_CHANNEL_URL}\n${FUNDRAISING_URL}`;
 }
 
 export function buildPersonalChantShare(chantName: string, personTotal = 0, worldwide = 0) {
