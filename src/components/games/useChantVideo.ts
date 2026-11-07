@@ -961,7 +961,7 @@ export function useChantVideo() {
   const chantSourcesRef = useRef<AudioBufferSourceNode[]>([]);
   const loadedAudioSrcRef = useRef('');
   const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
-  const tanpuraSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const tanpuraBufferRef = useRef<AudioBuffer | null>(null);
 
   phaseRef.current = phase;
 
@@ -989,15 +989,7 @@ export function useChantVideo() {
       }
     });
     chantSourcesRef.current = [];
-    const tanpura = tanpuraSourceRef.current;
-    tanpuraSourceRef.current = null;
-    if (tanpura) {
-      try {
-        tanpura.stop();
-      } catch {
-        // The drone already finished.
-      }
-    }
+    tanpuraBufferRef.current = null;
     chantBufferRef.current = null;
     chantDestRef.current = null;
     loadedAudioSrcRef.current = '';
@@ -1108,12 +1100,35 @@ export function useChantVideo() {
     const source = context.createBufferSource();
     source.buffer = buffer;
     source.connect(destination);
+    chantSourcesRef.current.push(source);
+    const tanpuraBuffer = tanpuraBufferRef.current;
+    let tanpura: AudioBufferSourceNode | null = null;
+    if (tanpuraBuffer) {
+      const gain = context.createGain();
+      gain.gain.value = TANPURA_GAIN;
+      gain.connect(destination);
+      tanpura = context.createBufferSource();
+      tanpura.buffer = tanpuraBuffer;
+      tanpura.connect(gain);
+      tanpura.onended = () => {
+        if (!tanpura) return;
+        chantSourcesRef.current = chantSourcesRef.current.filter((item) => item !== tanpura);
+      };
+      chantSourcesRef.current.push(tanpura);
+    }
     source.onended = () => {
       chantSourcesRef.current = chantSourcesRef.current.filter((item) => item !== source);
+      if (!tanpura) return;
+      try {
+        tanpura.stop();
+      } catch {
+        // The drone already finished with the chant.
+      }
     };
-    chantSourcesRef.current.push(source);
+    const startedAt = context.currentTime;
     try {
-      source.start();
+      source.start(startedAt);
+      tanpura?.start(startedAt);
     } catch {
       // The context closed between the tap and playback.
     }
@@ -1189,22 +1204,8 @@ export function useChantVideo() {
         }
         void loadChantBuffer(TANPURA_SRC, audioContextRef.current).then((buffer) => {
           if (!buffer || runId !== runRef.current) return;
-          const context = audioContextRef.current;
-          const destination = chantDestRef.current;
-          if (!context || !destination || tanpuraSourceRef.current) return;
-          const gain = context.createGain();
-          gain.gain.value = TANPURA_GAIN;
-          gain.connect(destination);
-          const source = context.createBufferSource();
-          source.buffer = buffer;
-          source.loop = true;
-          source.connect(gain);
-          tanpuraSourceRef.current = source;
-          try {
-            source.start();
-          } catch {
-            tanpuraSourceRef.current = null;
-          }
+          if (!audioContextRef.current) return;
+          tanpuraBufferRef.current = buffer;
         });
         const src = frameRef.current.audioSrc;
         if (src) {
