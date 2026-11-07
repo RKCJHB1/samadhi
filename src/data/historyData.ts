@@ -2147,6 +2147,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/7thNovember.png"
   },
   {
+    date: "November 8",
+    monthNumeric: 10,
+    dayNumeric: 8,
+    year: 1867,
+    headline: "November 8 — Birth of Swami Subodhananda, a Direct Disciple of Sri Ramakrishna",
+    narrativeParagraph1: "On November 8, 1867, **Swami Subodhananda**, whose pre-monastic name was **Subodh Chandra Ghosh**, was born in Calcutta. The youngest of Sri Ramakrishna’s direct monastic disciples, he was affectionately known as **Khoka Maharaj** (“Child Swami”) because of his simple, guileless, and childlike nature. Sri Ramakrishna recognized his spiritual potential and guided him in meditation and spiritual life.",
+    narrativeParagraph2: "Swami Subodhananda later joined the **Baranagore Monastery** and became a close associate of Swami Vivekananda. Remembered for his compassion, love, and childlike simplicity, he actively participated in the Ramakrishna Mission’s relief activities and offered spiritual guidance and initiation to people from all sections of society.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Sri Ramakrishna guiding the young Subodh Chandra Ghosh, later Swami Subodhananda, who was born in Calcutta on 8 November 1867.",
+    customImage: "/images/on-this-day/8thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
