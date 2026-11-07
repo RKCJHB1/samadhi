@@ -56,9 +56,9 @@ function shareableVideoType(mimeType: string): string {
 }
 
 // WhatsApp Desktop shows a thumbnail and then refuses the message unless the clip is
-// Constrained Baseline H.264, constant frame rate, limited-range color, and stereo AAC
-// in a fast-start MP4. A downloaded copy can still play. The bytes below correct the
-// flags and color, then give every frame the same duration so sending the attachment works.
+// Constrained Baseline H.264 at a steady 30 frames a second, with limited-range color
+// and stereo AAC in a fast-start MP4. A downloaded copy can still play. The bytes below
+// correct the flags and color, then time every frame at exactly 1/30 second.
 const WHATSAPP_VIDEO_ATTEMPTS = [
   {
     codec: 'avc' as const,
@@ -149,9 +149,9 @@ function walkBoxes(list: Mp4Box[], visit: (box: Mp4Box) => void) {
   }
 }
 
-// The recorder writes a different duration for almost every frame. Players still
-// open that file. WhatsApp's sender does not, so every frame is given one duration
-// and the audio roll groups are removed. Movie timing stays version 0.
+// The picture header says the clip is exactly 30 frames a second. The recorder does not
+// hit that rate, and WhatsApp's sender rejects the disagreement. Every frame is retimed
+// to 1/30 second, and the audio roll groups are removed. Movie timing stays version 0.
 function steadyVideoTiming(file: ArrayBuffer): ArrayBuffer {
   const bytes = new Uint8Array(file.slice(0));
   const tree = parseBoxes(bytes, 0, bytes.length);
@@ -181,9 +181,10 @@ function steadyVideoTiming(file: ArrayBuffer): ArrayBuffer {
     samples += count;
     total += count * delta;
   }
-  if (samples < 1 || total < 1) return file;
+  const timescale = readU32(bytes, mdhd.o + 20);
+  if (samples < 1 || total < 1 || timescale < 30) return file;
 
-  const frameDelta = Math.max(1, Math.round(total / samples));
+  const frameDelta = Math.round(timescale / 30);
   const duration = samples * frameDelta;
   const audio = moov.children.filter((box) => box.type === 'trak')[1];
   const audioTkhd = findBox(audio, 'tkhd');
@@ -252,6 +253,7 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
     AudioSampleSink,
     VideoSampleSource,
     AudioSampleSource,
+    AudioSample,
     AudioBufferSource,
     Quality,
   } = await import('mediabunny');
@@ -279,8 +281,9 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
         ...attempt,
         quality: new Quality('high'),
         keyFrameInterval: 2,
+        transform: { frameRate: 30 },
       });
-      output.addVideoTrack(videoSource);
+      output.addVideoTrack(videoSource, { frameRate: 30 });
       const heardSource = canHear
         ? new AudioSampleSource({
           codec: 'aac',
@@ -303,12 +306,30 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
             }
           }
           if (heardSource && audioTrack) {
+            let heardUntil = 0;
             for await (const sample of new AudioSampleSink(audioTrack).samples()) {
               try {
+                heardUntil = Math.max(heardUntil, sample.timestamp + sample.duration);
                 await heardSource.add(sample);
               } finally {
                 sample.close();
               }
+            }
+            const sampleRate = 44100;
+            let cursor = heardUntil;
+            while (duration - cursor > 1 / 30) {
+              const seconds = Math.min(1, duration - cursor);
+              const length = Math.max(1, Math.round(seconds * sampleRate));
+              const pieces = AudioSample.fromAudioBuffer(new AudioBuffer({
+                length,
+                numberOfChannels: 2,
+                sampleRate,
+              }), cursor);
+              for (const piece of pieces) {
+                await heardSource.add(piece);
+                piece.close();
+              }
+              cursor += length / sampleRate;
             }
             return;
           }
