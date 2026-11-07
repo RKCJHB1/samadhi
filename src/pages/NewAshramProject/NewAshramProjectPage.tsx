@@ -12,11 +12,18 @@ const NewAshramProjectPage = () => {
   return (
     <PageLayout title="New Ashram Project">
       <div className="flex items-center justify-center py-8 md:py-12 bg-gradient-to-br from-indian-cream to-white">
-        <div className="inline-block p-4 md:p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center mx-4">
-          <h1 className="text-xl md:text-3xl font-heading font-bold mb-3 md:mb-4 text-black">New Ashram Project</h1>
-          <p className="text-gray-700 text-sm md:text-base">
-            Help us build a new spiritual home in Johannesburg
-          </p>
+        <div className="mx-4 text-center">
+          <div className="inline-block p-4 md:p-6 rounded-lg bg-gradient-to-br from-indian-cream to-white border border-indian-saffron shadow-lg transform transition-all duration-500 hover:shadow-xl hover:scale-[1.01] text-center">
+            <h1 className="text-xl md:text-3xl font-heading font-bold mb-3 md:mb-4 text-black">New Ashram Project</h1>
+            <p className="text-gray-700 text-sm md:text-base">
+              Help us build a new spiritual home in Johannesburg
+            </p>
+          </div>
+          <div className="mt-6">
+            <Button href="/new-ashram-project/fundraising/notice" size="lg">
+              Subscribe for updates
+            </Button>
+          </div>
         </div>
       </div>
 
