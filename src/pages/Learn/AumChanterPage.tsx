@@ -33,6 +33,72 @@ const CHANT_AUDIO_MAX_POLYPHONY = 8;
 const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
+const TOTAL_WALK_MS = 5000;
+
+type RisingTotal = {
+  shown: number;
+  target: number;
+  primed: boolean;
+  perMs: number;
+};
+
+function freshRising(): RisingTotal {
+  return { shown: 0, target: 0, primed: false, perMs: 0 };
+}
+
+function freshChantRising(): Record<ChantTotalId, RisingTotal> {
+  return {
+    om: freshRising(),
+    'sri-ram': freshRising(),
+    'jai-ma': freshRising(),
+    'jai-shri-krishna': freshRising(),
+  };
+}
+
+function roundedChants(totals: Record<ChantTotalId, RisingTotal>): GroupChantTotals {
+  const rounded = emptyChantTotals();
+  for (const id of CHANT_TOTAL_IDS) rounded[id] = Math.round(totals[id].shown);
+  return rounded;
+}
+
+function chantsMatch(left: GroupChantTotals, right: GroupChantTotals): boolean {
+  return CHANT_TOTAL_IDS.every((id) => left[id] === right[id]);
+}
+
+// The first figure appears at once. A later higher figure is walked over the
+// next check. A lower figure is ignored so a save still on its way cannot pull
+// the number backwards. A tap on this phone is added separately, at once.
+function assignRising(total: RisingTotal, next: number, immediate: boolean): boolean {
+  if (!Number.isFinite(next) || next < 0) return false;
+  if (!total.primed || immediate) {
+    const changed = total.shown !== next || total.target !== next;
+    total.primed = true;
+    total.shown = next;
+    total.target = next;
+    total.perMs = 0;
+    return changed;
+  }
+  if (next <= total.target) return false;
+  total.target = next;
+  total.perMs = (total.target - total.shown) / TOTAL_WALK_MS;
+  return true;
+}
+
+function bumpRising(total: RisingTotal, by: number): boolean {
+  if (by <= 0 || !total.primed) return false;
+  total.shown += by;
+  total.target += by;
+  return true;
+}
+
+function advanceRising(total: RisingTotal, dtMs: number): boolean {
+  if (total.shown >= total.target || total.perMs <= 0) {
+    total.shown = Math.min(total.shown, total.target);
+    return false;
+  }
+  total.shown = Math.min(total.target, total.shown + total.perMs * dtMs);
+  return total.shown < total.target;
+}
 
 type ChantOption = {
   id: string;
@@ -125,7 +191,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shortLabel: 'Jai Sri Ram',
     symbol: 'राम',
     shareTag: '#RamNavami',
-    imageSrc: '/jsr.png',
+    imageSrc: '/jai-sri-ram.jpg',
     audioSrc: '/aum.mp3',
     isEnabled: true,
   },
@@ -135,6 +201,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shortLabel: 'Jai Ma',
     symbol: 'माँ',
     shareTag: '#JaiMa',
+    imageSrc: '/jai-ma.jpg',
     audioSrc: '/aum.mp3',
     isEnabled: true,
   },
@@ -144,6 +211,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shortLabel: 'Jai Shri Krishna',
     symbol: 'कृष्ण',
     shareTag: '#JaiShriKrishna',
+    imageSrc: '/jai-shri-krishna.jpg',
     audioSrc: '/aum.mp3',
     isEnabled: true,
   },
@@ -429,7 +497,10 @@ const AumChanterPage = () => {
   const [savedTotal, setSavedTotal] = useState(0);
   const [savedReady, setSavedReady] = useState(false);
   const [savedWorldwide, setSavedWorldwide] = useState(0);
-  const [worldwideByChant, setWorldwideByChant] = useState<GroupChantTotals>(emptyChantTotals);
+  const [worldShown, setWorldShown] = useState(0);
+  const [groupShown, setGroupShown] = useState(0);
+  const [worldChantShown, setWorldChantShown] = useState<GroupChantTotals>(emptyChantTotals);
+  const [groupChantShown, setGroupChantShown] = useState<GroupChantTotals>(emptyChantTotals);
   const [worldwideReady, setWorldwideReady] = useState(false);
   const [worldwideFailed, setWorldwideFailed] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
@@ -459,6 +530,20 @@ const AumChanterPage = () => {
   const confirmedGroupPersonRef = useRef(0);
   const pendingGroupCodeRef = useRef('');
   const flushSavedChantsRef = useRef<() => void>(() => {});
+  const worldTickRef = useRef(freshRising());
+  const worldChantTickRef = useRef(freshChantRising());
+  const groupTickRef = useRef(freshRising());
+  const groupChantTickRef = useRef(freshChantRising());
+  const groupTickCodeRef = useRef('');
+  const totalFrameRef = useRef(0);
+  const totalFrameAtRef = useRef(0);
+  const paintedTotalsRef = useRef({ world: 0, group: 0, worldChant: emptyChantTotals(), groupChant: emptyChantTotals() });
+  const totalsApi = useRef({
+    noteWorld: (_total: number, _byChant: GroupChantTotals) => {},
+    bumpWorld: (_by: number, _chant: ChantTotalId | null) => {},
+    noteGroup: (_code: string, _total: number, _byChant: GroupChantTotals) => {},
+    bumpGroup: (_chant: ChantTotalId) => {},
+  });
   const historySumRef = useRef(0);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
   const createSlugRef = useRef('');
@@ -466,6 +551,90 @@ const AumChanterPage = () => {
   chantNameRef.current = currentChant.name;
   chanterNameRef.current = chanterName;
   historySumRef.current = history.reduce((sum, entry) => sum + entry.chants, 0);
+
+  const publishTotals = useCallback(() => {
+    const world = Math.round(worldTickRef.current.shown);
+    const group = Math.round(groupTickRef.current.shown);
+    const worldChant = roundedChants(worldChantTickRef.current);
+    const groupChant = roundedChants(groupChantTickRef.current);
+    const painted = paintedTotalsRef.current;
+    if (painted.world !== world) {
+      painted.world = world;
+      setWorldShown(world);
+    }
+    if (painted.group !== group) {
+      painted.group = group;
+      setGroupShown(group);
+    }
+    if (!chantsMatch(painted.worldChant, worldChant)) {
+      painted.worldChant = worldChant;
+      setWorldChantShown(worldChant);
+    }
+    if (!chantsMatch(painted.groupChant, groupChant)) {
+      painted.groupChant = groupChant;
+      setGroupChantShown(groupChant);
+    }
+  }, []);
+
+  const totalsMoving = useCallback(() => {
+    if (worldTickRef.current.shown < worldTickRef.current.target) return true;
+    if (groupTickRef.current.shown < groupTickRef.current.target) return true;
+    return CHANT_TOTAL_IDS.some((id) => (
+      worldChantTickRef.current[id].shown < worldChantTickRef.current[id].target
+      || groupChantTickRef.current[id].shown < groupChantTickRef.current[id].target
+    ));
+  }, []);
+
+  const pumpTotals = useCallback(() => {
+    if (totalFrameRef.current) return;
+    totalFrameAtRef.current = 0;
+    const step = (now: number) => {
+      const dt = totalFrameAtRef.current ? now - totalFrameAtRef.current : 0;
+      totalFrameAtRef.current = now;
+      advanceRising(worldTickRef.current, dt);
+      advanceRising(groupTickRef.current, dt);
+      for (const id of CHANT_TOTAL_IDS) {
+        advanceRising(worldChantTickRef.current[id], dt);
+        advanceRising(groupChantTickRef.current[id], dt);
+      }
+      publishTotals();
+      if (totalsMoving()) totalFrameRef.current = window.requestAnimationFrame(step);
+      else totalFrameRef.current = 0;
+    };
+    totalFrameRef.current = window.requestAnimationFrame(step);
+  }, [publishTotals, totalsMoving]);
+
+  const settleTotals = useCallback(() => {
+    publishTotals();
+    if (totalsMoving()) pumpTotals();
+  }, [publishTotals, pumpTotals, totalsMoving]);
+
+  totalsApi.current.noteWorld = (total, byChant) => {
+    assignRising(worldTickRef.current, total, false);
+    for (const id of CHANT_TOTAL_IDS) assignRising(worldChantTickRef.current[id], byChant[id] ?? 0, false);
+    settleTotals();
+  };
+  totalsApi.current.bumpWorld = (by, chant) => {
+    bumpRising(worldTickRef.current, by);
+    if (chant) bumpRising(worldChantTickRef.current[chant], by);
+    publishTotals();
+  };
+  totalsApi.current.noteGroup = (code, total, byChant) => {
+    const snap = groupTickCodeRef.current !== code;
+    groupTickCodeRef.current = code;
+    assignRising(groupTickRef.current, total, snap);
+    for (const id of CHANT_TOTAL_IDS) assignRising(groupChantTickRef.current[id], byChant[id] ?? 0, snap);
+    settleTotals();
+  };
+  totalsApi.current.bumpGroup = (chant) => {
+    bumpRising(groupTickRef.current, 1);
+    bumpRising(groupChantTickRef.current[chant], 1);
+    publishTotals();
+  };
+
+  useEffect(() => () => {
+    if (totalFrameRef.current) window.cancelAnimationFrame(totalFrameRef.current);
+  }, []);
 
   const adoptGroup = useCallback((group: ChantGroup) => {
     if (groupCodeRef.current && groupCodeRef.current.toLowerCase() !== group.code.toLowerCase() && pendingGroupRef.current > 0) {
@@ -477,8 +646,11 @@ const AumChanterPage = () => {
     confirmedByChantRef.current = group.byChant ?? emptyChantTotals();
     setGroupCode(group.code);
     setGroupTitle(group.name);
-    setGroupTotal(group.total + pendingGroupRef.current);
-    setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
+    const nextGroupTotal = group.total + pendingGroupRef.current;
+    const nextGroupChants = addChantTotals(confirmedByChantRef.current, pendingByChantRef.current);
+    setGroupTotal(nextGroupTotal);
+    setGroupByChant(nextGroupChants);
+    totalsApi.current.noteGroup(group.code, nextGroupTotal, nextGroupChants);
     setGroupNotice('');
     if (groupSlug(groupNameDraftRef.current).toLowerCase() !== group.code.toLowerCase()) {
       setGroupNameDraft(group.name);
@@ -554,8 +726,11 @@ const AumChanterPage = () => {
       setLeaderboard(summary.groups);
       confirmedGlobalRef.current = summary.globalTotal;
       confirmedRecordRef.current = summary.recordTotal;
+      const pendingChants = pendingPersonByChantRef.current;
+      const worldChants = emptyChantTotals();
+      for (const id of CHANT_TOTAL_IDS) worldChants[id] = (summary.byChant[id] ?? 0) + pendingChants[id];
       setSavedWorldwide(summary.globalTotal + pendingPersonRef.current);
-      setWorldwideByChant(summary.byChant);
+      totalsApi.current.noteWorld(summary.globalTotal + pendingPersonRef.current, worldChants);
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setChanterCount(summary.chanterCount);
       setChantingNow(summary.chantingNow);
@@ -580,8 +755,12 @@ const AumChanterPage = () => {
     pendingByChantRef.current = emptyChantTotals();
     pendingPersonByChantRef.current = emptyChantTotals();
     const showGroupTotals = () => {
-      setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
-      setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
+      const total = confirmedGroupRef.current + pendingGroupRef.current;
+      const byChant = addChantTotals(confirmedByChantRef.current, pendingByChantRef.current);
+      setGroupTotal(total);
+      setGroupByChant(byChant);
+      const code = groupCodeRef.current;
+      if (code) totalsApi.current.noteGroup(code, total, byChant);
     };
     const groupCodeForBatch = pendingGroupCodeRef.current;
     pendingGroupCodeRef.current = '';
@@ -686,7 +865,10 @@ const AumChanterPage = () => {
         confirmedGroupPersonRef.current = person.groupTotal;
         setGroupPersonTotal(person.groupTotal);
       }
-      if (pendingPersonRef.current > 0) scheduleSavedChants();
+      if (pendingPersonRef.current > 0) {
+        totalsApi.current.bumpWorld(gap, null);
+        scheduleSavedChants();
+      }
     }).catch(() => {
       if (!cancelled) setSavedReady(false);
     });
@@ -726,8 +908,11 @@ const AumChanterPage = () => {
         if (!group || !groupCodeRef.current || group.code.toLowerCase() !== groupCodeRef.current.toLowerCase()) return;
         confirmedGroupRef.current = group.total;
         confirmedByChantRef.current = group.byChant;
-        setGroupTotal(group.total + pendingGroupRef.current);
-        setGroupByChant(addChantTotals(group.byChant, pendingByChantRef.current));
+        const total = group.total + pendingGroupRef.current;
+        const byChant = addChantTotals(group.byChant, pendingByChantRef.current);
+        setGroupTotal(total);
+        setGroupByChant(byChant);
+        totalsApi.current.noteGroup(group.code, total, byChant);
       }).catch(() => {
         // Keep the total already on screen. The next tap tries again.
       });
@@ -935,6 +1120,7 @@ const AumChanterPage = () => {
     }
     setSavedTotal(confirmedPersonRef.current + pendingPersonRef.current);
     setSavedWorldwide(confirmedGlobalRef.current + pendingPersonRef.current);
+    totalsApi.current.bumpWorld(1, chantKey ?? null);
     setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
     if (countingForGroup && chantKey) {
@@ -948,6 +1134,7 @@ const AumChanterPage = () => {
       };
       setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
       setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
+      totalsApi.current.bumpGroup(chantKey);
       setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
     }
     scheduleSavedChants();
@@ -1071,13 +1258,12 @@ const AumChanterPage = () => {
   }, [chanterName, groupCode, groupMembers, groupPersonTotal]);
 
   const currentChantKey = CHANT_TOTAL_IDS.find((id) => id === currentChant.id);
-  const worldwideChantTotal = currentChantKey
-    ? worldwideByChant[currentChantKey] + pendingPersonByChantRef.current[currentChantKey]
-    : 0;
+  const worldwideChantTotal = currentChantKey ? worldChantShown[currentChantKey] : 0;
+  const shownGroupChantTotal = currentChantKey ? groupChantShown[currentChantKey] : 0;
   const currentGroupChantTotal = (CHANT_TOTAL_IDS as readonly string[]).includes(currentChant.id)
     ? groupByChant[currentChant.id as ChantTotalId]
     : 0;
-  const earlierGroupChants = Math.max(0, groupTotal - CHANT_TOTAL_IDS.reduce((sum, id) => sum + groupByChant[id], 0));
+  const earlierGroupChants = Math.max(0, groupShown - CHANT_TOTAL_IDS.reduce((sum, id) => sum + groupChantShown[id], 0));
   const typedGroupName = groupNameDraft.trim();
   const typedGroupSlug = groupSlug(typedGroupName);
   const previewCode = typedGroupSlug || (typedGroupName ? '' : (groupCode ?? ''));
@@ -1111,7 +1297,7 @@ const AumChanterPage = () => {
       symbol: currentChant.symbol,
       imageSrc: currentChant.imageSrc,
       audioSrc: currentChant.audioSrc,
-      imageScale: currentChant.id === 'sri-ram' ? 1.331 : 1,
+      imageScale: 1,
       personName: chanterName,
       globalChants: savedWorldwide,
       groupTitle: sharingThisGroup ? groupTitle : '',
@@ -1325,12 +1511,12 @@ const AumChanterPage = () => {
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
               <p className="text-[10px] leading-tight text-spiritual-200/70">{currentChant.shortLabel}</p>
-              <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{worldwideReady ? worldwideChantTotal.toLocaleString() : '...'}</p>
+              <p className="font-mono text-lg text-white/80 sm:text-2xl">{worldwideReady ? worldwideChantTotal.toLocaleString() : '...'}</p>
             </div>
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
               <p className="text-[10px] leading-tight text-spiritual-200/70">all chants</p>
-              <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{worldwideReady ? savedWorldwide.toLocaleString() : '...'}</p>
+              <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl">{worldwideReady ? worldShown.toLocaleString() : '...'}</p>
             </div>
           </div>
 
@@ -1444,9 +1630,7 @@ const AumChanterPage = () => {
                           src={currentChant.imageSrc}
                           alt={currentChant.name}
                           draggable={false}
-                          className={`pointer-events-none h-full w-full object-cover [-webkit-user-drag:none] ${
-                            currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
-                          }`}
+                          className="pointer-events-none h-full w-full object-cover [-webkit-user-drag:none]"
                         />
                       </div>
                     ) : (
@@ -1469,9 +1653,7 @@ const AumChanterPage = () => {
                             src={currentChant.imageSrc}
                             alt=""
                             draggable={false}
-                            className={`pointer-events-none h-full w-full object-cover [-webkit-user-drag:none] ${
-                              currentChant.id === 'sri-ram' ? 'scale-[1.331]' : ''
-                            } ${effect.active ? 'scale-150 opacity-0' : 'opacity-70'}`}
+                            className={`pointer-events-none h-full w-full object-cover [-webkit-user-drag:none] ${effect.active ? 'scale-150 opacity-0' : 'opacity-70'}`}
                           />
                         </div>
                       ) : (
@@ -1500,23 +1682,23 @@ const AumChanterPage = () => {
               <ChantFold
                 storageKey="chant-fold-group"
                 title="This group"
-                summary={groupTotal.toLocaleString()}
+                summary={groupShown.toLocaleString()}
                 summaryId="group-total-value"
               >
                 <p>
-                  The members of this group have chanted a total of {groupTotal.toLocaleString()} {groupTotal === 1 ? 'time' : 'times'} amongst all the chants.
+                  The members of this group have chanted a total of {groupShown.toLocaleString()} {groupShown === 1 ? 'time' : 'times'} amongst all the chants.
                 </p>
                 <p id="group-chant-total">
-                  {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
+                  {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span>
                 </p>
                 <p>
-                  Om <span className="font-mono">{groupByChant.om.toLocaleString()}</span>
+                  Om <span className="font-mono">{groupChantShown.om.toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Sri Ram <span className="font-mono">{groupByChant['sri-ram'].toLocaleString()}</span>
+                  Jai Sri Ram <span className="font-mono">{groupChantShown['sri-ram'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Ma <span className="font-mono">{groupByChant['jai-ma'].toLocaleString()}</span>
+                  Jai Ma <span className="font-mono">{groupChantShown['jai-ma'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Shri Krishna <span className="font-mono">{groupByChant['jai-shri-krishna'].toLocaleString()}</span>
+                  Jai Shri Krishna <span className="font-mono">{groupChantShown['jai-shri-krishna'].toLocaleString()}</span>
                   {earlierGroupChants > 0 && (
                     <>
                       <span className="mx-2 text-spiritual-400/50">·</span>
@@ -1531,7 +1713,7 @@ const AumChanterPage = () => {
             <ChantFold
               storageKey="chant-fold-world"
               title="The world"
-              summary={worldwideReady ? savedWorldwide.toLocaleString() : '...'}
+              summary={worldwideReady ? worldShown.toLocaleString() : '...'}
             >
               <p>
                 Record, all chants: <span id="record-total" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span>
@@ -1781,9 +1963,9 @@ const AumChanterPage = () => {
                 </p>
                 {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
                   <p className="text-center text-xs text-spiritual-100">
-                    <span className="font-bold italic">{previewName}</span> {currentChant.shortLabel}: <span className="font-mono">{currentGroupChantTotal.toLocaleString()}</span>
+                    <span className="font-bold italic">{previewName}</span> {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span>
                     <span className="mx-2 text-spiritual-400/50">·</span>
-                    All chants: <span className="font-mono">{groupTotal.toLocaleString()}</span>
+                    All chants: <span className="font-mono">{groupShown.toLocaleString()}</span>
                     <span className="mx-2 text-spiritual-400/50">·</span>
                     Your chants in this group:{' '}
                     <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span>
