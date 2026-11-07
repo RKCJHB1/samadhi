@@ -457,6 +457,8 @@ const AumChanterPage = () => {
   const confirmedGlobalRef = useRef(0);
   const confirmedRecordRef = useRef(0);
   const confirmedGroupPersonRef = useRef(0);
+  const pendingGroupCodeRef = useRef('');
+  const flushSavedChantsRef = useRef<() => void>(() => {});
   const historySumRef = useRef(0);
   const createGroupRef = useRef<Promise<ChantGroup | null> | null>(null);
   const createSlugRef = useRef('');
@@ -466,9 +468,8 @@ const AumChanterPage = () => {
   historySumRef.current = history.reduce((sum, entry) => sum + entry.chants, 0);
 
   const adoptGroup = useCallback((group: ChantGroup) => {
-    if (groupCodeRef.current && groupCodeRef.current.toLowerCase() !== group.code.toLowerCase()) {
-      pendingGroupRef.current = 0;
-      pendingByChantRef.current = emptyChantTotals();
+    if (groupCodeRef.current && groupCodeRef.current.toLowerCase() !== group.code.toLowerCase() && pendingGroupRef.current > 0) {
+      flushSavedChantsRef.current();
     }
     groupCodeRef.current = group.code;
     groupTitleRef.current = group.name;
@@ -582,8 +583,10 @@ const AumChanterPage = () => {
       setGroupTotal(confirmedGroupRef.current + pendingGroupRef.current);
       setGroupByChant(addChantTotals(confirmedByChantRef.current, pendingByChantRef.current));
     };
+    const groupCodeForBatch = pendingGroupCodeRef.current;
+    pendingGroupCodeRef.current = '';
     void (async () => {
-      let code = groupCodeRef.current;
+      let code = groupCodeForBatch || groupCodeRef.current;
       if (groupAmount > 0 && !code) {
         const group = await ensureChantGroup();
         code = group?.code ?? null;
@@ -602,13 +605,14 @@ const AumChanterPage = () => {
         setSavedTotal(saved.person.total + pendingPersonRef.current);
         setRecordChants(Math.max(confirmedRecordRef.current, saved.person.total + pendingPersonRef.current));
         setSavedReady(true);
-        if (saved.group && (!groupCodeRef.current || groupCodeRef.current === saved.group.code)) {
+        if (saved.group && groupCodeRef.current === saved.group.code) {
           confirmedGroupRef.current = saved.group.total;
           confirmedByChantRef.current = saved.group.byChant;
           showGroupTotals();
-        } else if (groupAmount > 0) {
+        } else if (groupAmount > 0 && !saved.group) {
           pendingGroupRef.current += groupAmount;
           pendingByChantRef.current = addChantTotals(pendingByChantRef.current, groupByChant);
+          if (!pendingGroupCodeRef.current && code) pendingGroupCodeRef.current = code;
           showGroupTotals();
         }
         if (saved.person.groupTotal != null && code && groupCodeRef.current === code) {
@@ -633,12 +637,15 @@ const AumChanterPage = () => {
         if (groupAmount > 0) {
           pendingGroupRef.current += groupAmount - groupSent;
           pendingByChantRef.current = addChantTotals(pendingByChantRef.current, unsentByChant);
+          if (!pendingGroupCodeRef.current && code) pendingGroupCodeRef.current = code;
           showGroupTotals();
           setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
         }
       }
     })();
   }, [ensureChantGroup, refreshLeaderboard]);
+
+  flushSavedChantsRef.current = flushSavedChants;
 
   const scheduleSavedChants = useCallback(() => {
     if (groupTimerRef.current) clearTimeout(groupTimerRef.current);
@@ -931,6 +938,9 @@ const AumChanterPage = () => {
     setRecordChants(Math.max(confirmedRecordRef.current, confirmedPersonRef.current + pendingPersonRef.current));
     const countingForGroup = Boolean(groupCodeRef.current) || Boolean(groupSlug(groupNameDraftRef.current));
     if (countingForGroup && chantKey) {
+      if (!pendingGroupCodeRef.current) {
+        pendingGroupCodeRef.current = groupCodeRef.current || groupSlug(groupNameDraftRef.current);
+      }
       pendingGroupRef.current += 1;
       pendingByChantRef.current = {
         ...pendingByChantRef.current,
