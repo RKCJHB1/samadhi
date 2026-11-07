@@ -656,19 +656,22 @@ function readoutLayout(width: number, height: number, personName: string, showWo
 const CENTRE_NAME = 'The Ramakrishna Centre of South Africa, Johannesburg';
 const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
 
-function paintCentreName(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+function paintCentreName(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement, backdrop = false) {
   const shortSide = Math.min(canvas.width, canvas.height);
+  const size = Math.round(shortSide * 0.032);
   context.save();
   context.textAlign = 'center';
   context.textBaseline = 'alphabetic';
-  paintFittedLine(
-    context,
-    canvas,
-    CENTRE_NAME,
-    Math.round(Math.max(36, canvas.height * 0.075)),
-    Math.round(shortSide * 0.032),
-    '#fff7ed',
-  );
+  let y = Math.round(Math.max(36, canvas.height * 0.075));
+  if (backdrop) {
+    const pad = Math.round(shortSide * 0.04);
+    const lineHeight = Math.round(size * 1.4);
+    const barHeight = pad * 2 + lineHeight;
+    context.fillStyle = 'rgba(20, 14, 8, 0.78)';
+    context.fillRect(0, 0, canvas.width, barHeight);
+    y = pad + size;
+  }
+  paintFittedLine(context, canvas, CENTRE_NAME, y, size, '#fff7ed');
   context.restore();
 }
 
@@ -853,6 +856,7 @@ function paintReadout(
   chants: number,
   line: string,
   gold: string,
+  centreBackdrop = false,
 ) {
   const layout = readoutLayout(canvas.width, canvas.height, line, gold.length > 0);
   context.save();
@@ -918,7 +922,7 @@ function paintReadout(
   context.strokeText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.fillText(chants === 1 ? 'chant' : 'chants', canvas.width / 2, layout.labelY);
   context.restore();
-  paintCentreName(context, canvas);
+  paintCentreName(context, canvas, centreBackdrop);
 }
 
 function evenSize(value: number): number {
@@ -1318,6 +1322,7 @@ export function useChantVideo() {
           personBaselineRef.current + sessionCountRef.current,
           caption.line,
           caption.gold,
+          true,
         );
         paintGroupNames(
           context,
