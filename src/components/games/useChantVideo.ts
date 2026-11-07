@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CHANT_APP_NAME, groupChantGoal, memberInitials } from '../../services/chantGroupService';
+import { CHANT_APP_NAME, groupChantGoal } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
@@ -21,7 +21,6 @@ export type ChantVideoFrame = {
   groupChantTotal?: number;
   personTotal?: number;
   shareText?: string;
-  groupMembers?: { name: string }[];
 };
 
 export function formatRecordingTime(ms: number): string {
@@ -751,38 +750,6 @@ function paintEndCard(
   paintVideoBorder(context, canvas);
 }
 
-function paintGroupNames(
-  context: CanvasRenderingContext2D,
-  members: { name: string }[] | undefined,
-  centerX: number,
-  centerY: number,
-  orbit: number,
-) {
-  const people = (members ?? []).slice(0, 12);
-  if (people.length === 0) return;
-  const face = Math.max(18, Math.round(orbit * 0.22));
-  people.forEach((member, index) => {
-    const angle = (index * 2 * Math.PI) / people.length;
-    const x = centerX + Math.cos(angle) * orbit;
-    const y = centerY + Math.sin(angle) * orbit;
-    const initials = memberInitials(member.name);
-    context.save();
-    context.beginPath();
-    context.arc(x, y, face, 0, Math.PI * 2);
-    context.fillStyle = 'rgba(69, 26, 3, 0.92)';
-    context.fill();
-    context.lineWidth = Math.max(2, Math.round(face * 0.08));
-    context.strokeStyle = 'rgba(251, 191, 36, 0.95)';
-    context.stroke();
-    context.fillStyle = '#fff7ed';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.font = `600 ${Math.round(face * (Array.from(initials).length > 1 ? 0.62 : 0.78))}px sans-serif`;
-    context.fillText(initials, x, y);
-    context.restore();
-  });
-}
-
 function paintCameraMessage(
   context: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
@@ -1324,13 +1291,6 @@ export function useChantVideo() {
           caption.gold,
           true,
         );
-        paintGroupNames(
-          context,
-          frameRef.current.groupMembers,
-          canvas.width / 2,
-          canvas.height * 0.42,
-          Math.round(Math.min(canvas.width, canvas.height) * 0.28),
-        );
         paintCameraMessage(context, canvas, frameRef.current);
         paintVideoBorder(context, canvas);
       };
@@ -1401,13 +1361,6 @@ export function useChantVideo() {
           context.stroke();
         }
 
-        paintGroupNames(
-          context,
-          frameRef.current.groupMembers,
-          cx,
-          cy,
-          radius + Math.round(Math.min(width, height) * 0.1),
-        );
         paintReadout(
           context,
           canvas,

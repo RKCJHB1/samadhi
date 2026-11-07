@@ -60,23 +60,6 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-async function readGroupMembers(env: ChantDbEnv, code: string): Promise<Array<{ personId: string; name: string; total: number }>> {
-  const rows = await execute(
-    env,
-    `SELECT person_id, name, total
-     FROM chant_group_people
-     WHERE group_code = ? COLLATE NOCASE AND total > 0
-     ORDER BY total DESC, name COLLATE NOCASE ASC
-     LIMIT 12`,
-    [code],
-  );
-  return rows.flatMap((row) => {
-    const id = personId(cellText(row[0]));
-    if (!id) return [];
-    return [{ personId: id, name: cleanLabel(cellText(row[1]), 40), total: storedTotal(row[2]) }];
-  });
-}
-
 function cellText(value: unknown): string {
   if (value && typeof value === 'object' && 'value' in value) {
     const raw = (value as { value: unknown }).value;
@@ -142,6 +125,10 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
       )`,
     );
     await ensureChantTotalColumns(env);
+    await execute(
+      env,
+      'CREATE INDEX IF NOT EXISTS chant_groups_by_total ON chant_groups (total DESC, name COLLATE NOCASE)',
+    );
     await execute(
       env,
       `CREATE TABLE IF NOT EXISTS chant_people (
@@ -291,17 +278,11 @@ function readGroupChantCounts(value: unknown, groupCount: number): { om: number;
   return { om, ram, ma, krishna };
 }
 
-async function readWorld(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number; om: number; ram: number; ma: number; krishna: number }> {
+async function readWorld(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; om: number; ram: number; ma: number; krishna: number }> {
   const rows = await execute(
     env,
     `SELECT total, record_total, chanter_count, om_total, ram_total, ma_total, krishna_total
      FROM chant_world WHERE id = 1`,
-  );
-  const chantingRows = await execute(
-    env,
-    `SELECT COUNT(*)
-     FROM chant_people
-     WHERE total > 0 AND updated_at >= strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 minutes')`,
   );
   return {
     globalTotal: storedTotal(rows[0]?.[0]),
@@ -311,7 +292,6 @@ async function readWorld(env: ChantDbEnv): Promise<{ globalTotal: number; record
     ram: storedTotal(rows[0]?.[4]),
     ma: storedTotal(rows[0]?.[5]),
     krishna: storedTotal(rows[0]?.[6]),
-    chantingNow: storedTotal(chantingRows[0]?.[0]),
   };
 }
 
@@ -562,7 +542,6 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
         },
         recordTotal: world.recordTotal,
         chanterCount: world.chanterCount,
-        chantingNow: world.chantingNow,
         countries: countries.map((country) => ({
           code: country.code,
           om: country.om,
@@ -617,9 +596,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     }
 
     if (request.method === 'GET' && action === 'people' && rest.length === 2) {
-      const group = await readGroup(env, slug);
-      if (!group) return json({ error: 'This group link was not found.' }, 404);
-      return json({ members: await readGroupMembers(env, group.code) });
+      return json({ members: [] });
     }
 
     if ((request.method === 'GET' || request.method === 'POST') && action === 'frames') {

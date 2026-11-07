@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import MalaBeads from '../../components/games/MalaBeads';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 
 const getTodayString = () => {
@@ -298,19 +298,6 @@ function GroupJoinList({
   );
 }
 
-function GroupChantingNote({ members }: { members: GroupMember[] }) {
-  if (members.length === 0) return null;
-  const count = members.length;
-  return (
-    <section aria-label="Chanting together">
-      <h2 className="text-center font-sans text-base text-amber-100">Chanting together</h2>
-      <p className="mt-1 text-center text-sm text-spiritual-200/80">
-        A total of {count.toLocaleString()} {count === 1 ? 'member is' : 'members are'} chanting in this group.
-      </p>
-    </section>
-  );
-}
-
 function chantFoldOpen(key: string): boolean {
   try {
     return localStorage.getItem(key) === 'open';
@@ -525,9 +512,7 @@ const AumChanterPage = () => {
   const [worldwideFailed, setWorldwideFailed] = useState(false);
   const [recordReady, setRecordReady] = useState(false);
   const [chanterCount, setChanterCount] = useState(0);
-  const [chantingNow, setChantingNow] = useState(0);
   const [groupPersonTotal, setGroupPersonTotal] = useState(0);
-  const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
   const [leaderboard, setLeaderboard] = useState<ChantGroup[]>([]);
   const groupNameDraftRef = useRef(groupNameDraft);
   groupNameDraftRef.current = groupNameDraft;
@@ -753,7 +738,6 @@ const AumChanterPage = () => {
       totalsApi.current.noteWorld(summary.globalTotal + pendingPersonRef.current, worldChants);
       setRecordChants(Math.max(summary.recordTotal, confirmedPersonRef.current + pendingPersonRef.current));
       setChanterCount(summary.chanterCount);
-      setChantingNow(summary.chantingNow);
       setCountries(summary.countries);
       setAvgChantsPerUser(summary.chanterCount > 0 ? summary.globalTotal / summary.chanterCount : 0);
       setWorldwideReady(true);
@@ -897,27 +881,6 @@ const AumChanterPage = () => {
       cancelled = true;
     };
   }, [refreshLeaderboard, scheduleSavedChants]);
-
-  useEffect(() => {
-    if (!groupCode) {
-      setGroupMembers([]);
-      return;
-    }
-    let cancelled = false;
-    const loadMembers = () => {
-      void fetchGroupMembers(groupCode).then((members) => {
-        if (!cancelled) setGroupMembers(members);
-      }).catch(() => {
-        // Keep the names already on screen.
-      });
-    };
-    loadMembers();
-    const timer = window.setInterval(loadMembers, 15000);
-    return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-    };
-  }, [groupCode]);
 
   useEffect(() => {
     if (!groupCode) return;
@@ -1266,17 +1229,6 @@ const AumChanterPage = () => {
     };
   }, []);
 
-  const visibleGroupMembers = useMemo(() => {
-    if (!groupCode) return [];
-    const selfId = chantPersonId();
-    const yourName = chanterName.trim();
-    const known = groupMembers.map((member) => (
-      member.personId === selfId && yourName ? { ...member, name: yourName } : member
-    ));
-    if (!yourName || known.some((member) => member.personId === selfId)) return known;
-    return [{ personId: selfId, name: yourName, total: groupPersonTotal }, ...known].slice(0, 12);
-  }, [chanterName, groupCode, groupMembers, groupPersonTotal]);
-
   const currentChantKey = CHANT_TOTAL_IDS.find((id) => id === currentChant.id);
   const worldwideChantTotal = currentChantKey ? worldChantShown[currentChantKey] : 0;
   const shownGroupChantTotal = currentChantKey ? groupChantShown[currentChantKey] : 0;
@@ -1324,10 +1276,9 @@ const AumChanterPage = () => {
       groupTotal: sharingThisGroup ? groupTotal : 0,
       groupChantTotal: sharingThisGroup ? currentGroupChantTotal : 0,
       personTotal: count,
-      groupMembers: sharingThisGroup ? visibleGroupMembers : [],
       shareText: videoMessage,
     });
-  }, [chanterName, count, currentChant, currentGroupChantTotal, groupTitle, savedWorldwide, sharingThisGroup, syncFrame, videoMessage, visibleGroupMembers]);
+  }, [chanterName, count, currentChant, currentGroupChantTotal, groupTitle, savedWorldwide, sharingThisGroup, syncFrame, videoMessage]);
 
   useEffect(() => {
     try {
@@ -1772,7 +1723,6 @@ const AumChanterPage = () => {
                     </>
                   )}
                 </p>
-                <GroupChantingNote members={visibleGroupMembers} />
               </ChantFold>
             )}
 
@@ -1786,13 +1736,6 @@ const AumChanterPage = () => {
               </p>
               <p>
                 Average per person: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span>
-              </p>
-              <p>
-                {chantingNow === 1
-                  ? '1 person is chanting now.'
-                  : chantingNow === 0
-                    ? 'No one is chanting now.'
-                    : `${chantingNow.toLocaleString()} people are chanting now.`}
               </p>
               <p>
                 Total chanters: <span id="chanter-count" className="font-mono">{worldwideReady ? chanterCount.toLocaleString() : '...'}</span>

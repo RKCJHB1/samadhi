@@ -47,19 +47,6 @@ export type ChantPerson = {
   groupTotal: number | null;
 };
 
-export type GroupMember = {
-  personId: string;
-  name: string;
-  total: number;
-};
-
-export function memberInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean).map((part) => Array.from(part));
-  if (parts.length === 0) return 'ॐ';
-  if (parts.length === 1) return parts[0].slice(0, 2).join('');
-  return `${parts[0][0] ?? ''}${parts[1][0] ?? ''}`;
-}
-
 export type SavedChantProgress = {
   person: ChantPerson;
   group: ChantGroup | null;
@@ -133,20 +120,6 @@ export function groupChantGoal(total: number): string {
     if (chants < goal) return words;
   }
   return GROUP_CHANT_GOALS[GROUP_CHANT_GOALS.length - 1][1];
-}
-
-export async function fetchGroupMembers(code: string): Promise<GroupMember[]> {
-  const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}/people`, { cache: 'no-store' });
-  if (!response.ok) return [];
-  const body = await response.json() as { members?: GroupMember[] };
-  return (body.members ?? []).flatMap((member) => {
-    if (!member?.personId || !Number.isFinite(member.total) || member.total < 1) return [];
-    return [{
-      personId: member.personId,
-      name: typeof member.name === 'string' ? member.name : '',
-      total: Math.max(0, Math.round(member.total)),
-    }];
-  }).slice(0, 12);
 }
 
 const FUNDRAISING_URL = `${SITE_ORIGIN}/new-ashram-project`;
@@ -338,10 +311,10 @@ function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown
   };
 }
 
-export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; byChant: GroupChantTotals; recordTotal: number; chanterCount: number; chantingNow: number; countries: ChantCountry[] }> {
+export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; byChant: GroupChantTotals; recordTotal: number; chanterCount: number; countries: ChantCountry[] }> {
   const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
-  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; byChant?: unknown; recordTotal?: unknown; chanterCount?: unknown; chantingNow?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
+  const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; byChant?: unknown; recordTotal?: unknown; chanterCount?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
   const countries = (body.countries ?? []).flatMap((country) => {
     const read = readCountry(country);
     return read && read.total > 0 ? [read] : [];
@@ -363,7 +336,6 @@ export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; glo
       : countries.reduce((sum, country) => addChantTotals(sum, country.byChant), emptyChantTotals()),
     recordTotal: Math.max(0, Math.round(Number(body.recordTotal) || 0)),
     chanterCount: Math.max(0, Math.round(Number(body.chanterCount) || 0)),
-    chantingNow: Math.max(0, Math.round(Number(body.chantingNow) || 0)),
     countries,
   };
 }
