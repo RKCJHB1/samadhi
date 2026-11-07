@@ -744,8 +744,6 @@ function paintEndCard(
     paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[0], height * 0.7, Math.round(width * 0.032), '#fff7ed');
     paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[1], height * 0.76, Math.round(width * 0.032), '#fff7ed');
   }
-  paintFittedLine(context, canvas, 'Please subscribe to keep informed', height * 0.86, Math.round(width * 0.034), '#ffd166');
-  paintFittedLine(context, canvas, 'of our new temple fundraising.', height * 0.91, Math.round(width * 0.034), '#ffd166');
   context.restore();
   paintCentreName(context, canvas);
   paintSiteLink(context, canvas);
@@ -761,14 +759,10 @@ function paintCameraMessage(
   const lines = caption.groupTitle
     ? [
         ...CHANT_SHARE_QUOTE_LINES,
-        'Please subscribe to keep informed',
-        'of our new temple fundraising.',
         SITE_LABEL,
       ]
     : [
         CHANT_APP_NAME,
-        'Please subscribe to keep informed',
-        'of our new temple fundraising.',
         SITE_LABEL,
       ];
   const quoteLineCount = caption.groupTitle ? CHANT_SHARE_QUOTE_LINES.length : 1;
