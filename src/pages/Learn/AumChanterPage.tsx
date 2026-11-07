@@ -228,7 +228,7 @@ const WHY_THESE_CHANTS = [
   },
   {
     name: 'Jai Shri Krishna',
-    text: 'Diwali marks Lord Krishna destroying the demon Narakasura. That victory set the captives free and brought a long darkness to an end.',
+    text: 'During Diwali, Lord Krishna destroyed the demon Narakasura. That victory set the captives free and brought a long darkness to an end.',
   },
   {
     name: 'Jai Ma',
