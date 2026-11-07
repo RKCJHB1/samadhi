@@ -174,6 +174,40 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
       )`,
     );
     await ensureChantColumn(env, 'chant_countries', 'krishna_total');
+    await execute(
+      env,
+      `CREATE TABLE IF NOT EXISTS chant_world (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        total INTEGER NOT NULL DEFAULT 0,
+        om_total INTEGER NOT NULL DEFAULT 0,
+        ram_total INTEGER NOT NULL DEFAULT 0,
+        ma_total INTEGER NOT NULL DEFAULT 0,
+        krishna_total INTEGER NOT NULL DEFAULT 0,
+        record_total INTEGER NOT NULL DEFAULT 0,
+        chanter_count INTEGER NOT NULL DEFAULT 0
+      )`,
+    );
+    await execute(env, 'CREATE INDEX IF NOT EXISTS chant_people_updated ON chant_people (updated_at)');
+    const world = await execute(env, 'SELECT id FROM chant_world WHERE id = 1');
+    if (world.length === 0) {
+      try {
+        await execute(
+          env,
+          `INSERT INTO chant_world (id, total, om_total, ram_total, ma_total, krishna_total, record_total, chanter_count)
+           SELECT 1,
+             COALESCE((SELECT SUM(total) FROM chant_people), 0),
+             COALESCE((SELECT SUM(om_total) FROM chant_countries), 0),
+             COALESCE((SELECT SUM(ram_total) FROM chant_countries), 0),
+             COALESCE((SELECT SUM(ma_total) FROM chant_countries), 0),
+             COALESCE((SELECT SUM(krishna_total) FROM chant_countries), 0),
+             COALESCE((SELECT MAX(total) FROM chant_people), 0),
+             COALESCE((SELECT SUM(CASE WHEN total > 0 THEN 1 ELSE 0 END) FROM chant_people), 0)`,
+        );
+      } catch {
+        const raced = await execute(env, 'SELECT id FROM chant_world WHERE id = 1');
+        if (raced.length === 0) throw new Error('database');
+      }
+    }
   })().catch((error: unknown) => {
     ready.delete(key);
     throw error;
@@ -257,39 +291,27 @@ function readGroupChantCounts(value: unknown, groupCount: number): { om: number;
   return { om, ram, ma, krishna };
 }
 
-async function savedChantTotals(env: ChantDbEnv): Promise<{ om: number; ram: number; ma: number; krishna: number }> {
+async function readWorld(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number; om: number; ram: number; ma: number; krishna: number }> {
   const rows = await execute(
     env,
-    `SELECT COALESCE(SUM(om_total), 0),
-            COALESCE(SUM(ram_total), 0),
-            COALESCE(SUM(ma_total), 0),
-            COALESCE(SUM(krishna_total), 0)
-     FROM chant_countries`,
+    `SELECT total, record_total, chanter_count, om_total, ram_total, ma_total, krishna_total
+     FROM chant_world WHERE id = 1`,
   );
-  return {
-    om: storedTotal(rows[0]?.[0]),
-    ram: storedTotal(rows[0]?.[1]),
-    ma: storedTotal(rows[0]?.[2]),
-    krishna: storedTotal(rows[0]?.[3]),
-  };
-}
-
-async function savedPeopleSummary(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; chantingNow: number }> {
-  const rows = await execute(
+  const chantingRows = await execute(
     env,
-    `SELECT COALESCE(SUM(total), 0),
-            COALESCE(MAX(total), 0),
-            COALESCE(SUM(CASE WHEN total > 0 THEN 1 ELSE 0 END), 0),
-            COALESCE(SUM(CASE
-              WHEN total > 0 AND updated_at >= strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 minutes')
-              THEN 1 ELSE 0 END), 0)
-     FROM chant_people`,
+    `SELECT COUNT(*)
+     FROM chant_people
+     WHERE total > 0 AND updated_at >= strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 minutes')`,
   );
   return {
     globalTotal: storedTotal(rows[0]?.[0]),
     recordTotal: storedTotal(rows[0]?.[1]),
     chanterCount: storedTotal(rows[0]?.[2]),
-    chantingNow: storedTotal(rows[0]?.[3]),
+    om: storedTotal(rows[0]?.[3]),
+    ram: storedTotal(rows[0]?.[4]),
+    ma: storedTotal(rows[0]?.[5]),
+    krishna: storedTotal(rows[0]?.[6]),
+    chantingNow: storedTotal(chantingRows[0]?.[0]),
   };
 }
 
@@ -371,6 +393,10 @@ async function saveProgress(
 ): Promise<{ person: ChantPerson; group: ChantGroup | null }> {
   const appliedGroupCount = Math.min(count, Math.max(0, groupCount));
   const group = appliedGroupCount > 0 && groupCode ? await readGroup(env, groupCode) : null;
+  const om = countryCounts?.om ?? 0;
+  const ram = countryCounts?.ram ?? 0;
+  const ma = countryCounts?.ma ?? 0;
+  const krishna = countryCounts?.krishna ?? 0;
   const statements: Array<{ sql: string; args?: SqlValue[] }> = [
     { sql: 'BEGIN' },
     {
@@ -404,10 +430,6 @@ async function saveProgress(
     });
   }
   if (countryCode) {
-    const om = countryCounts?.om ?? 0;
-    const ram = countryCounts?.ram ?? 0;
-    const ma = countryCounts?.ma ?? 0;
-    const krishna = countryCounts?.krishna ?? 0;
     statements.push({
       sql: `INSERT INTO chant_countries (code, om_total, ram_total, ma_total, krishna_total, total)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -420,6 +442,21 @@ async function saveProgress(
       args: [countryCode, om, ram, ma, krishna, count],
     });
   }
+  statements.push({
+    sql: `UPDATE chant_world
+          SET total = total + ?,
+              om_total = om_total + ?,
+              ram_total = ram_total + ?,
+              ma_total = ma_total + ?,
+              krishna_total = krishna_total + ?,
+              record_total = MAX(record_total, COALESCE((SELECT total FROM chant_people WHERE id = ?), 0)),
+              chanter_count = chanter_count + CASE
+                WHEN COALESCE((SELECT total FROM chant_people WHERE id = ?), 0) = ? THEN 1
+                ELSE 0
+              END
+          WHERE id = 1`,
+    args: [count, om, ram, ma, krishna, id, id, count],
+  });
   statements.push({ sql: 'COMMIT' });
   let sets: unknown[][][];
   try {
@@ -509,24 +546,23 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     if (request.method === 'GET' && rest.length === 0) {
       const requested = Math.round(Number(url.searchParams.get('limit')));
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
-      const [groups, people, countries, chants] = await Promise.all([
+      const [groups, world, countries] = await Promise.all([
         listGroups(env, limit),
-        savedPeopleSummary(env),
+        readWorld(env),
         listCountries(env),
-        savedChantTotals(env),
       ]);
       return json({
         groups,
-        globalTotal: people.globalTotal,
+        globalTotal: world.globalTotal,
         byChant: {
-          om: chants.om,
-          'sri-ram': chants.ram,
-          'jai-ma': chants.ma,
-          'jai-shri-krishna': chants.krishna,
+          om: world.om,
+          'sri-ram': world.ram,
+          'jai-ma': world.ma,
+          'jai-shri-krishna': world.krishna,
         },
-        recordTotal: people.recordTotal,
-        chanterCount: people.chanterCount,
-        chantingNow: people.chantingNow,
+        recordTotal: world.recordTotal,
+        chanterCount: world.chanterCount,
+        chantingNow: world.chantingNow,
         countries: countries.map((country) => ({
           code: country.code,
           om: country.om,
