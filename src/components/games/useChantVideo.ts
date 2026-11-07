@@ -1028,6 +1028,18 @@ export function useChantVideo() {
     drawingRef.current = false;
     clearTimers();
     cancelAnimationFrame(rafRef.current);
+    // Silence the mixed audio first. Some browsers will not finish the file
+    // until the drone stops, and that wait showed up as a long "preparing".
+    chantSourcesRef.current.forEach((source) => {
+      try {
+        source.stop();
+      } catch {
+        // The source already finished.
+      }
+    });
+    chantSourcesRef.current = [];
+    const context = audioContextRef.current;
+    if (context && context.state === 'running') void context.suspend();
     const recorder = recorderRef.current;
     if (recorder && recorder.state !== 'inactive') {
       recorder.stop();
