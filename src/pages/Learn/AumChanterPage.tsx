@@ -35,6 +35,8 @@ const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
 const TOTAL_WALK_MS = 10000;
 const TANPURA_SRC = '/tanpura.mp3';
 const TANPURA_VOLUME = 0.2;
+const TANPURA_HOLD_MS = 7000;
+const TANPURA_FADE_MS = 1500;
 
 type RisingTotal = {
   shown: number;
@@ -409,6 +411,8 @@ const AumChanterPage = () => {
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioPoolRef = useRef<HTMLAudioElement[]>([]);
   const tanpuraRef = useRef<HTMLAudioElement | null>(null);
+  const tanpuraStopRef = useRef<number | null>(null);
+  const tanpuraFadeRef = useRef<number | null>(null);
   const nextAudioIndexRef = useRef<number>(0);
   const lastAudioPlayAtRef = useRef<number>(0);
   const chantDurationMsRef = useRef<number>(AUTO_CHANT_FALLBACK_DURATION_MS);
@@ -1008,29 +1012,58 @@ const AumChanterPage = () => {
     }
   }, [history, goalsByChant, selectedChantId]);
 
+  const stopTanpuraTimers = useCallback(() => {
+    if (tanpuraStopRef.current != null) window.clearTimeout(tanpuraStopRef.current);
+    if (tanpuraFadeRef.current != null) window.clearInterval(tanpuraFadeRef.current);
+    tanpuraStopRef.current = null;
+    tanpuraFadeRef.current = null;
+  }, []);
+
   const ensureTanpura = useCallback(() => {
     let tanpura = tanpuraRef.current;
     if (!tanpura) {
       tanpura = new Audio(TANPURA_SRC);
       tanpura.loop = true;
       tanpura.preload = 'auto';
-      tanpura.volume = TANPURA_VOLUME;
       tanpuraRef.current = tanpura;
     }
-    if (!tanpura.paused) return;
-    void tanpura.play().catch(() => {
-      // The next tap is another chance to start the drone.
-    });
-  }, []);
+    tanpura.volume = TANPURA_VOLUME;
+    stopTanpuraTimers();
+    if (tanpura.paused) {
+      void tanpura.play().catch(() => {
+        // The next tap is another chance to start the drone.
+      });
+    }
+    tanpuraStopRef.current = window.setTimeout(() => {
+      const fading = tanpuraRef.current;
+      if (!fading) return;
+      const from = fading.volume;
+      const started = performance.now();
+      tanpuraFadeRef.current = window.setInterval(() => {
+        const current = tanpuraRef.current;
+        if (!current) return;
+        const progress = (performance.now() - started) / TANPURA_FADE_MS;
+        if (progress >= 1) {
+          current.pause();
+          current.volume = TANPURA_VOLUME;
+          if (tanpuraFadeRef.current != null) window.clearInterval(tanpuraFadeRef.current);
+          tanpuraFadeRef.current = null;
+          return;
+        }
+        current.volume = from * (1 - progress);
+      }, 50);
+    }, TANPURA_HOLD_MS);
+  }, [stopTanpuraTimers]);
 
   useEffect(() => {
     return () => {
+      stopTanpuraTimers();
       const tanpura = tanpuraRef.current;
       if (!tanpura) return;
       tanpura.pause();
       tanpuraRef.current = null;
     };
-  }, []);
+  }, [stopTanpuraTimers]);
 
   const playChantSound = useCallback((options?: { bypassThrottle?: boolean }) => {
     ensureTanpura();
