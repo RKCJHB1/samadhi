@@ -4,6 +4,8 @@ import { CHANT_APP_NAME, groupChantGoal } from '../../services/chantGroupService
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
 const END_CARD_MS = 2500;
+const TANPURA_SRC = '/tanpura.mp3';
+const TANPURA_GAIN = 0.2;
 const VIDEO_CHANT_LIMITS = [11, 21, 108];
 
 export type ChantVideoPhase = 'idle' | 'starting' | 'recording' | 'preparing' | 'ready';
@@ -959,6 +961,7 @@ export function useChantVideo() {
   const chantSourcesRef = useRef<AudioBufferSourceNode[]>([]);
   const loadedAudioSrcRef = useRef('');
   const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const tanpuraSourceRef = useRef<AudioBufferSourceNode | null>(null);
 
   phaseRef.current = phase;
 
@@ -986,6 +989,15 @@ export function useChantVideo() {
       }
     });
     chantSourcesRef.current = [];
+    const tanpura = tanpuraSourceRef.current;
+    tanpuraSourceRef.current = null;
+    if (tanpura) {
+      try {
+        tanpura.stop();
+      } catch {
+        // The drone already finished.
+      }
+    }
     chantBufferRef.current = null;
     chantDestRef.current = null;
     loadedAudioSrcRef.current = '';
@@ -1175,6 +1187,25 @@ export function useChantVideo() {
             // The recorder falls back to the microphone track below.
           }
         }
+        void loadChantBuffer(TANPURA_SRC, audioContextRef.current).then((buffer) => {
+          if (!buffer || runId !== runRef.current) return;
+          const context = audioContextRef.current;
+          const destination = chantDestRef.current;
+          if (!context || !destination || tanpuraSourceRef.current) return;
+          const gain = context.createGain();
+          gain.gain.value = TANPURA_GAIN;
+          gain.connect(destination);
+          const source = context.createBufferSource();
+          source.buffer = buffer;
+          source.loop = true;
+          source.connect(gain);
+          tanpuraSourceRef.current = source;
+          try {
+            source.start();
+          } catch {
+            tanpuraSourceRef.current = null;
+          }
+        });
         const src = frameRef.current.audioSrc;
         if (src) {
           const buffer = await loadChantBuffer(src, audioContextRef.current);

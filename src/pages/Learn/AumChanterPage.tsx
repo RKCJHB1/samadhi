@@ -33,6 +33,8 @@ const CHANT_AUDIO_MIN_GAP_MS = 180;
 const AUTO_CHANT_PAUSE_MS = 500;
 const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
 const TOTAL_WALK_MS = 10000;
+const TANPURA_SRC = '/tanpura.mp3';
+const TANPURA_VOLUME = 0.2;
 
 type RisingTotal = {
   shown: number;
@@ -406,6 +408,7 @@ const AumChanterPage = () => {
   const [isGoalModalVisible, setIsGoalModalVisible] = useState<boolean>(false);
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioPoolRef = useRef<HTMLAudioElement[]>([]);
+  const tanpuraRef = useRef<HTMLAudioElement | null>(null);
   const nextAudioIndexRef = useRef<number>(0);
   const lastAudioPlayAtRef = useRef<number>(0);
   const chantDurationMsRef = useRef<number>(AUTO_CHANT_FALLBACK_DURATION_MS);
@@ -1005,7 +1008,32 @@ const AumChanterPage = () => {
     }
   }, [history, goalsByChant, selectedChantId]);
 
+  const ensureTanpura = useCallback(() => {
+    let tanpura = tanpuraRef.current;
+    if (!tanpura) {
+      tanpura = new Audio(TANPURA_SRC);
+      tanpura.loop = true;
+      tanpura.preload = 'auto';
+      tanpura.volume = TANPURA_VOLUME;
+      tanpuraRef.current = tanpura;
+    }
+    if (!tanpura.paused) return;
+    void tanpura.play().catch(() => {
+      // The next tap is another chance to start the drone.
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const tanpura = tanpuraRef.current;
+      if (!tanpura) return;
+      tanpura.pause();
+      tanpuraRef.current = null;
+    };
+  }, []);
+
   const playChantSound = useCallback((options?: { bypassThrottle?: boolean }) => {
+    ensureTanpura();
     const now = Date.now();
     if (!options?.bypassThrottle && now - lastAudioPlayAtRef.current < CHANT_AUDIO_MIN_GAP_MS) {
       return null;
@@ -1055,7 +1083,7 @@ const AumChanterPage = () => {
     }
 
     return selectedVoice;
-  }, [createChantAudio, currentChant.audioSrc]);
+  }, [createChantAudio, currentChant.audioSrc, ensureTanpura]);
 
   const handleChant = useCallback((options?: { bypassAudioThrottle?: boolean } | React.MouseEvent<HTMLDivElement>) => {
     // Handle both direct calls and React event calls
