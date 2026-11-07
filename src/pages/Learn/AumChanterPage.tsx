@@ -1893,7 +1893,7 @@ const AumChanterPage = () => {
           <div id="group-chant-card" className="mt-3 flex w-full max-w-md flex-col items-stretch gap-2 rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-200/80">
             <p className="text-center font-sans text-base text-spiritual-100">Chant with a group</p>
             <p className="text-center text-xs text-spiritual-200/85">
-              Leave this blank to chant on your own. Or type a group name to chant together.
+              Leave this blank to chant on your own. Or type a group name to create/join a new group and chant together.
             </p>
             <label htmlFor="group-name" className="flex w-full items-center gap-2">
               <span className="shrink-0">Group name</span>
@@ -1963,12 +1963,12 @@ const AumChanterPage = () => {
                 </p>
                 {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
                   <p className="text-center text-xs text-spiritual-100">
-                    <span className="font-bold italic">{previewName}</span> {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span>
+                    The <span className="font-bold italic">{previewName}</span> has chanted the following mantras - {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span> times
                     <span className="mx-2 text-spiritual-400/50">·</span>
-                    All chants: <span className="font-mono">{groupShown.toLocaleString()}</span>
+                    All chants: <span className="font-mono">{groupShown.toLocaleString()}</span> times
                     <span className="mx-2 text-spiritual-400/50">·</span>
                     Your chants in this group:{' '}
-                    <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span>
+                    <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span> in total
                   </p>
                 )}
               </>
