@@ -671,7 +671,7 @@ const AumChanterPage = () => {
     const typed = groupNameDraftRef.current.trim();
     const typedSlug = groupSlug(typed);
     const fromUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '');
-    if (typed && !typedSlug && !fromUrl) {
+    if (typed && !typedSlug) {
       setGroupNotice('Use letters and numbers for the group name.');
       return null;
     }
@@ -724,6 +724,12 @@ const AumChanterPage = () => {
     createGroupRef.current = pending;
     return pending;
   }, [adoptGroup]);
+
+  const createTypedGroup = useCallback(async () => {
+    const saved = await ensureChantGroup();
+    if (!saved) return;
+    setGroupNotice(`You are in the ${saved.name} group.`);
+  }, [ensureChantGroup]);
 
   const joinListedGroup = (group: ChantGroup, closeList: boolean) => {
     adoptGroup(group);
@@ -1948,20 +1954,35 @@ const AumChanterPage = () => {
           <div id="group-chant-card" className="mt-3 flex w-full max-w-md flex-col items-stretch gap-2 rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-200/80">
             <p className="text-center font-sans text-base text-spiritual-100">Chant with a group</p>
             <p className="text-center text-xs text-spiritual-200/85">
-              Leave this blank to chant on your own. Or type a group name to create/join a new group and chant together.
+              Leave this blank to chant on your own. Or type a group name and press Create to join or start that group.
             </p>
-            <label htmlFor="group-name" className="flex w-full items-center gap-2">
-              <span className="shrink-0">Group name</span>
+            <div className="flex w-full items-center gap-2">
+              <label htmlFor="group-name" className="shrink-0">Group name</label>
               <input
                 id="group-name"
                 type="text"
                 value={groupNameDraft}
                 maxLength={60}
                 placeholder=""
-                onChange={(event) => setGroupNameDraft(event.target.value)}
+                onChange={(event) => {
+                  setGroupNameDraft(event.target.value);
+                  setGroupNotice('');
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter') return;
+                  event.preventDefault();
+                  void createTypedGroup();
+                }}
                 className="min-w-0 flex-1 rounded border border-amber-900/20 px-3 py-2 text-slate-900 caret-slate-900 placeholder:text-slate-600 [color-scheme:light] [-webkit-text-fill-color:#0f172a]"
               />
-            </label>
+              <button
+                type="button"
+                onClick={() => { void createTypedGroup(); }}
+                className="shrink-0 rounded-lg bg-spiritual-600 px-3 py-2 text-sm font-sans font-medium text-white transition-colors hover:bg-spiritual-500"
+              >
+                Create
+              </button>
+            </div>
             {groupLink ? (
               <>
                 <p className="text-xs uppercase tracking-wide text-spiritual-300/70">Your group link</p>
