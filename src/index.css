@@ -140,7 +140,7 @@
     background: transparent !important;
   }
 
-  .prose * {
+  .prose *:not(button) {
     background-color: transparent !important;
   }
 
