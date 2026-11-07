@@ -16,18 +16,18 @@ const FundNoticePreview = () => {
   }, []);
 
   return (
-    <PageLayout title="Building appeal notice">
+    <PageLayout title="Fundraising platform">
       <div className="min-h-screen w-full bg-gradient-to-br from-indian-cream to-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-xl mx-auto">
             <h1 className="mt-8 font-heading text-3xl font-bold text-black md:text-4xl">
-              Hear when the building appeal begins
+              Subscribe to know when we launch our fundraising platform
             </h1>
             <p className="mt-4 text-lg text-gray-700">
-              The next fundraising appeal for the new ashram is not open yet. Follow the WhatsApp channel, and the centre will post there when the appeal begins.
+              We will soon launch our online fundraising platform. Subscribe to our WhatsApp channel to be informed as soon as developments related to the New Ashram Development occur.
             </p>
 
-            <div className="mt-8 rounded-lg border border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white p-6 shadow-sm">
+            <div className="mt-8 rounded-lg border border-indian-saffron/30 bg-gradient-to-br from-indian-cream to-white p-6 text-center shadow-sm">
               <a
                 href={WHATSAPP_CHANNEL_URL}
                 target="_blank"
