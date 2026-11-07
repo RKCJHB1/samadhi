@@ -247,10 +247,53 @@ function isFragmentedMp4(file: ArrayBuffer): boolean {
       if (brand === 'iso5' || brand === 'iso6') return true;
     }
   }
-  for (let i = 0; i + 4 <= bytes.length; i += 1) {
-    if (bytes[i] === 0x6d && bytes[i + 1] === 0x6f && bytes[i + 2] === 0x6f && bytes[i + 3] === 0x66) return true;
+  let offset = 0;
+  while (offset + 8 <= bytes.length) {
+    const size = readU32(bytes, offset);
+    const type = four(offset + 4);
+    if (size < 8 || offset + size > bytes.length) return false;
+    if (type === 'moof') return true;
+    offset += size;
   }
   return false;
+}
+
+async function repackRecordedVideo(blob: Blob): Promise<ArrayBuffer | null> {
+  const {
+    Input,
+    ALL_FORMATS,
+    BlobSource,
+    Output,
+    Mp4OutputFormat,
+    BufferTarget,
+    Conversion,
+  } = await import('mediabunny');
+  const input = new Input({
+    formats: ALL_FORMATS,
+    source: new BlobSource(blob),
+  });
+  try {
+    const target = new BufferTarget();
+    const output = new Output({
+      format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
+      target,
+    });
+    const conversion = await Conversion.init({
+      input,
+      output,
+      showWarnings: false,
+      copy: { mode: 'forced' },
+    });
+    if (!conversion.isValid) return null;
+    await conversion.execute();
+    const file = target.buffer;
+    if (!file || file.byteLength < 1000 || isFragmentedMp4(file)) return null;
+    return file;
+  } catch {
+    return null;
+  } finally {
+    input.dispose();
+  }
 }
 
 function sequenceHeaderLength(file: ArrayBuffer): number {
@@ -264,6 +307,11 @@ function sequenceHeaderLength(file: ArrayBuffer): number {
 }
 
 async function whatsAppReadyVideo(blob: Blob): Promise<Blob | null> {
+  const packed = await repackRecordedVideo(blob);
+  if (packed) {
+    const branded = whatsAppBrands(packed);
+    if (!isFragmentedMp4(branded)) return new Blob([branded], { type: 'video/mp4' });
+  }
   const {
     Input,
     ALL_FORMATS,
@@ -293,7 +341,6 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob | null> {
     const canHear = !!audioTrack && await audioTrack.canDecode();
 
     let best: ArrayBuffer | null = null;
-    for (let round = 0; round < 2 && !best; round += 1) {
     for (const attempt of WHATSAPP_VIDEO_ATTEMPTS) {
       const target = new BufferTarget();
       const output = new Output({
@@ -386,7 +433,6 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob | null> {
       } catch {
         // This encoder could not finish the clip. The next attempt uses the other encoder.
       }
-    }
     }
     if (!best || isFragmentedMp4(best)) return null;
     return new Blob([best], { type: 'video/mp4' });
