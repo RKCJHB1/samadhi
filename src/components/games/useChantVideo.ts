@@ -660,19 +660,20 @@ const SITE_LABEL = 'ramakrishna-johannesburg.org.za';
 function paintCentreName(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement, backdrop = false) {
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.round(shortSide * 0.032);
+  const lineHeight = Math.round(size * 1.45);
+  const pad = Math.round(shortSide * 0.04);
   context.save();
   context.textAlign = 'center';
   context.textBaseline = 'alphabetic';
   let y = Math.round(Math.max(36, canvas.height * 0.075));
   if (backdrop) {
-    const pad = Math.round(shortSide * 0.04);
-    const lineHeight = Math.round(size * 1.4);
-    const barHeight = pad * 2 + lineHeight;
+    const barHeight = pad * 2 + lineHeight * 2;
     context.fillStyle = 'rgba(20, 14, 8, 0.78)';
     context.fillRect(0, 0, canvas.width, barHeight);
     y = pad + size;
   }
   paintFittedLine(context, canvas, CENTRE_NAME, y, size, '#fff7ed');
+  paintFittedLine(context, canvas, CHANT_APP_NAME, y + lineHeight, size, '#ffd166');
   context.restore();
 }
 
@@ -733,7 +734,6 @@ function paintEndCard(
   context.shadowOffsetY = 2;
   context.fillStyle = '#140e08';
   context.fillRect(0, 0, width, height);
-  paintFittedLine(context, canvas, CHANT_APP_NAME, height * 0.2, Math.round(width * 0.055), '#ffd166');
   if (caption.line) {
     paintFittedLine(context, canvas, caption.line, height * 0.28, Math.round(width * 0.045), '#fff7ed');
   }
@@ -762,10 +762,9 @@ function paintCameraMessage(
         SITE_LABEL,
       ]
     : [
-        CHANT_APP_NAME,
         SITE_LABEL,
       ];
-  const quoteLineCount = caption.groupTitle ? CHANT_SHARE_QUOTE_LINES.length : 1;
+  const quoteLineCount = caption.groupTitle ? CHANT_SHARE_QUOTE_LINES.length : 0;
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.max(16, Math.round(shortSide * 0.034));
   const lineHeight = Math.round(size * 1.4);
@@ -830,17 +829,7 @@ function paintReadout(
   context.shadowBlur = 12;
   context.shadowOffsetY = 2;
   context.strokeStyle = 'rgba(0, 0, 0, 0.92)';
-  context.lineWidth = Math.max(3, Math.round(layout.titleSize * 0.16));
   context.lineJoin = 'round';
-  context.fillStyle = '#ffd166';
-  let titleSize = layout.titleSize;
-  context.font = `600 ${titleSize}px ${CANVAS_FONT}`;
-  while (titleSize > 14 && context.measureText(CHANT_APP_NAME).width > canvas.width - 64) {
-    titleSize -= 1;
-    context.font = `600 ${titleSize}px ${CANVAS_FONT}`;
-  }
-  context.strokeText(CHANT_APP_NAME, canvas.width / 2, layout.titleY);
-  context.fillText(CHANT_APP_NAME, canvas.width / 2, layout.titleY);
   if (line) {
     let personSize = layout.personSize;
     context.font = `600 ${personSize}px ${CANVAS_FONT}`;
