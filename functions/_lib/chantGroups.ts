@@ -464,10 +464,106 @@ async function saveProgress(
   };
 }
 
+const TOTAL_SHARE_MS = 5000;
+
+type SharedTotal = { expires: number; status: number; body: string };
+
+function totalMemory(): { shares: Map<string, SharedTotal>; loads: Map<string, Promise<SharedTotal>> } {
+  const host = globalThis as {
+    __chantTotalShares?: Map<string, SharedTotal>;
+    __chantTotalLoads?: Map<string, Promise<SharedTotal>>;
+  };
+  if (!host.__chantTotalShares) host.__chantTotalShares = new Map();
+  if (!host.__chantTotalLoads) host.__chantTotalLoads = new Map();
+  return { shares: host.__chantTotalShares, loads: host.__chantTotalLoads };
+}
+
+function edgeCache(): { match(request: Request): Promise<Response | undefined>; put(request: Request, response: Response): Promise<void> } | null {
+  const storage = (globalThis as { caches?: { default?: { match(request: Request): Promise<Response | undefined>; put(request: Request, response: Response): Promise<void> } } }).caches;
+  return storage?.default ?? null;
+}
+
+function sharedTotalResponse(status: number, body: string, shared: 'hit' | 'miss'): Response {
+  return new Response(body, {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': status === 200 ? 'public, max-age=5' : 'no-store',
+      'x-chant-shared': shared,
+    },
+  });
+}
+
+async function loadSharedTotal(key: string, produce: () => Promise<Response>): Promise<Response> {
+  const { shares, loads } = totalMemory();
+  const now = Date.now();
+  const saved = shares.get(key);
+  if (saved && saved.expires > now) return sharedTotalResponse(saved.status, saved.body, 'hit');
+  if (saved) shares.delete(key);
+
+  const edge = edgeCache();
+  const edgeKey = new Request(`https://chant-totals.local/${encodeURIComponent(key)}`, { method: 'GET' });
+  if (edge) {
+    try {
+      const hit = await edge.match(edgeKey);
+      if (hit?.ok) {
+        const body = await hit.text();
+        const ageMs = Math.max(0, Math.round(Number(hit.headers.get('age')) || 0) * 1000);
+        const ttl = TOTAL_SHARE_MS - ageMs;
+        if (ttl > 0) shares.set(key, { expires: Date.now() + ttl, status: hit.status, body });
+        return sharedTotalResponse(hit.status, body, 'hit');
+      }
+    } catch {
+      // This process has no region cache. The memory copy still covers it.
+    }
+  }
+
+  const pending = loads.get(key);
+  if (pending) {
+    const produced = await pending;
+    return sharedTotalResponse(produced.status, produced.body, 'hit');
+  }
+
+  const loading = (async () => {
+    const response = await produce();
+    const body = await response.text();
+    const produced = { expires: Date.now() + TOTAL_SHARE_MS, status: response.status, body };
+    if (response.ok) {
+      if (shares.size > 1000) {
+        const freshAt = Date.now();
+        for (const [name, entry] of shares) {
+          if (entry.expires <= freshAt) shares.delete(name);
+        }
+      }
+      shares.set(key, produced);
+      if (edge) {
+        try {
+          await edge.put(edgeKey, new Response(body, {
+            status: response.status,
+            headers: {
+              'content-type': 'application/json; charset=utf-8',
+              'cache-control': 'public, max-age=5',
+            },
+          }));
+        } catch {
+          // The memory copy still serves this process.
+        }
+      }
+    }
+    return produced;
+  })();
+  loads.set(key, loading);
+  try {
+    const produced = await loading;
+    return sharedTotalResponse(produced.status, produced.body, 'miss');
+  } finally {
+    loads.delete(key);
+  }
+}
+
 export async function handleChantGroupRequest(request: Request, env: ChantDbEnv | null): Promise<Response> {
   if (!env?.url || !env.token) return json({ error: 'Group counting is not connected yet.' }, 503);
   try {
-    await ensureSchema(env);
     const url = new URL(request.url);
     const parts = url.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
     const resource = parts[0] === 'api' ? (parts[1] ?? '') : (parts[0] ?? '');
@@ -476,6 +572,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     const action = rest[1] ?? '';
 
     if (resource === 'chant-people') {
+      await ensureSchema(env);
       const id = personId(decodeURIComponent(code));
       if (!id) return json({ error: 'This chanter was not found.' }, 404);
       const groupCode = groupSlug(url.searchParams.get('group') ?? '');
@@ -526,34 +623,38 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     if (request.method === 'GET' && rest.length === 0) {
       const requested = Math.round(Number(url.searchParams.get('limit')));
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
-      const [groups, world, countries] = await Promise.all([
-        listGroups(env, limit),
-        readWorld(env),
-        listCountries(env),
-      ]);
-      return json({
-        groups,
-        globalTotal: world.globalTotal,
-        byChant: {
-          om: world.om,
-          'sri-ram': world.ram,
-          'jai-ma': world.ma,
-          'jai-shri-krishna': world.krishna,
-        },
-        recordTotal: world.recordTotal,
-        chanterCount: world.chanterCount,
-        countries: countries.map((country) => ({
-          code: country.code,
-          om: country.om,
-          'sri-ram': country.ram,
-          'jai-ma': country.ma,
-          'jai-shri-krishna': country.krishna,
-          total: country.total,
-        })),
+      return loadSharedTotal(`list:${limit}`, async () => {
+        await ensureSchema(env);
+        const [groups, world, countries] = await Promise.all([
+          listGroups(env, limit),
+          readWorld(env),
+          listCountries(env),
+        ]);
+        return json({
+          groups,
+          globalTotal: world.globalTotal,
+          byChant: {
+            om: world.om,
+            'sri-ram': world.ram,
+            'jai-ma': world.ma,
+            'jai-shri-krishna': world.krishna,
+          },
+          recordTotal: world.recordTotal,
+          chanterCount: world.chanterCount,
+          countries: countries.map((country) => ({
+            code: country.code,
+            om: country.om,
+            'sri-ram': country.ram,
+            'jai-ma': country.ma,
+            'jai-shri-krishna': country.krishna,
+            total: country.total,
+          })),
+        });
       });
     }
 
     if (request.method === 'POST' && rest.length === 0) {
+      await ensureSchema(env);
       const text = await request.text();
       if (text.length > 2000) return json({ error: 'That group could not be saved.' }, 400);
       let body: { name?: unknown; chantName?: unknown } = {};
@@ -587,13 +688,19 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     }
 
     const slug = groupSlug(decodeURIComponent(code));
-    if (!slug) return json({ error: 'This group link was not found.' }, 404);
 
     if (request.method === 'GET' && rest.length === 1) {
-      const group = await readGroup(env, slug);
-      if (!group) return json({ error: 'This group link was not found.' }, 404);
-      return json(group);
+      if (!slug) return json({ error: 'This group link was not found.' }, 404);
+      return loadSharedTotal(`group:${slug.toLowerCase()}`, async () => {
+        await ensureSchema(env);
+        const group = await readGroup(env, slug);
+        if (!group) return json({ error: 'This group link was not found.' }, 404);
+        return json(group);
+      });
     }
+
+    await ensureSchema(env);
+    if (!slug && request.method !== 'POST') return json({ error: 'This group link was not found.' }, 404);
 
     if (request.method === 'GET' && action === 'people' && rest.length === 2) {
       return json({ members: [] });
