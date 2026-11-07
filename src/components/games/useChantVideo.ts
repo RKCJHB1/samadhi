@@ -231,6 +231,28 @@ function steadyVideoTiming(file: ArrayBuffer): ArrayBuffer {
   return out.buffer;
 }
 
+function isFragmentedMp4(file: ArrayBuffer): boolean {
+  const bytes = new Uint8Array(file);
+  const four = (offset: number) => String.fromCharCode(
+    bytes[offset] ?? 0,
+    bytes[offset + 1] ?? 0,
+    bytes[offset + 2] ?? 0,
+    bytes[offset + 3] ?? 0,
+  );
+  if (bytes.length >= 24 && four(4) === 'ftyp') {
+    const size = readU32(bytes, 0);
+    const end = Math.min(bytes.length, size);
+    for (let i = 16; i + 4 <= end; i += 4) {
+      const brand = four(i);
+      if (brand === 'iso5' || brand === 'iso6') return true;
+    }
+  }
+  for (let i = 0; i + 4 <= bytes.length; i += 1) {
+    if (bytes[i] === 0x6d && bytes[i + 1] === 0x6f && bytes[i + 2] === 0x6f && bytes[i + 3] === 0x66) return true;
+  }
+  return false;
+}
+
 function sequenceHeaderLength(file: ArrayBuffer): number {
   const bytes = new Uint8Array(file);
   for (let i = 0; i + 8 < bytes.length; i += 1) {
@@ -241,7 +263,7 @@ function sequenceHeaderLength(file: ArrayBuffer): number {
   return 0;
 }
 
-async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
+async function whatsAppReadyVideo(blob: Blob): Promise<Blob | null> {
   const {
     Input,
     ALL_FORMATS,
@@ -265,12 +287,13 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
   let timer = 0;
   try {
     const videoTrack = await input.getPrimaryVideoTrack();
-    if (!videoTrack) return blob;
+    if (!videoTrack) return null;
     const audioTrack = await input.getPrimaryAudioTrack();
     const duration = await videoTrack.computeDuration();
     const canHear = !!audioTrack && await audioTrack.canDecode();
 
     let best: ArrayBuffer | null = null;
+    for (let round = 0; round < 2 && !best; round += 1) {
     for (const attempt of WHATSAPP_VIDEO_ATTEMPTS) {
       const target = new BufferTarget();
       const output = new Output({
@@ -355,18 +378,20 @@ async function whatsAppReadyVideo(blob: Blob): Promise<Blob> {
             timer = window.setTimeout(() => reject(new Error('timeout')), 120_000);
           }),
         ]);
-        if (!file || file.byteLength < 1000) continue;
+        if (!file || file.byteLength < 1000 || isFragmentedMp4(file)) continue;
         const branded = whatsAppBrands(file);
+        if (isFragmentedMp4(branded)) continue;
         best = branded;
         if (sequenceHeaderLength(branded) >= 32) break;
       } catch {
         // This encoder could not finish the clip. The next attempt uses the other encoder.
       }
     }
-    if (!best) return blob;
+    }
+    if (!best || isFragmentedMp4(best)) return null;
     return new Blob([best], { type: 'video/mp4' });
   } catch {
-    return blob;
+    return null;
   } finally {
     window.clearTimeout(timer);
     input.dispose();
@@ -1389,7 +1414,13 @@ export function useChantVideo() {
         void (async () => {
           const ready = await whatsAppReadyVideo(blob);
           if (runId !== runRef.current) return;
-          const readyType = ready.type === 'video/mp4' ? 'video/mp4' : blobType;
+          if (!ready) {
+            setNotice(null);
+            setError('WhatsApp Desktop cannot send that recording. Please record it once more.');
+            setPhase('idle');
+            return;
+          }
+          const readyType = 'video/mp4';
           const url = URL.createObjectURL(ready);
           const safeName = (frameRef.current.chantName || 'chant').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'chant';
           const name = `${safeName}-${new Date().toISOString().slice(0, 10)}.${extensionForMime(readyType)}`;
@@ -1406,9 +1437,7 @@ export function useChantVideo() {
             shareable = false;
           }
           setCanShare(shareable);
-          setNotice(ready.type === 'video/mp4'
-            ? keptNotice
-            : 'This clip may not play in WhatsApp. Press Download and send that file.');
+          setNotice(keptNotice);
           setPhase('ready');
         })();
       };
