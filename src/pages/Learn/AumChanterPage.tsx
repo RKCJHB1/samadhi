@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import SocialShareButtons from '../../components/shared/SocialShareButtons';
 import MalaBeads from '../../components/games/MalaBeads';
 import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, fetchGroupMembers, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals, type GroupMember } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
@@ -1309,8 +1308,8 @@ const AumChanterPage = () => {
       savedWorldwide,
     )
     : null;
-  const videoMessage = groupLink?.videoText
-    ?? buildPersonalChantShare(currentChant.name, count, savedWorldwide).videoText;
+  const personalShare = buildPersonalChantShare(currentChant.name, count, savedWorldwide);
+  const videoMessage = groupLink?.videoText ?? personalShare.videoText;
 
   useEffect(() => {
     syncFrame({
@@ -1455,12 +1454,6 @@ const AumChanterPage = () => {
     });
   }
   rankedGroups.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
-  const shareTitle = `I've chanted ${currentChant.name} ${count.toLocaleString()} times on ${CHANT_APP_NAME}. Join the chant.`;
-  const shareDescription = currentChant.id === 'om'
-    ? `Join ${CHANT_APP_NAME} and add your chant to the worldwide total.`
-    : `Join ${CHANT_APP_NAME} and chant ${currentChant.name}.`;
-  const shareTwitterText = `${shareTitle} #Meditation ${currentChant.shareTag ?? '#Aum'}`;
-
   const copyGroupLink = async () => {
     if (!groupLink) {
       setGroupNotice(typedGroupName
@@ -2179,17 +2172,34 @@ const AumChanterPage = () => {
           )}
 
           {!groupLink && (
-            <div className="mt-1 flex w-full justify-center">
-              <SocialShareButtons
-                path="/chant"
-                title={shareTitle}
-                description={shareDescription}
-                twitterText={shareTwitterText}
-                whatsappText={shareTitle}
-                label="Share your chant:"
-                labelClassName="mr-1 text-sm text-spiritual-100"
-                className="justify-center"
-              />
+            <div className="mt-1 flex w-full flex-wrap justify-center gap-2">
+              <a
+                id="share-personal-whatsapp"
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(personalShare.whatsappText)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg bg-green-600 px-4 py-2.5 text-sm font-sans font-medium text-white hover:bg-green-500"
+              >
+                Share on WhatsApp
+              </a>
+              <a
+                id="share-personal-facebook"
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(personalShare.url)}&quote=${encodeURIComponent(personalShare.facebookQuote)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-sans text-white hover:bg-slate-600"
+              >
+                Facebook
+              </a>
+              <a
+                id="share-personal-x"
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(personalShare.twitterText)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-sans text-white hover:bg-slate-600"
+              >
+                X
+              </a>
             </div>
           )}
 

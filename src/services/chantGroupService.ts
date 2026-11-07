@@ -161,7 +161,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   const url = `${SITE_ORIGIN}/chant`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
-  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: ${yourTotal.toLocaleString()}\nWorldwide total: ${worldTotal.toLocaleString()}\n\n${url}\n\n${fundraisingClose()}`;
+  const message = `🙏 I am chanting on ${CHANT_APP_NAME}.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\nWorldwide total: *${worldTotal.toLocaleString()}*\n\n${url}\n\n${fundraisingClose()}`;
   return {
     url,
     title: CHANT_APP_NAME,
