@@ -49,6 +49,7 @@ const DevFlag: React.FC = () => {
 };
 
 import FundraisingPage from "./pages/NewAshramProject/FundraisingPage";
+import FundNoticePreview from "./pages/NewAshramProject/FundNoticePreview";
 
 // Import Learn pages
 import LessonsPage from "./pages/Learn/LessonsPage";
@@ -202,6 +203,8 @@ const App = () => (
             <Route path="/new-ashram-project/vision" element={<VisionPage />} />
             <Route path="/new-ashram-project/timeline" element={<TimelinePage />} />
             <Route path="/new-ashram-project/fundraising" element={<FundraisingPage />} />
+            <Route path="/new-ashram-project/fundraising/notice" element={<FundNoticePreview />} />
+            <Route path="/new-ashram-project/fundraising/notice-bigin" element={<Navigate to="/new-ashram-project/fundraising/notice" replace />} />
             <Route path="/new-ashram-project/3d-model" element={<Suspense fallback={<PageLoader />}><BlockVisualization /></Suspense>} />
             {/* <Route path="/test-3d" element={<Test3D />} /> */}
             <Route path="/simple-3d-test" element={<div style={{padding: '20px', backgroundColor: 'lightblue', minHeight: '100vh'}}><h1>Simple Test Page Works!</h1><p>If you can see this, routing is working.</p></div>} />
