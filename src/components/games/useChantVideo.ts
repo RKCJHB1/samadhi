@@ -742,9 +742,9 @@ function paintEndCard(
   paintFittedLine(context, canvas, frame.chantName || 'Om', height * 0.52, Math.round(width * 0.05), '#fff7ed');
   if (caption.groupTitle) {
     paintFittedLine(context, canvas, `${caption.groupTitle} ${frame.chantName || 'Om'} ${caption.groupChantTotal.toLocaleString()} · all ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.034), '#ffd166');
-    paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[0], height * 0.7, Math.round(width * 0.032), '#fff7ed');
-    paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[1], height * 0.76, Math.round(width * 0.032), '#fff7ed');
   }
+  paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[0], height * 0.7, Math.round(width * 0.032), '#fff7ed');
+  paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[1], height * 0.76, Math.round(width * 0.032), '#fff7ed');
   context.restore();
   paintCentreName(context, canvas);
   paintSiteLink(context, canvas);
@@ -756,16 +756,11 @@ function paintCameraMessage(
   canvas: HTMLCanvasElement,
   frame: ChantVideoFrame,
 ) {
-  const caption = frameCaption(frame);
-  const lines = caption.groupTitle
-    ? [
-        ...CHANT_SHARE_QUOTE_LINES,
-        SITE_LABEL,
-      ]
-    : [
-        SITE_LABEL,
-      ];
-  const quoteLineCount = caption.groupTitle ? CHANT_SHARE_QUOTE_LINES.length : 0;
+  const lines = [
+    ...CHANT_SHARE_QUOTE_LINES,
+    SITE_LABEL,
+  ];
+  const quoteLineCount = CHANT_SHARE_QUOTE_LINES.length;
   const shortSide = Math.min(canvas.width, canvas.height);
   const size = Math.max(16, Math.round(shortSide * 0.034));
   const lineHeight = Math.round(size * 1.4);
@@ -1446,7 +1441,7 @@ export function useChantVideo() {
           caption.line,
           caption.gold,
         );
-        paintSiteLink(context, canvas);
+        paintCameraMessage(context, canvas, frameRef.current);
         paintVideoBorder(context, canvas);
       };
 
