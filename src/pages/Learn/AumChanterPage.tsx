@@ -866,6 +866,19 @@ const AumChanterPage = () => {
 
   flushSavedChantsRef.current = flushSavedChants;
 
+  const chantOnYourOwn = useCallback(() => {
+    flushSavedChants();
+    groupCodeRef.current = null;
+    groupTitleRef.current = '';
+    groupNameDraftRef.current = '';
+    setGroupCode(null);
+    setGroupTitle('');
+    setGroupNameDraft('');
+    setGroupNotice('');
+    setIsGroupsVisible(false);
+    window.history.replaceState({}, '', '/chant');
+  }, [flushSavedChants]);
+
   const scheduleSavedChants = useCallback(() => {
     if (groupTimerRef.current) clearTimeout(groupTimerRef.current);
     groupTimerRef.current = setTimeout(() => flushSavedChants(), 2000);
@@ -1989,6 +2002,15 @@ const AumChanterPage = () => {
             >
               {groupCode ? 'Change group' : 'Join a group'}
             </button>
+            {groupCode && (
+              <button
+                type="button"
+                onClick={chantOnYourOwn}
+                className="rounded-lg border border-amber-200/50 px-4 py-2 text-sm font-sans text-amber-100 transition-colors hover:bg-amber-200/10"
+              >
+                Chant on your own
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setIsShareVisible(true)}
@@ -2020,6 +2042,15 @@ const AumChanterPage = () => {
                 <button type="button" onClick={() => setIsGroupsVisible(false)} className="text-2xl leading-none text-spiritual-300/60 hover:text-spiritual-200" aria-label="Close groups">&times;</button>
               </div>
               <div className="overflow-y-auto p-4 text-sm text-spiritual-100">
+                {groupCode && (
+                  <button
+                    type="button"
+                    onClick={chantOnYourOwn}
+                    className="mb-4 w-full rounded-lg border border-amber-200/50 px-4 py-2.5 text-sm font-sans text-amber-100 transition-colors hover:bg-amber-200/10"
+                  >
+                    Chant on your own
+                  </button>
+                )}
                 <GroupJoinList groups={rankedGroups} currentCode={groupCode} onJoin={(group) => joinListedGroup(group, true)} />
               </div>
             </div>

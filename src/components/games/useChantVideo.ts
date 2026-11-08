@@ -944,6 +944,9 @@ export function useChantVideo() {
   const chantDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
   const chantBufferRef = useRef<AudioBuffer | null>(null);
   const chantSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const voiceSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const stopWhenQuietRef = useRef(false);
+  const holdForCardRef = useRef(false);
   const loadedAudioSrcRef = useRef('');
   const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const tanpuraBufferRef = useRef<AudioBuffer | null>(null);
@@ -1009,7 +1012,9 @@ export function useChantVideo() {
     setCanShare(false);
   }, []);
 
-  const stopRecording = useCallback(() => {
+  const finishRecording = useCallback(() => {
+    stopWhenQuietRef.current = false;
+    holdForCardRef.current = false;
     drawingRef.current = false;
     clearTimers();
     cancelAnimationFrame(rafRef.current);
@@ -1023,6 +1028,7 @@ export function useChantVideo() {
       }
     });
     chantSourcesRef.current = [];
+    voiceSourcesRef.current = [];
     const context = audioContextRef.current;
     if (context && context.state === 'running') void context.suspend();
     const recorder = recorderRef.current;
@@ -1036,6 +1042,29 @@ export function useChantVideo() {
       setPhase('idle');
     }
   }, [clearTimers, stopTracks]);
+  const finishRecordingRef = useRef(finishRecording);
+  finishRecordingRef.current = finishRecording;
+
+  const maybeFinishRecording = useCallback(() => {
+    if (!stopWhenQuietRef.current) return;
+    if (voiceSourcesRef.current.length > 0) return;
+    if (holdForCardRef.current) return;
+    finishRecordingRef.current();
+  }, []);
+
+  const stopRecording = useCallback(() => {
+    stopWhenQuietRef.current = true;
+    holdForCardRef.current = false;
+    if (endHoldTimerRef.current != null) {
+      window.clearTimeout(endHoldTimerRef.current);
+      endHoldTimerRef.current = null;
+    }
+    if (phaseRef.current !== 'recording') {
+      finishRecordingRef.current();
+      return;
+    }
+    maybeFinishRecording();
+  }, [maybeFinishRecording]);
 
   const discardVideo = useCallback(() => {
     runRef.current += 1;
@@ -1052,6 +1081,9 @@ export function useChantVideo() {
     releasePlayback();
     sessionCountRef.current = 0;
     endingRef.current = false;
+    stopWhenQuietRef.current = false;
+    holdForCardRef.current = false;
+    voiceSourcesRef.current = [];
     setSessionCount(0);
     setElapsedMs(0);
     setError(null);
@@ -1079,14 +1111,20 @@ export function useChantVideo() {
   }, []);
 
   const noteChant = useCallback(() => {
-    if (phaseRef.current !== 'recording' || endingRef.current) return;
+    if (phaseRef.current !== 'recording' || endingRef.current || stopWhenQuietRef.current) return;
     sessionCountRef.current += 1;
     setSessionCount(sessionCountRef.current);
     const limit = chantLimitRef.current;
     if (limit && sessionCountRef.current >= limit) {
       endingRef.current = true;
+      stopWhenQuietRef.current = true;
+      holdForCardRef.current = true;
       if (endHoldTimerRef.current != null) window.clearTimeout(endHoldTimerRef.current);
-      endHoldTimerRef.current = window.setTimeout(() => stopRecording(), END_CARD_MS);
+      endHoldTimerRef.current = window.setTimeout(() => {
+        endHoldTimerRef.current = null;
+        holdForCardRef.current = false;
+        maybeFinishRecording();
+      }, END_CARD_MS);
     }
     queueChantBuffer();
     const context = audioContextRef.current;
@@ -1098,6 +1136,7 @@ export function useChantVideo() {
     source.buffer = buffer;
     source.connect(destination);
     chantSourcesRef.current.push(source);
+    voiceSourcesRef.current.push(source);
     const tanpuraBuffer = tanpuraBufferRef.current;
     let tanpura: AudioBufferSourceNode | null = null;
     if (tanpuraBuffer) {
@@ -1115,22 +1154,26 @@ export function useChantVideo() {
       chantSourcesRef.current.push(tanpura);
     }
     source.onended = () => {
+      voiceSourcesRef.current = voiceSourcesRef.current.filter((item) => item !== source);
       chantSourcesRef.current = chantSourcesRef.current.filter((item) => item !== source);
-      if (!tanpura) return;
-      try {
-        tanpura.stop();
-      } catch {
-        // The drone already finished with the chant.
+      if (tanpura) {
+        try {
+          tanpura.stop();
+        } catch {
+          // The drone already finished with the chant.
+        }
       }
+      maybeFinishRecording();
     };
     const startedAt = context.currentTime;
     try {
       source.start(startedAt);
       tanpura?.start(startedAt);
     } catch {
-      // The context closed between the tap and playback.
+      voiceSourcesRef.current = voiceSourcesRef.current.filter((item) => item !== source);
+      maybeFinishRecording();
     }
-  }, [queueChantBuffer, stopRecording]);
+  }, [maybeFinishRecording, queueChantBuffer]);
 
   const setCanvasNode = useCallback((node: HTMLCanvasElement | null) => {
     canvasRef.current = node;
@@ -1143,6 +1186,9 @@ export function useChantVideo() {
     releasePlayback();
     sessionCountRef.current = 0;
     endingRef.current = false;
+    stopWhenQuietRef.current = false;
+    holdForCardRef.current = false;
+    voiceSourcesRef.current = [];
     personBaselineRef.current = Math.max(0, Math.round(frameRef.current.personTotal || 0));
     chantLimitRef.current = VIDEO_CHANT_LIMITS.includes(chantLimit ?? 0) ? chantLimit : null;
     setSessionCount(0);
