@@ -1350,6 +1350,22 @@ const AumChanterPage = () => {
     : null;
   const personalShare = buildPersonalChantShare(currentChant.name, count, savedWorldwide);
   const videoMessage = groupLink?.videoText ?? personalShare.videoText;
+  const shareHeading = async () => {
+    const text = sharingThisGroup && groupLink ? groupLink.whatsappText : personalShare.whatsappText;
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share({ title: CHANT_APP_NAME, text });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Leave the page unchanged when the device cannot share or copy.
+    }
+  };
 
   useEffect(() => {
     syncFrame({
@@ -1585,6 +1601,18 @@ const AumChanterPage = () => {
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
         <div ref={whyChantsRef} className="relative flex max-w-full items-center justify-center gap-2 px-2">
           <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
+          <button
+            type="button"
+            aria-label="Share"
+            onClick={() => { void shareHeading(); }}
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-200/40 text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current stroke-[1.75]">
+              <path d="M12 15V5" strokeLinecap="round" />
+              <path d="m8 8 4-4 4 4" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M6 12.5V18a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-5.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
           <button
             type="button"
             aria-expanded={whyChantsOpen}
