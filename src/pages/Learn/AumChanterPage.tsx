@@ -36,6 +36,33 @@ const AUTO_CHANT_FALLBACK_DURATION_MS = 2500;
 const TOTAL_WALK_MS = 10000;
 const TANPURA_SRC = '/tanpura.mp3';
 const TANPURA_VOLUME = 0.2;
+const REMEMBERED_GROUP_KEY = 'aumChantGroup';
+
+function readRememberedGroup(): { code: string; name: string } | null {
+  try {
+    const raw = localStorage.getItem(REMEMBERED_GROUP_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { code?: unknown; name?: unknown };
+    const code = groupSlug(typeof parsed.code === 'string' ? parsed.code : '');
+    const name = typeof parsed.name === 'string' ? parsed.name.trim() : '';
+    if (!code || !name) return null;
+    return { code, name };
+  } catch {
+    return null;
+  }
+}
+
+function writeRememberedGroup(group: { code: string; name: string } | null) {
+  try {
+    if (!group) {
+      localStorage.removeItem(REMEMBERED_GROUP_KEY);
+      return;
+    }
+    localStorage.setItem(REMEMBERED_GROUP_KEY, JSON.stringify({ code: group.code, name: group.name }));
+  } catch {
+    // Private browsing can block storage. The group still shows for this visit.
+  }
+}
 
 type RisingTotal = {
   shown: number;
@@ -495,11 +522,9 @@ const AumChanterPage = () => {
   const [groupNameDraft, setGroupNameDraft] = useState(() => {
     try {
       const fromUrl = new URLSearchParams(window.location.search).get('group');
-      if (fromUrl && fromUrl.trim()) {
-        const slug = groupSlug(fromUrl);
-        if (slug) return slug.replace(/_/g, ' ');
-      }
-      return '';
+      const urlSlug = groupSlug(fromUrl ?? '');
+      if (urlSlug) return urlSlug.replace(/_/g, ' ');
+      return readRememberedGroup()?.name ?? '';
     } catch {
       return '';
     }
@@ -512,6 +537,7 @@ const AumChanterPage = () => {
   const chantNotesRef = useRef<HTMLDivElement>(null);
   const [groupTotal, setGroupTotal] = useState(0);
   const [groupNotice, setGroupNotice] = useState('');
+  const [isSavingGroup, setIsSavingGroup] = useState(false);
   const [savedTotal, setSavedTotal] = useState(0);
   const [savedReady, setSavedReady] = useState(false);
   const [savedWorldwide, setSavedWorldwide] = useState(0);
@@ -668,9 +694,11 @@ const AumChanterPage = () => {
     setGroupByChant(nextGroupChants);
     totalsApi.current.noteGroup(group.code, nextGroupTotal, nextGroupChants);
     setGroupNotice('');
-    if (groupSlug(groupNameDraftRef.current).toLowerCase() !== group.code.toLowerCase()) {
-      setGroupNameDraft(group.name);
-    }
+    writeRememberedGroup({ code: group.code, name: group.name });
+    const draft = groupNameDraftRef.current.trim();
+    const draftMatches = groupSlug(draft).toLowerCase() === group.code.toLowerCase();
+    const draftIsSlug = draft.toLowerCase() === group.code.replace(/_/g, ' ').toLowerCase();
+    if (!draftMatches || draftIsSlug) setGroupNameDraft(group.name);
     window.history.replaceState({}, '', `/chant?group=${encodeURIComponent(group.code)}`);
   }, []);
 
@@ -733,10 +761,15 @@ const AumChanterPage = () => {
   }, [adoptGroup]);
 
   const createTypedGroup = useCallback(async () => {
-    const saved = await ensureChantGroup();
-    if (!saved) return;
-    setGroupNotice(`You are in the ${saved.name} group.`);
-    setIsShareVisible(false);
+    setIsSavingGroup(true);
+    setGroupNotice('');
+    try {
+      const saved = await ensureChantGroup();
+      if (!saved) return;
+      setGroupNotice(`You are in the ${saved.name} group.`);
+    } finally {
+      setIsSavingGroup(false);
+    }
   }, [ensureChantGroup]);
 
   const joinListedGroup = (group: ChantGroup, closeList: boolean) => {
@@ -875,6 +908,7 @@ const AumChanterPage = () => {
     groupCodeRef.current = null;
     groupTitleRef.current = '';
     groupNameDraftRef.current = '';
+    writeRememberedGroup(null);
     setGroupCode(null);
     setGroupTitle('');
     setGroupNameDraft('');
@@ -890,11 +924,14 @@ const AumChanterPage = () => {
 
   useEffect(() => {
     const raw = new URLSearchParams(window.location.search).get('group');
-    if (raw == null || raw.trim() === '') return;
-    const slug = groupSlug(raw);
+    const hasUrlGroup = Boolean(raw && raw.trim());
+    const slug = groupSlug(hasUrlGroup ? (raw ?? '') : (readRememberedGroup()?.code ?? ''));
     if (!slug) {
-      setGroupNotice('Use letters and numbers for the group name.');
+      if (hasUrlGroup) setGroupNotice('Use letters and numbers for the group name.');
       return;
+    }
+    if (!hasUrlGroup) {
+      window.history.replaceState({}, '', `/chant?group=${encodeURIComponent(slug)}`);
     }
     let cancelled = false;
     void ensureChantGroup().then(() => {
@@ -2128,12 +2165,16 @@ const AumChanterPage = () => {
               <button
                 type="button"
                 onClick={() => { void createTypedGroup(); }}
-                className="shrink-0 rounded-lg bg-spiritual-600 px-3 py-2 text-sm font-sans font-medium text-white transition-colors hover:bg-spiritual-500"
+                disabled={isSavingGroup}
+                className="shrink-0 rounded-lg bg-spiritual-600 px-3 py-2 text-sm font-sans font-medium text-white transition-colors hover:bg-spiritual-500 disabled:opacity-60"
               >
-                Create
+                {isSavingGroup ? 'Saving…' : 'Create'}
               </button>
             </div>
-            {groupLink ? (
+            {groupNotice && (
+              <p id="group-notice" className="text-center text-xs text-amber-100/90" role="status">{groupNotice}</p>
+            )}
+            {sharingThisGroup && groupLink ? (
               <>
                 <p className="text-xs uppercase tracking-wide text-spiritual-300/70">Your group link</p>
                 <p
@@ -2200,13 +2241,12 @@ const AumChanterPage = () => {
               </>
             ) : (
               <p className="text-center text-xs text-spiritual-200/80">
-                {typedGroupName
+                {typedGroupName && !typedGroupSlug
                   ? 'Use letters and numbers, at least two characters. The link appears when the name is ready.'
-                  : 'Type a group name. The link appears here.'}
+                  : typedGroupName
+                    ? 'Press Create to save this group. The link appears once it is saved.'
+                    : 'Type a group name. The link appears here.'}
               </p>
-            )}
-            {groupNotice && (
-              <p id="group-notice" className="text-center text-xs text-amber-100/90" role="status">{groupNotice}</p>
             )}
           </div>
 
