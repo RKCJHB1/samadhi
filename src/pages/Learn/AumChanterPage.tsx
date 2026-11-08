@@ -2492,7 +2492,12 @@ const AumChanterPage = () => {
                 />
                 <p className="text-sm text-spiritual-300/90">
                   {videoSessionCount.toLocaleString()} {videoSessionCount === 1 ? 'chant' : 'chants'} of {currentChant.name} in this clip.
-                  The video stays on this phone.
+                </p>
+                <p className="text-sm text-spiritual-300/90">
+                  This video was recorded on this phone.
+                  Share or Download sends it from this phone to the people you choose.
+                  Only those people can watch it afterward.
+                  This website does not store the video.
                 </p>
                 <p id="group-share-message" className="whitespace-pre-wrap text-sm text-spiritual-100/90">
                   {renderWhatsAppText(videoMessage)}
