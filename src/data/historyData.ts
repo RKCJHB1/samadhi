@@ -2163,13 +2163,13 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     date: "November 9",
     monthNumeric: 10,
     dayNumeric: 9,
-    year: 1893,
-    headline: "November 9 — Swami Vivekananda Returns to Chicago after Lectures in Streator",
-    narrativeParagraph1: "On October 9, 1893, **Swami Vivekananda** returned to **Chicago** after delivering two lectures in **Streator, Illinois**. On October 7, he spoke on **“Religion and Customs of India”** at the **Plumb Opera House**; the following evening, he delivered **“God, a Universal Ruler”** at the **Church of Good Will**.",
-    narrativeParagraph2: "His lectures introduced American audiences to India’s spiritual heritage and Vedantic understanding of the Divine. A contemporary review of his first Streator lecture, delivered on Saturday, October 7, appeared in the **Streator Daily Free Press** on October 9.",
+    year: 1884,
+    headline: "November 9 — Sri Ramakrishna Explains the Nature of Self-Knowledge",
+    narrativeParagraph1: "On November 9, 1884, at **Dakshineswar**, Sri Ramakrishna discussed spiritual knowledge with **Mahimacharan** and other devotees, including **Vijaykrishna Goswami**. Speaking to Mahimacharan, who sought knowledge of Brahman, the Master explained that the individual Self is ultimately one with Brahman, while ignorance and attachment conceal this truth.",
+    narrativeParagraph2: "He used the image of gold buried beneath earth: the gold is already present, and one need only remove what conceals it. The aim of spiritual life, therefore, is not to acquire a new reality but to realize the divine Reality already present within.",
     quote: "",
     quoteAuthor: "",
-    imageCaption: "Swami Vivekananda at Chicago’s Adams Street Station on 9 October 1893, with a newsboy holding the Streator Daily Free Press review of his lectures at the Plumb Opera House and the Church of Good Will.",
+    imageCaption: "Sri Ramakrishna at Dakshineswar on 9 November 1884, seated beneath the banyan, explaining to Mahimacharan, Vijaykrishna Goswami, and the other devotees that the Self is already one with Brahman.",
     customImage: "/images/on-this-day/9thNovember.jpg"
   },
   {
