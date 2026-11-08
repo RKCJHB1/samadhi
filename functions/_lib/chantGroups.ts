@@ -300,7 +300,6 @@ async function listGroups(env: ChantDbEnv, limit: number): Promise<ChantGroup[]>
     env,
     `SELECT ${GROUP_COLUMNS}
      FROM chant_groups
-     WHERE total > 0
      ORDER BY total DESC, name COLLATE NOCASE ASC
      LIMIT ?`,
     [limit],
