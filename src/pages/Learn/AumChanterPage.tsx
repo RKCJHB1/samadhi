@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import MalaBeads from '../../components/games/MalaBeads';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_DATES, CHANT_APP_HEADING, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
 
@@ -1367,7 +1367,7 @@ const AumChanterPage = () => {
     const text = sharingThisGroup && groupLink ? groupLink.whatsappText : personalShare.whatsappText;
     if (typeof navigator.share === 'function') {
       try {
-        await navigator.share({ title: CHANT_APP_NAME, text });
+        await navigator.share({ title: CHANT_APP_HEADING, text });
         return;
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') return;
@@ -1414,7 +1414,7 @@ const AumChanterPage = () => {
 
   useEffect(() => {
     const defaultTitle = 'Ramakrishna Centre of South Africa, Johannesburg';
-    document.title = `${CHANT_APP_NAME} | ${defaultTitle}`;
+    document.title = `${CHANT_APP_HEADING} | ${defaultTitle}`;
     window.scrollTo(0, 0);
   }, []);
 
@@ -1613,7 +1613,10 @@ const AumChanterPage = () => {
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
         <div ref={whyChantsRef} className="relative flex max-w-full items-center justify-center gap-2 px-2">
-          <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">{CHANT_APP_NAME}</h1>
+          <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
+            {CHANT_APP_NAME}{' '}
+            <span className="whitespace-nowrap">{CHANT_APP_DATES}</span>
+          </h1>
           <button
             type="button"
             aria-label="Share"

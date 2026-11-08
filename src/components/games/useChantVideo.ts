@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
-import { CHANT_APP_NAME, CHANT_SHARE_QUOTE_LINES } from '../../services/chantGroupService';
+import { CHANT_APP_HEADING, CHANT_SHARE_QUOTE_LINES } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
 const VIDEO_LONG_SIDE = 1280;
@@ -674,7 +674,7 @@ function paintCentreName(context: CanvasRenderingContext2D, canvas: HTMLCanvasEl
     y = pad + size;
   }
   paintFittedLine(context, canvas, CENTRE_NAME, y, size, '#fff7ed');
-  paintFittedLine(context, canvas, CHANT_APP_NAME, y + lineHeight, size, '#ffd166');
+  paintFittedLine(context, canvas, CHANT_APP_HEADING, y + lineHeight, size, '#ffd166');
   context.restore();
 }
 

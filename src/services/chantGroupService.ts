@@ -73,6 +73,8 @@ export class PartialChantSaveError extends Error {
 
 const SITE_ORIGIN = 'https://ramakrishna-johannesburg.org.za';
 export const CHANT_APP_NAME = 'Digital Japa Yajna';
+export const CHANT_APP_DATES = '(8-10 November 2026)';
+export const CHANT_APP_HEADING = `${CHANT_APP_NAME} ${CHANT_APP_DATES}`;
 const MAX_ADD = 500;
 
 export function chantSiteOrigin(): string {
@@ -130,7 +132,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   const whatsappText = `Please join the ${CHANT_APP_NAME} at:\n${url}.\n\n${lead}\n\n${fundraisingClose()}`;
   return {
     url,
-    title: CHANT_APP_NAME,
+    title: CHANT_APP_HEADING,
     whatsappText,
     twitterText: message,
     facebookQuote: message,
