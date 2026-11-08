@@ -127,7 +127,7 @@ export function buildPersonalChantShare(chantName: string, personTotal = 0, worl
   const worldTotal = Math.max(0, Math.round(worldwide));
   const lead = `Diwali, symbolizes the ultimate triumph of light over darkness and good over evil. It honors key sacred events, including the joyful return of Lord Rama to Ayodhya, Lord Krishna's slaying of Narakasura, and the Divine Mother's fierce destruction of the demon Raktabija. This Diwali, while we celebrate, let us remember its spiritual significance.\n\nThis ${CHANT_APP_NAME} is meant to keep families together by remembering the Divine. Please join me in chanting or start your own group and let our chanting be collectively counted.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\nWorldwide, all chants: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
   const message = `${lead}\n\n${fundraisingClose()}`;
-  const whatsappText = `${lead}\n\n${url}\n\n${fundraisingClose()}`;
+  const whatsappText = `Please join the ${CHANT_APP_NAME} at:\n${url}.\n\n${lead}\n\n${fundraisingClose()}`;
   return {
     url,
     title: CHANT_APP_NAME,
@@ -149,7 +149,7 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const styledGroup = `_*${groupName}*_`;
   const body = `Diwali, symbolizes the ultimate triumph of light over darkness and good over evil. It honors key sacred events, including the joyful return of Lord Rama to Ayodhya, Lord Krishna's slaying of Narakasura, and the Divine Mother's fierce destruction of the demon Raktabija. This Diwali, while we celebrate, let us remember its spiritual significance.\n\nThis ${CHANT_APP_NAME} is meant to keep families together by remembering the Divine. Please join our ${styledGroup} Group or start your own group and let our chanting be collectively counted.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\n${groupName} (${chant}): *${thisChant.toLocaleString()}*\n${groupName}, all chants: *${sharedTotal.toLocaleString()}*\nWorldwide, all chants: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
   const message = `${body}\n\njoin our ${styledGroup} group and chant with us\n${url}\n\n${fundraisingClose()}`;
-  const whatsappText = `Please join our ${styledGroup} group and chant with us\n${url}. If you join at this link, each of our individual chants get added to the group total.\n${body}\n\n\n${fundraisingClose()}`;
+  const whatsappText = `Please join our ${styledGroup} group and chant with us\n${url}. If you join at this link, each of our individual chants get added to the group total.\n\n${body}\n\n\n${fundraisingClose()}`;
   return {
     url,
     title: `Join ${groupName} in chanting ${chant}`,
