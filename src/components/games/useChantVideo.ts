@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
 import { CHANT_APP_NAME, CHANT_SHARE_QUOTE_LINES } from '../../services/chantGroupService';
 
 const MAX_RECORDING_MS = 90_000;
@@ -1201,8 +1202,9 @@ export function useChantVideo() {
         }
         void loadChantBuffer(TANPURA_SRC, audioContextRef.current).then((buffer) => {
           if (!buffer || runId !== runRef.current) return;
-          if (!audioContextRef.current) return;
-          tanpuraBufferRef.current = buffer;
+          const audioContext = audioContextRef.current;
+          if (!audioContext) return;
+          tanpuraBufferRef.current = seamlessTanpuraBuffer(audioContext, buffer);
         });
         const src = frameRef.current.audioSrc;
         if (src) {

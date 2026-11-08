@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import MalaBeads from '../../components/games/MalaBeads';
 import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
+import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
 
 const getTodayString = () => {
   const today = new Date();
@@ -406,7 +407,9 @@ const AumChanterPage = () => {
   const [isGoalModalVisible, setIsGoalModalVisible] = useState<boolean>(false);
   const [goalInputValue, setGoalInputValue] = useState<string>('');
   const audioPoolRef = useRef<HTMLAudioElement[]>([]);
-  const tanpuraRef = useRef<HTMLAudioElement | null>(null);
+  const tanpuraContextRef = useRef<AudioContext | null>(null);
+  const tanpuraBufferRef = useRef<AudioBuffer | null>(null);
+  const tanpuraSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const tanpuraGenerationRef = useRef(0);
   const nextAudioIndexRef = useRef<number>(0);
   const lastAudioPlayAtRef = useRef<number>(0);
@@ -1017,42 +1020,74 @@ const AumChanterPage = () => {
   }, [history, goalsByChant, selectedChantId]);
 
   const playTanpuraWithChant = useCallback((voice: HTMLAudioElement) => {
-    let tanpura = tanpuraRef.current;
-    if (!tanpura) {
-      tanpura = new Audio(TANPURA_SRC);
-      tanpura.preload = 'auto';
-      tanpura.loop = true;
-      tanpuraRef.current = tanpura;
-    }
+    const context = tanpuraContextRef.current;
+    const buffer = tanpuraBufferRef.current;
+    if (!context || !buffer || context.state === 'closed') return;
+    if (context.state === 'suspended') void context.resume();
+
     const generation = tanpuraGenerationRef.current + 1;
     tanpuraGenerationRef.current = generation;
+    const previous = tanpuraSourceRef.current;
+    tanpuraSourceRef.current = null;
+    try {
+      previous?.stop();
+    } catch {
+      // The previous drone already ended.
+    }
+
+    const gain = context.createGain();
+    gain.gain.value = TANPURA_VOLUME;
+    gain.connect(context.destination);
+    const source = context.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    source.connect(gain);
+    tanpuraSourceRef.current = source;
     const stopWithChant = () => {
       voice.removeEventListener('ended', stopWithChant);
       if (tanpuraGenerationRef.current !== generation) return;
-      const current = tanpuraRef.current;
-      if (!current || current.paused) return;
-      current.pause();
+      if (tanpuraSourceRef.current !== source) return;
+      tanpuraSourceRef.current = null;
+      try {
+        source.stop();
+      } catch {
+        // The drone already finished with the chant.
+      }
     };
     voice.addEventListener('ended', stopWithChant);
-    tanpura.loop = true;
-    tanpura.volume = TANPURA_VOLUME;
     try {
-      tanpura.pause();
-      tanpura.currentTime = 0;
-      void tanpura.play().catch(() => {
-        // The next tap starts the drone with the chant again.
-      });
+      source.start();
     } catch {
-      // The drone restarts on the next tap.
+      // The next tap starts the drone with the chant again.
     }
   }, []);
 
   useEffect(() => {
+    const context = new AudioContext();
+    tanpuraContextRef.current = context;
+    let cancelled = false;
+    void fetch(TANPURA_SRC)
+      .then((response) => response.arrayBuffer())
+      .then((bytes) => context.decodeAudioData(bytes))
+      .then((buffer) => {
+        if (cancelled || context.state === 'closed') return;
+        tanpuraBufferRef.current = seamlessTanpuraBuffer(context, buffer);
+      })
+      .catch(() => {
+        // The chant still plays if the drone cannot be decoded.
+      });
     return () => {
-      const tanpura = tanpuraRef.current;
-      if (!tanpura) return;
-      tanpura.pause();
-      tanpuraRef.current = null;
+      cancelled = true;
+      const source = tanpuraSourceRef.current;
+      tanpuraSourceRef.current = null;
+      try {
+        source?.stop();
+      } catch {
+        // The drone had already stopped with the chant.
+      }
+      tanpuraContextRef.current = null;
+      tanpuraBufferRef.current = null;
+      if (context.state !== 'closed') void context.close();
     };
   }, []);
 
