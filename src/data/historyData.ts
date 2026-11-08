@@ -2160,6 +2160,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/8thNovember.png"
   },
   {
+    date: "November 9",
+    monthNumeric: 10,
+    dayNumeric: 9,
+    year: 1893,
+    headline: "November 9 — Swami Vivekananda Returns to Chicago after Lectures in Streator",
+    narrativeParagraph1: "On October 9, 1893, **Swami Vivekananda** returned to **Chicago** after delivering two lectures in **Streator, Illinois**. On October 7, he spoke on **“Religion and Customs of India”** at the **Plumb Opera House**; the following evening, he delivered **“God, a Universal Ruler”** at the **Church of Good Will**.",
+    narrativeParagraph2: "His lectures introduced American audiences to India’s spiritual heritage and Vedantic understanding of the Divine. A contemporary review of his first Streator lecture, delivered on Saturday, October 7, appeared in the **Streator Daily Free Press** on October 9.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda at Chicago’s Adams Street Station on 9 October 1893, with a newsboy holding the Streator Daily Free Press review of his lectures at the Plumb Opera House and the Church of Good Will.",
+    customImage: "/images/on-this-day/9thNovember.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
