@@ -216,8 +216,8 @@ const CHANT_OPTIONS: ChantOption[] = [
   },
   {
     id: 'sri-ram',
-    name: 'Jai Sri Ram',
-    shortLabel: 'Jai Sri Ram',
+    name: 'Jai Shri Ram',
+    shortLabel: 'Jai Shri Ram',
     symbol: 'राम',
     shareTag: '#RamNavami',
     imageSrc: '/jai-sri-ram.jpg',
@@ -254,7 +254,7 @@ const WHY_THESE_CHANTS = [
   },
   {
     id: 'sri-ram',
-    name: 'Jai Sri Ram',
+    name: 'Jai Shri Ram',
     text: 'Diwali marks the return of Lord Rama to Ayodhya. After his exile, the people lit rows of lamps to welcome him home.',
   },
   {
@@ -414,7 +414,7 @@ function countryLine(country: ChantCountry): string {
   const split = om + ram + ma + krishna;
   const parts = [
     om > 0 ? `Om ${om.toLocaleString()}` : '',
-    ram > 0 ? `Jai Sri Ram ${ram.toLocaleString()}` : '',
+    ram > 0 ? `Jai Shri Ram ${ram.toLocaleString()}` : '',
     ma > 0 ? `Jai Ma ${ma.toLocaleString()}` : '',
     krishna > 0 ? `Jai Shri Krishna ${krishna.toLocaleString()}` : '',
   ].filter(Boolean);
@@ -1930,7 +1930,7 @@ const AumChanterPage = () => {
                 <p>
                   Om <span className="font-mono">{groupChantShown.om.toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Sri Ram <span className="font-mono">{groupChantShown['sri-ram'].toLocaleString()}</span>
+                  Jai Shri Ram <span className="font-mono">{groupChantShown['sri-ram'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
                   Jai Ma <span className="font-mono">{groupChantShown['jai-ma'].toLocaleString()}</span>
                   <span className="mx-2 text-spiritual-400/50">·</span>
