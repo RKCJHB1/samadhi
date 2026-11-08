@@ -273,6 +273,10 @@ function GroupJoinList({
 
   return (
     <div>
+      <p className="mb-3 text-center text-xs leading-relaxed text-spiritual-200/85">
+        Each group shows its chant. Select that same chant on the page before you join.
+        Everyone can chant at their own time. You do not have to be online together.
+      </p>
       <label className="mb-3 block">
         <span className="sr-only">Find a group</span>
         <input
@@ -300,7 +304,7 @@ function GroupJoinList({
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm text-spiritual-100">{group.name}</span>
-                    <span className="block text-xs text-spiritual-300/70">{group.total.toLocaleString()} chants</span>
+                    <span className="block text-xs text-spiritual-300/70">{group.chantName} · {group.total.toLocaleString()} chants</span>
                   </span>
                   <span className={`shrink-0 rounded px-3 py-1 text-xs ${current ? 'bg-amber-700/80 text-amber-50' : 'bg-spiritual-600 text-white'}`}>
                     {current ? 'Joined' : 'Join'}
@@ -1881,6 +1885,7 @@ const AumChanterPage = () => {
               >
                 <p>
                   The members of this group have chanted a total of {groupShown.toLocaleString()} {groupShown === 1 ? 'time' : 'times'} amongst all the chants.
+                  These chants can be added at different times. The family does not have to be online together.
                 </p>
                 <p id="group-chant-total">
                   {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span>
@@ -2097,6 +2102,10 @@ const AumChanterPage = () => {
             <p className="text-center text-xs text-spiritual-200/85">
               Leave this blank to chant on your own. Or type a group name and press Create to join or start that group.
             </p>
+            <p className="text-center text-xs text-spiritual-200/85">
+              Selected chant: {currentChant.name}. Relatives can select this same chant before they join.
+              Each person chants at their own time, and the chants still join one group total.
+            </p>
             <div className="flex w-full items-center gap-2">
               <label htmlFor="group-name" className="shrink-0">Group name</label>
               <input
@@ -2200,6 +2209,14 @@ const AumChanterPage = () => {
               <p id="group-notice" className="text-center text-xs text-amber-100/90" role="status">{groupNotice}</p>
             )}
           </div>
+
+          {videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
+            <p className="w-full max-w-md text-center text-xs leading-relaxed text-spiritual-200/85">
+              Only you can see a recording until you share or download it.
+              Only the people you send it to can watch it afterward.
+              This website does not store the video.
+            </p>
+          )}
 
           {videoPhase !== 'recording' && videoPhase !== 'preparing' && videoPhase !== 'ready' && (
             <fieldset className="mt-2 w-full max-w-md rounded-xl border border-amber-300/70 bg-slate-950/90 p-3 text-sm text-white shadow-lg">
