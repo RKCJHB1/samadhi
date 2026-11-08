@@ -72,7 +72,7 @@ export class PartialChantSaveError extends Error {
 }
 
 const SITE_ORIGIN = 'https://ramakrishna-johannesburg.org.za';
-export const CHANT_APP_NAME = 'Global Digital Japa Yajna';
+export const CHANT_APP_NAME = 'Digital Japa Yajna';
 const MAX_ADD = 500;
 
 export function chantSiteOrigin(): string {
