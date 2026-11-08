@@ -2170,7 +2170,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     quote: "",
     quoteAuthor: "",
     imageCaption: "Sri Ramakrishna at Dakshineswar on 9 November 1884, seated beneath the banyan, explaining to Mahimacharan, Vijaykrishna Goswami, and the other devotees that the Self is already one with Brahman.",
-    customImage: "/images/on-this-day/9thNovember.jpg"
+    customImage: "/images/on-this-day/9thNovember.jpg?v=2"
   },
   {
     date: "January 1",
