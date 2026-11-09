@@ -2173,6 +2173,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/9thNovember.jpg?v=2"
   },
   {
+    date: "November 10",
+    monthNumeric: 10,
+    dayNumeric: 10,
+    year: 1896,
+    headline: "November 10 — Swami Vivekananda Lectures on “Practical Vedanta – Part I” in London",
+    narrativeParagraph1: "On November 10, 1896, **Swami Vivekananda** delivered the first lecture in his celebrated series on **Practical Vedanta** in **London**. He explained that Vedanta must not remain an intellectual philosophy but must enter every aspect of human life.",
+    narrativeParagraph2: "Declaring, **“The Vedanta, therefore, as a religion must be intensely practical. We must be able to carry it out in every part of our lives,”** Swamiji emphasised that the realization of our divine nature—**“Thou art That”**—must transform our thoughts, actions, and relationships with others.",
+    quote: "The Vedanta, therefore, as a religion must be intensely practical. We must be able to carry it out in every part of our lives.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda lecturing on “Practical Vedanta – Part I” in London on 10 November 1896.",
+    customImage: "/images/on-this-day/10thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
