@@ -2186,6 +2186,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/10thNovember.png"
   },
   {
+    date: "November 11",
+    monthNumeric: 10,
+    dayNumeric: 11,
+    year: 1896,
+    headline: "November 11 — Swami Vivekananda on the Jiva and Brahman",
+    narrativeParagraph1: "On November 11, 1896, **J. J. Goodwin** wrote to **Mrs. Ole Bull**, recording an unpublished statement by **Swami Vivekananda** made toward the end of his lecture **“Practical Vedanta — IV”** in **London**. Swamiji reflected on the relationship between the individual soul (jiva), Brahman, and Maya.",
+    narrativeParagraph2: "**“A Jiva can never attain absolutely to Brahman until the whole of Maya disappears. While there is still a Jiva left in Maya, there can be no soul absolutely free. . . . Vedantists are divided on this point.”**",
+    quote: "A Jiva can never attain absolutely to Brahman until the whole of Maya disappears.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda lecturing in London on 11 November 1896, as J. J. Goodwin recorded his words on the jiva, Maya, and Brahman for Mrs. Ole Bull.",
+    customImage: "/images/on-this-day/11thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
