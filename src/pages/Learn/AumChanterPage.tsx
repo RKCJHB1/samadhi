@@ -38,6 +38,24 @@ const TANPURA_SRC = '/tanpura.mp3';
 const TANPURA_VOLUME = 0.2;
 const REMEMBERED_GROUP_KEY = 'aumChantGroup';
 
+function whatsAppBrowserNotice(): { text: string; href?: string; action?: string } | null {
+  if (typeof navigator === 'undefined') return null;
+  const agent = navigator.userAgent || '';
+  if (!/WhatsApp/i.test(agent)) return null;
+  const page = window.location.href;
+  if (/Android/i.test(agent)) {
+    const bare = page.replace(/^https?:\/\//, '');
+    return {
+      text: 'WhatsApp’s own browser often will not play the chant or count a tap.',
+      href: `intent://${bare}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(page)};end`,
+      action: 'Open in Chrome',
+    };
+  }
+  return {
+    text: 'WhatsApp’s own browser often will not play the chant or count a tap. Tap the Safari icon at the bottom of this screen, then tap the center.',
+  };
+}
+
 function readRememberedGroup(): { code: string; name: string } | null {
   try {
     const raw = localStorage.getItem(REMEMBERED_GROUP_KEY);
@@ -282,10 +300,12 @@ function ChantInfoIcon() {
 function GroupJoinList({
   groups,
   currentCode,
+  listFailed,
   onJoin,
 }: {
   groups: ChantGroup[];
   currentCode: string | null;
+  listFailed: boolean;
   onJoin: (group: ChantGroup) => void;
 }) {
   const [query, setQuery] = useState('');
@@ -315,7 +335,11 @@ function GroupJoinList({
         />
       </label>
       {groups.length === 0 ? (
-        <p className="text-center text-xs text-spiritual-300/70">No saved group totals yet.</p>
+        <p className="text-center text-xs text-spiritual-300/70">
+          {listFailed
+            ? 'The group list could not be loaded. It will try again.'
+            : 'No saved group totals yet.'}
+        </p>
       ) : ordered.length === 0 ? (
         <p className="text-center text-xs text-spiritual-300/70">No group has that name.</p>
       ) : (
@@ -444,6 +468,8 @@ const AumChanterPage = () => {
   const tanpuraGenerationRef = useRef(0);
   const nextAudioIndexRef = useRef<number>(0);
   const lastAudioPlayAtRef = useRef<number>(0);
+  const lastChantTapAtRef = useRef(0);
+  const [whatsAppNotice] = useState(whatsAppBrowserNotice);
   const chantDurationMsRef = useRef<number>(AUTO_CHANT_FALLBACK_DURATION_MS);
   const [selectedChantId, setSelectedChantId] = useState<string>(() => {
     try {
@@ -563,6 +589,7 @@ const AumChanterPage = () => {
   const [countries, setCountries] = useState<ChantCountry[]>([]);
   const [groupByChant, setGroupByChant] = useState<GroupChantTotals>(emptyChantTotals());
   const groupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const saveRetryRef = useRef(2000);
   const personIdRef = useRef('');
   const chanterNameRef = useRef('');
   const confirmedPersonRef = useRef(0);
@@ -702,7 +729,29 @@ const AumChanterPage = () => {
     window.history.replaceState({}, '', `/chant?group=${encodeURIComponent(group.code)}`);
   }, []);
 
-  const ensureChantGroup = useCallback(async (): Promise<ChantGroup | null> => {
+  const clearMissingGroup = useCallback((code: string) => {
+    const missing = code.toLowerCase();
+    const openCode = groupCodeRef.current?.toLowerCase() ?? '';
+    const remembered = readRememberedGroup()?.code.toLowerCase() ?? '';
+    const urlCode = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '').toLowerCase();
+    if (missing !== openCode && missing !== remembered && missing !== urlCode) return;
+    pendingGroupRef.current = 0;
+    pendingByChantRef.current = emptyChantTotals();
+    pendingGroupCodeRef.current = '';
+    groupCodeRef.current = null;
+    groupTitleRef.current = '';
+    writeRememberedGroup(null);
+    setGroupCode(null);
+    setGroupTitle('');
+    if (groupSlug(groupNameDraftRef.current).toLowerCase() === missing) {
+      groupNameDraftRef.current = '';
+      setGroupNameDraft('');
+    }
+    setGroupNotice('This group link was not found.');
+    window.history.replaceState({}, '', '/chant');
+  }, []);
+
+  const ensureChantGroup = useCallback(async (createIfMissing = false): Promise<ChantGroup | null> => {
     const typed = groupNameDraftRef.current.trim();
     const typedSlug = groupSlug(typed);
     const fromUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '');
@@ -732,8 +781,16 @@ const AumChanterPage = () => {
     const label = typedSlug ? typed : slug.replace(/_/g, ' ');
     let pending: Promise<ChantGroup | null>;
     pending = fetchChantGroup(slug)
-      .then((found) => found ?? createChantGroup(label, chantName))
+      .then((found) => {
+        if (found) return found;
+        if (!createIfMissing) {
+          clearMissingGroup(slug);
+          return null;
+        }
+        return createChantGroup(label, chantName);
+      })
       .then((group) => {
+        if (!group) return null;
         const nowTyped = groupSlug(groupNameDraftRef.current).toLowerCase();
         const nowUrl = groupSlug(new URLSearchParams(window.location.search).get('group') ?? '').toLowerCase();
         const code = group.code.toLowerCase();
@@ -758,13 +815,13 @@ const AumChanterPage = () => {
     createSlugRef.current = slug.toLowerCase();
     createGroupRef.current = pending;
     return pending;
-  }, [adoptGroup]);
+  }, [adoptGroup, clearMissingGroup]);
 
   const createTypedGroup = useCallback(async () => {
     setIsSavingGroup(true);
     setGroupNotice('');
     try {
-      const saved = await ensureChantGroup();
+      const saved = await ensureChantGroup(true);
       if (!saved) return;
       setGroupNotice(`You are in the ${saved.name} group.`);
     } finally {
@@ -813,13 +870,14 @@ const AumChanterPage = () => {
       }
       void fetchChantGroup(code).then((group) => {
         if (group) applyGroup(group);
+        else clearMissingGroup(code);
       }).catch(() => {
         // Keep the group total already on screen.
       });
     }).catch(() => {
       setWorldwideFailed(true);
     });
-  }, []);
+  }, [clearMissingGroup]);
 
   const flushSavedChants = useCallback(() => {
     const amount = pendingPersonRef.current;
@@ -844,7 +902,7 @@ const AumChanterPage = () => {
     void (async () => {
       let code = groupCodeForBatch || groupCodeRef.current;
       if (groupAmount > 0 && !code) {
-        const group = await ensureChantGroup();
+        const group = await ensureChantGroup(true);
         code = group?.code ?? null;
       }
       try {
@@ -858,6 +916,7 @@ const AumChanterPage = () => {
           personByChant,
         );
         confirmedPersonRef.current = saved.person.total;
+        saveRetryRef.current = 2000;
         setSavedTotal(saved.person.total + pendingPersonRef.current);
         setRecordChants(Math.max(confirmedRecordRef.current, saved.person.total + pendingPersonRef.current));
         setSavedReady(true);
@@ -897,6 +956,10 @@ const AumChanterPage = () => {
           showGroupTotals();
           setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
         }
+        const wait = saveRetryRef.current;
+        saveRetryRef.current = Math.min(wait * 2, 30000);
+        if (groupTimerRef.current) clearTimeout(groupTimerRef.current);
+        groupTimerRef.current = setTimeout(() => flushSavedChants(), wait);
       }
     })();
   }, [ensureChantGroup, refreshLeaderboard]);
@@ -976,6 +1039,19 @@ const AumChanterPage = () => {
     const timer = window.setInterval(() => refreshLeaderboard(), 10000);
     return () => window.clearInterval(timer);
   }, [refreshLeaderboard]);
+
+  useEffect(() => {
+    const sendPending = () => flushSavedChantsRef.current();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') sendPending();
+    };
+    window.addEventListener('pagehide', sendPending);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('pagehide', sendPending);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
 
   useEffect(() => {
     if (!groupCode) return;
@@ -1199,6 +1275,10 @@ const AumChanterPage = () => {
   }, [createChantAudio, currentChant.audioSrc, playTanpuraWithChant]);
 
   const handleChant = useCallback((options?: { bypassAudioThrottle?: boolean } | React.MouseEvent<HTMLDivElement>) => {
+    const context = tanpuraContextRef.current;
+    if (context && context.state === 'suspended') {
+      void context.resume();
+    }
     // Handle both direct calls and React event calls
     const opts = options && 'bypassAudioThrottle' in options ? options : undefined;
     const playedVoice = playChantSound({ bypassThrottle: opts?.bypassAudioThrottle });
@@ -1273,6 +1353,16 @@ const AumChanterPage = () => {
     setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 700);
     return playedVoice;
   }, [playChantSound, scheduleSavedChants]);
+
+  const chantFromTouch = useCallback(() => {
+    lastChantTapAtRef.current = Date.now();
+    handleChant();
+  }, [handleChant]);
+
+  const chantFromClick = useCallback(() => {
+    if (Date.now() - lastChantTapAtRef.current < 700) return;
+    handleChant();
+  }, [handleChant]);
 
   const handleSetGoal = () => {
     const newGoal = parseInt(goalInputValue, 10);
@@ -1795,6 +1885,19 @@ const AumChanterPage = () => {
 
           {/* Main Chant Button + Mala */}
           <div className="flex flex-col items-center mt-2 mb-4 sm:mb-12">
+            {whatsAppNotice && (
+              <p className="mb-3 w-full max-w-md rounded-xl border border-amber-300/60 bg-slate-950/90 px-3 py-2 text-center text-sm text-amber-50">
+                {whatsAppNotice.text}
+                {whatsAppNotice.href && (
+                  <a
+                    href={whatsAppNotice.href}
+                    className="mt-2 block rounded-lg bg-spiritual-600 px-3 py-2 font-sans font-semibold text-white hover:bg-spiritual-500"
+                  >
+                    {whatsAppNotice.action}
+                  </a>
+                )}
+              </p>
+            )}
             <div className="relative">
               <MalaBeads
                 litBeads={count}
@@ -1803,10 +1906,10 @@ const AumChanterPage = () => {
                 className="z-0"
               />
 
-              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
                 {dailyGoal && (
                   <svg
-                    className="absolute w-[clamp(9rem,48vmin,19.2rem)] h-[clamp(9rem,48vmin,19.2rem)] -rotate-90"
+                    className="pointer-events-none absolute h-[clamp(9rem,48vmin,19.2rem)] w-[clamp(9rem,48vmin,19.2rem)] -rotate-90"
                     viewBox="0 0 100 100"
                   >
                     <circle
@@ -1834,7 +1937,8 @@ const AumChanterPage = () => {
 
                 <button
                   type="button"
-                  onClick={() => handleChant()}
+                  onClick={chantFromClick}
+                  onTouchEnd={chantFromTouch}
                   data-chant-button
                   className={`pointer-events-auto relative flex aspect-square w-[clamp(7.5rem,40vmin,16rem)] touch-manipulation items-center justify-center rounded-[50%] bg-gradient-to-b from-amber-100 via-amber-500 to-amber-950 p-[0.45rem] cursor-pointer outline-none transition-[transform,box-shadow] duration-150 ease-out [-webkit-tap-highlight-color:transparent] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 active:translate-y-1 scroll-mb-[46vh] ${malaComplete ? 'shadow-[0_8px_0_#4a2508,0_0_42px_10px_rgba(253,224,71,0.95)]' : isChanted ? 'translate-y-1 shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]' : 'shadow-[0_8px_0_#4a2508,0_16px_22px_rgba(0,0,0,0.5),0_0_22px_rgba(251,191,36,0.22)] active:shadow-[0_2px_0_#4a2508,0_6px_12px_rgba(0,0,0,0.45)]'}`}
                   aria-label={`Chant ${currentChant.name} to increase count`}
@@ -2096,7 +2200,7 @@ const AumChanterPage = () => {
                     Chant on your own
                   </button>
                 )}
-                <GroupJoinList groups={rankedGroups} currentCode={groupCode} onJoin={(group) => joinListedGroup(group, true)} />
+                <GroupJoinList groups={rankedGroups} currentCode={groupCode} listFailed={worldwideFailed && leaderboard.length === 0} onJoin={(group) => joinListedGroup(group, true)} />
               </div>
             </div>
           </div>
@@ -2414,7 +2518,7 @@ const AumChanterPage = () => {
           <section id="group-leaderboard" className="mt-2 w-full max-w-md rounded-xl border border-spiritual-400/25 bg-slate-900/40 p-3 text-sm text-spiritual-100">
             <h2 className="text-center font-sans text-base">Groups</h2>
             <div className="mt-3">
-              <GroupJoinList groups={rankedGroups} currentCode={groupCode} onJoin={(group) => joinListedGroup(group, false)} />
+              <GroupJoinList groups={rankedGroups} currentCode={groupCode} listFailed={worldwideFailed && leaderboard.length === 0} onJoin={(group) => joinListedGroup(group, false)} />
             </div>
           </section>
               </div>

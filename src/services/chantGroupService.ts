@@ -17,6 +17,12 @@ export function readChantTotals(value: unknown): GroupChantTotals {
   return totals;
 }
 
+function chantFetch(url: string, init: RequestInit = {}): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+  return fetch(url, { ...init, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 export function addChantTotals(left: GroupChantTotals, right: GroupChantTotals): GroupChantTotals {
   return {
     om: left.om + right.om,
@@ -177,7 +183,7 @@ async function readGroup(response: Response): Promise<ChantGroup | null> {
 }
 
 export async function createChantGroup(name: string, chantName: string): Promise<ChantGroup> {
-  const response = await fetch('/api/chant-groups', {
+  const response = await chantFetch('/api/chant-groups', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ name, chantName }),
@@ -188,7 +194,7 @@ export async function createChantGroup(name: string, chantName: string): Promise
 }
 
 export async function fetchChantGroup(code: string): Promise<ChantGroup | null> {
-  const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}`, { cache: 'no-store' });
+  const response = await chantFetch(`/api/chant-groups/${encodeURIComponent(code)}`, { cache: 'no-store' });
   return readGroup(response);
 }
 
@@ -223,7 +229,7 @@ async function readPerson(response: Response): Promise<ChantPerson> {
 
 export async function fetchChantPerson(id: string, groupCode = ''): Promise<ChantPerson> {
   const query = groupCode ? `?group=${encodeURIComponent(groupCode)}` : '';
-  const response = await fetch(`/api/chant-people/${encodeURIComponent(id)}${query}`, { cache: 'no-store' });
+  const response = await chantFetch(`/api/chant-people/${encodeURIComponent(id)}${query}`, { cache: 'no-store' });
   return readPerson(response);
 }
 
@@ -263,7 +269,7 @@ export async function saveChantProgress(
     const personChunk = takeChantChunk(personPool, chunk);
     const personSplit = CHANT_TOTAL_IDS.reduce((sum, id) => sum + personChunk[id], 0);
     try {
-      const response = await fetch(`/api/chant-people/${encodeURIComponent(id)}/chants`, {
+      const response = await chantFetch(`/api/chant-people/${encodeURIComponent(id)}/chants`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -309,7 +315,7 @@ function readCountry(value: { code?: unknown; total?: unknown; byChant?: unknown
 }
 
 export async function fetchChantGroupList(): Promise<{ groups: ChantGroup[]; globalTotal: number; byChant: GroupChantTotals; recordTotal: number; chanterCount: number; countries: ChantCountry[] }> {
-  const response = await fetch('/api/chant-groups?limit=50', { cache: 'no-store' });
+  const response = await chantFetch('/api/chant-groups?limit=50', { cache: 'no-store' });
   if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'group');
   const body = await response.json() as { groups?: Array<Partial<ChantGroup>>; globalTotal?: unknown; byChant?: unknown; recordTotal?: unknown; chanterCount?: unknown; countries?: Array<{ code?: unknown; total?: unknown; om?: unknown; 'sri-ram'?: unknown; 'jai-ma'?: unknown; 'jai-shri-krishna'?: unknown }> };
   const countries = (body.countries ?? []).flatMap((country) => {
@@ -342,7 +348,7 @@ export async function addToChantGroup(code: string, count: number): Promise<Chan
   let latest: ChantGroup | null = null;
   while (remaining > 0) {
     const chunk = Math.min(MAX_ADD, remaining);
-    const response = await fetch(`/api/chant-groups/${encodeURIComponent(code)}/chants`, {
+    const response = await chantFetch(`/api/chant-groups/${encodeURIComponent(code)}/chants`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ count: chunk }),

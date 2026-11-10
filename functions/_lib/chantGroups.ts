@@ -22,6 +22,7 @@ const GROUP_SLUG = /^[A-Za-z0-9][A-Za-z0-9_]{0,38}[A-Za-z0-9]$/;
 const PERSON_ID = /^p[a-z0-9]{8,40}$/;
 const MAX_ADD = 500;
 const MAX_LIST = 100;
+const GROUP_COLUMNS = 'code, name, chant_name, total, om_total, ram_total, ma_total, krishna_total';
 const ready = new Map<string, Promise<void>>();
 
 type SqlValue = string | number | null;
@@ -75,30 +76,43 @@ function arg(value: SqlValue): { type: string; value: string } {
 }
 
 async function executePipeline(env: ChantDbEnv, statements: Array<{ sql: string; args?: SqlValue[] }>): Promise<unknown[][][]> {
-  const response = await fetch(`https://${tursoHost(env.url)}/v2/pipeline`, {
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${env.token}`,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      requests: [
-        ...statements.map((statement) => ({
-          type: 'execute',
-          stmt: { sql: statement.sql, args: (statement.args ?? []).map(arg) },
-        })),
-        { type: 'close' },
-      ],
-    }),
-  });
-  if (!response.ok) throw new Error('database');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  let response: Response;
+  try {
+    response = await fetch(`https://${tursoHost(env.url)}/v2/pipeline`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${env.token}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        requests: [
+          ...statements.map((statement) => ({
+            type: 'execute',
+            stmt: { sql: statement.sql, args: (statement.args ?? []).map(arg) },
+          })),
+          { type: 'close' },
+        ],
+      }),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+  if (!response.ok) throw new Error('unavailable');
   const payload = await response.json() as {
-    results?: Array<{ type?: string; response?: { result?: { rows?: unknown[][] } } }>;
+    results?: Array<{ type?: string; error?: { message?: string }; response?: { result?: { rows?: unknown[][] } } }>;
   };
   const results = payload.results ?? [];
   return statements.map((_, index) => {
     const result = results[index];
-    if (!result || result.type !== 'ok') throw new Error('database');
+    if (!result || result.type !== 'ok') {
+      const message = result?.error?.message ?? '';
+      const error = new Error(message || 'database');
+      error.name = /no such (table|column)/i.test(message) ? 'SchemaMiss' : 'DatabaseError';
+      throw error;
+    }
     return result.response?.result?.rows ?? [];
   });
 }
@@ -108,11 +122,28 @@ async function execute(env: ChantDbEnv, sql: string, args: SqlValue[] = []): Pro
   return sets[0] ?? [];
 }
 
+async function schemaIsReady(env: ChantDbEnv): Promise<boolean> {
+  try {
+    const sets = await executePipeline(env, [
+      { sql: `SELECT ${GROUP_COLUMNS} FROM chant_groups LIMIT 1` },
+      { sql: 'SELECT id, name, total FROM chant_people LIMIT 1' },
+      { sql: 'SELECT group_code, person_id, name, total FROM chant_group_people LIMIT 1' },
+      { sql: 'SELECT code, om_total, ram_total, ma_total, krishna_total, total FROM chant_countries LIMIT 1' },
+      { sql: 'SELECT id FROM chant_world WHERE id = 1' },
+    ]);
+    return sets[4].length > 0;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'SchemaMiss') return false;
+    throw error;
+  }
+}
+
 function ensureSchema(env: ChantDbEnv): Promise<void> {
   const key = tursoHost(env.url);
   const existing = ready.get(key);
   if (existing) return existing;
   const pending = (async () => {
+    if (await schemaIsReady(env)) return;
     await execute(env, 'DROP TABLE IF EXISTS chant_group_frames');
     await execute(
       env,
@@ -203,8 +234,6 @@ function ensureSchema(env: ChantDbEnv): Promise<void> {
   return pending;
 }
 
-const GROUP_COLUMNS = 'code, name, chant_name, total, om_total, ram_total, ma_total, krishna_total';
-
 async function ensureChantColumn(env: ChantDbEnv, table: string, column: string): Promise<void> {
   try {
     await execute(env, `SELECT ${column} FROM ${table} LIMIT 1`);
@@ -278,52 +307,22 @@ function readGroupChantCounts(value: unknown, groupCount: number): { om: number;
   return { om, ram, ma, krishna };
 }
 
-async function readWorld(env: ChantDbEnv): Promise<{ globalTotal: number; recordTotal: number; chanterCount: number; om: number; ram: number; ma: number; krishna: number }> {
-  const rows = await execute(
-    env,
-    `SELECT total, record_total, chanter_count, om_total, ram_total, ma_total, krishna_total
-     FROM chant_world WHERE id = 1`,
-  );
-  return {
-    globalTotal: storedTotal(rows[0]?.[0]),
-    recordTotal: storedTotal(rows[0]?.[1]),
-    chanterCount: storedTotal(rows[0]?.[2]),
-    om: storedTotal(rows[0]?.[3]),
-    ram: storedTotal(rows[0]?.[4]),
-    ma: storedTotal(rows[0]?.[5]),
-    krishna: storedTotal(rows[0]?.[6]),
-  };
-}
-
-async function listGroups(env: ChantDbEnv, limit: number): Promise<ChantGroup[]> {
-  const rows = await execute(
-    env,
-    `SELECT ${GROUP_COLUMNS}
-     FROM chant_groups
-     ORDER BY total DESC, name COLLATE NOCASE ASC
-     LIMIT ?`,
-    [limit],
-  );
-  return rows.map((row) => rowToGroup(row)).filter((group): group is ChantGroup => Boolean(group));
-}
-
 async function readPerson(env: ChantDbEnv, id: string, groupCode: string): Promise<ChantPerson> {
-  const personRows = await execute(env, 'SELECT id, name, total FROM chant_people WHERE id = ?', [id]);
-  const person = personRows[0];
-  let groupTotal: number | null = null;
-  if (groupCode) {
-    const shareRows = await execute(
-      env,
-      'SELECT total FROM chant_group_people WHERE group_code = ? AND person_id = ?',
-      [groupCode, id],
-    );
-    groupTotal = shareRows[0] ? storedTotal(shareRows[0][0]) : 0;
-  }
+  const sets = await executePipeline(env, groupCode
+    ? [
+      { sql: 'SELECT id, name, total FROM chant_people WHERE id = ?', args: [id] },
+      { sql: 'SELECT total FROM chant_group_people WHERE group_code = ? AND person_id = ?', args: [groupCode, id] },
+    ]
+    : [
+      { sql: 'SELECT id, name, total FROM chant_people WHERE id = ?', args: [id] },
+    ]);
+  const person = sets[0]?.[0];
+  const shareRow = groupCode ? sets[1]?.[0] : null;
   return {
     id,
     name: person ? cellText(person[1]) : '',
     total: person ? storedTotal(person[2]) : 0,
-    groupTotal,
+    groupTotal: groupCode ? (shareRow ? storedTotal(shareRow[0]) : 0) : null,
   };
 }
 
@@ -335,29 +334,6 @@ function requestCountry(request: Request): string {
 }
 
 type ChantCountSplit = { om: number; ram: number; ma: number; krishna: number };
-
-async function listCountries(env: ChantDbEnv): Promise<Array<{ code: string; om: number; ram: number; ma: number; krishna: number; total: number }>> {
-  const rows = await execute(
-    env,
-    `SELECT code, om_total, ram_total, ma_total, total, krishna_total
-     FROM chant_countries
-     WHERE total > 0
-     ORDER BY total DESC, code ASC
-     LIMIT 40`,
-  );
-  return rows.flatMap((row) => {
-    const code = cellText(row[0]).trim().toUpperCase();
-    if (!/^[A-Z]{2}$/.test(code)) return [];
-    return [{
-      code,
-      om: storedTotal(row[1]),
-      ram: storedTotal(row[2]),
-      ma: storedTotal(row[3]),
-      total: storedTotal(row[4]),
-      krishna: storedTotal(row[5]),
-    }];
-  });
-}
 
 async function saveProgress(
   env: ChantDbEnv,
@@ -624,11 +600,49 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       const limit = Number.isFinite(requested) && requested > 0 ? Math.min(MAX_LIST, requested) : 50;
       return loadSharedTotal(`list:${limit}`, async () => {
         await ensureSchema(env);
-        const [groups, world, countries] = await Promise.all([
-          listGroups(env, limit),
-          readWorld(env),
-          listCountries(env),
+        const sets = await executePipeline(env, [
+          {
+            sql: `SELECT ${GROUP_COLUMNS}
+                  FROM chant_groups
+                  ORDER BY total DESC, name COLLATE NOCASE ASC
+                  LIMIT ?`,
+            args: [limit],
+          },
+          {
+            sql: `SELECT total, record_total, chanter_count, om_total, ram_total, ma_total, krishna_total
+                  FROM chant_world WHERE id = 1`,
+          },
+          {
+            sql: `SELECT code, om_total, ram_total, ma_total, total, krishna_total
+                  FROM chant_countries
+                  WHERE total > 0
+                  ORDER BY total DESC, code ASC
+                  LIMIT 40`,
+          },
         ]);
+        const groups = (sets[0] ?? []).map((row) => rowToGroup(row)).filter((group): group is ChantGroup => Boolean(group));
+        const worldRow = sets[1]?.[0];
+        const world = {
+          globalTotal: storedTotal(worldRow?.[0]),
+          recordTotal: storedTotal(worldRow?.[1]),
+          chanterCount: storedTotal(worldRow?.[2]),
+          om: storedTotal(worldRow?.[3]),
+          ram: storedTotal(worldRow?.[4]),
+          ma: storedTotal(worldRow?.[5]),
+          krishna: storedTotal(worldRow?.[6]),
+        };
+        const countries = (sets[2] ?? []).flatMap((row) => {
+          const code = cellText(row[0]).trim().toUpperCase();
+          if (!/^[A-Z]{2}$/.test(code)) return [];
+          return [{
+            code,
+            om: storedTotal(row[1]),
+            ram: storedTotal(row[2]),
+            ma: storedTotal(row[3]),
+            total: storedTotal(row[4]),
+            krishna: storedTotal(row[5]),
+          }];
+        });
         return json({
           groups,
           globalTotal: world.globalTotal,
@@ -734,7 +748,8 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
     }
 
     return json({ error: 'This group link was not found.' }, 404);
-  } catch {
-    return json({ error: 'Group counting is not available right now.' }, 500);
+  } catch (error) {
+    const unavailable = error instanceof Error && (error.name === 'AbortError' || error.message === 'unavailable');
+    return json({ error: 'Group counting is not available right now.' }, unavailable ? 503 : 500);
   }
 }
