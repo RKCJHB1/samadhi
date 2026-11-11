@@ -2199,6 +2199,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/11thNovember.png"
   },
   {
+    date: "November 12",
+    monthNumeric: 10,
+    dayNumeric: 12,
+    year: 1897,
+    headline: "November 12 — Swami Vivekananda Lectures on “The Vedanta” in Lahore",
+    narrativeParagraph1: "On November 12, 1897, **Swami Vivekananda** delivered his lecture **“The Vedanta”** in **Lahore**, during his return tour of India following his journey to the West. It was the third of three lectures he gave in the city, following **“The Common Bases of Hinduism”** (originally delivered as **The Problem Before Us**) and **“Bhakti.”**",
+    narrativeParagraph2: "Through these addresses, Swamiji presented the shared foundations of Hinduism and explained the philosophical and practical significance of Vedanta, urging that its ideals be brought into everyday life.",
+    quote: "The time has come when this Advaita is to be worked out practically. Let us bring it down from heaven unto the earth.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering his lecture “The Vedanta” in Lahore on 12 November 1897.",
+    customImage: "/images/on-this-day/12thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
