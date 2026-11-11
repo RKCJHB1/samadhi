@@ -17,10 +17,10 @@ export function readChantTotals(value: unknown): GroupChantTotals {
   return totals;
 }
 
-function chantFetch(url: string, init: RequestInit = {}): Promise<Response> {
+function chantFetch(url: string, init: RequestInit = {}, keepalive = false): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
-  return fetch(url, { ...init, signal: controller.signal }).finally(() => clearTimeout(timer));
+  return fetch(url, { ...init, keepalive, signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
 export function addChantTotals(left: GroupChantTotals, right: GroupChantTotals): GroupChantTotals {
@@ -250,6 +250,7 @@ export async function saveChantProgress(
   groupCount = 0,
   groupByChant: GroupChantTotals = emptyChantTotals(),
   byChant: GroupChantTotals = emptyChantTotals(),
+  keepalive = false,
 ): Promise<SavedChantProgress> {
   let remaining = Math.max(0, Math.round(count));
   let groupRemaining = Math.max(0, Math.min(remaining, Math.round(groupCount)));
@@ -277,7 +278,7 @@ export async function saveChantProgress(
           groupByChant: groupChunk > 0 ? chantChunk : undefined,
           byChant: personSplit === chunk ? personChunk : undefined,
         }),
-      });
+      }, keepalive);
       if (!response.ok) throw new Error(response.status === 503 ? 'offline' : 'person');
       const body = await response.json() as { person?: Partial<ChantPerson>; group?: Partial<ChantGroup> | null };
       if (!body.person?.id) throw new Error('person');

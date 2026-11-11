@@ -260,7 +260,7 @@ function rowToGroup(row: unknown[]): ChantGroup | null {
   return {
     code,
     name: cellText(row[1]),
-    chantName: cellText(row[2]),
+    chantName: 'Om',
     total: storedTotal(row[3]),
     byChant: {
       om: storedTotal(row[4]),
@@ -353,7 +353,7 @@ async function saveProgress(
   const ma = countryCounts?.ma ?? 0;
   const krishna = countryCounts?.krishna ?? 0;
   const statements: Array<{ sql: string; args?: SqlValue[] }> = [
-    { sql: 'BEGIN' },
+    { sql: 'BEGIN IMMEDIATE' },
     {
       sql: `INSERT INTO chant_people (id, name, total)
             VALUES (?, ?, ?)
@@ -414,8 +414,21 @@ async function saveProgress(
   });
   statements.push({ sql: 'COMMIT' });
   let sets: unknown[][][];
+  const started = Date.now();
+  let attempt = 0;
   try {
-    sets = await executePipeline(env, statements);
+    while (true) {
+      try {
+        sets = await executePipeline(env, statements);
+        break;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '';
+        const busy = /busy|locked/i.test(message);
+        attempt += 1;
+        if (!busy || attempt >= 15 || Date.now() - started > 5000) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+    }
   } catch (error) {
     try {
       await execute(env, 'ROLLBACK');
@@ -428,6 +441,7 @@ async function saveProgress(
   if (!personRow) throw new Error('database');
   const savedGroup = group ? rowToGroup(sets[2]?.[0] ?? []) : null;
   const shareRow = group ? sets[3]?.[0] : null;
+  clearSharedTotals(group?.code ?? '');
   return {
     person: {
       id,
@@ -453,9 +467,49 @@ function totalMemory(): { shares: Map<string, SharedTotal>; loads: Map<string, P
   return { shares: host.__chantTotalShares, loads: host.__chantTotalLoads };
 }
 
-function edgeCache(): { match(request: Request): Promise<Response | undefined>; put(request: Request, response: Response): Promise<void> } | null {
-  const storage = (globalThis as { caches?: { default?: { match(request: Request): Promise<Response | undefined>; put(request: Request, response: Response): Promise<void> } } }).caches;
+type EdgeCache = {
+  match(request: Request): Promise<Response | undefined>;
+  put(request: Request, response: Response): Promise<void>;
+  delete?(request: Request): Promise<boolean>;
+};
+
+function edgeCache(): EdgeCache | null {
+  const storage = (globalThis as { caches?: { default?: EdgeCache } }).caches;
   return storage?.default ?? null;
+}
+
+function sharedEdgeKey(key: string): Request {
+  return new Request(`https://chant-totals.local/${encodeURIComponent(key)}`, { method: 'GET' });
+}
+
+function clearSharedTotals(groupCode = ''): void {
+  const { shares } = totalMemory();
+  shares.clear();
+  const edge = edgeCache();
+  if (!edge?.delete) return;
+  const keys = ['list:50', 'list:100'];
+  if (groupCode) keys.push(`group:${groupCode.toLowerCase()}`);
+  for (const key of keys) {
+    void edge.delete(sharedEdgeKey(key)).catch(() => {
+      // The next read still rebuilds this process's copy.
+    });
+  }
+}
+
+let omLabels: Promise<void> | null = null;
+
+function relabelGroupsAsOm(env: ChantDbEnv): Promise<void> {
+  if (omLabels) return omLabels;
+  omLabels = (async () => {
+    const rows = await execute(env, "SELECT code FROM chant_groups WHERE chant_name <> 'Om' LIMIT 1");
+    if (rows.length === 0) return;
+    await execute(env, "UPDATE chant_groups SET chant_name = 'Om' WHERE chant_name <> 'Om'");
+    clearSharedTotals();
+  })().catch((error: unknown) => {
+    omLabels = null;
+    throw error;
+  });
+  return omLabels;
 }
 
 function sharedTotalResponse(status: number, body: string, shared: 'hit' | 'miss'): Response {
@@ -471,13 +525,14 @@ function sharedTotalResponse(status: number, body: string, shared: 'hit' | 'miss
 
 async function loadSharedTotal(key: string, produce: () => Promise<Response>): Promise<Response> {
   const { shares, loads } = totalMemory();
-  const now = Date.now();
-  const saved = shares.get(key);
-  if (saved && saved.expires > now) return sharedTotalResponse(saved.status, saved.body, 'hit');
-  if (saved) shares.delete(key);
+  const pending = loads.get(key);
+  if (pending) {
+    const produced = await pending;
+    return sharedTotalResponse(produced.status, produced.body, 'hit');
+  }
 
   const edge = edgeCache();
-  const edgeKey = new Request(`https://chant-totals.local/${encodeURIComponent(key)}`, { method: 'GET' });
+  const edgeKey = sharedEdgeKey(key);
   if (edge) {
     try {
       const hit = await edge.match(edgeKey);
@@ -485,17 +540,24 @@ async function loadSharedTotal(key: string, produce: () => Promise<Response>): P
         const body = await hit.text();
         const ageMs = Math.max(0, Math.round(Number(hit.headers.get('age')) || 0) * 1000);
         const ttl = TOTAL_SHARE_MS - ageMs;
-        if (ttl > 0) shares.set(key, { expires: Date.now() + ttl, status: hit.status, body });
-        return sharedTotalResponse(hit.status, body, 'hit');
+        if (ttl > 0) {
+          shares.set(key, { expires: Date.now() + ttl, status: hit.status, body });
+          return sharedTotalResponse(hit.status, body, 'hit');
+        }
       }
     } catch {
-      // This process has no region cache. The memory copy still covers it.
+      const saved = shares.get(key);
+      if (saved && saved.expires > Date.now()) return sharedTotalResponse(saved.status, saved.body, 'hit');
     }
+  } else {
+    const saved = shares.get(key);
+    if (saved && saved.expires > Date.now()) return sharedTotalResponse(saved.status, saved.body, 'hit');
+    if (saved) shares.delete(key);
   }
 
-  const pending = loads.get(key);
-  if (pending) {
-    const produced = await pending;
+  const pendingAfter = loads.get(key);
+  if (pendingAfter) {
+    const produced = await pendingAfter;
     return sharedTotalResponse(produced.status, produced.body, 'hit');
   }
 
@@ -539,6 +601,12 @@ async function loadSharedTotal(key: string, produce: () => Promise<Response>): P
 export async function handleChantGroupRequest(request: Request, env: ChantDbEnv | null): Promise<Response> {
   if (!env?.url || !env.token) return json({ error: 'Group counting is not connected yet.' }, 503);
   try {
+    await ensureSchema(env);
+    try {
+      await relabelGroupsAsOm(env);
+    } catch {
+      // The group list still reads every group as Om.
+    }
     const url = new URL(request.url);
     const parts = url.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
     const resource = parts[0] === 'api' ? (parts[1] ?? '') : (parts[0] ?? '');
@@ -680,7 +748,7 @@ export async function handleChantGroupRequest(request: Request, env: ChantDbEnv 
       }
       const slug = groupSlug(body.name);
       if (!slug) return json({ error: 'Use a group name such as Mistri Family.' }, 400);
-      const chantName = cleanLabel(body.chantName, 40) || 'Om';
+      const chantName = 'Om';
       const existing = await readGroup(env, slug);
       if (existing) return json(existing);
       const name = cleanLabel(body.name, 60).replace(/_/g, ' ').replace(/\s+/g, ' ').trim() || slug.replace(/_/g, ' ');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import MalaBeads from '../../components/games/MalaBeads';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_HEADING, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_HEADING, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, readChantTotals, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
 
@@ -164,6 +164,59 @@ type ChantHistoryEntry = {
   chants: number;
   chantId: string;
 };
+
+function storeChantHistory(entries: ChantHistoryEntry[]) {
+  try {
+    localStorage.setItem('aumChantHistory', JSON.stringify(entries));
+  } catch {
+    // Private browsing can block storage. This visit still keeps the count.
+  }
+}
+
+const CHANT_OUTBOX_KEY = 'aumChantOutbox';
+
+type ChantOutbox = {
+  person: number;
+  group: number;
+  groupCode: string;
+  personByChant: GroupChantTotals;
+  groupByChant: GroupChantTotals;
+};
+
+function chantTotal(totals: GroupChantTotals): number {
+  return CHANT_TOTAL_IDS.reduce((sum, id) => sum + totals[id], 0);
+}
+
+function readChantOutbox(): ChantOutbox | null {
+  try {
+    const raw = localStorage.getItem(CHANT_OUTBOX_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<ChantOutbox>;
+    const person = Math.max(0, Math.round(Number(parsed.person) || 0));
+    if (person <= 0) return null;
+    return {
+      person,
+      group: Math.max(0, Math.min(person, Math.round(Number(parsed.group) || 0))),
+      groupCode: groupSlug(typeof parsed.groupCode === 'string' ? parsed.groupCode : ''),
+      personByChant: readChantTotals(parsed.personByChant),
+      groupByChant: readChantTotals(parsed.groupByChant),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writeChantOutbox(outbox: ChantOutbox | null) {
+  try {
+    if (!outbox || outbox.person <= 0) {
+      localStorage.removeItem(CHANT_OUTBOX_KEY);
+      return;
+    }
+    localStorage.setItem(CHANT_OUTBOX_KEY, JSON.stringify(outbox));
+  } catch {
+    // The visit can still send the chants while this page is open.
+  }
+}
 
 const DEFAULT_CHANT_ID = 'om';
 
@@ -594,7 +647,10 @@ const AumChanterPage = () => {
   const confirmedRecordRef = useRef(0);
   const confirmedGroupPersonRef = useRef(0);
   const pendingGroupCodeRef = useRef('');
-  const flushSavedChantsRef = useRef<() => void>(() => {});
+  const flushSavedChantsRef = useRef<(leaving?: boolean) => void>(() => {});
+  const saveFlightRef = useRef(0);
+  const [chantsUnsent, setChantsUnsent] = useState(false);
+  const [navGap, setNavGap] = useState(96);
   const worldTickRef = useRef(freshRising());
   const worldChantTickRef = useRef(freshChantRising());
   const groupTickRef = useRef(freshRising());
@@ -875,9 +931,11 @@ const AumChanterPage = () => {
     });
   }, [clearMissingGroup]);
 
-  const flushSavedChants = useCallback(() => {
+  const flushSavedChants = useCallback((leaving = false) => {
     const amount = pendingPersonRef.current;
     if (amount <= 0) return;
+    saveFlightRef.current += 1;
+    setChantsUnsent(true);
     pendingPersonRef.current = 0;
     const groupAmount = pendingGroupRef.current;
     const groupByChant = { ...pendingByChantRef.current };
@@ -895,13 +953,23 @@ const AumChanterPage = () => {
     };
     const groupCodeForBatch = pendingGroupCodeRef.current;
     pendingGroupCodeRef.current = '';
+    const rememberUnsent = () => {
+      writeChantOutbox(pendingPersonRef.current > 0 ? {
+        person: pendingPersonRef.current,
+        group: pendingGroupRef.current,
+        groupCode: pendingGroupCodeRef.current || groupCodeRef.current || '',
+        personByChant: { ...pendingPersonByChantRef.current },
+        groupByChant: { ...pendingByChantRef.current },
+      } : null);
+      setChantsUnsent(pendingPersonRef.current > 0 || saveFlightRef.current > 0);
+    };
     void (async () => {
       let code = groupCodeForBatch || groupCodeRef.current;
-      if (groupAmount > 0 && !code) {
-        const group = await ensureChantGroup(true);
-        code = group?.code ?? null;
-      }
       try {
+        if (!leaving && groupAmount > 0 && !code) {
+          const group = await ensureChantGroup(true);
+          code = group?.code ?? null;
+        }
         const saved = await saveChantProgress(
           personIdRef.current || chantPersonId(),
           amount,
@@ -910,6 +978,7 @@ const AumChanterPage = () => {
           groupAmount > 0 && code ? groupAmount : 0,
           groupAmount > 0 && code ? groupByChant : emptyChantTotals(),
           personByChant,
+          true,
         );
         confirmedPersonRef.current = saved.person.total;
         saveRetryRef.current = 2000;
@@ -956,6 +1025,9 @@ const AumChanterPage = () => {
         saveRetryRef.current = Math.min(wait * 2, 30000);
         if (groupTimerRef.current) clearTimeout(groupTimerRef.current);
         groupTimerRef.current = setTimeout(() => flushSavedChants(), wait);
+      } finally {
+        saveFlightRef.current = Math.max(0, saveFlightRef.current - 1);
+        rememberUnsent();
       }
     })();
   }, [ensureChantGroup, refreshLeaderboard]);
@@ -1010,16 +1082,43 @@ const AumChanterPage = () => {
       if (cancelled) return;
       confirmedPersonRef.current = person.total;
       const gap = Math.max(0, localAtStart - person.total);
-      pendingPersonRef.current += gap;
+      const boxed = readChantOutbox();
+      if (gap <= 0) {
+        writeChantOutbox(null);
+      } else {
+        const personUnsent = boxed ? Math.min(boxed.person, gap) : gap;
+        const personChants = boxed && personUnsent === boxed.person && chantTotal(boxed.personByChant) === boxed.person
+          ? boxed.personByChant
+          : { ...emptyChantTotals(), om: personUnsent };
+        pendingPersonRef.current += personUnsent;
+        pendingPersonByChantRef.current = addChantTotals(pendingPersonByChantRef.current, personChants);
+        if (boxed && boxed.groupCode && boxed.group > 0) {
+          const groupUnsent = Math.min(personUnsent, boxed.group);
+          const groupChants = groupUnsent === boxed.group && chantTotal(boxed.groupByChant) === boxed.group
+            ? boxed.groupByChant
+            : { ...emptyChantTotals(), om: groupUnsent };
+          pendingGroupRef.current += groupUnsent;
+          if (!pendingGroupCodeRef.current) pendingGroupCodeRef.current = boxed.groupCode;
+          pendingByChantRef.current = addChantTotals(pendingByChantRef.current, groupChants);
+        }
+        writeChantOutbox(pendingPersonRef.current > 0 ? {
+          person: pendingPersonRef.current,
+          group: pendingGroupRef.current,
+          groupCode: pendingGroupCodeRef.current,
+          personByChant: { ...pendingPersonByChantRef.current },
+          groupByChant: { ...pendingByChantRef.current },
+        } : null);
+        setChantsUnsent(true);
+      }
       setSavedTotal(person.total + pendingPersonRef.current);
       setRecordChants(Math.max(confirmedRecordRef.current, person.total + pendingPersonRef.current));
       setSavedReady(true);
       if (person.groupTotal != null) {
         confirmedGroupPersonRef.current = person.groupTotal;
-        setGroupPersonTotal(person.groupTotal);
+        setGroupPersonTotal(person.groupTotal + pendingGroupRef.current);
       }
       if (pendingPersonRef.current > 0) {
-        totalsApi.current.bumpWorld(gap, null);
+        totalsApi.current.bumpWorld(Math.min(gap, pendingPersonRef.current), null);
         scheduleSavedChants();
       }
     }).catch(() => {
@@ -1037,15 +1136,42 @@ const AumChanterPage = () => {
   }, [refreshLeaderboard]);
 
   useEffect(() => {
-    const sendPending = () => flushSavedChantsRef.current();
+    const onHide = () => flushSavedChantsRef.current(true);
     const onVisible = () => {
-      if (document.visibilityState === 'visible') sendPending();
+      if (document.visibilityState === 'hidden') onHide();
+      else flushSavedChantsRef.current(false);
     };
-    window.addEventListener('pagehide', sendPending);
+    window.addEventListener('pagehide', onHide);
     document.addEventListener('visibilitychange', onVisible);
     return () => {
-      window.removeEventListener('pagehide', sendPending);
+      window.removeEventListener('pagehide', onHide);
       document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
+
+  useEffect(() => {
+    const nav = document.querySelector('nav');
+    if (!nav) return;
+    const measure = () => {
+      let bottom = nav.getBoundingClientRect().bottom;
+      const menu = document.getElementById('mobile-menu');
+      for (const node of nav.querySelectorAll('a, button, img')) {
+        if (!(node instanceof HTMLElement)) continue;
+        if (menu?.contains(node) && menu.classList.contains('max-h-0')) continue;
+        const style = getComputedStyle(node);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.position === 'absolute') continue;
+        bottom = Math.max(bottom, node.getBoundingClientRect().bottom);
+      }
+      const next = Math.ceil(bottom) + 16;
+      setNavGap((current) => (current === next ? current : next));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    window.addEventListener('resize', measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
     };
   }, []);
 
@@ -1307,6 +1433,7 @@ const AumChanterPage = () => {
       } else {
         newHistory.push({ date: today, chants: 1, chantId });
       }
+      storeChantHistory(newHistory);
       return newHistory;
     });
 
@@ -1338,6 +1465,14 @@ const AumChanterPage = () => {
       totalsApi.current.bumpGroup(chantKey);
       setGroupPersonTotal(confirmedGroupPersonRef.current + pendingGroupRef.current);
     }
+    writeChantOutbox({
+      person: pendingPersonRef.current,
+      group: pendingGroupRef.current,
+      groupCode: pendingGroupCodeRef.current || groupCodeRef.current || '',
+      personByChant: { ...pendingPersonByChantRef.current },
+      groupByChant: { ...pendingByChantRef.current },
+    });
+    setChantsUnsent(true);
     scheduleSavedChants();
 
     noteChantRef.current();
@@ -1717,7 +1852,7 @@ const AumChanterPage = () => {
         if (control instanceof HTMLElement) control.blur();
       }}
     >
-      <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
+      <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 sm:px-6 lg:px-8" style={{ paddingTop: navGap }}>
         <div className="flex w-full max-w-full items-center justify-center gap-2 px-2">
           <span className="h-7 w-7 shrink-0" aria-hidden="true" />
           <h1 className="min-w-0 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
@@ -1753,6 +1888,9 @@ const AumChanterPage = () => {
               <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl">{worldwideReady ? worldShown.toLocaleString() : '...'}</p>
             </div>
           </div>
+          <p className="h-4 text-center text-[10px] uppercase tracking-wider text-amber-100/70" role="status">
+            {chantsUnsent ? 'Saving…' : ''}
+          </p>
 
           <div ref={chantNotesRef} className="w-full max-w-2xl">
             {availableChants.length > 1 && (
