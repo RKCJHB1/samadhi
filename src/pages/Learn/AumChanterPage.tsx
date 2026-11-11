@@ -1346,7 +1346,7 @@ const AumChanterPage = () => {
 
     const newId = Date.now() + Math.random();
     setChantEffects(prev => [...prev, { id: newId, active: false, sparks: chantSparks() }]);
-    setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 2000);
+    setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 4000);
     return playedVoice;
   }, [playChantSound, scheduleSavedChants]);
 
@@ -1730,9 +1730,11 @@ const AumChanterPage = () => {
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-200/40 text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current stroke-[1.75]">
-              <path d="M12 15V5" strokeLinecap="round" />
-              <path d="m8 8 4-4 4 4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M6 12.5V18a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-5.5" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <path d="m8.59 13.51 6.83 3.98" strokeLinecap="round" />
+              <path d="m15.41 6.51-6.82 3.98" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -1892,7 +1894,7 @@ const AumChanterPage = () => {
                       {effect.sparks.map((spark, index) => (
                         <span
                           key={index}
-                          className="absolute font-serif leading-none transition-all ease-out"
+                          className="absolute font-serif leading-none transition-all"
                           style={{
                             left: `${effect.active ? 50 + Math.cos(spark.angle) * spark.distance : 50}%`,
                             top: `${effect.active ? 50 + Math.sin(spark.angle) * spark.distance : 50}%`,
@@ -1901,7 +1903,8 @@ const AumChanterPage = () => {
                             opacity: effect.active ? 0 : 1,
                             transform: `translate(-50%, -50%) scale(${effect.active ? spark.scale : 0.35}) rotate(${effect.active ? spark.rotate : 0}deg)`,
                             textShadow: '0 0 8px rgba(92, 48, 4, 0.9)',
-                            transitionDuration: '2000ms',
+                            transitionDuration: '4000ms',
+                            transitionTimingFunction: 'linear',
                           }}
                         >
                           {currentChant.symbol}
