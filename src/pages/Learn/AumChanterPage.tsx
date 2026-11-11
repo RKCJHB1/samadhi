@@ -542,9 +542,7 @@ const AumChanterPage = () => {
   });
   const [groupCode, setGroupCode] = useState<string | null>(null);
   const [groupTitle, setGroupTitle] = useState('');
-  const [whyChantsOpen, setWhyChantsOpen] = useState(false);
   const [chantNoteId, setChantNoteId] = useState<string | null>(null);
-  const whyChantsRef = useRef<HTMLDivElement>(null);
   const chantNotesRef = useRef<HTMLDivElement>(null);
   const [groupTotal, setGroupTotal] = useState(0);
   const [groupNotice, setGroupNotice] = useState('');
@@ -1531,23 +1529,6 @@ const AumChanterPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!whyChantsOpen) return;
-    const onPointerDown = (event: PointerEvent) => {
-      const node = whyChantsRef.current;
-      if (node && event.target instanceof Node && !node.contains(event.target)) setWhyChantsOpen(false);
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setWhyChantsOpen(false);
-    };
-    document.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [whyChantsOpen]);
-
-  useEffect(() => {
     if (!chantNoteId) return;
     const onPointerDown = (event: PointerEvent) => {
       const node = chantNotesRef.current;
@@ -1724,7 +1705,7 @@ const AumChanterPage = () => {
       }}
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
-        <div ref={whyChantsRef} className="relative flex max-w-full items-center justify-center gap-2 px-2">
+        <div className="relative flex max-w-full items-center justify-center gap-2 px-2">
           <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
             {CHANT_APP_NAME}
           </h1>
@@ -1740,38 +1721,6 @@ const AumChanterPage = () => {
               <path d="M6 12.5V18a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-5.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <button
-            type="button"
-            aria-expanded={whyChantsOpen}
-            aria-controls="why-these-chants"
-            aria-label="Why Om was chosen"
-            onClick={() => setWhyChantsOpen((open) => !open)}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-200/40 text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-none stroke-current stroke-[1.75]">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 11v6" strokeLinecap="round" />
-              <circle cx="12" cy="7.5" r="0.8" fill="currentColor" stroke="none" />
-            </svg>
-          </button>
-          {whyChantsOpen && (
-            <div
-              id="why-these-chants"
-              data-chant-dialog
-              role="region"
-              aria-label="Why Om was chosen"
-              className="absolute left-1/2 top-full z-30 mt-2 w-[min(34rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border border-amber-200/25 bg-slate-950/95 p-4 text-left shadow-xl backdrop-blur-sm"
-            >
-              <dl className="space-y-3">
-                {WHY_THESE_CHANTS.filter((chant) => chant.id === 'om').map((chant) => (
-                  <div key={chant.name}>
-                    <dt className="font-sans text-sm font-semibold text-amber-100">{chant.name}</dt>
-                    <dd className="mt-0.5 text-sm leading-relaxed text-spiritual-100/85">{chant.text}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
         </div>
         {groupTitle && (
           <p className="px-2 text-center font-sans text-xl font-bold italic leading-tight tracking-wide text-amber-100 sm:text-2xl">{groupTitle}</p>
