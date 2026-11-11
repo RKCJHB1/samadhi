@@ -116,7 +116,6 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
                 left: `${xPercent}%`,
                 top: `${yPercent}%`,
               }}
-              title={`Bead ${bead.index + 1}`}
             />
           );
         })}
@@ -130,7 +129,6 @@ const MalaBeads: React.FC<MalaBeadsProps> = ({
           transition-all duration-300
         `}
         style={{ top: '2%' }}
-        title="Guru Bead"
       />
       
       {/* Progress text */}

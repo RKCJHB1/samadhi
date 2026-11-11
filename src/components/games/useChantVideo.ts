@@ -741,7 +741,7 @@ function paintEndCard(
   paintFittedLine(context, canvas, personTotal.toLocaleString(), height * 0.44, Math.round(width * 0.16), '#ffffff', 700);
   paintFittedLine(context, canvas, frame.chantName || 'Om', height * 0.52, Math.round(width * 0.05), '#fff7ed');
   if (caption.groupTitle) {
-    paintFittedLine(context, canvas, `${caption.groupTitle} ${frame.chantName || 'Om'} ${caption.groupChantTotal.toLocaleString()} · all ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.034), '#ffd166');
+    paintFittedLine(context, canvas, `${caption.groupTitle} ${caption.groupTotal.toLocaleString()}`, height * 0.6, Math.round(width * 0.034), '#ffd166');
   }
   paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[0], height * 0.7, Math.round(width * 0.032), '#fff7ed');
   paintFittedLine(context, canvas, CHANT_SHARE_QUOTE_LINES[1], height * 0.76, Math.round(width * 0.032), '#fff7ed');
@@ -792,16 +792,13 @@ function personLine(personName: string, groupTitle: string): string {
 function frameCaption(frame: ChantVideoFrame) {
   const groupTitle = cleanPersonName(frame.groupTitle).slice(0, 60);
   const groupTotal = Math.max(0, Math.round(frame.groupTotal || 0));
-  const groupChantTotal = Math.max(0, Math.round(frame.groupChantTotal || 0));
   const globalChants = Math.max(0, Math.round(frame.globalChants || 0));
   const parts: string[] = [];
-  if (groupTitle) parts.push(`${frame.chantName || 'Om'} ${groupChantTotal.toLocaleString()}`);
-  if (groupTotal > 0) parts.push(`All ${groupTotal.toLocaleString()}`);
+  if (groupTitle) parts.push(groupTotal.toLocaleString());
   if (globalChants > 0) parts.push(`Worldwide ${globalChants.toLocaleString()}`);
   return {
     line: personLine(cleanPersonName(frame.personName), groupTitle),
     globalChants,
-    groupChantTotal,
     groupTitle,
     groupTotal,
     gold: parts.join(' · '),

@@ -79,8 +79,7 @@ export class PartialChantSaveError extends Error {
 
 const SITE_ORIGIN = 'https://ramakrishna-johannesburg.org.za';
 export const CHANT_APP_NAME = 'Digital Japa Yajna';
-export const CHANT_APP_DATES = '(8-10 November 2026)';
-export const CHANT_APP_HEADING = `${CHANT_APP_NAME} ${CHANT_APP_DATES}`;
+export const CHANT_APP_HEADING = CHANT_APP_NAME;
 const MAX_ADD = 500;
 
 export function chantSiteOrigin(): string {
@@ -128,12 +127,11 @@ function fundraisingClose(): string {
   return `Please subscribe to the WhatsApp Channel of The Ramakrishna Centre of South Africa, Johannesburg and keep informed of our new temple fundraising launch: ${WHATSAPP_CHANNEL_URL}\n${FUNDRAISING_URL}`;
 }
 
-export function buildPersonalChantShare(chantName: string, personTotal = 0, worldwide = 0) {
-  const chant = chantName.trim() || 'Om';
+export function buildPersonalChantShare(_chantName: string, personTotal = 0, worldwide = 0) {
   const url = `${SITE_ORIGIN}/chant`;
   const yourTotal = Math.max(0, Math.round(personTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
-  const lead = `Diwali, symbolizes the ultimate triumph of light over darkness and good over evil. It honors key sacred events, including the joyful return of Lord Rama to Ayodhya, Lord Krishna's slaying of Narakasura, and the Divine Mother's fierce destruction of the demon Raktabija. This Diwali, while we celebrate, let us remember its spiritual significance.\n\nThis ${CHANT_APP_NAME} is meant to keep families together by remembering the Divine. Please join me in chanting or start your own group and let our chanting be collectively counted.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\nWorldwide, all chants: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
+  const lead = `Please join me in chanting or start your own group and let our chanting be collectively counted.\n\nYour total: *${yourTotal.toLocaleString()}*\nWorldwide: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
   const message = `${lead}\n\n${fundraisingClose()}`;
   const whatsappText = `Please join the ${CHANT_APP_NAME} at:\n${url}.\n\n${lead}\n\n${fundraisingClose()}`;
   return {
@@ -152,10 +150,9 @@ export function buildGroupShare(name: string, chantName: string, code: string, g
   const url = chantGroupUrl(code);
   const yourTotal = Math.max(0, Math.round(personTotal));
   const sharedTotal = Math.max(0, Math.round(groupTotal));
-  const thisChant = Math.max(0, Math.round(chantTotal));
   const worldTotal = Math.max(0, Math.round(worldwide));
   const styledGroup = `_*${groupName}*_`;
-  const body = `Diwali, symbolizes the ultimate triumph of light over darkness and good over evil. It honors key sacred events, including the joyful return of Lord Rama to Ayodhya, Lord Krishna's slaying of Narakasura, and the Divine Mother's fierce destruction of the demon Raktabija. This Diwali, while we celebrate, let us remember its spiritual significance.\n\nThis ${CHANT_APP_NAME} is meant to keep families together by remembering the Divine. Please join our ${styledGroup} Group or start your own group and let our chanting be collectively counted.\n\nYour ${chant} total: *${yourTotal.toLocaleString()}*\n${groupName} (${chant}): *${thisChant.toLocaleString()}*\n${groupName}, all chants: *${sharedTotal.toLocaleString()}*\nWorldwide, all chants: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
+  const body = `Please join our ${styledGroup} Group or start your own group and let our chanting be collectively counted.\n\nYour total: *${yourTotal.toLocaleString()}*\n${groupName}: *${sharedTotal.toLocaleString()}*\nWorldwide: *${worldTotal.toLocaleString()}*\n\n${CHANT_SHARE_QUOTE}`;
   const message = `${body}\n\njoin our ${styledGroup} group and chant with us\n${url}\n\n${fundraisingClose()}`;
   const whatsappText = `Please join our ${styledGroup} group and chant with us\n${url}. If you join at this link, each of our individual chants get added to the group total.\n\n${body}\n\n\n${fundraisingClose()}`;
   return {

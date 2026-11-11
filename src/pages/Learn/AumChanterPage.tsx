@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import MalaBeads from '../../components/games/MalaBeads';
-import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_DATES, CHANT_APP_HEADING, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
+import { addChantTotals, buildGroupShare, buildPersonalChantShare, CHANT_APP_HEADING, CHANT_APP_NAME, CHANT_TOTAL_IDS, chantPersonId, createChantGroup, emptyChantTotals, fetchChantGroup, fetchChantGroupList, fetchChantPerson, groupSlug, PartialChantSaveError, saveChantProgress, type ChantCountry, type ChantGroup, type ChantTotalId, type GroupChantTotals } from '../../services/chantGroupService';
 import { formatRecordingTime, useChantVideo } from '../../components/games/useChantVideo';
 import { seamlessTanpuraBuffer } from '../../lib/seamlessTanpura';
 
@@ -240,7 +240,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shareTag: '#RamNavami',
     imageSrc: '/jai-sri-ram.jpg',
     audioSrc: '/jai-sri-ram.mp3',
-    isEnabled: true,
+    isEnabled: false,
   },
   {
     id: 'jai-ma',
@@ -250,7 +250,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shareTag: '#JaiMa',
     imageSrc: '/jai-ma.jpg',
     audioSrc: '/jai-ma.mp3',
-    isEnabled: true,
+    isEnabled: false,
   },
   {
     id: 'jai-shri-krishna',
@@ -260,7 +260,7 @@ const CHANT_OPTIONS: ChantOption[] = [
     shareTag: '#JaiShriKrishna',
     imageSrc: '/jai-shri-krishna.jpg',
     audioSrc: '/jai-shri-krishna.mp3',
-    isEnabled: true,
+    isEnabled: false,
   },
 ];
 
@@ -321,7 +321,6 @@ function GroupJoinList({
   return (
     <div>
       <p className="mb-3 text-center text-xs leading-relaxed text-spiritual-200/85">
-        Each group shows its chant. Select that same chant on the page before you join.
         Everyone can chant at their own time. You do not have to be online together.
       </p>
       <label className="mb-3 block">
@@ -355,7 +354,7 @@ function GroupJoinList({
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm text-spiritual-100">{group.name}</span>
-                    <span className="block text-xs text-spiritual-300/70">{group.chantName} · {group.total.toLocaleString()} chants</span>
+                    <span className="block text-xs text-spiritual-300/70">{group.total.toLocaleString()} chants</span>
                   </span>
                   <span className={`shrink-0 rounded px-3 py-1 text-xs ${current ? 'bg-amber-700/80 text-amber-50' : 'bg-spiritual-600 text-white'}`}>
                     {current ? 'Joined' : 'Join'}
@@ -431,21 +430,7 @@ function countryLine(country: ChantCountry): string {
   } catch {
     name = country.code;
   }
-  const om = country.byChant.om;
-  const ram = country.byChant['sri-ram'];
-  const ma = country.byChant['jai-ma'];
-  const krishna = country.byChant['jai-shri-krishna'];
-  const split = om + ram + ma + krishna;
-  const parts = [
-    om > 0 ? `Om ${om.toLocaleString()}` : '',
-    ram > 0 ? `Jai Shri Ram ${ram.toLocaleString()}` : '',
-    ma > 0 ? `Jai Ma ${ma.toLocaleString()}` : '',
-    krishna > 0 ? `Jai Shri Krishna ${krishna.toLocaleString()}` : '',
-  ].filter(Boolean);
-  const earlier = Math.max(0, country.total - split);
-  if (earlier > 0) parts.push(`Earlier ${earlier.toLocaleString()}`);
-  if (country.total !== split) parts.push(`All ${country.total.toLocaleString()}`);
-  return `${name}: ${parts.join(' · ')}`;
+  return `${name}: ${country.total.toLocaleString()}`;
 }
 
 const AumChanterPage = () => {
@@ -1461,13 +1446,9 @@ const AumChanterPage = () => {
     };
   }, []);
 
-  const currentChantKey = CHANT_TOTAL_IDS.find((id) => id === currentChant.id);
-  const worldwideChantTotal = currentChantKey ? worldChantShown[currentChantKey] : 0;
-  const shownGroupChantTotal = currentChantKey ? groupChantShown[currentChantKey] : 0;
   const currentGroupChantTotal = (CHANT_TOTAL_IDS as readonly string[]).includes(currentChant.id)
     ? groupByChant[currentChant.id as ChantTotalId]
     : 0;
-  const earlierGroupChants = Math.max(0, groupShown - CHANT_TOTAL_IDS.reduce((sum, id) => sum + groupChantShown[id], 0));
   const typedGroupName = groupNameDraft.trim();
   const typedGroupSlug = groupSlug(typedGroupName);
   const previewCode = typedGroupSlug || (typedGroupName ? '' : (groupCode ?? ''));
@@ -1487,12 +1468,12 @@ const AumChanterPage = () => {
       currentChant.name,
       previewCode,
       messageGroupTotal,
-      count,
+      savedTotal,
       messageChantTotal,
       savedWorldwide,
     )
     : null;
-  const personalShare = buildPersonalChantShare(currentChant.name, count, savedWorldwide);
+  const personalShare = buildPersonalChantShare(currentChant.name, savedTotal, savedWorldwide);
   const videoMessage = groupLink?.videoText ?? personalShare.videoText;
   const shareHeading = async () => {
     const text = sharingThisGroup && groupLink ? groupLink.whatsappText : personalShare.whatsappText;
@@ -1745,8 +1726,7 @@ const AumChanterPage = () => {
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
         <div ref={whyChantsRef} className="relative flex max-w-full items-center justify-center gap-2 px-2">
           <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
-            {CHANT_APP_NAME}{' '}
-            <span className="whitespace-nowrap">{CHANT_APP_DATES}</span>
+            {CHANT_APP_NAME}
           </h1>
           <button
             type="button"
@@ -1764,7 +1744,7 @@ const AumChanterPage = () => {
             type="button"
             aria-expanded={whyChantsOpen}
             aria-controls="why-these-chants"
-            aria-label="Why these four chants were chosen"
+            aria-label="Why Om was chosen"
             onClick={() => setWhyChantsOpen((open) => !open)}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-200/40 text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
           >
@@ -1779,12 +1759,11 @@ const AumChanterPage = () => {
               id="why-these-chants"
               data-chant-dialog
               role="region"
-              aria-label="Why these four chants"
+              aria-label="Why Om was chosen"
               className="absolute left-1/2 top-full z-30 mt-2 w-[min(34rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border border-amber-200/25 bg-slate-950/95 p-4 text-left shadow-xl backdrop-blur-sm"
             >
-              <p className="text-sm leading-relaxed text-amber-50/90">These four chants were chosen for this yajna.</p>
-              <dl className="mt-3 space-y-3">
-                {WHY_THESE_CHANTS.map((chant) => (
+              <dl className="space-y-3">
+                {WHY_THESE_CHANTS.filter((chant) => chant.id === 'om').map((chant) => (
                   <div key={chant.name}>
                     <dt className="font-sans text-sm font-semibold text-amber-100">{chant.name}</dt>
                     <dd className="mt-0.5 text-sm leading-relaxed text-spiritual-100/85">{chant.text}</dd>
@@ -1799,25 +1778,19 @@ const AumChanterPage = () => {
         )}
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
-          <div className="mt-1 grid w-full max-w-lg grid-cols-3 gap-2 text-center">
+          <div className="mt-1 grid w-full max-w-lg grid-cols-2 gap-2 text-center">
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
-              <p className="text-[10px] leading-tight text-spiritual-200/70">{currentChant.shortLabel}</p>
               <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
-              <p className="text-[10px] leading-tight text-spiritual-200/70">{currentChant.shortLabel}</p>
-              <p className="font-mono text-lg text-white/80 sm:text-2xl">{worldwideReady ? worldwideChantTotal.toLocaleString() : '...'}</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">Worldwide</p>
-              <p className="text-[10px] leading-tight text-spiritual-200/70">all chants</p>
               <p id="worldwide-total" className="font-mono text-lg text-white/80 sm:text-2xl">{worldwideReady ? worldShown.toLocaleString() : '...'}</p>
             </div>
           </div>
 
           <div ref={chantNotesRef} className="w-full max-w-2xl">
+            {availableChants.length > 1 && (
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center" role="tablist" aria-label="Available chants">
               {availableChants.map((chant) => {
                 const isActive = chant.id === currentChant.id;
@@ -1867,6 +1840,7 @@ const AumChanterPage = () => {
                 );
               })}
             </div>
+            )}
             {(() => {
               const note = WHY_THESE_CHANTS.find((item) => item.id === chantNoteId);
               if (!note) return null;
@@ -2013,7 +1987,6 @@ const AumChanterPage = () => {
             </div>
             <p className="mt-2 px-3 text-center text-xs text-spiritual-200/70 sm:mt-4 sm:text-sm">
               Tap the center to chant {currentChant.name}.
-              <span className="hidden sm:inline"> This count is kept separately from the other chants.</span>
             </p>
           </div>
 
@@ -2025,26 +1998,8 @@ const AumChanterPage = () => {
                 summaryId="group-total-value"
               >
                 <p>
-                  The members of this group have chanted a total of {groupShown.toLocaleString()} {groupShown === 1 ? 'time' : 'times'} amongst all the chants.
+                  The members of this group have chanted a total of {groupShown.toLocaleString()} {groupShown === 1 ? 'time' : 'times'}.
                   These chants can be added at different times. The family does not have to be online together.
-                </p>
-                <p id="group-chant-total">
-                  {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span>
-                </p>
-                <p>
-                  Om <span className="font-mono">{groupChantShown.om.toLocaleString()}</span>
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Shri Ram <span className="font-mono">{groupChantShown['sri-ram'].toLocaleString()}</span>
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Ma <span className="font-mono">{groupChantShown['jai-ma'].toLocaleString()}</span>
-                  <span className="mx-2 text-spiritual-400/50">·</span>
-                  Jai Shri Krishna <span className="font-mono">{groupChantShown['jai-shri-krishna'].toLocaleString()}</span>
-                  {earlierGroupChants > 0 && (
-                    <>
-                      <span className="mx-2 text-spiritual-400/50">·</span>
-                      Earlier <span className="font-mono">{earlierGroupChants.toLocaleString()}</span>
-                    </>
-                  )}
                 </p>
               </ChantFold>
             )}
@@ -2054,7 +2009,7 @@ const AumChanterPage = () => {
               summary={worldwideReady ? worldShown.toLocaleString() : '...'}
             >
               <p>
-                Record, all chants: <span id="record-total" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span>
+                Record: <span id="record-total" className="font-mono">{recordReady ? recordChants.toLocaleString() : '...'}</span>
               </p>
               <p>
                 Average per person: <span id="average-per-person" className="font-mono">{worldwideReady ? avgChantsPerUser.toFixed(0) : '...'}</span>
@@ -2244,7 +2199,6 @@ const AumChanterPage = () => {
               Leave this blank to chant on your own. Or type a group name and press Create to join or start that group.
             </p>
             <p className="text-center text-xs text-spiritual-200/85">
-              Selected chant: {currentChant.name}. Relatives can select this same chant before they join.
               Each person chants at their own time, and the chants still join one group total.
             </p>
             <div className="flex w-full items-center gap-2">
@@ -2334,12 +2288,9 @@ const AumChanterPage = () => {
                 </p>
                 {groupCode && previewCode.toLowerCase() === groupCode.toLowerCase() && (
                   <p className="text-center text-xs text-spiritual-100">
-                    The <span className="font-bold italic">{previewName}</span> has chanted the following mantras - {currentChant.shortLabel}: <span className="font-mono">{shownGroupChantTotal.toLocaleString()}</span> times
-                    <span className="mx-2 text-spiritual-400/50">·</span>
-                    All chants: <span className="font-mono">{groupShown.toLocaleString()}</span> times
-                    <span className="mx-2 text-spiritual-400/50">·</span>
+                    The <span className="font-bold italic">{previewName}</span> total is <span className="font-mono">{groupShown.toLocaleString()}</span>.
                     Your chants in this group:{' '}
-                    <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span> in total
+                    <span id="group-person-total" className="font-mono">{groupPersonTotal.toLocaleString()}</span>
                   </p>
                 )}
               </>
@@ -2574,7 +2525,7 @@ const AumChanterPage = () => {
                 <button onClick={() => setIsGoalModalVisible(false)} className="text-spiritual-300/60 hover:text-spiritual-200 text-2xl leading-none" aria-label="Close goal view">&times;</button>
               </div>
               <div className="p-4 space-y-4">
-                <label htmlFor="goal-input" className="text-spiritual-300/90 text-sm">Set a daily target for {currentChant.name}. Each chant keeps its own goal.</label>
+                <label htmlFor="goal-input" className="text-spiritual-300/90 text-sm">Set a daily target for {currentChant.name}.</label>
                 <input
                   id="goal-input"
                   type="number"
