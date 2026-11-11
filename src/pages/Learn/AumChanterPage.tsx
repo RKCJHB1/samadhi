@@ -433,6 +433,19 @@ function countryLine(country: ChantCountry): string {
   return `${name}: ${country.total.toLocaleString()}`;
 }
 
+function chantSparks() {
+  const count = 6;
+  return Array.from({ length: count }, (_, index) => {
+    const turn = (Math.PI * 2 * index) / count;
+    return {
+      angle: turn + (Math.random() - 0.5) * 0.8,
+      distance: 104 + Math.random() * 32,
+      scale: 0.85 + Math.random() * 0.6,
+      rotate: (Math.random() - 0.5) * 48,
+    };
+  });
+}
+
 const AumChanterPage = () => {
   const [history, setHistory] = useState<ChantHistoryEntry[]>(readChantHistory);
   const [goalsByChant, setGoalsByChant] = useState<Record<string, number>>(readChantGoals);
@@ -440,7 +453,7 @@ const AumChanterPage = () => {
   const [isChanted, setIsChanted] = useState<boolean>(false);
   const [malaComplete, setMalaComplete] = useState(false);
   const malaFlashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean }[]>([]);
+  const [chantEffects, setChantEffects] = useState<{ id: number; active: boolean; sparks: ReturnType<typeof chantSparks> }[]>([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
   const [isShareVisible, setIsShareVisible] = useState<boolean>(false);
   const [isGroupsVisible, setIsGroupsVisible] = useState<boolean>(false);
@@ -1332,8 +1345,8 @@ const AumChanterPage = () => {
     setTimeout(() => setIsChanted(false), 150);
 
     const newId = Date.now() + Math.random();
-    setChantEffects(prev => [...prev, { id: newId, active: false }]);
-    setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 700);
+    setChantEffects(prev => [...prev, { id: newId, active: false, sparks: chantSparks() }]);
+    setTimeout(() => setChantEffects(prev => prev.filter(effect => effect.id !== newId)), 2000);
     return playedVoice;
   }, [playChantSound, scheduleSavedChants]);
 
@@ -1705,8 +1718,9 @@ const AumChanterPage = () => {
       }}
     >
       <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center gap-4 px-4 pb-6 pt-24 sm:px-6 lg:px-8">
-        <div className="relative flex max-w-full items-center justify-center gap-2 px-2">
-          <h1 className="text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
+        <div className="flex w-full max-w-full items-center justify-center gap-2 px-2">
+          <span className="h-7 w-7 shrink-0" aria-hidden="true" />
+          <h1 className="min-w-0 text-balance text-center font-sans text-2xl leading-tight tracking-wide text-amber-100 sm:text-3xl">
             {CHANT_APP_NAME}
           </h1>
           <button
@@ -1727,7 +1741,7 @@ const AumChanterPage = () => {
         )}
         <div className="flex w-full flex-col items-center gap-4">
           {/* Compact Stats Bar */}
-          <div className="mt-1 grid w-full max-w-lg grid-cols-2 gap-2 text-center">
+          <div className="mt-1 flex items-start justify-center gap-6 text-center sm:gap-8">
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-spiritual-300/50 sm:text-xs">You</p>
               <p className="font-mono text-lg text-white/80 sm:text-2xl" aria-live="polite">{count.toLocaleString()}</p>
@@ -1872,6 +1886,28 @@ const AumChanterPage = () => {
                       key={`aura-${effect.id}`}
                       className={`absolute inset-0 rounded-full border border-spiritual-400/30 shadow-[0_0_60px_rgba(217,119,6,0.5)] pointer-events-none transition-all duration-700 ease-out ${effect.active ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}
                     />
+                  ))}
+                  {chantEffects.map(effect => (
+                    <span key={`om-sparks-${effect.id}`} aria-hidden className="pointer-events-none absolute inset-0 z-30">
+                      {effect.sparks.map((spark, index) => (
+                        <span
+                          key={index}
+                          className="absolute font-serif leading-none transition-all ease-out"
+                          style={{
+                            left: `${effect.active ? 50 + Math.cos(spark.angle) * spark.distance : 50}%`,
+                            top: `${effect.active ? 50 + Math.sin(spark.angle) * spark.distance : 50}%`,
+                            color: '#9a5b08',
+                            fontSize: '2.7rem',
+                            opacity: effect.active ? 0 : 1,
+                            transform: `translate(-50%, -50%) scale(${effect.active ? spark.scale : 0.35}) rotate(${effect.active ? spark.rotate : 0}deg)`,
+                            textShadow: '0 0 8px rgba(92, 48, 4, 0.9)',
+                            transitionDuration: '2000ms',
+                          }}
+                        >
+                          {currentChant.symbol}
+                        </span>
+                      ))}
+                    </span>
                   ))}
 
                   <span
