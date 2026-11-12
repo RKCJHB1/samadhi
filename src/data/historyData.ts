@@ -2212,6 +2212,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/12thNovember.png"
   },
   {
+    date: "November 13",
+    monthNumeric: 10,
+    dayNumeric: 13,
+    year: 1898,
+    headline: "November 13 — Holy Mother Inaugurates Sister Nivedita’s Girls’ School",
+    narrativeParagraph1: "On November 13, 1898, the auspicious day of **Kali Puja**, **Holy Mother Sri Sarada Devi** performed the opening ceremony of **Sister Nivedita’s** girls’ school at **16 Bosepara Lane, Baghbazar, Calcutta**, in the presence of **Swami Vivekananda**, **Swami Brahmananda**, and **Swami Saradananda**. After offering worship, Holy Mother blessed the institution, praying that the Divine Mother’s grace might rest upon it and that the girls educated there might become ideal women.",
+    narrativeParagraph2: "Sister Nivedita later wrote, **“I cannot imagine a grander omen than her blessing, spoken over the educated Hindu womanhood of the future.”** The school began functioning the following day.",
+    quote: "I cannot imagine a grander omen than her blessing, spoken over the educated Hindu womanhood of the future.",
+    quoteAuthor: "Sister Nivedita",
+    imageCaption: "Holy Mother Sri Sarada Devi blessing the girls at the opening of Sister Nivedita’s school at 16 Bosepara Lane, Baghbazar, on Kali Puja, 13 November 1898.",
+    customImage: "/images/on-this-day/13thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
