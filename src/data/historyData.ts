@@ -2225,6 +2225,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/13thNovember.png"
   },
   {
+    date: "November 14",
+    monthNumeric: 10,
+    dayNumeric: 14,
+    year: 1897,
+    headline: "November 14 — Swami Vivekananda Honoured at Lahore",
+    narrativeParagraph1: "On November 14, 1897, an open-air reception was held in honour of Swami Vivekananda on the lawn of **Lahore Town Hall**. Attended by many prominent citizens, the gathering came towards the close of his memorable visit to Lahore, during which he delivered three important lectures: **The Common Bases of Hinduism**, **Bhakti**, and **The Vedanta**.",
+    narrativeParagraph2: "His message of religious harmony and the universal principles of Vedanta made a deep impression on the people of **Punjab**.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda honoured at an open-air reception on the lawn of Lahore Town Hall on 14 November 1897.",
+    customImage: "/images/on-this-day/14thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
