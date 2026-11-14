@@ -2238,6 +2238,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/14thNovember.png"
   },
   {
+    date: "November 15",
+    monthNumeric: 10,
+    dayNumeric: 15,
+    year: 1897,
+    headline: "November 15 — Swami Vivekananda Leaves Lahore for Dehradun",
+    narrativeParagraph1: "On November 15, 1897, **Swami Vivekananda** wrote to **Swami Brahmananda** from **Lahore**, announcing that he was leaving for **Dehradun** after a highly successful visit to the city. During his roughly ten-day stay, he had delivered three lectures.",
+    narrativeParagraph2: "Referring to the success of the Lahore work, he encouraged his brother disciple: **“Now, come on, work with redoubled energy.”** He also asked him to keep an eye, in secrecy, on a large piece of land intended for a proposed celebration of Sri Ramakrishna’s birthday.",
+    quote: "Now, come on, work with redoubled energy.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from Lahore on 15 November 1897 to Swami Brahmananda, announcing his departure for Dehradun.",
+    customImage: "/images/on-this-day/15thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
