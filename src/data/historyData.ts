@@ -2251,6 +2251,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/15thNovember.png"
   },
   {
+    date: "November 16",
+    monthNumeric: 10,
+    dayNumeric: 16,
+    year: 1895,
+    headline: "November 16 — Swami Vivekananda’s Lecture on “The Religion of Love”",
+    narrativeParagraph1: "On November 16, 1895, **Swami Vivekananda** delivered a lecture entitled **“The Religion of Love”** in **London**. He explained that spiritual love develops from peaceful devotion and service toward loving God in increasingly intimate human relationships, such as that of a parent, friend, or beloved.",
+    narrativeParagraph2: "Describing the essence of true devotion, he declared: **“But when love comes, God is only love. The loving worshipper does not care what God is, because he wants nothing from Him.”** He taught that the highest spiritual love transcends sectarian forms and distinctions, finding fulfilment in love for love’s sake and union with the Divine.",
+    quote: "But when love comes, God is only love. The loving worshipper does not care what God is, because he wants nothing from Him.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda lecturing on “The Religion of Love” in London on 16 November 1895.",
+    customImage: "/images/on-this-day/16thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
