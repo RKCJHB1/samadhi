@@ -2264,6 +2264,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/16thNovember.png"
   },
   {
+    date: "November 17",
+    monthNumeric: 10,
+    dayNumeric: 17,
+    year: 1896,
+    headline: "November 17 — Swami Vivekananda on the Infinite Power Within",
+    narrativeParagraph1: "On November 17, 1896, **Swami Vivekananda** delivered the third lecture in his **Practical Vedanta** series at **39 Victoria Street, London**. Explaining the infinite potential of the human soul, Swamiji taught that its power is manifested as we become conscious of it.",
+    narrativeParagraph2: "**“So is infinite power in the soul of man, whether he knows it or not. Its manifestation is only a question of being conscious of it. Slowly this infinite giant is, as it were, waking up, becoming conscious of his power, and arousing himself; and with his growing consciousness, more and more of his bonds are breaking, chains are bursting asunder, and the day is sure to come when, with the full consciousness of his infinite power and wisdom, the giant will rise to his feet and stand erect. Let us all help to hasten that glorious consummation.”**",
+    quote: "So is infinite power in the soul of man, whether he knows it or not. Its manifestation is only a question of being conscious of it.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda delivering the third lecture of his Practical Vedanta series at 39 Victoria Street, London, on 17 November 1896.",
+    customImage: "/images/on-this-day/17thNovember.jpg"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
