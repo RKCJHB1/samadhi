@@ -2277,6 +2277,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/17thNovember.jpg"
   },
   {
+    date: "November 18",
+    monthNumeric: 10,
+    dayNumeric: 18,
+    year: 1895,
+    headline: "November 18 — Swami Vivekananda Writes from London to Alasinga Perumal",
+    narrativeParagraph1: "On November 18, 1895, **Swami Vivekananda** wrote from **London** to his disciple **Alasinga Perumal** in **Madras**, describing the remarkable success of his work in England. Encouraged by the growing interest in his teachings, Swamiji expressed confidence in the work and his reliance on God rather than on external support.",
+    narrativeParagraph2: "He wrote, **“I do not depend on men or things. The Lord alone I depend upon — and He works through me.”** He also urged Alasinga to uphold his convictions with strength and purity, assuring him that perseverance would ultimately overcome obstacles.",
+    quote: "I do not depend on men or things. The Lord alone I depend upon — and He works through me.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from London on 18 November 1895 to Alasinga Perumal in Madras.",
+    customImage: "/images/on-this-day/18thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
