@@ -2290,6 +2290,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/18thNovember.png"
   },
   {
+    date: "November 19",
+    monthNumeric: 10,
+    dayNumeric: 19,
+    year: 1894,
+    headline: "November 19 — Swami Vivekananda’s Inspiring Call to His Brave Workers in India",
+    narrativeParagraph1: "On November 19, 1894, **Swami Vivekananda** wrote from **New York** to his disciple **Alasinga Perumal** in a letter titled **“To My Brave Boys.”** Urging his Indian workers to press forward with their mission, Swamiji emphasised that love, sincerity, patience and selfless service were the foundations of true spirituality.",
+    narrativeParagraph2: "He called upon them to feel deeply for the poor, the ignorant and the downtrodden, and stressed the importance of education, liberty and fearless action. He reminded them that selfishness and personal ambition must give way to unity, perseverance and unwavering dedication to the upliftment of India. **“Feel, my children, feel; feel for the poor, the ignorant, the downtrodden.”**",
+    quote: "Feel, my children, feel; feel for the poor, the ignorant, the downtrodden.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from New York on 19 November 1894, his letter “To My Brave Boys” calling on his workers in India to feel for the poor, the ignorant, and the downtrodden.",
+    customImage: "/images/on-this-day/19thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
