@@ -2303,6 +2303,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/19thNovember.png"
   },
   {
+    date: "November 20",
+    monthNumeric: 10,
+    dayNumeric: 20,
+    year: 1896,
+    headline: "November 20 — Swami Vivekananda’s Vision for the International Expansion of Vedanta",
+    narrativeParagraph1: "On November 20, 1896, **Swami Vivekananda** wrote from **39 Victoria Street, London**, to his disciple **Alasinga Perumal**, outlining plans for the future expansion of Vedanta. He proposed establishing centres in **Calcutta** and **Madras** to train young preachers, while also planning a Himalayan centre near **Almora** for Indian and Western disciples.",
+    narrativeParagraph2: "Emphasising the international scope of his mission, Swamiji wrote, **“You must not forget that my interests are international and not Indian alone.”**",
+    quote: "You must not forget that my interests are international and not Indian alone.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda writing from 39 Victoria Street, London, on 20 November 1896 to Alasinga Perumal, outlining the international expansion of Vedanta.",
+    customImage: "/images/on-this-day/20thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
