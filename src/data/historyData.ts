@@ -2316,6 +2316,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/20thNovember.png"
   },
   {
+    date: "November 21",
+    monthNumeric: 10,
+    dayNumeric: 21,
+    year: 1896,
+    headline: "November 21 — Swami Vivekananda Writes to Lala Badri Sah from London",
+    narrativeParagraph1: "On November 21, 1896, **Swami Vivekananda** wrote from **39 Victoria Street, London**, to **Lala Badri Sah**, informing him of his forthcoming return to India. He expected to reach **Madras** around January 7, 1897, before proceeding to **Almora**.",
+    narrativeParagraph2: "He mentioned that three English friends were accompanying him, including **Mr. and Mrs. Sevier**, who intended to settle in Almora and help establish a Math in the Himalayas. These plans eventually led to the establishment of **Advaita Ashrama at Mayavati**.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda writing from 39 Victoria Street, London, on 21 November 1896 to Lala Badri Sah, with the English friends who would accompany him to India.",
+    customImage: "/images/on-this-day/21stNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
