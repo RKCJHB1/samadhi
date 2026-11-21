@@ -2329,6 +2329,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/21stNovember.png"
   },
   {
+    date: "November 22",
+    monthNumeric: 10,
+    dayNumeric: 22,
+    year: 1899,
+    headline: "November 22 — Swami Vivekananda Departs New York for California",
+    narrativeParagraph1: "On November 22, 1899, **Swami Vivekananda** departed **New York** by train for **California**, travelling first to **Chicago**. Having arrived in New York from **Ridgely Manor** on November 7, he spent approximately two weeks there before beginning his westward journey.",
+    narrativeParagraph2: "At the request of friends and admirers in Chicago, he stopped there from November 23 to November 30, staying with the **Hale family**. On November 30, he continued by train to **Los Angeles**, arriving in California in early December. This journey opened an important phase of his second Western mission, during which he taught and spread the message of Vedanta in Southern California and later in Northern California.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda at a New York station on 22 November 1899, departing by train for California.",
+    customImage: "/images/on-this-day/22ndNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
