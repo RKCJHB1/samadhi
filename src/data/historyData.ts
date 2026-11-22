@@ -2342,6 +2342,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/22ndNovember.png"
   },
   {
+    date: "November 23",
+    monthNumeric: 10,
+    dayNumeric: 23,
+    year: 1899,
+    headline: "November 23 — Swami Vivekananda Arrives in Chicago",
+    narrativeParagraph1: "On November 23, 1899, **Swami Vivekananda** arrived in **Chicago**, having departed New York the previous day on his journey to California. At the earnest request of his admirers in Chicago, Swamiji remained there for a week, until November 30.",
+    narrativeParagraph2: "**Sister Nivedita** was also in the city, having travelled there from **Ridgely Manor** earlier in November to raise funds for her proposed Home and School for Widows and Girls in Calcutta. Despite his declining health and need for rest, Swamiji continued to receive visitors before leaving Chicago for **Los Angeles** on the evening of November 30.",
+    quote: "",
+    quoteAuthor: "",
+    imageCaption: "Swami Vivekananda arriving at the Chicago station on 23 November 1899, greeted by admirers on his way from New York to California.",
+    customImage: "/images/on-this-day/23rdNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
