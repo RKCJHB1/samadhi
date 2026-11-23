@@ -2360,7 +2360,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 24,
     year: 1897,
     headline: "November 24 — Swami Vivekananda’s Affectionate Letter to Swami Premananda",
-    narrativeParagraph1: "On November 24, 1897, Swami Vivekananda wrote from **Dehradun** to **Swami Premananda** (Baburam Maharaj), beginning warmly: **“My dear Baburam.”** He was pleased to learn that Rakhal (**Swami Brahmananda**) and Hari (**Swami Turiyananda**) were now quite well.",
+    narrativeParagraph1: "On November 24, 1897, Swami Vivekananda wrote from **Dehradun** to **Swami Premananda** (Baburam Maharaj), beginning warmly: **“My dear Baburam.”** He was pleased to learn that Rakhal (**Swami Brahmananda**) and Hari (**Swami Turiyananda**) were keeping quite well.",
     narrativeParagraph2: "Vivekananda mentioned his own longstanding pain at the back of his neck, as well as the severe neck pain of **Babu Raghunath Bhattacharya**, and requested some very old ghee as a remedy. He also informed Baburam of his imminent departure for **Saharanpur** and **Rajputana**, ending with the affectionate postscript: **“My love to all.”**",
     quote: "My love to all.",
     quoteAuthor: "Swami Vivekananda",
