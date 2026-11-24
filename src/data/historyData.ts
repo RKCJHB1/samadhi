@@ -2368,6 +2368,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/24thNovember.png"
   },
   {
+    date: "November 25",
+    monthNumeric: 10,
+    dayNumeric: 25,
+    year: 1896,
+    headline: "November 25 — Swami Vivekananda Lectures on “The Absolute and Manifestation” in London",
+    narrativeParagraph1: "On November 25, 1896, Swami Vivekananda delivered a lecture on **“The Absolute and Manifestation”** at his **Victoria Street** classroom in London. Addressing one of the central questions of **Advaita Vedanta**—how the Infinite appears as the finite—Swamiji explained how the Absolute appears as the manifested universe through the limitations of time, space and causation.",
+    narrativeParagraph2: "He illustrated this profound idea with the words: **“Time, space, and causation are like the glass through which the Absolute is seen, and when It is seen on the lower side, It appears as the universe.”**",
+    quote: "Time, space, and causation are like the glass through which the Absolute is seen, and when It is seen on the lower side, It appears as the universe.",
+    quoteAuthor: "Swami Vivekananda",
+    imageCaption: "Swami Vivekananda lecturing on “The Absolute and Manifestation” at the Victoria Street classroom in London on 25 November 1896, the teaching written on the board behind him.",
+    customImage: "/images/on-this-day/25thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
