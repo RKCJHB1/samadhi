@@ -2381,6 +2381,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/25thNovember.png"
   },
   {
+    date: "November 26",
+    monthNumeric: 10,
+    dayNumeric: 26,
+    year: 1883,
+    headline: "November 26 — Sri Ramakrishna at Manilal Mallick’s House on Truthfulness (Satya)",
+    narrativeParagraph1: "On Monday, November 26, 1883, Sri Ramakrishna attended the annual festival of the **Sinduriapatti Brahmo Samaj** at the Calcutta residence of **Manilal Mallick** on **Chitpur Road**. **Vijaykrishna Goswami**, **M.** (Mahendranath Gupta), and numerous Brahmo devotees were present.",
+    narrativeParagraph2: "Before the worship began, the Master spoke about the spiritual importance of truthfulness, saying: **“It is said that truthfulness alone constitutes the spiritual discipline of the Kaliyuga. If a man clings tenaciously to truth he ultimately realizes God.”** He explained that even a seemingly small failure to keep one’s word could gradually weaken one’s regard for truth. So deeply did he value truthfulness that, after offering everything else to the Divine Mother, he could not bring himself to surrender truth itself.",
+    quote: "It is said that truthfulness alone constitutes the spiritual discipline of the Kaliyuga. If a man clings tenaciously to truth he ultimately realizes God.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna speaking on truthfulness at Manilal Mallick’s house on Chitpur Road, 26 November 1883, with Vijaykrishna Goswami, M., and the Brahmo devotees gathered around him.",
+    customImage: "/images/on-this-day/26thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
