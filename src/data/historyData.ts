@@ -2394,6 +2394,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/26thNovember.png"
   },
   {
+    date: "November 27",
+    monthNumeric: 10,
+    dayNumeric: 27,
+    year: 1927,
+    headline: "November 27, 1927 — Swami Shivananda Arrives in Varanasi for His Final Sojourn",
+    narrativeParagraph1: "On November 27, 1927, **Swami Shivananda** (Mahapurush Maharaj), the second President of the **Ramakrishna Math** and **Ramakrishna Mission** and a direct disciple of **Sri Ramakrishna**, arrived in **Varanasi** for his final visit to the sacred city. He stayed at the **Sri Ramakrishna Advaita Ashrama** for nearly two months, initiating devotees and guiding the monks.",
+    narrativeParagraph2: "During this stay, he experienced an extraordinary vision while fully awake. At night, while lying in bed, he saw a luminous divine figure with matted hair and three eyes, whose radiance illuminated the room. As the figure gradually disappeared, **Sri Ramakrishna** appeared in its place, smiling. Pointing toward him, the Master said: **“You will have to live a little longer, for you still have something more to do.”** Recounting the experience, Swami Shivananda declared: **“The Master is none other than Vishwanath himself.”**",
+    quote: "You will have to live a little longer, for you still have something more to do.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Swami Shivananda receives a vision of Sri Ramakrishna while staying at the Sri Ramakrishna Advaita Ashrama in Varanasi during his final sojourn in 1927.",
+    customImage: "/images/on-this-day/27thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
