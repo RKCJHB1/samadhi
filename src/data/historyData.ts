@@ -2407,6 +2407,19 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     customImage: "/images/on-this-day/27thNovember.png"
   },
   {
+    date: "November 28",
+    monthNumeric: 10,
+    dayNumeric: 28,
+    year: 1883,
+    headline: "Sri Ramakrishna’s Final Visit to Keshab Chandra Sen at Lily Cottage",
+    narrativeParagraph1: "On November 28, 1883, Sri Ramakrishna made his final visit to the ailing Brahmo leader Keshab Chandra Sen at Lily Cottage in Calcutta. He arrived with Latu and other devotees, while Rakhal and M. were also present.",
+    narrativeParagraph2: "Speaking of Brahman and Shakti, Sri Ramakrishna said, “He who is aware of the father must also think of the mother.” He further explained that intense divine realization could affect the body, comparing it to an elephant entering a hut and shaking it down.",
+    quote: "He who is aware of the father must also think of the mother.",
+    quoteAuthor: "Sri Ramakrishna",
+    imageCaption: "Sri Ramakrishna visits the ailing Keshab Chandra Sen at Lily Cottage in Calcutta on November 28, 1883.",
+    customImage: "/images/on-this-day/28thNovember.png"
+  },
+  {
     date: "January 1",
     monthNumeric: 0,
     dayNumeric: 1,
