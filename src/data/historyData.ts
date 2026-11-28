@@ -2425,7 +2425,7 @@ export const PRELOADED_EVENTS: OnThisDayEvent[] = [
     dayNumeric: 29,
     year: 1893,
     headline: "Newspaper Report on Swami Vivekananda’s Lecture on “Reincarnation” in Des Moines",
-    narrativeParagraph1: "On November 29, 1893, the *Daily Iowa Capitol* published a report on Swami Vivekananda’s lecture on reincarnation, delivered the previous evening at the Central Church of Christ in Des Moines, Iowa.",
+    narrativeParagraph1: "On November 29, 1893, the **Daily Iowa Capitol** published a report on Swami Vivekananda’s lecture on reincarnation, delivered the previous evening at the Central Church of Christ in Des Moines, Iowa.",
     narrativeParagraph2: "Swamiji explained that creation had existed coevally with God from all eternity, and that departed souls take new bodies—better or worse than their former ones—according to the fitness they have made for themselves.",
     quote: "Creation has existed coevally with God from all eternity.",
     quoteAuthor: "Swami Vivekananda",
